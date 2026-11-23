@@ -746,7 +746,7 @@ const MSS_UNITS: CurriculumUnit[] = [
           'Binomialwahrscheinlichkeiten mit der Standard-Normalverteilung annähern, Konfidenzintervalle für eine unbekannte Wahrscheinlichkeit bestimmen und ihre Länge mit dem Stichprobenumfang vergleichen.',
           'Approximating binomial probabilities with the standard normal distribution, finding confidence intervals for an unknown probability and relating their length to the sample size.',
         ),
-        simulations: ['normalverteilung', 'binomialverteilung'],
+        simulations: ['normalverteilung', 'binomialverteilung', 'konfidenzintervall'],
       },
       {
         code: 'GF-7.2',

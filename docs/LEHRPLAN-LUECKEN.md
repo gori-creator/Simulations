@@ -2,11 +2,11 @@
 
 <!-- Automatisch erzeugt mit `npm run lehrplan:luecken` aus src/curriculum/lehrplaene/ – nicht von Hand bearbeiten. -->
 
-Lernbereiche der Länder-Lehrpläne, zu denen es noch **keine** Simulation gibt – Vorrat für neue Simulationen (Anleitung: `docs/NEUE-SIMULATION.md`). Insgesamt **279 von 1773** Lernbereichen ohne Simulation.
+Lernbereiche der Länder-Lehrpläne, zu denen es noch **keine** Simulation gibt – Vorrat für neue Simulationen (Anleitung: `docs/NEUE-SIMULATION.md`). Insgesamt **274 von 1773** Lernbereichen ohne Simulation.
 
 Nicht jeder Lernbereich eignet sich für eine Simulation (z. B. reine Rechenfertigkeiten oder Methoden). Kommt ein Thema in mehreren Ländern vor, lohnt es sich besonders.
 
-## Mathematik (79)
+## Mathematik (74)
 
 ### Baden-Württemberg · Gymnasium (3)
 
@@ -42,7 +42,7 @@ Alle Lernbereiche haben eine Simulation.
 | --- | --- | --- | --- |
 | 9/10 | 11 | Üben und Vertiefen | Üben und Vertiefen zu allen Leitideen und prozessbezogenen Kompetenzen mit Blick auf die Prüfung. |
 
-### Hessen · Gymnasium (37)
+### Hessen · Gymnasium (33)
 
 | Stufe | Nr. | Lernbereich | Kurz |
 | --- | --- | --- | --- |
@@ -67,10 +67,6 @@ Alle Lernbereiche haben eine Simulation.
 | 12 | Q2.3.16 | Geraden und Ebenen im Raum › Ebenenscharen, insbesondere in der Darstellung durch eine Koordinatengleichung (nur LK) | Ebenen mit Parameter untersuchen. |
 | 12 | Q2.3.17 | Geraden und Ebenen im Raum › Darstellung von Parabelbahnen mithilfe von Parametern (nur LK) | Flugbahnen (z. B. eines Balls) parametrisch beschreiben. |
 | 13 | Q3.3.2 | Hypothesentests › Grafische Darstellung der Wahrscheinlichkeiten für das Beibehalten beziehungsweise Verwerfen der Nullhypothese in Abhängigkeit vom wahren Wert der Trefferwahrscheinlichkeit p (nur LK) | Operationscharakteristik bzw. Gütefunktion darstellen und deuten. |
-| 13 | Q3.4.1 | Prognose- und Konfidenzintervalle › Prognoseintervalle für relative Häufigkeiten | Erwartete Bereiche für Stichprobenergebnisse bestimmen. |
-| 13 | Q3.4.2 | Prognose- und Konfidenzintervalle › Konfidenzintervalle für Wahrscheinlichkeiten | Aus einer Stichprobe einen Bereich für die unbekannte Wahrscheinlichkeit schätzen. |
-| 13 | Q3.4.3 | Prognose- und Konfidenzintervalle › Konfidenzdiagramme (Konfidenzellipse) (nur LK) | Konfidenzbereiche grafisch darstellen. |
-| 13 | Q3.4.4 | Prognose- und Konfidenzintervalle › Stichprobenumfänge (nur LK) | Nötigen Stichprobenumfang für ein Konfidenzniveau berechnen. |
 | 13 | Q3.5.3 | Statistik und weitere Wahrscheinlichkeitsverteilungen › Poisson-Verteilung | Seltene Ereignisse mit der Poisson-Verteilung berechnen. |
 | 13 | Q3.5.5 | Statistik und weitere Wahrscheinlichkeitsverteilungen › Poisson-Verteilung als Näherung der Binomialverteilung bei konstantem Erwartungswert (nur LK) | Grenzübergang für n → ∞ beweisen. |
 | 13 | Q3.5.6 | Statistik und weitere Wahrscheinlichkeitsverteilungen › Weitere stetige Verteilungen (nur LK) | Z. B. die Exponentialverteilung. |
@@ -92,12 +88,11 @@ Alle Lernbereiche haben eine Simulation.
 | 7/8 | 9.3 | Wahrscheinlichkeit › Additions- und Komplementärregel | Regeln begründen und anwenden. |
 | 9/10 | 18.4 | Quadratische Zusammenhänge › Parabel als Ortslinie | Gleicher Abstand zu einem Punkt und einer Geraden. |
 
-### Nordrhein-Westfalen · Gymnasium (2)
+### Nordrhein-Westfalen · Gymnasium (1)
 
 | Stufe | Nr. | Lernbereich | Kurz |
 | --- | --- | --- | --- |
 | 9/10 | 9.3 | Arithmetik/Algebra › Gesetze und Regeln | Potenzgesetze und Wurzelgesetze, Wurzel- und Potenzschreibweise. |
-| 12/13 | Q-S.5 | Stochastik (S) › Beurteilende Statistik | Nur LK: Prognoseintervall, Konfidenzintervall und nötiger Stichprobenumfang. |
 
 ### Rheinland-Pfalz · Gymnasium (1)
 

@@ -182,10 +182,12 @@ describe('Länder-Lehrpläne', () => {
     'baden-wuerttemberg-gymnasium-mathematik': {
       uebergangsmatrizen: 'Übergangsmatrizen und Markov-Ketten nicht im Lehrplan',
       richtungsfeld: 'Differenzialgleichungen und Richtungsfelder nicht im Lehrplan',
+      konfidenzintervall: 'Prognose- und Konfidenzintervalle nicht im Lehrplan (nur Hypothesentests bzw. Sigma-Regeln der Normalverteilung)',
     },
     'bayern-gymnasium-mathematik': {
       uebergangsmatrizen: 'Übergangsmatrizen und Markov-Ketten nicht im Lehrplan',
       richtungsfeld: 'Differenzialgleichungen und Richtungsfelder nicht im Lehrplan',
+      konfidenzintervall: 'Prognose- und Konfidenzintervalle nicht im Lehrplan (nur Hypothesentests bzw. Sigma-Regeln der Normalverteilung)',
       'taylor-polynome': 'nicht im LehrplanPLUS (Hochschule)',
       'fourier-reihen': 'nicht im LehrplanPLUS (Hochschule)',
       'matrix-abbildungen': 'Matrizen nicht im LehrplanPLUS',
@@ -298,6 +300,7 @@ describe('Länder-Lehrpläne', () => {
     'saarland-gymnasium-mathematik': {
       uebergangsmatrizen: 'Übergangsmatrizen und Markov-Ketten nicht im Lehrplan',
       richtungsfeld: 'Differenzialgleichungen und Richtungsfelder nicht im Lehrplan',
+      konfidenzintervall: 'Prognose- und Konfidenzintervalle nicht im Lehrplan (nur Hypothesentests bzw. Sigma-Regeln der Normalverteilung)',
       'matrix-abbildungen': 'Matrizen nur als Schreibweise für lineare Gleichungssysteme (siehe docs/lehrplaene/saarland-gymnasium-mathematik.md)',
       'taylor-polynome': 'nicht im Lehrplan (Hochschule)',
       'fourier-reihen': 'nicht im Lehrplan (Hochschule)',

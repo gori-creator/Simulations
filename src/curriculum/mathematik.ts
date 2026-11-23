@@ -1337,6 +1337,22 @@ export const mathematik: Subject = {
               ['normal distribution', 'Gaussian', 'bell curve', 'density', 'distribution function', 'mean', 'standard deviation', 'sigma rules', 'z-score', 'quantile', 'z table', 'point of inflection', 'tolerance', 'quality control', 'continuous random variable', 'binomial distribution', 'approximation', 'continuity correction', 'Laplace condition', 'sample', 'histogram'],
             ),
           },
+          {
+            id: 'konfidenzintervall',
+            status: 'ready',
+            slug: L('prognose-konfidenzintervall', 'prediction-confidence-interval'),
+            title: L('Prognose- und Konfidenzintervalle', 'Prediction and confidence intervals'),
+            summary: L(
+              'Viele Stichproben ziehen und zusehen, wie die Intervalle das wahre p treffen oder verfehlen – mit Prognoseintervall, Konfidenzellipse und dem nötigen Stichprobenumfang für eine Umfrage.',
+              'Draw many samples and watch the intervals hit or miss the true p. Plus the prediction interval, the confidence ellipse and the sample size needed for a poll.',
+            ),
+            grades: [12, 13],
+            kmk: ['M-L5', 'M-K1', 'M-K3', 'M-K5'],
+            keywords: L(
+              ['Konfidenzintervall', 'Vertrauensintervall', 'Prognoseintervall', 'Sicherheitswahrscheinlichkeit', 'Konfidenzniveau', 'Sigma-Regeln', 'relative Häufigkeit', 'Schätzen', 'beurteilende Statistik', 'Konfidenzellipse', 'Stichprobenumfang', 'Umfrage', 'Fehlerschranke', 'Laplace-Bedingung', 'Überdeckungswahrscheinlichkeit', 'Wilson-Intervall'],
+              ['confidence interval', 'prediction interval', 'confidence level', 'sigma rules', 'relative frequency', 'estimation', 'inferential statistics', 'confidence ellipse', 'sample size', 'poll', 'margin of error', 'coverage probability', 'Wilson interval'],
+            ),
+          },
         ]),
       ],
     }),

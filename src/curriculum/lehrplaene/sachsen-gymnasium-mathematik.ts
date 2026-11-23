@@ -443,7 +443,7 @@ const OBERSTUFE_UNITS: CurriculumUnit[] = [
     code: 'GK-6',
     title: L('Beurteilende Statistik (Grundkurs)', 'Inferential statistics (basic course)'),
     summary: L('Parameter schätzen und ein- und zweiseitige Signifikanztests für die Binomialverteilung.', 'Estimating parameters and one- and two-sided significance tests for the binomial distribution.'),
-    simulations: ['signifikanztest'],
+    simulations: ['signifikanztest', 'konfidenzintervall'],
   },
   {
     code: 'GK-7',
@@ -552,7 +552,7 @@ const OBERSTUFE_UNITS: CurriculumUnit[] = [
     code: 'LK-7',
     title: L('Beurteilende Statistik (Leistungskurs)', 'Inferential statistics (advanced course)'),
     summary: L('Parameter schätzen und ein- und zweiseitige Signifikanztests für die Binomialverteilung.', 'Estimating parameters and one- and two-sided significance tests for the binomial distribution.'),
-    simulations: ['signifikanztest'],
+    simulations: ['signifikanztest', 'konfidenzintervall'],
   },
   {
     code: 'LK-8',

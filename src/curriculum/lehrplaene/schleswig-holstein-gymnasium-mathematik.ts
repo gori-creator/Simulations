@@ -759,7 +759,7 @@ const Q2_UNITS: CurriculumUnit[] = [
         code: 'S.2',
         title: L('Schätzen von Wahrscheinlichkeiten', 'estimating probabilities'),
         summary: L('Prognose- und Konfidenzintervalle aus einem Stichprobenergebnis durch systematisches Probieren bestimmen.', 'Finding prediction and confidence intervals from a sample result by systematic trial.'),
-        simulations: ['binomialverteilung', 'normalverteilung'],
+        simulations: ['binomialverteilung', 'normalverteilung', 'konfidenzintervall'],
       },
     ],
   },
