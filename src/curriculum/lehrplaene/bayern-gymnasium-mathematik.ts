@@ -321,7 +321,7 @@ export const bayernGymnasiumMathematik: StateCurriculum = {
             'Mit Bruchtermen rechnen, Potenzgesetze für ganzzahlige Exponenten, Bruchgleichungen lösen und als Schnittproblem von Graphen deuten, Formeln umstellen.',
             'Calculating with algebraic fractions, laws of exponents for integer exponents, solving fractional equations and interpreting them as intersections of graphs, rearranging formulas.',
           ),
-          simulations: ['gleichungen-grafisch'],
+          simulations: ['gleichungen-grafisch', 'potenzgesetze'],
         },
         {
           code: '5',
@@ -414,7 +414,7 @@ export const bayernGymnasiumMathematik: StateCurriculum = {
             'Graphen von y = a · xⁿ und ihre Symmetrie, allgemeine Wurzel, Potenzen mit rationalen Exponenten.',
             'Graphs of y = a · xⁿ and their symmetry, nth roots, powers with rational exponents.',
           ),
-          simulations: ['potenzfunktionen'],
+          simulations: ['potenzfunktionen', 'potenzgesetze'],
         },
         {
           code: '6',
@@ -575,7 +575,7 @@ export const bayernGymnasiumMathematik: StateCurriculum = {
                 'Funktionenscharen untersuchen und vom Graphen auf eine Stammfunktion schließen.',
                 'Investigating families of functions and sketching an antiderivative from a graph.',
               ),
-              simulations: ['funktionenscharen', 'stammfunktion-grafisch'],
+              simulations: ['funktionenscharen', 'stammfunktion-grafisch', 'integrationsregeln'],
             },
             {
               code: '1.2',
@@ -584,7 +584,7 @@ export const bayernGymnasiumMathematik: StateCurriculum = {
                 'Die Funktion, die ihre eigene Ableitung ist; Produkt- und Kettenregel, Wachstums- und Abklingvorgänge.',
                 'The function that is its own derivative; product and chain rule, growth and decay.',
               ),
-              simulations: ['e-funktion'],
+              simulations: ['e-funktion', 'ableitungsregeln'],
             },
             {
               code: '1.3',
@@ -671,7 +671,7 @@ export const bayernGymnasiumMathematik: StateCurriculum = {
             'Integral als Flächenbilanz, Integralfunktion und Hauptsatz, Flächen zwischen Graphen, uneigentliche Integrale, Gesamtänderung und Rotationskörper.',
             'The integral as signed area, integral functions and the fundamental theorem, areas between graphs, improper integrals, total change and solids of revolution.',
           ),
-          simulations: ['ober-untersummen', 'hauptsatz', 'aenderungsrate', 'rotationskoerper'],
+          simulations: ['ober-untersummen', 'hauptsatz', 'aenderungsrate', 'rotationskoerper', 'integrationsregeln'],
         },
         {
           code: '2',
@@ -689,7 +689,7 @@ export const bayernGymnasiumMathematik: StateCurriculum = {
             'Parameter-, Normalen- und Koordinatenform, Lagebeziehungen, Schnittwinkel, Abstände und Kugeln.',
             'Parametric, normal and coordinate form, relative positions, angles of intersection, distances and spheres.',
           ),
-          simulations: ['geraden-ebenen', 'lage-abstaende', 'kugeln'],
+          simulations: ['geraden-ebenen', 'lage-abstaende', 'kugeln', 'gauss-verfahren'],
         },
         {
           code: '4',

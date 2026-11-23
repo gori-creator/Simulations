@@ -150,7 +150,7 @@ const KS_7_9_UNITS: CurriculumUnit[] = [
     code: 'A9',
     title: L('Potenzen und Wurzeln', 'Powers and roots'),
     summary: L('Quadratwurzeln, Zehnerpotenzschreibweise, Heron-Verfahren oder Intervallschachtelung mit digitalen Werkzeugen, Erweiterung zu den reellen Zahlen.', 'Square roots, scientific notation, Heron’s method or nested intervals with digital tools, extending to the real numbers.'),
-    simulations: ['quadratwurzel', 'zehnerpotenzen'],
+    simulations: ['quadratwurzel', 'zehnerpotenzen', 'potenzgesetze'],
   },
   {
     code: 'A10',
@@ -289,7 +289,7 @@ const EP_UNITS: CurriculumUnit[] = [
     code: 'A 1',
     title: L('Einführung in die Differentialrechnung', 'Introduction to differential calculus'),
     summary: L('Mittlere und lokale Änderungsrate, Tangente und Ableitungsfunktion, Ableitungsregeln, Monotonie, Krümmung, Extrem- und Wendepunkte, Steckbriefaufgaben; Newton-Verfahren als Anregung.', 'Average and local rate of change, tangent and derivative function, rules of differentiation, monotonicity, curvature, extreme and inflection points, reconstructing functions; Newton’s method as a suggestion.'),
-    simulations: ['sekante-tangente', 'ableitungsfunktion', 'newton-verfahren', 'kurvendiskussion'],
+    simulations: ['sekante-tangente', 'ableitungsfunktion', 'newton-verfahren', 'kurvendiskussion', 'ableitungsregeln'],
   },
 ];
 
@@ -299,7 +299,7 @@ const QP_UNITS: CurriculumUnit[] = [
     code: 'A 2',
     title: L('Einführung in die Integralrechnung', 'Introduction to integral calculus'),
     summary: L('Integral als rekonstruierter Bestand und Flächeninhalt, Hauptsatz, Stammfunktionen; LK: Ober- und Untersummen, Mittelwerte, Rotationskörper.', 'The integral as reconstructed total and area, the fundamental theorem, antiderivatives; LK: upper and lower sums, mean values, solids of revolution.'),
-    simulations: ['stammfunktion-grafisch', 'ober-untersummen', 'hauptsatz', 'aenderungsrate', 'rotationskoerper'],
+    simulations: ['stammfunktion-grafisch', 'ober-untersummen', 'hauptsatz', 'aenderungsrate', 'rotationskoerper', 'integrationsregeln'],
   },
   {
     code: 'A 3',
@@ -323,7 +323,7 @@ const QP_UNITS: CurriculumUnit[] = [
     code: 'S 3',
     title: L('Normalverteilungen (LK)', 'Normal distributions (LK)'),
     summary: L('LK: stetige Zufallsgrößen, Gaußsche Glockenkurve, Näherung der Binomialverteilung, σ-Umgebungen.', 'LK: continuous random variables, the Gaussian bell curve, approximating the binomial distribution, σ intervals.'),
-    simulations: ['normalverteilung'],
+    simulations: ['normalverteilung', 'konfidenzintervall'],
   },
   {
     code: 'LA/AG',
@@ -335,12 +335,13 @@ const QP_UNITS: CurriculumUnit[] = [
     code: 'LA',
     title: L('Schwerpunkt Lineare Algebra (LA 2 bis LA 4)', 'Focus linear algebra (LA 2 to LA 4)'),
     summary: L('Lineare Gleichungssysteme und Matrizenkalkül, Umverteilungen und Populationsentwicklungen mit Übergangs- und Populationsmatrizen, Fixvektoren und Langzeitverhalten; LK: Eigenvektoren.', 'Systems of linear equations and matrix calculus, redistribution and population models with transition and population matrices, fixed vectors and long-term behaviour; LK: eigenvectors.'),
+    simulations: ['uebergangsmatrizen', 'gauss-verfahren'],
   },
   {
     code: 'AG',
     title: L('Schwerpunkt Analytische Geometrie (AG 1, AG 3 bis AG 5)', 'Focus analytic geometry (AG 1, AG 3 to AG 5)'),
     summary: L('Lineare Gleichungssysteme, Geraden und Ebenen, Lagebeziehungen, Projektionen, Spiegelungen, Abstände und Winkel.', 'Systems of linear equations, lines and planes, relative positions, projections, reflections, distances and angles.'),
-    simulations: ['geraden-ebenen', 'lage-abstaende'],
+    simulations: ['geraden-ebenen', 'lage-abstaende', 'gauss-verfahren'],
   },
 ];
 
