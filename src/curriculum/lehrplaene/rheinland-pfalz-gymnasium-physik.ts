@@ -456,11 +456,13 @@ const QP_UNITS: CurriculumUnit[] = [
         code: 'GF-W.17',
         title: L('Relativistische Kinematik', 'Relativistic kinematics'),
         summary: L('Relativität der Gleichzeitigkeit, Zeitdilatation und Längenkontraktion, Raum-Zeit-Diagramme.', 'Relativity of simultaneity, time dilation and length contraction, spacetime diagrams.'),
+        simulations: ['zeitdilatation'],
       },
       {
         code: 'GF-W.18',
         title: L('Relativistische Dynamik', 'Relativistic dynamics'),
         summary: L('Masse-Energie-Äquivalenz, Grenzgeschwindigkeit und Zeit im Gravitationsfeld.', 'Mass–energy equivalence, the speed limit and time in a gravitational field.'),
+        simulations: ['zeitdilatation'],
       },
       {
         code: 'GF-W.19',
@@ -694,11 +696,13 @@ const QP_UNITS: CurriculumUnit[] = [
         code: 'LF-W.15',
         title: L('Relativistische Kinematik', 'Relativistic kinematics'),
         summary: L('Relativität der Gleichzeitigkeit, Zeitdilatation und Längenkontraktion, Raum-Zeit-Diagramme.', 'Relativity of simultaneity, time dilation and length contraction, spacetime diagrams.'),
+        simulations: ['zeitdilatation'],
       },
       {
         code: 'LF-W.16',
         title: L('Relativistische Dynamik', 'Relativistic dynamics'),
         summary: L('Masse-Energie-Äquivalenz, Grenzgeschwindigkeit und Zeit im Gravitationsfeld.', 'Mass–energy equivalence, the speed limit and time in a gravitational field.'),
+        simulations: ['zeitdilatation'],
       },
       {
         code: 'LF-W.17',

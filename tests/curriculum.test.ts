@@ -225,6 +225,7 @@ describe('Länder-Lehrpläne', () => {
       'schiefer-wurf': 'Wurfbewegungen nur im Wahlpflichtthema der Einführungsphase an ISS/Gemeinschaftsschulen, nicht am Gymnasium',
       'doppler-effekt': 'Doppler-Effekt nicht im Rahmenlehrplan',
       'licht-schatten': 'Licht und Schatten nur im Fach Naturwissenschaften 5/6, nicht in Physik 7–10',
+      zeitdilatation: 'Spezielle Relativitätstheorie nicht im Rahmenlehrplan der Oberstufe',
     },
     'brandenburg-gymnasium-mathematik': {
       uebergangsmatrizen: 'Übergangsmatrizen und Markov-Ketten nicht im Lehrplan',
@@ -244,6 +245,7 @@ describe('Länder-Lehrpläne', () => {
       'schiefer-wurf': 'Wurfbewegungen nur im Wahlpflichtthema der Einführungsphase an Gesamtschulen, nicht am Gymnasium',
       'doppler-effekt': 'Doppler-Effekt nicht im Rahmenlehrplan',
       'licht-schatten': 'Licht und Schatten nur im Fach Naturwissenschaften 5/6, nicht in Physik 7–10',
+      zeitdilatation: 'Spezielle Relativitätstheorie nicht im Rahmenlehrplan der Oberstufe',
     },
     'bremen-gymnasium-mathematik': {
       richtungsfeld: 'Differenzialgleichungen und Richtungsfelder nicht im Lehrplan',
@@ -261,6 +263,7 @@ describe('Länder-Lehrpläne', () => {
       hubble: 'Kosmologie, Rotverschiebung und Hubble-Beziehung kommen im Lehrplan nicht vor.',
       'hr-diagramm': 'Astrophysik und Sterne kommen in den erfassten Lernbereichen nicht vor (bitte am Lehrplan prüfen).',
       hebelgesetz: 'Hebel und Drehmoment nicht im Bildungsplan (siehe docs/lehrplaene/bremen-gymnasium-physik.md)',
+      zeitdilatation: 'Spezielle Relativitätstheorie nicht im Bildungsplan der Oberstufe',
     },
     'hamburg-gymnasium-mathematik': {
       richtungsfeld: 'Differenzialgleichungen und Richtungsfelder nicht im Lehrplan',
@@ -309,6 +312,7 @@ describe('Länder-Lehrpläne', () => {
       stoesse: 'Impuls und Stöße nicht im Kerncurriculum',
       planetenbahnen: 'Gravitationsgesetz und Kepler’sche Gesetze nicht im Kerncurriculum',
       'doppler-effekt': 'Doppler-Effekt nicht im Kerncurriculum',
+      zeitdilatation: 'Spezielle Relativitätstheorie nicht im Kerncurriculum',
     },
     'nordrhein-westfalen-gymnasium-mathematik': {
       uebergangsmatrizen: 'Übergangsmatrizen und Markov-Ketten nicht im Lehrplan',
@@ -350,6 +354,7 @@ describe('Länder-Lehrpläne', () => {
       schall: 'Schall und Wellen erst in Klasse 12 (Mechanische Wellen); die Simulation ist für Klasse 5 bis 11 gedacht.',
       'schiefer-wurf': 'Einführungsphase nur mit senkrechtem Wurf; der waagerechte Wurf in der Hauptphase nur als qualitativer Vergleichsversuch (siehe docs/lehrplaene/saarland-gymnasium-physik.md)',
       'doppler-effekt': 'Doppler-Effekt nicht im Lehrplan',
+      zeitdilatation: 'Spezielle Relativitätstheorie nicht im Lehrplan der Oberstufe',
     },
     'sachsen-gymnasium-mathematik': {
       uebergangsmatrizen: 'Übergangsmatrizen und Markov-Ketten nicht im Lehrplan',

@@ -344,6 +344,7 @@ const J11: CurriculumUnit[] = [
     code: 'GK-W3',
     title: L('Relativität von Zeit und Raum (Wahlbereich Grundkurs)', 'Relativity of time and space (optional, basic course)'),
     summary: L('Postulate, Zeitdilatation und Längenkontraktion.', 'Postulates, time dilation and length contraction.'),
+    simulations: ['zeitdilatation'],
   },
   {
     code: 'LK-1',
@@ -402,6 +403,7 @@ const J11: CurriculumUnit[] = [
     code: 'LK-W1',
     title: L('Einblick in die Relativitätstheorie (Wahlbereich Leistungskurs)', 'Introduction to relativity (optional, advanced course)'),
     summary: L('Postulate, Michelson-Experiment, Zeitdilatation und E = m · c².', 'Postulates, the Michelson experiment, time dilation and E = m · c².'),
+    simulations: ['zeitdilatation'],
   },
   {
     code: 'LK-W2',

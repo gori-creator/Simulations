@@ -2467,11 +2467,13 @@ export const hessenGymnasiumPhysik: StateCurriculum = {
                 'Relativitätsprinzip, Konstanz von c, Zeitdilatation, Längenkontraktion, Minkowski-Diagramme.',
                 'Principle of relativity, constancy of c, time dilation, length contraction, Minkowski diagrams.',
               ),
+              simulations: ['zeitdilatation'],
             },
             {
               code: 'Q4.4.2',
               title: L('Relativistische Massenzunahme (nur phänomenologisch)', 'Relativistic mass increase (phenomenological only)'),
               summary: L('Phänomen der Massenzunahme bei hohen Geschwindigkeiten.', 'The phenomenon of mass increase at high speeds.'),
+              simulations: ['zeitdilatation'],
             },
             {
               code: 'Q4.4.3',
@@ -2488,6 +2490,7 @@ export const hessenGymnasiumPhysik: StateCurriculum = {
                 'Derivation of the relativistic mass increase (advanced course only)',
               ),
               summary: L('Massenzunahme aus Grundprinzipien ableiten.', 'Deriving the mass increase from basic principles.'),
+              simulations: ['zeitdilatation'],
             },
           ],
         },

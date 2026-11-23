@@ -832,6 +832,29 @@ export const physik: Subject = {
           ],
         },
         {
+          id: 'relativitaet',
+          title: L('Relativitätstheorie', 'Theory of relativity'),
+          grades: [11, 13],
+          simulations: [
+            {
+              id: 'zeitdilatation',
+              status: 'ready',
+              slug: L('zeitdilatation-laengenkontraktion', 'time-dilation-length-contraction'),
+              title: L('Zeitdilatation und Längenkontraktion', 'Time dilation and length contraction'),
+              summary: L(
+                'Eine Lichtuhr fährt im Zug mit: Vom Bahnsteig aus läuft das Licht schräg und braucht länger. Auch Zug und Tunnel, ein Lichtblitz in der Zugmitte, Myonen und E = m · c² kommen vor.',
+                'A light clock rides on a train: seen from the platform, the light travels diagonally and takes longer. A train and a tunnel, a flash in the middle of the train, muons and E = m · c² follow.',
+              ),
+              grades: [11, 13],
+              kmk: ['P-S', 'P-E', 'P-K', 'P-BK-Mathematisieren', 'P-BK-Energie', 'P-BK-Erhaltung'],
+              keywords: L(
+                ['spezielle Relativitätstheorie', 'Relativitätstheorie', 'Einstein', 'Postulate', 'Relativitätsprinzip', 'Lichtgeschwindigkeit', 'Konstanz der Lichtgeschwindigkeit', 'Lichtuhr', 'Zeitdilatation', 'Eigenzeit', 'Längenkontraktion', 'Ruhelänge', 'Lorentzfaktor', 'Relativität der Gleichzeitigkeit', 'Gleichzeitigkeit', 'Inertialsystem', 'Bezugssystem', 'Myon', 'Höhenstrahlung', 'GPS', 'relativistische Masse', 'Massenzunahme', 'Ruheenergie', 'Gesamtenergie', 'E = mc²', 'relativistischer Impuls', 'Teilchenbeschleuniger', 'Weltbild'],
+                ['special relativity', 'theory of relativity', 'Einstein', 'postulates', 'principle of relativity', 'speed of light', 'constancy of the speed of light', 'light clock', 'time dilation', 'proper time', 'length contraction', 'rest length', 'Lorentz factor', 'relativity of simultaneity', 'simultaneity', 'inertial frame', 'frame of reference', 'muon', 'cosmic rays', 'GPS', 'relativistic mass', 'mass increase', 'rest energy', 'total energy', 'E = mc²', 'relativistic momentum', 'particle accelerator', 'world view'],
+              ),
+            },
+          ],
+        },
+        {
           id: 'astrophysik',
           title: L('Astrophysik und Kosmologie', 'Astrophysics and cosmology'),
           grades: [11, 13],

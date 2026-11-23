@@ -392,6 +392,7 @@ export const bayernGymnasiumPhysik: StateCurriculum = {
                 "Einsteins Postulate, Relativität der Gleichzeitigkeit, Zeitdilatation und Längenkontraktion sowie Wissenschaft im gesellschaftlichen Spannungsfeld.",
                 "Einstein’s postulates, relativity of simultaneity, time dilation and length contraction, and science under social and political pressure.",
               ),
+              simulations: ["zeitdilatation"],
             },
             {
               code: "3.3",

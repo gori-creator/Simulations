@@ -452,6 +452,7 @@ const QPHASE_UNITS: CurriculumUnit[] = [
           'Einstein’sche Postulate, Relativität der Gleichzeitigkeit, Zeitdilatation und Längenkontraktion, relativistische Masse und Energie.',
           'Einstein’s postulates, relativity of simultaneity, time dilation and length contraction, relativistic mass and energy.',
         ),
+        simulations: ['zeitdilatation'],
       },
       {
         code: 'eA-3.2',
