@@ -831,7 +831,7 @@ const Q_UNITS: CurriculumUnit[] = [
       'Aus Eigenschaften Bedingungen für den Funktionsterm aufstellen, lineare Gleichungssysteme algorithmisch lösen und einen Parameter an eine Eigenschaft anpassen.',
       'Turning properties into conditions on the function term, solving linear systems algorithmically and adjusting a parameter to a given property.',
     ),
-    simulations: ['funktionenscharen'],
+    simulations: ['funktionenscharen', 'gauss-verfahren'],
   },
   {
     code: 'gA-2',

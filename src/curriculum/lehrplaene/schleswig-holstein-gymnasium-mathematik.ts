@@ -668,7 +668,7 @@ const Q1_UNITS: CurriculumUnit[] = [
         code: 'G.4',
         title: L('Lagebeziehungen zwischen Geraden und Ebenen und zwischen Ebenen', 'relative position of lines and planes and of two planes'),
         summary: L('Schnittmengen von Geraden und Ebenen und von Ebenen bestimmen, Lösen linearer Gleichungssysteme als Schnittproblem.', 'Finding intersections of lines and planes and of planes, solving linear systems as an intersection problem.'),
-        simulations: ['lage-abstaende', 'geraden-ebenen'],
+        simulations: ['lage-abstaende', 'geraden-ebenen', 'gauss-verfahren'],
       },
       {
         code: 'G.5',

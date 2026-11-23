@@ -476,7 +476,7 @@ const SJ_10_UNITS: CurriculumUnit[] = [
           'Räumliches Koordinatensystem, Vektoren addieren und vervielfachen, lineare Abhängigkeit, Gleichungssysteme mit drei Variablen, Skalarprodukt, Winkel und Vektorprodukt.',
           'The 3D coordinate system, adding and scaling vectors, linear dependence, systems of equations in three variables, dot product, angles and cross product.',
         ),
-        simulations: ['koordinaten-3d', 'vektoren-3d', 'skalar-vektorprodukt'],
+        simulations: ['koordinaten-3d', 'vektoren-3d', 'skalar-vektorprodukt', 'gauss-verfahren'],
       },
     ],
   },
