@@ -2,23 +2,18 @@
 
 <!-- Automatisch erzeugt mit `npm run lehrplan:luecken` aus src/curriculum/lehrplaene/ – nicht von Hand bearbeiten. -->
 
-Lernbereiche der Länder-Lehrpläne, zu denen es noch **keine** Simulation gibt – Vorrat für neue Simulationen (Anleitung: `docs/NEUE-SIMULATION.md`). Insgesamt **298 von 1773** Lernbereichen ohne Simulation.
+Lernbereiche der Länder-Lehrpläne, zu denen es noch **keine** Simulation gibt – Vorrat für neue Simulationen (Anleitung: `docs/NEUE-SIMULATION.md`). Insgesamt **254 von 1773** Lernbereichen ohne Simulation.
 
 Nicht jeder Lernbereich eignet sich für eine Simulation (z. B. reine Rechenfertigkeiten oder Methoden). Kommt ein Thema in mehreren Ländern vor, lohnt es sich besonders.
 
-## Mathematik (105)
+## Mathematik (61)
 
-### Baden-Württemberg · Gymnasium (7)
+### Baden-Württemberg · Gymnasium (2)
 
 | Stufe | Nr. | Lernbereich | Kurz |
 | --- | --- | --- | --- |
 | 7/8 | 3.2.2 | Leitidee Messen (keine Inhalte in den Klassen 7/8) | In den Klassen 7/8 sieht der Bildungsplan für diese Leitidee keine Inhalte vor. |
-| 9/10 | 3.3.1 (1)–(3) | Leitidee Zahl – Variable – Operation › mit Potenzen umgehen | Zahlen in wissenschaftlicher Schreibweise angeben, Potenzen mit rationalen Exponenten als Wurzeln deuten und die Potenzgesetze begründen und anwenden. |
-| 11 | 3.4.1 (2)–(3) | Leitidee Zahl – Variable – Operation › Funktionsterme ableiten | Faktor-, Potenz- und Summenregel anwenden und die Ableitungen von Sinus und Kosinus angeben. |
-| 12/13 | 3.5.1 (3)–(4) | Leitidee Zahl – Variable – Operation (nur Leistungsfach) › weitere Ableitungsregeln anwenden | Produkt- und Kettenregel anwenden, auch für einfache gebrochenrationale Funktionen. |
 | 12/13 | 3.5.3 (8) | Leitidee Raum und Form (nur Leistungsfach) › vektorielle Darstellungen beim Beweisen nutzen | Einfache geometrische Sätze mit Vektoren beweisen. |
-| 12/13 | 3.6.1 (2)–(3) | Leitidee Zahl – Variable – Operation (Basisfach) › weitere Ableitungsregeln anwenden | Produktregel und Kettenregel (mit linearer innerer Funktion) anwenden. |
-| 12/13 | 3.6.1 (9)–(10) | Leitidee Zahl – Variable – Operation (Basisfach) › lineare Gleichungssysteme untersuchen | Das Gaußverfahren bis zur Stufenform anwenden und die Lösungsvielfalt angeben. |
 
 ### Bayern · Gymnasium (0)
 
@@ -36,20 +31,17 @@ Alle Lernbereiche haben eine Simulation.
 | --- | --- | --- | --- |
 | 12 | Q4.3 | 4. Kurshalbjahr: Analysis, Stochastik und Aufgaben aus allen Sachgebieten › Komplexe Aufgabenstellungen aus allen drei Sachgebieten | Aufgaben, die Analysis, analytische Geometrie und Stochastik verknüpfen. |
 
-### Bremen · Gymnasium (1)
+### Bremen · Gymnasium (0)
 
-| Stufe | Nr. | Lernbereich | Kurz |
-| --- | --- | --- | --- |
-| 11/12 | LA | Schwerpunkt Lineare Algebra (LA 2 bis LA 4) | Lineare Gleichungssysteme und Matrizenkalkül, Umverteilungen und Populationsentwicklungen mit Übergangs- und Populationsmatrizen, Fixvektoren und Langzeitverhalten; LK: Eigenvektoren. |
+Alle Lernbereiche haben eine Simulation.
 
-### Hamburg · Gymnasium (2)
+### Hamburg · Gymnasium (1)
 
 | Stufe | Nr. | Lernbereich | Kurz |
 | --- | --- | --- | --- |
 | 9/10 | 11 | Üben und Vertiefen | Üben und Vertiefen zu allen Leitideen und prozessbezogenen Kompetenzen mit Blick auf die Prüfung. |
-| 12 | 7 | Lineare Algebra (Wahlpflichtmodul) | Lineare Gleichungssysteme mit dem Gauß-Verfahren, Wachstums- und Umverteilungsprozesse mit Übergangsmatrizen, Matrixpotenzen, Fixvektoren und Langzeitverhalten. |
 
-### Hessen · Gymnasium (54)
+### Hessen · Gymnasium (27)
 
 | Stufe | Nr. | Lernbereich | Kurz |
 | --- | --- | --- | --- |
@@ -57,44 +49,21 @@ Alle Lernbereiche haben eine Simulation.
 | 5/6 | 3.2.3 | Messvorgänge › Währung/Geld | Mit Geldbeträgen in Euro und Cent rechnen. |
 | 5/6 | 3.2.4 | Messvorgänge › Zeitspanne | Zeitpunkte und Zeitspannen unterscheiden und berechnen. |
 | 7/8 | 1.2.1 | Operationen und ihre Eigenschaften › Rechenverfahren, Rechengesetze und deren Verknüpfungen im Bereich der rationalen und reellen Zahlen | Vorzeichenregeln und Rechengesetze sicher anwenden. |
-| 7/8 | 1.2.3 | Operationen und ihre Eigenschaften › Potenzen mit rationalen Exponenten | Potenzschreibweise auf negative und gebrochene Exponenten ausweiten. |
 | 7/8 | 3.1.2 | Umgang mit Größen › Größen von Winkeln (Minuten, Sekunden) | Winkel genauer in Grad, Minuten und Sekunden angeben. |
 | 7/8 | 4.2.4 | Funktionen und Gleichungen › Lösen von Ungleichungen | Lineare Ungleichungen lösen und Lösungsmengen angeben. |
 | 9/10 | 2.2.2 | Körper › Körper aus der Technik und der Lebensumwelt | Reale Gegenstände als Kombination von Grundkörpern modellieren. |
 | 11 | E.1.3 | Funktionen und ihre Darstellung › Modellieren von Realsituationen durch geeignete Funktionsklassen | Sachsituationen vor allem mit linearen und quadratischen Funktionen beschreiben. |
-| 11 | E.2.4 | Einführung des Ableitungsbegriffs › Ableitungsregeln | Potenz-, Faktor- und Summenregel begründen und ganzrationale Funktionen ableiten. |
-| 11 | E.4.3 | Exponentialfunktionen › Produkt- und Kettenregel | Produkte und Verkettungen aus ganzrationalen und Exponentialfunktionen ableiten. |
-| 11 | E.5.3 | Trigonometrische Funktionen › Ableitung von f(x) = a·sin[b·(x − c)] + d beziehungsweise f(x) = a·cos[b·(x − c)] + d | Mit der Kettenregel ableiten und Ableitungswerte im Sachkontext deuten; Tangenten und Normalen. |
 | 11 | E.7.1 | Folgen und Reihen › Folgen | Konvergenz und Divergenz begründen und Grenzwerte mit Grenzwertsätzen bestimmen. |
 | 11 | E.7.2 | Folgen und Reihen › Reihen | Arithmetische und geometrische Reihen und ihre Grenzwerte untersuchen. |
-| 12 | Q1.1.4 | Einführung in die Integralrechnung › Entwickeln der Integrationsregeln mithilfe der Ableitungsregeln | Stammfunktionen von Potenzen, eˣ, sin x und cos x; Faktor- und Summenregel. |
-| 12 | Q1.1.5 | Einführung in die Integralrechnung › Integrieren von e^(ax+b), sin[b·(x − c)], cos[b·(x − c)] | Stammfunktionen von linear verketteten Funktionen bestimmen. |
-| 12 | Q1.1.6 | Einführung in die Integralrechnung › Integrieren von (ax + b)^r mit r ∈ ℚ \ {−1}, Integrieren von g(x) = f′(x)·e^f(x) (nur LK) | Weitere Stammfunktionen über die Umkehrung der Kettenregel. |
 | 12 | Q1.2.1 | Anwendungen der Integralrechnung › Flächeninhaltsberechnung | Flächen zwischen Graphen und Achsenparallelen berechnen, auch rückwärts (Grenze oder Parameter gesucht). |
 | 12 | Q1.2.3 | Anwendungen der Integralrechnung › Argumentieren und Begründen anhand von Integral-Termen | Integralausdrücke im Sachzusammenhang deuten und Aussagen begründen. |
 | 12 | Q1.2.5 | Anwendungen der Integralrechnung › Uneigentliche Integrale (nur LK) | Unendlich ausgedehnte Flächen auf endlichen Inhalt untersuchen. |
-| 12 | Q1.3.5 | Vertiefung der Differenzial- und Integralrechnung › Logistisches Wachstum (nur LK) | Logistische Wachstumsmodelle anwenden (ohne Herleitung aus der Differenzialgleichung). |
-| 12 | Q1.4.1 | Integrationsmethoden › Ermitteln einer Stammfunktion durch Formansatz mit Koeffizientenvergleich | Stammfunktion mit passendem Ansatz und Koeffizientenvergleich bestimmen. |
-| 12 | Q1.4.2 | Integrationsmethoden › Partielle Integration (nur LK) | Produktintegrale mit partieller Integration lösen. |
-| 12 | Q1.4.3 | Integrationsmethoden › Integration durch Substitution (nur LK) | Integrale durch Substitution vereinfachen. |
-| 12 | Q1.5.1 | Gewöhnliche Differenzialgleichungen › Beschreiben und Entwickeln von Modellen für Wachstums- und Zerfallsprozesse mithilfe von Differenzialgleichungen | Wachstumsannahmen in Differenzialgleichungen übersetzen. |
-| 12 | Q1.5.2 | Gewöhnliche Differenzialgleichungen › Lösungsverfahren für Differenzialgleichungen erster Ordnung | Richtungsfelder, Trennung der Variablen und weitere elementare Methoden. |
-| 12 | Q1.5.3 | Gewöhnliche Differenzialgleichungen › Untersuchen von Differenzialgleichungen zweiter Ordnung (nur LK) | Differenzialgleichungen zweiter Ordnung, etwa bei periodischen Vorgängen. |
-| 12 | Q2.3.1 | Geraden und Ebenen im Raum › Systematisches Lösen von linearen Gleichungssystemen (auch über- und unterbestimmte) | Gleichungssysteme algorithmisch lösen und Lösungsmengen geometrisch deuten. |
 | 12 | Q2.3.9 | Geraden und Ebenen im Raum › Untersuchung von Winkeln (insbesondere auf Orthogonalität und Parallelität) sowie von den genannten Lagebeziehungen jeweils in Abhängigkeit von einem (zusätzlichen) Parameter | Lage und Winkel abhängig von einem Parameter untersuchen. |
 | 12 | Q2.3.11 | Geraden und Ebenen im Raum › Anwendung in Sachzusammenhängen | Schattenwürfe, Projektionen auf Koordinatenebenen und Flächenberechnungen. |
 | 12 | Q2.3.15 | Geraden und Ebenen im Raum › Geradenscharen (nur LK) | Geraden mit Parameter untersuchen. |
 | 12 | Q2.3.16 | Geraden und Ebenen im Raum › Ebenenscharen, insbesondere in der Darstellung durch eine Koordinatengleichung (nur LK) | Ebenen mit Parameter untersuchen. |
 | 12 | Q2.3.17 | Geraden und Ebenen im Raum › Darstellung von Parabelbahnen mithilfe von Parametern (nur LK) | Flugbahnen (z. B. eines Balls) parametrisch beschreiben. |
-| 12 | Q2.4.1 | Matrizen zur Beschreibung von Übergangsprozessen › Beschreiben von Übergangsprozessen mithilfe von Zustands- beziehungsweise Übergangsgraphen, Zustandsvektoren und Übergangsmatrizen | Z. B. Populationen, Wählerwanderung oder Kundenströme modellieren. |
-| 12 | Q2.4.3 | Matrizen zur Beschreibung von Übergangsprozessen › Markov-Ketten | Zustände schrittweise (auch rückwärts) berechnen und stabile Zustände über Fixvektoren finden. |
-| 12 | Q2.4.4 | Matrizen zur Beschreibung von Übergangsprozessen › Bestimmen und Interpretieren von Matrixeinträgen bei Potenzen von Matrizen | Einträge von M² usw. im Kontext deuten. |
-| 12 | Q2.4.5 | Matrizen zur Beschreibung von Übergangsprozessen › Langfristige Entwicklung von Übergangsprozessen (nur LK) | Matrixpotenzen, Grenzprozesse und Grenzmatrizen interpretieren. |
 | 13 | Q3.3.2 | Hypothesentests › Grafische Darstellung der Wahrscheinlichkeiten für das Beibehalten beziehungsweise Verwerfen der Nullhypothese in Abhängigkeit vom wahren Wert der Trefferwahrscheinlichkeit p (nur LK) | Operationscharakteristik bzw. Gütefunktion darstellen und deuten. |
-| 13 | Q3.4.1 | Prognose- und Konfidenzintervalle › Prognoseintervalle für relative Häufigkeiten | Erwartete Bereiche für Stichprobenergebnisse bestimmen. |
-| 13 | Q3.4.2 | Prognose- und Konfidenzintervalle › Konfidenzintervalle für Wahrscheinlichkeiten | Aus einer Stichprobe einen Bereich für die unbekannte Wahrscheinlichkeit schätzen. |
-| 13 | Q3.4.3 | Prognose- und Konfidenzintervalle › Konfidenzdiagramme (Konfidenzellipse) (nur LK) | Konfidenzbereiche grafisch darstellen. |
-| 13 | Q3.4.4 | Prognose- und Konfidenzintervalle › Stichprobenumfänge (nur LK) | Nötigen Stichprobenumfang für ein Konfidenzniveau berechnen. |
 | 13 | Q3.5.3 | Statistik und weitere Wahrscheinlichkeitsverteilungen › Poisson-Verteilung | Seltene Ereignisse mit der Poisson-Verteilung berechnen. |
 | 13 | Q3.5.5 | Statistik und weitere Wahrscheinlichkeitsverteilungen › Poisson-Verteilung als Näherung der Binomialverteilung bei konstantem Erwartungswert (nur LK) | Grenzübergang für n → ∞ beweisen. |
 | 13 | Q3.5.6 | Statistik und weitere Wahrscheinlichkeitsverteilungen › Weitere stetige Verteilungen (nur LK) | Z. B. die Exponentialverteilung. |
@@ -103,26 +72,17 @@ Alle Lernbereiche haben eine Simulation.
 | 13 | Q4.2.3 | Problemlösen und Argumentieren › Beurteilen vorgegebener Aussagen oder Stellung nehmen zu vorgegebenen Aussagen | Aussagen prüfen und begründet bewerten. |
 | 13 | Q4.2.4 | Problemlösen und Argumentieren › Nachvollziehen, Erläutern und Entwickeln von Argumentationen und logischen Schlussfolgerungen | Argumentationsketten verstehen und selbst aufbauen. |
 | 13 | Q4.2.5 | Problemlösen und Argumentieren › Anwendung auf exemplarisch durch die Lehrkraft ausgewählte Themenfelder | Beispiele aus Analysis, Analytischer Geometrie, Linearer Algebra und Stochastik. |
-| 13 | Q4.3.1 | Komplexe Zahlen › Algebraische Form | Real- und Imaginärteil, Grundrechenarten. |
-| 13 | Q4.3.2 | Komplexe Zahlen › Polarform | Darstellung in der Gaußschen Zahlenebene und geometrische Deutung der Rechenarten. |
-| 13 | Q4.3.3 | Komplexe Zahlen › Lösen von Gleichungen in der Menge ℂ der komplexen Zahlen | Gleichungen lösen, die in ℝ keine Lösung haben. |
-| 13 | Q4.3.4 | Komplexe Zahlen › Darstellen der komplexen Zahlen mit 2x2-Matrizen (nur LK) | Komplexe Zahlen als Drehstreckungsmatrizen. |
 
-### Niedersachsen · Gymnasium (3)
+### Niedersachsen · Gymnasium (2)
 
 | Stufe | Nr. | Lernbereich | Kurz |
 | --- | --- | --- | --- |
 | 7/8 | 8.3 | Umgang mit negativen Zahlen › Multiplizieren und dividieren | Schuldenmodell, Permanenzprinzip und Vorzeichenregeln. |
 | 7/8 | 9.3 | Wahrscheinlichkeit › Additions- und Komplementärregel | Regeln begründen und anwenden. |
-| 9/10 | 18.4 | Quadratische Zusammenhänge › Parabel als Ortslinie | Gleicher Abstand zu einem Punkt und einer Geraden. |
 
-### Nordrhein-Westfalen · Gymnasium (3)
+### Nordrhein-Westfalen · Gymnasium (0)
 
-| Stufe | Nr. | Lernbereich | Kurz |
-| --- | --- | --- | --- |
-| 9/10 | 9.3 | Arithmetik/Algebra › Gesetze und Regeln | Potenzgesetze und Wurzelgesetze, Wurzel- und Potenzschreibweise. |
-| 12/13 | Q-G.6 | Analytische Geometrie und Lineare Algebra (G) › Lineare Gleichungssysteme | Ein algorithmisches Lösungsverfahren für bis zu drei Unbekannte, Lösungsmengen deuten. |
-| 12/13 | Q-S.5 | Stochastik (S) › Beurteilende Statistik | Nur LK: Prognoseintervall, Konfidenzintervall und nötiger Stichprobenumfang. |
+Alle Lernbereiche haben eine Simulation.
 
 ### Rheinland-Pfalz · Gymnasium (1)
 
@@ -138,7 +98,7 @@ Alle Lernbereiche haben eine Simulation.
 | 8 | 7 | Aussagenlogik (nur Informatik-Zweig) | Aussagen und Wahrheitswerte, Verknüpfungen wie Konjunktion, Disjunktion, NAND und NOR, Wahrheitstafeln. |
 | 8 | 8 | Vertiefung der regulären Themenfelder (nur Informatik-Zweig) | Vertiefungen zu den Themenfeldern 1 bis 5, zum Beispiel Mittelwerte, Parkettierungen und Füllgraphen. |
 
-### Sachsen · Gymnasium (23)
+### Sachsen · Gymnasium (17)
 
 | Stufe | Nr. | Lernbereich | Kurz |
 | --- | --- | --- | --- |
@@ -155,16 +115,10 @@ Alle Lernbereiche haben eine Simulation.
 | 9 | 5 | Vernetzung: Mathematik und moderne Rechentechnik | Rechentechnik beim Problemlösen nutzen und Ergebnisse kritisch werten. |
 | 9 | W1 | Der goldene Schnitt (Wahlbereich) | Definition, Konstruktion und Vorkommen in Kunst und Architektur. |
 | 9 | W3 | Baupläne und Bauzeichnungen (Wahlbereich) | Parallelprojektionen und wahre Größen in Bauzeichnungen. |
-| 10 | W1 | Komplexe Zahlen (Wahlbereich) | Gauß’sche Zahlenebene und Rechnen mit komplexen Zahlen. |
-| 10 | W2 | Logistisches Wachstum (Wahlbereich) | Modell des logistischen Wachstums, explizit und rekursiv, mit seinen Grenzen. |
 | 10 | W3 | Kurven in Parameterdarstellung und in Polarkoordinaten (Wahlbereich) | Kurven mit Parametern und Polarkoordinaten beschreiben. |
-| 11/12 | GK-W1 | Kegelschnitte (Wahlbereich Grundkurs) | Kreis, Ellipse, Parabel und Hyperbel als Kegelschnitte; Konstruktion der Ellipse. |
 | 11/12 | GK-W3 | Dynamische Systeme und fraktale Strukturen (Wahlbereich Grundkurs) | Räuber-Beute-System und fraktale Strukturen. |
-| 11/12 | GK-W6 | Differentialgleichungen (Wahlbereich Grundkurs) | Einfache Differentialgleichungen für Wachstum und Bewegung. |
-| 11/12 | LK-W1 | Kegelschnitte (Wahlbereich Leistungskurs) | Kegelschnitte, Ellipse mit Konstruktion und Tangenten. |
 | 11/12 | LK-W3 | Dynamische Systeme und fraktale Strukturen (Wahlbereich Leistungskurs) | Räuber-Beute-System, Fraktale, Feigenbaum-Diagramm und Chaos. |
 | 11/12 | LK-W4 | Funktionen mit zwei Veränderlichen (Wahlbereich Leistungskurs) | Graphen im Raum, Schnittfiguren und partielle Ableitungen. |
-| 11/12 | LK-W6 | Differentialgleichungen (Wahlbereich Leistungskurs) | Differentialgleichungen für Wachstum, Bewegung und den harmonischen Oszillator, Richtungsfeld. |
 
 ### Sachsen-Anhalt · Gymnasium (4)
 
