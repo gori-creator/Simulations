@@ -34,6 +34,10 @@ Beispiel: $|3 + 4i| = 5$ und $\varphi \approx 53{,}13°$.
 3. Potenzen von $1{,}1 \cdot e^{i \cdot 30°}$ bilden eine Spirale. Nach wie vielen Schritten ist man wieder auf der positiven reellen Achse? [Spirale](?mode=ops&op=pow&z=1%2C1%E2%88%A030%C2%B0&n=12)
 4. Ändere bei $z^2 + pz + q = 0$ den Wert $q$ von $0$ auf $4$. Wann werden die Lösungen nicht reell? [Gleichung](?mode=equation&eq=quad&p=0&q=4)
 5. Einheitswurzeln: Ziehe $n$ von 3 bis 12. [z⁶ = 1](?mode=equation&eq=root&w=1&n=6)
+6. Was macht z ↦ z² mit einem Haus? Und z ↦ 1/z mit einem Gitter? [Abbildungen](?mode=map&fmap=sq&shape=house)
+7. Ein Polynom vom Grad 4 hat vier Nullstellen. Finde sie im eingefärbten Bild. [Nullstellen](?mode=poly&coef=1%3B%200%3B%20-2%3B%200%3B%202&dc=1)
+8. Welche Punkte liegen näher an a als an b? [Punktmengen](?mode=sets&sk=bisect&sa=1%20%2B%20i&sb=-1)
+9. Ziehe c in der Mandelbrot-Menge herum. Wann flieht die Bahn? [Iteration](?mode=iter&ic=-0,5%20%2B%200,3i&its=40)
 
 ## Aufgaben
 
@@ -78,6 +82,17 @@ Wie viele Lösungen hat $z^3 = 8$, und wo liegen sie?
 <summary>Lösung anzeigen</summary>
 
 Drei Lösungen mit dem Betrag $2$ und den Winkeln $0°$, $120°$, $240°$: $2$ und $-1 \pm \sqrt3\,i$. Sie bilden ein gleichseitiges Dreieck. [In der Simulation zeigen](?mode=equation&eq=root&w=8&n=3)
+
+</details>
+
+### Aufgabe: Nullstellen eines Polynoms
+
+Bestimme alle Nullstellen von $p(z) = z^4 - 2z^2 + 2$.
+
+<details>
+<summary>Lösung anzeigen</summary>
+
+Mit $u = z^2$: $u^2 - 2u + 2 = 0$, also $u = 1 \pm i$. Aus $z^2 = 1 + i = \sqrt2 \cdot e^{i \cdot 45^\circ}$ folgt $z = \pm \sqrt[4]{2} \cdot e^{i \cdot 22{,}5^\circ} \approx \pm(1{,}099 + 0{,}455i)$, entsprechend für $1 - i$: $z \approx \pm(1{,}099 - 0{,}455i)$. Vier Nullstellen, zwei konjugierte Paare. [In der Simulation zeigen](?mode=poly&coef=1%3B%200%3B%20-2%3B%200%3B%202&dc=1)
 
 </details>
 

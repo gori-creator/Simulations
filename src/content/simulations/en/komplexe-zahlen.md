@@ -18,6 +18,10 @@ With a new number $i$ satisfying $i^2 = -1$, the equation $x^2 = -4$ has the sol
 2. Spiral of powers: [load](?mode=ops&op=pow&z=1%2C1%E2%88%A030%C2%B0&n=12)
 3. Roots of unity: [load](?mode=equation&eq=root&w=1&n=6)
 
+- Mappings of the plane: [z²](?mode=map&fmap=sq&shape=house), [1/z](?mode=map&fmap=inv&shape=grid), [eᶻ](?mode=map&fmap=exp&shape=grid)
+- Roots of polynomials with domain colouring: [load](?mode=poly&coef=1%3B%200%3B%20-2%3B%200%3B%202&dc=1)
+- Sets of points and the Mandelbrot iteration: [sets](?mode=sets&sk=disk&sa=1%20%2B%20i&sr=1.5), [iteration](?mode=iter&ic=-0,5%20%2B%200,3i&its=40)
+
 ## Tasks
 
 ### Task 1

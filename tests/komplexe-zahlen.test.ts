@@ -150,3 +150,73 @@ describe('Komplexe Zahlen: Lesen und Text', () => {
     expect(polarText(c(3, 4), n)).toBe('5 · (cos 53,13° + i · sin 53,13°)');
   });
 });
+
+import { c as cc, abs as absC, mapZ, parseCoeffs, polyRoots, realCoeffs, shapeLines, evalHigh as ev } from '../src/simulations/mathematik/komplexe-zahlen/model';
+
+describe('Komplexe Zahlen: Abbildungen', () => {
+  it('z ↦ z² verdoppelt Winkel und quadriert Beträge; 1/z spiegelt am Einheitskreis', () => {
+    const z = cc(1, 1);
+    expect(mapZ('sq', z, cc(1))).toEqual(cc(0, 2));
+    const inv = mapZ('inv', cc(2, 0), cc(1))!;
+    expect(inv.re).toBeCloseTo(0.5, 12);
+    expect(mapZ('inv', cc(0, 0), cc(1))).toBeNull();
+    expect(mapZ('mulw', cc(1, 0), cc(0, 1))).toEqual(cc(0, 1));
+    const e = mapZ('exp', cc(0, Math.PI), cc(1))!;
+    expect(e.re).toBeCloseTo(-1, 12);
+    // Joukowski: Einheitskreis → Strecke [−2; 2]
+    const j = mapZ('jouk', cc(Math.cos(1), Math.sin(1)), cc(1))!;
+    expect(j.im).toBeCloseTo(0, 12);
+    expect(j.re).toBeCloseTo(2 * Math.cos(1), 12);
+  });
+  it('Figuren bestehen aus Linienzügen', () => {
+    expect(shapeLines('grid').length).toBe(10);
+    expect(shapeLines('house').length).toBe(8);
+  });
+});
+
+describe('Komplexe Zahlen: Nullstellen von Polynomen', () => {
+  it('z² + 1 → ± i; z³ − 1 → dritte Einheitswurzeln', () => {
+    const r = polyRoots([cc(1), cc(0), cc(1)]).sort((a, b) => a.im - b.im);
+    expect(r[0]!.im).toBeCloseTo(-1, 9);
+    expect(r[1]!.im).toBeCloseTo(1, 9);
+    const u = polyRoots([cc(1), cc(0), cc(0), cc(-1)]);
+    expect(u).toHaveLength(3);
+    for (const z of u) expect(absC(z)).toBeCloseTo(1, 9);
+  });
+  it('Jede gefundene Nullstelle erfüllt p(z) = 0; Summe der Nullstellen = −a₃/a₄', () => {
+    const cs = [cc(2), cc(-3), cc(1, 1), cc(5), cc(-1)];
+    const r = polyRoots(cs);
+    expect(r).toHaveLength(4);
+    for (const z of r) expect(absC(ev(cs, z))).toBeLessThan(1e-8);
+    const sum = r.reduce((s, z) => cc(s.re + z.re, s.im + z.im), cc(0));
+    expect(sum.re).toBeCloseTo(1.5, 8);
+  });
+  it('Koeffizienten lesen; reelle Koeffizienten erkennen', () => {
+    expect(parseCoeffs('1; 0; 0; -1')).toHaveLength(4);
+    expect(parseCoeffs('1; x')).toBeNull();
+    expect(realCoeffs(parseCoeffs('1; -2; 5')!)).toBe(true);
+    expect(realCoeffs(parseCoeffs('1; i')!)).toBe(false);
+  });
+});
+
+import { escapeCount, inSet, orbit } from '../src/simulations/mathematik/komplexe-zahlen/model';
+
+describe('Komplexe Zahlen: Iteration und Punktmengen', () => {
+  it('z² + c: c = 0 und c = −1 bleiben beschränkt, c = 1 flieht', () => {
+    expect(escapeCount(cc(0), 50)).toBe(50);
+    expect(escapeCount(cc(-1), 50)).toBe(50);
+    expect(escapeCount(cc(1), 50)).toBeLessThan(5);
+    const o = orbit(cc(-1), 4);
+    expect(o.map((q) => q.re)).toEqual([0, -1, 0, -1, 0]);
+    expect(orbit(cc(0, 1), 3)[2]).toEqual(cc(-1, 1));
+  });
+  it('Punktmengen', () => {
+    expect(inSet('disk', cc(1, 1), cc(0), cc(0), 1.5, 0)).toBe(true);
+    expect(inSet('disk', cc(2, 1), cc(0), cc(0), 1.5, 0)).toBe(false);
+    expect(inSet('ring', cc(0.5, 0), cc(0), cc(0), 2, 0)).toBe(false);
+    expect(inSet('bisect', cc(-1, 5), cc(-2, 0), cc(2, 0), 0, 0)).toBe(true);
+    expect(inSet('sector', cc(0, 1), cc(0), cc(0), 2, 90)).toBe(true);
+    expect(inSet('sector', cc(0, -1), cc(0), cc(0), 2, 90)).toBe(false);
+    expect(inSet('half', cc(3, 0), cc(1, 0), cc(0), 0, 0)).toBe(true);
+  });
+});

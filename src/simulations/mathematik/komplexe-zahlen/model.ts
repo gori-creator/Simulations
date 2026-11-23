@@ -179,3 +179,162 @@ export function parseC(src: string): C | null {
   }
   return c(re, im);
 }
+
+/* ------------------------------------------------------------------ */
+/* Abbildungen der Ebene                                                */
+/* ------------------------------------------------------------------ */
+
+export type MapKind = 'mulw' | 'sq' | 'inv' | 'exp' | 'conj' | 'jouk';
+
+/** Bild von z unter der Abbildung (w ist der Faktor bei z ↦ w·z). Für 1/z bei 0: null. */
+export function mapZ(kind: MapKind, z: C, w: C): C | null {
+  switch (kind) {
+    case 'mulw':
+      return mul(w, z);
+    case 'sq':
+      return mul(z, z);
+    case 'inv':
+      return abs(z) < 1e-9 ? null : div(c(1), z);
+    case 'exp':
+      return exp(z);
+    case 'conj':
+      return conj(z);
+    case 'jouk':
+      return abs(z) < 1e-9 ? null : add(z, div(c(1), z));
+  }
+}
+
+/** Figuren für die Abbildungen, jeweils als Liste von Linienzügen. */
+export function shapeLines(shape: 'grid' | 'circle' | 'house' | 'sector', n = 40): C[][] {
+  const out: C[][] = [];
+  const seg = (a: C, b: C) => Array.from({ length: n + 1 }, (_, i) => add(a, scale(sub(b, a), i / n)));
+  if (shape === 'grid') {
+    for (let k = -2; k <= 2; k++) {
+      out.push(seg(c(k * 0.5, -1), c(k * 0.5, 1)));
+      out.push(seg(c(-1, k * 0.5), c(1, k * 0.5)));
+    }
+  } else if (shape === 'circle') {
+    for (const r of [0.5, 1, 1.5]) out.push(Array.from({ length: 4 * n + 1 }, (_, i) => polar(r, (2 * Math.PI * i) / (4 * n))));
+    for (let k = 0; k < 8; k++) out.push(seg(c(0), polar(1.5, (k * Math.PI) / 4)));
+  } else if (shape === 'house') {
+    const P = [c(0.2, 0.2), c(1.2, 0.2), c(1.2, 0.9), c(0.7, 1.4), c(0.2, 0.9), c(0.2, 0.2)];
+    for (let i = 0; i < P.length - 1; i++) out.push(seg(P[i]!, P[i + 1]!));
+    out.push(seg(c(0.55, 0.2), c(0.55, 0.6)), seg(c(0.55, 0.6), c(0.85, 0.6)), seg(c(0.85, 0.6), c(0.85, 0.2)));
+  } else {
+    for (const r of [0.6, 1, 1.4]) out.push(Array.from({ length: n + 1 }, (_, i) => polar(r, (Math.PI / 4) * (i / n))));
+    for (const a of [0, Math.PI / 8, Math.PI / 4]) out.push(seg(c(0), polar(1.4, a)));
+  }
+  return out;
+}
+
+/* ------------------------------------------------------------------ */
+/* Polynome: Nullstellen (Fundamentalsatz der Algebra)                   */
+/* ------------------------------------------------------------------ */
+
+/**
+ * Alle Nullstellen eines Polynoms mit den Koeffizienten aₙ, …, a₀
+ * (höchster zuerst) nach Durand–Kerner. Liefert n Nullstellen (mit
+ * Vielfachheit) oder [] bei Grad 0.
+ */
+export function polyRoots(coeffs: readonly C[], iters = 500): C[] {
+  let cs = [...coeffs];
+  while (cs.length > 1 && abs(cs[0]!) < 1e-12) cs = cs.slice(1);
+  const n = cs.length - 1;
+  if (n < 1) return [];
+  const lead = cs[0]!;
+  const monic = cs.map((a) => div(a, lead));
+  const R = 1 + Math.max(...monic.slice(1).map(abs));
+  const low = [...monic].reverse();
+  let z: C[] = Array.from({ length: n }, (_, k) => polar(R * 0.9, (2 * Math.PI * k) / n + 0.4));
+  for (let it = 0; it < iters; it++) {
+    let delta = 0;
+    z = z.map((zi, i) => {
+      let den = c(1);
+      z.forEach((zj, j) => {
+        if (i !== j) den = mul(den, sub(zi, zj));
+      });
+      const step = abs(den) < 1e-300 ? c(1e-6) : div(evalPoly(low, zi), den);
+      delta = Math.max(delta, abs(step));
+      return sub(zi, step);
+    });
+    if (delta < 1e-14) break;
+  }
+  return z.map((r) => c(Math.abs(r.re) < 1e-10 ? 0 : r.re, Math.abs(r.im) < 1e-10 ? 0 : r.im));
+}
+
+/** Koeffizienten aus einem Text wie „1; 0; 0; -1“ (höchster zuerst); null, wenn nicht lesbar. */
+export function parseCoeffs(src: string): C[] | null {
+  const parts = src.split(/[;|]/).map((s) => s.trim()).filter((s) => s.length);
+  if (!parts.length || parts.length > 7) return null;
+  const out: C[] = [];
+  for (const s of parts) {
+    const z = parseC(s);
+    if (!z) return null;
+    out.push(z);
+  }
+  return out;
+}
+
+/** Sind alle Koeffizienten reell? Dann treten nicht reelle Nullstellen paarweise konjugiert auf. */
+export const realCoeffs = (cs: readonly C[]) => cs.every((a) => Math.abs(a.im) < 1e-12);
+
+/** Wert eines Polynoms mit Koeffizienten aₙ, …, a₀ (höchster zuerst). */
+export const evalHigh = (coeffs: readonly C[], z: C): C => evalPoly([...coeffs].reverse(), z);
+
+/* ------------------------------------------------------------------ */
+/* Iteration z ↦ z² + c (Mandelbrot-Menge)                              */
+/* ------------------------------------------------------------------ */
+
+/** Bahn z₀ = 0, zₙ₊₁ = zₙ² + c (höchstens n Schritte, bricht bei |z| > 1000 ab). */
+export function orbit(cc: C, n: number, z0: C = c(0)): C[] {
+  const out = [z0];
+  let z = z0;
+  for (let i = 0; i < n; i++) {
+    z = add(mul(z, z), cc);
+    out.push(z);
+    if (abs(z) > 1000) break;
+  }
+  return out;
+}
+
+/** Anzahl der Schritte, bis |z| > 2 (Flucht), höchstens maxIt (dann: c gehört vermutlich zur Menge). */
+export function escapeCount(cc: C, maxIt = 60): number {
+  let x = 0;
+  let y = 0;
+  for (let i = 0; i < maxIt; i++) {
+    const xn = x * x - y * y + cc.re;
+    y = 2 * x * y + cc.im;
+    x = xn;
+    if (x * x + y * y > 4) return i;
+  }
+  return maxIt;
+}
+
+/* ------------------------------------------------------------------ */
+/* Punktmengen in der Zahlenebene                                       */
+/* ------------------------------------------------------------------ */
+
+export type SetKind = 'disk' | 'ring' | 'bisect' | 'sector' | 'half';
+
+/**
+ * Gehört z zur Menge? a, b sind Punkte, r ein Radius, phiDeg ein Winkel.
+ * disk: |z − a| ≤ r · ring: 1 ≤ |z − a| ≤ r · bisect: |z − a| ≤ |z − b|
+ * sector: 0° ≤ arg(z − a) ≤ φ und |z − a| ≤ r · half: Re(z) ≥ Re(a)
+ */
+export function inSet(kind: SetKind, z: C, a: C, b: C, r: number, phiDeg: number): boolean {
+  const d = abs(sub(z, a));
+  switch (kind) {
+    case 'disk':
+      return d <= r;
+    case 'ring':
+      return d >= 1 && d <= r;
+    case 'bisect':
+      return d <= abs(sub(z, b));
+    case 'sector': {
+      const ang = ((Math.atan2(z.im - a.im, z.re - a.re) * 180) / Math.PI + 360) % 360;
+      return d <= r && ang <= phiDeg + 1e-9;
+    }
+    case 'half':
+      return z.re >= a.re;
+  }
+}

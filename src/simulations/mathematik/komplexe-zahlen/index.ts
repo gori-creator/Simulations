@@ -1,4 +1,4 @@
-import { defineSimulation, drawCard, ease, Plot, roundRect, Surface, Tween, withAlpha, type Rect } from '../../../sim-core';
+import { offscreenCanvas, defineSimulation, drawCard, ease, Plot, roundRect, Surface, Tween, withAlpha, type Rect } from '../../../sim-core';
 import {
   abs,
   add,
@@ -19,10 +19,22 @@ import {
   polarText,
   powInt,
   solveQuadratic,
+  scale,
   sub,
   toMatrix,
   type C,
   type M2,
+  escapeCount,
+  evalHigh,
+  inSet,
+  orbit,
+  type SetKind,
+  mapZ,
+  parseCoeffs,
+  polyRoots,
+  realCoeffs,
+  shapeLines,
+  type MapKind,
 } from './model';
 
 const L = (de: string, en: string) => ({ de, en });
@@ -65,6 +77,10 @@ export default defineSimulation({
         { value: 'equation', label: L('Gleichungen lösen', 'Solving equations') },
         { value: 'matrix', label: L('Als 2×2-Matrix', 'As a 2×2 matrix') },
         { value: 'practice', label: L('Üben: selbst rechnen', 'Practice: calculate yourself') },
+        { value: 'map', label: L('Abbildungen der Ebene', 'Mappings of the plane') },
+        { value: 'poly', label: L('Nullstellen von Polynomen', 'Roots of polynomials') },
+        { value: 'sets', label: L('Punktmengen in der Ebene', 'Sets of points in the plane') },
+        { value: 'iter', label: L('Iteration z² + c (Mandelbrot)', 'Iteration z² + c (Mandelbrot)') },
       ],
       default: 'ops',
     },
@@ -124,11 +140,62 @@ export default defineSimulation({
       placeholder: L('z. B. 1 + 3i', 'e.g. 1 + 3i'),
       visibleIf: (v) => v.mode === 'practice',
     },
+    {
+      key: 'fmap',
+      type: 'choice',
+      label: L('Abbildung', 'Mapping'),
+      options: [
+        { value: 'mulw', label: L('z ↦ w · z (drehstrecken)', 'z ↦ w · z (rotate and scale)') },
+        { value: 'sq', label: L('z ↦ z²', 'z ↦ z²') },
+        { value: 'inv', label: L('z ↦ 1/z', 'z ↦ 1/z') },
+        { value: 'conj', label: L('z ↦ z̄ (spiegeln)', 'z ↦ z̄ (reflect)') },
+        { value: 'exp', label: L('z ↦ eᶻ', 'z ↦ eᶻ') },
+        { value: 'jouk', label: L('z ↦ z + 1/z (Joukowski)', 'z ↦ z + 1/z (Joukowski)') },
+      ],
+      default: 'sq',
+      visibleIf: (v) => v.mode === 'map',
+    },
+    {
+      key: 'shape',
+      type: 'choice',
+      label: L('Figur', 'Figure'),
+      options: [
+        { value: 'grid', label: L('Gitter', 'grid') },
+        { value: 'house', label: L('Haus', 'house') },
+        { value: 'circle', label: L('Kreise und Strahlen', 'circles and rays') },
+        { value: 'sector', label: L('Kreissektor', 'sector') },
+      ],
+      default: 'house',
+      visibleIf: (v) => v.mode === 'map',
+    },
+    { key: 'mw', type: 'text', label: L('Faktor w', 'Factor w'), default: '1 + i', maxLength: 30, visibleIf: (v) => v.mode === 'map' && v.fmap === 'mulw' },
+    { key: 'coef', type: 'text', label: L('Koeffizienten aₙ; …; a₀', 'Coefficients aₙ; …; a₀'), help: L('Höchster zuerst, getrennt mit Semikolon. Beispiel z³ − 1: 1; 0; 0; -1', 'Highest first, separated by semicolons. Example z³ − 1: 1; 0; 0; -1'), default: '1; 0; 0; -1', maxLength: 80, visibleIf: (v) => v.mode === 'poly' },
+    {
+      key: 'sk',
+      type: 'choice',
+      label: L('Menge', 'Set'),
+      options: [
+        { value: 'disk', label: L('|z − a| ≤ r (Kreisscheibe)', '|z − a| ≤ r (disc)') },
+        { value: 'ring', label: L('1 ≤ |z − a| ≤ r (Ring)', '1 ≤ |z − a| ≤ r (annulus)') },
+        { value: 'bisect', label: L('|z − a| ≤ |z − b| (Halbebene)', '|z − a| ≤ |z − b| (half-plane)') },
+        { value: 'sector', label: L('0° ≤ arg(z − a) ≤ φ, |z − a| ≤ r', '0° ≤ arg(z − a) ≤ φ, |z − a| ≤ r') },
+        { value: 'half', label: L('Re(z) ≥ Re(a)', 'Re(z) ≥ Re(a)') },
+      ],
+      default: 'disk',
+      visibleIf: (v) => v.mode === 'sets',
+    },
+    { key: 'sa', type: 'text', label: L('Punkt a', 'Point a'), default: '1 + i', maxLength: 30, visibleIf: (v) => v.mode === 'sets' },
+    { key: 'sb', type: 'text', label: L('Punkt b', 'Point b'), default: '-1', maxLength: 30, visibleIf: (v) => v.mode === 'sets' && v.sk === 'bisect' },
+    { key: 'sr', type: 'number', label: L('Radius r', 'Radius r'), min: 0.2, max: 5, step: 0.1, default: 1.5, visibleIf: (v) => v.mode === 'sets' && (v.sk === 'disk' || v.sk === 'ring' || v.sk === 'sector') },
+    { key: 'sphi', type: 'number', label: L('Winkel φ', 'Angle φ'), min: 10, max: 360, step: 5, default: 90, unit: '°', visibleIf: (v) => v.mode === 'sets' && v.sk === 'sector' },
+    { key: 'ic', type: 'text', label: L('Startwert c', 'Value c'), help: L('Oder den Punkt c im Bild ziehen.', 'Or drag the point c in the picture.'), default: '-0,5 + 0,3i', maxLength: 30, visibleIf: (v) => v.mode === 'iter' },
+    { key: 'its', type: 'number', label: L('Schritte', 'Steps'), min: 1, max: 60, step: 1, default: 20, visibleIf: (v) => v.mode === 'iter' },
+    { key: 'dc', type: 'boolean', label: L('Ebene nach dem Wert einfärben', 'Colour the plane by the value'), default: true, visibleIf: (v) => v.mode === 'poly' },
     { key: 'show', type: 'boolean', label: L('Ergebnis zeigen', 'Show result'), default: true },
   ],
   resultsParam: 'show',
   actions: [
-    { id: 'play', label: L('Abspielen', 'Play'), primary: true, visibleIf: (v) => v.mode !== 'practice' },
+    { id: 'play', label: L('Abspielen', 'Play'), primary: true, visibleIf: (v) => v.mode !== 'practice' && v.mode !== 'poly' },
     { id: 'check', label: L('Prüfen', 'Check'), primary: true, visibleIf: (v) => v.mode === 'practice' },
     { id: 'task', label: L('Neue Aufgabe', 'New task'), visibleIf: (v) => v.mode === 'practice' },
   ],
@@ -138,6 +205,16 @@ export default defineSimulation({
     { key: 'res', label: L('Ergebnis', 'Result'), spoiler: true },
   ],
   presets: [
+    { id: 'map-sq', label: L('z²: Das Haus wird verbogen', 'z²: the house gets bent'), values: { mode: 'map', fmap: 'sq', shape: 'house' } },
+    { id: 'map-inv', label: L('1/z: Gitter wird zu Kreisen', '1/z: the grid turns into circles'), values: { mode: 'map', fmap: 'inv', shape: 'grid' } },
+    { id: 'map-exp', label: L('eᶻ: Gitter wird zu Kreisen und Strahlen', 'eᶻ: the grid becomes circles and rays'), values: { mode: 'map', fmap: 'exp', shape: 'grid' } },
+    { id: 'map-jouk', label: L('Joukowski: Kreis wird zur Strecke', 'Joukowski: the circle becomes a segment'), values: { mode: 'map', fmap: 'jouk', shape: 'circle' } },
+    { id: 'poly3', label: L('z³ − 1: drei Einheitswurzeln', 'z³ − 1: three roots of unity'), values: { mode: 'poly', coef: '1; 0; 0; -1', dc: true } },
+    { id: 'set-disk', label: L('Kreisscheibe |z − (1 + i)| ≤ 1,5', 'Disc |z − (1 + i)| ≤ 1.5'), values: { mode: 'sets', sk: 'disk', sa: '1 + i', sr: 1.5 } },
+    { id: 'set-bis', label: L('Gleich weit von a und b: Mittelsenkrechte', 'Equidistant from a and b: perpendicular bisector'), values: { mode: 'sets', sk: 'bisect', sa: '1 + i', sb: '-1' } },
+    { id: 'iter-in', label: L('z² + c: Bahn bleibt beschränkt', 'z² + c: the orbit stays bounded'), values: { mode: 'iter', ic: '-0,5 + 0,3i', its: 40 } },
+    { id: 'iter-out', label: L('z² + c: Bahn flieht', 'z² + c: the orbit escapes'), values: { mode: 'iter', ic: '0,3 + 0,5i', its: 20 } },
+    { id: 'poly4', label: L('z⁴ − 2z² + 2: zwei konjugierte Paare', 'z⁴ − 2z² + 2: two conjugate pairs'), values: { mode: 'poly', coef: '1; 0; -2; 0; 2', dc: true } },
     { id: 'mul', label: L('(1 + i)·(1 − i) = ?', '(1 + i)·(1 − i) = ?'), values: { mode: 'ops', op: 'mul', z: '1 + i', w: '1 - i' } },
     { id: 'sq', label: L('(1 + i)² = ?', '(1 + i)² = ?'), values: { mode: 'ops', op: 'mul', z: '1 + i', w: '1 + i' } },
     { id: 'i', label: L('Mal i: Drehung um 90°', 'Times i: rotation by 90°'), values: { mode: 'ops', op: 'mul', z: '3 + i', w: 'i' } },
@@ -159,6 +236,31 @@ export default defineSimulation({
       re: 'Re',
       im: 'Im',
       bad: 'Die Eingabe „{s}“ lässt sich nicht lesen. Beispiele: 3 + 4i, −2i, 2∠45°.',
+      mapT: 'Abbildung der Ebene',
+      map_mulw: 'Jeder Punkt wird um arg(w) gedreht und mit |w| gestreckt. Die Figur bleibt formgleich (ähnlich).',
+      map_sq: 'Beträge werden quadriert, Winkel verdoppelt. Gerade Linien werden zu Parabeln, rechte Winkel bleiben im Kleinen rechte Winkel.',
+      map_inv: 'Spiegelung am Einheitskreis und an der reellen Achse: Was innen war, liegt außen. Geraden werden zu Kreisen durch 0.',
+      map_conj: 'Spiegelung an der reellen Achse. Als einzige Abbildung hier dreht sie den Umlaufsinn um.',
+      map_exp: 'e^(x + iy) = eˣ · (cos y + i·sin y): Senkrechte Linien werden zu Kreisen, waagerechte zu Strahlen.',
+      map_jouk: 'Der Einheitskreis wird zur Strecke von −2 bis 2. Leicht verschobene Kreise werden zu Tragflächenprofilen.',
+      mapMorph: 'Die Figur wandert gleichmäßig von z zu f(z).',
+      polyT: 'Fundamentalsatz der Algebra',
+      polyG: 'Jedes Polynom n-ten Grades hat in ℂ genau n Nullstellen (mit Vielfachheit). Hat es reelle Koeffizienten, kommen nicht reelle Nullstellen als konjugierte Paare.',
+      polyDc: 'Farbe = Winkel von p(z), Helligkeit = Betrag. Um jede Nullstelle laufen alle Farben einmal herum.',
+      polyRoots: 'Nullstellen',
+      polySum: 'Summe der Nullstellen = −aₙ₋₁/aₙ',
+      polyConj: 'Reelle Koeffizienten: Nullstellen spiegelbildlich zur reellen Achse.',
+      setT: 'Punktmenge in der Zahlenebene',
+      set_disk: '|z − a| ist der Abstand von z zu a. Alle Punkte mit Abstand höchstens r bilden eine Kreisscheibe um a.',
+      set_ring: 'Abstand zwischen 1 und r: ein Kreisring um a.',
+      set_bisect: 'Gleich weit von a und b liegen alle Punkte der Mittelsenkrechten. Näher an a: die Halbebene auf der Seite von a.',
+      set_sector: 'Der Winkel von z − a liegt zwischen 0° und φ: ein Kreissektor.',
+      set_half: 'Alle Punkte mit Realteil mindestens Re(a): eine Halbebene rechts der senkrechten Geraden.',
+      setTry: 'Ziehe a (und b) im Bild.',
+      iterT: 'Iteration zₙ₊₁ = zₙ² + c',
+      iterIn: 'Die Bahn bleibt beschränkt: c gehört zur Mandelbrot-Menge (schwarz).',
+      iterOut: 'Die Bahn flieht nach {k} Schritten über |z| = 2 hinaus: c liegt außerhalb.',
+      iterG: 'Jeder Schritt quadriert (Winkel verdoppeln, Betrag quadrieren) und verschiebt um c. Die schwarze Menge aller c mit beschränkter Bahn ist die Mandelbrot-Menge; die Farben zeigen, wie schnell die Bahn flieht.',
       addT: 'Addition: Pfeil von w an die Spitze von z hängen',
       addR: 'Realteile und Imaginärteile werden einzeln addiert.',
       subT: 'Subtraktion: z − w = z + (−w)',
@@ -206,6 +308,31 @@ export default defineSimulation({
       re: 'Re',
       im: 'Im',
       bad: 'The input “{s}” cannot be read. Examples: 3 + 4i, −2i, 2∠45°.',
+      mapT: 'Mapping of the plane',
+      map_mulw: 'Every point is rotated by arg(w) and scaled by |w|. The figure keeps its shape (similar).',
+      map_sq: 'Moduli are squared, angles doubled. Straight lines turn into parabolas; right angles stay right angles locally.',
+      map_inv: 'Reflection in the unit circle and the real axis: what was inside is now outside. Lines become circles through 0.',
+      map_conj: 'Reflection in the real axis. It is the only mapping here that reverses orientation.',
+      map_exp: 'e^(x + iy) = eˣ · (cos y + i·sin y): vertical lines become circles, horizontal lines become rays.',
+      map_jouk: 'The unit circle becomes the segment from −2 to 2. Slightly shifted circles become aerofoil profiles.',
+      mapMorph: 'The figure moves evenly from z to f(z).',
+      polyT: 'Fundamental theorem of algebra',
+      polyG: 'Every polynomial of degree n has exactly n roots in ℂ (counted with multiplicity). With real coefficients, non-real roots come in conjugate pairs.',
+      polyDc: 'Colour = angle of p(z), brightness = modulus. All colours go round each root once.',
+      polyRoots: 'roots',
+      polySum: 'sum of the roots = −aₙ₋₁/aₙ',
+      polyConj: 'Real coefficients: roots symmetric about the real axis.',
+      setT: 'Set of points in the complex plane',
+      set_disk: '|z − a| is the distance from z to a. All points at distance at most r form a disc around a.',
+      set_ring: 'Distance between 1 and r: an annulus around a.',
+      set_bisect: 'All points equidistant from a and b lie on the perpendicular bisector. Closer to a: the half-plane on a’s side.',
+      set_sector: 'The angle of z − a lies between 0° and φ: a sector.',
+      set_half: 'All points with real part at least Re(a): a half-plane to the right of the vertical line.',
+      setTry: 'Drag a (and b) in the picture.',
+      iterT: 'Iteration zₙ₊₁ = zₙ² + c',
+      iterIn: 'The orbit stays bounded: c belongs to the Mandelbrot set (black).',
+      iterOut: 'The orbit escapes beyond |z| = 2 after {k} steps: c lies outside.',
+      iterG: 'Each step squares (double the angle, square the modulus) and shifts by c. The black set of all c with bounded orbit is the Mandelbrot set; the colours show how fast the orbit escapes.',
       addT: 'Addition: attach the arrow of w to the tip of z',
       addR: 'Add real and imaginary parts separately.',
       subT: 'Subtraction: z − w = z + (−w)',
@@ -388,7 +515,7 @@ export default defineSimulation({
     plot.addHandle({
       get: () => (z ? [z.re, z.im] : [0, 0]),
       set: (x, y) => ctx.set({ z: handleText(c(x, y)) }),
-      enabled: () => !ctx.locked && !!z && p.mode !== 'equation',
+      enabled: () => !ctx.locked && !!z && ['ops', 'polar', 'matrix', 'practice'].includes(p.mode),
       color: () => COL.z(),
       axis: 'both',
     });
@@ -697,13 +824,305 @@ export default defineSimulation({
       plot.resize();
       plot.begin();
       plot.grid({ minor: true });
+      if (p.mode === 'poly' && p.dc) drawDomain(g);
+      if (p.mode === 'sets') drawSets(g);
+      if (p.mode === 'iter') drawMandel(g);
       plot.axes();
-      if (p.mode === 'ops') drawOps();
+      if (p.mode === 'map') drawMap();
+      else if (p.mode === 'sets') drawSetLines();
+      else if (p.mode === 'iter') drawIter();
+      else if (p.mode === 'poly') drawPoly(g);
+      else if (p.mode === 'ops') drawOps();
       else if (p.mode === 'polar') drawPolar();
       else if (p.mode === 'equation') drawEquation();
       else if (p.mode === 'practice') drawPractice();
       else drawMatrix();
       plot.end();
+    }
+
+    /* -------------------------------------------------------------- */
+    /* Abbildungen der Ebene                                           */
+    /* -------------------------------------------------------------- */
+
+    const mapW = () => parseC(p.mw) ?? c(1, 1);
+    /** Bild einer Figur unter f; Linienzüge werden an Sprüngen (∞) getrennt. */
+    function mappedLines(): { from: C[]; to: (C | null)[] }[] {
+      return shapeLines(p.shape as 'grid' | 'circle' | 'house' | 'sector', 60).map((ln) => ({ from: ln, to: ln.map((q) => mapZ(p.fmap as MapKind, q, mapW())) }));
+    }
+    function fitMap(): void {
+      let m = 1.6;
+      for (const ln of mappedLines()) {
+        for (const q of ln.from) m = Math.max(m, Math.abs(q.re), Math.abs(q.im));
+        for (const q of ln.to) if (q && abs(q) < 12) m = Math.max(m, Math.abs(q.re), Math.abs(q.im));
+      }
+      m = Math.min(m * 1.15, p.fmap === 'inv' ? 3.2 : 8);
+      plot.setRange([-m, m], [-m, m]);
+    }
+    function drawMap(): void {
+      const t = th();
+      const tt = k();
+      unitCircle();
+      const lines = mappedLines();
+      const cols = [COL.z(), COL.w(), COL.good(), COL.r(), COL.aux(), COL.ang()];
+      lines.forEach((ln, i) => {
+        // Urbild blass
+        plot.polyline(ln.from.map((q) => [q.re, q.im] as [number, number]), { color: withAlpha(t.text, 0.22), width: 1.4 });
+        // Zwischenstand: gleichmäßig von z nach f(z)
+        const col = p.shape === 'house' ? COL.z() : cols[i % cols.length]!;
+        let cur: [number, number][] = [];
+        const flush = () => {
+          if (cur.length > 1) plot.polyline(cur, { color: col, width: 2.6 });
+          cur = [];
+        };
+        ln.from.forEach((q, j) => {
+          const im = ln.to[j];
+          if (!im || abs(im) > 40) return flush();
+          const pt: [number, number] = [q.re + (im.re - q.re) * tt, q.im + (im.im - q.im) * tt];
+          const last = cur[cur.length - 1];
+          if (last && Math.hypot(pt[0] - last[0], pt[1] - last[1]) > 3) flush();
+          cur.push(pt);
+        });
+        flush();
+      });
+      if (p.fmap === 'mulw') dot(mapW(), COL.w(), 'w');
+      if (p.fmap === 'inv' || p.fmap === 'jouk') dot(c(0), withAlpha(t.text, 0.6));
+    }
+
+    /* -------------------------------------------------------------- */
+    /* Nullstellen von Polynomen mit eingefärbter Ebene                */
+    /* -------------------------------------------------------------- */
+
+    const coeffs = () => parseCoeffs(p.coef);
+    let dcCache: { key: string; canvas: HTMLCanvasElement } | null = null;
+    function hsl(h: number, s: number, l: number): [number, number, number] {
+      const a = s * Math.min(l, 1 - l);
+      const f = (n: number) => {
+        const k2 = (n + h / 30) % 12;
+        return l - a * Math.max(-1, Math.min(k2 - 3, 9 - k2, 1));
+      };
+      return [Math.round(255 * f(0)), Math.round(255 * f(8)), Math.round(255 * f(4))];
+    }
+    function drawDomain(g: CanvasRenderingContext2D): void {
+      const cs = coeffs();
+      if (!cs) return;
+      const r = plot.rect;
+      const b = plot.bounds;
+      const key = `${p.coef}|${b.xMin.toFixed(3)}|${b.xMax.toFixed(3)}|${b.yMin.toFixed(3)}|${b.yMax.toFixed(3)}|${Math.round(r.w)}|${th().dark}`;
+      if (!dcCache || dcCache.key !== key) {
+        const nx = Math.max(60, Math.min(240, Math.round(r.w / 3)));
+        const ny = Math.max(40, Math.round((nx * r.h) / r.w));
+        const { canvas: cv, g: cg } = offscreenCanvas(nx, ny, 1);
+        const img = cg.createImageData(nx, ny);
+        for (let j = 0; j < ny; j++) {
+          for (let i = 0; i < nx; i++) {
+            const zz = c(b.xMin + ((i + 0.5) / nx) * (b.xMax - b.xMin), b.yMax - ((j + 0.5) / ny) * (b.yMax - b.yMin));
+            const v = evalHigh(cs, zz);
+            const hue = ((Math.atan2(v.im, v.re) * 180) / Math.PI + 360) % 360;
+            const m = abs(v);
+            // Helligkeit: Ringe für log|p|, dunkel an Nullstellen
+            const lg = Math.log2(m + 1e-12);
+            const ring = 0.5 + 0.12 * (lg - Math.floor(lg));
+            const light = Math.min(ring, 0.25 + 0.5 * (1 - Math.exp(-m * 1.5)));
+            const [rr, gg, bb] = hsl(hue, th().dark ? 0.55 : 0.6, light);
+            const o = (j * nx + i) * 4;
+            img.data[o] = rr;
+            img.data[o + 1] = gg;
+            img.data[o + 2] = bb;
+            img.data[o + 3] = 175;
+          }
+        }
+        cg.putImageData(img, 0, 0);
+        dcCache = { key, canvas: cv };
+      }
+      g.save();
+      g.imageSmoothingEnabled = true;
+      g.drawImage(dcCache.canvas, r.x, r.y, r.w, r.h);
+      g.restore();
+    }
+    function fitPoly(): void {
+      const cs = coeffs();
+      let m = 1.6;
+      if (cs) for (const q of polyRoots(cs)) m = Math.max(m, Math.abs(q.re), Math.abs(q.im));
+      m = Math.min(m * 1.35 + 0.3, 30);
+      plot.setRange([-m, m], [-m, m]);
+    }
+    function drawPoly(g: CanvasRenderingContext2D): void {
+      const t = th();
+      const cs = coeffs();
+      if (!cs) return;
+      const roots = polyRoots(cs);
+      const tt = build.running ? build.value : 1;
+      roots.forEach((q, i) => {
+        if (i / Math.max(1, roots.length) > tt) return;
+        plot.point(q.re, q.im, { color: t.dark ? '#ffffff' : '#111827', radius: 6 });
+        if (p.show) plot.text(q.re, q.im, T(q, 2), { color: t.text, size: 12, weight: 'bold', offset: [10, -12], align: 'left', halo: true });
+      });
+      void g;
+    }
+
+    /* -------------------------------------------------------------- */
+    /* Punktmengen                                                     */
+    /* -------------------------------------------------------------- */
+
+    const setA = () => parseC(p.sa);
+    const setB = () => parseC(p.sb);
+    plot.addHandle({
+      get: () => {
+        const a = setA();
+        return a ? [a.re, a.im] : [0, 0];
+      },
+      set: (x, y) => ctx.set({ sa: handleText(c(x, y)) }),
+      enabled: () => !ctx.locked && p.mode === 'sets' && !!setA(),
+      color: () => COL.z(),
+      axis: 'both',
+    });
+    plot.addHandle({
+      get: () => {
+        const b = setB();
+        return b ? [b.re, b.im] : [0, 0];
+      },
+      set: (x, y) => ctx.set({ sb: handleText(c(x, y)) }),
+      enabled: () => !ctx.locked && p.mode === 'sets' && p.sk === 'bisect' && !!setB(),
+      color: () => COL.w(),
+      axis: 'both',
+    });
+    function drawSets(g: CanvasRenderingContext2D): void {
+      const a = setA();
+      const b = setB() ?? c(-1);
+      if (!a) return;
+      const r = plot.rect;
+      const bd = plot.bounds;
+      const nx = Math.max(60, Math.round(r.w / 3));
+      const ny = Math.max(40, Math.round(r.h / 3));
+      const { canvas: cv, g: cg } = offscreenCanvas(nx, ny, 1);
+      const img = cg.createImageData(nx, ny);
+      const col = COL.z();
+      const m = /^#?([0-9a-f]{2})([0-9a-f]{2})([0-9a-f]{2})/i.exec(col);
+      const [cr, cgc, cb] = m ? [parseInt(m[1]!, 16), parseInt(m[2]!, 16), parseInt(m[3]!, 16)] : [44, 95, 214];
+      const fade = build.running ? build.value : 1;
+      for (let j = 0; j < ny; j++) {
+        for (let i = 0; i < nx; i++) {
+          const zz = c(bd.xMin + ((i + 0.5) / nx) * (bd.xMax - bd.xMin), bd.yMax - ((j + 0.5) / ny) * (bd.yMax - bd.yMin));
+          if (!inSet(p.sk as SetKind, zz, a, b, p.sr, p.sphi)) continue;
+          const o = (j * nx + i) * 4;
+          img.data[o] = cr;
+          img.data[o + 1] = cgc;
+          img.data[o + 2] = cb;
+          img.data[o + 3] = Math.round(70 * fade);
+        }
+      }
+      cg.putImageData(img, 0, 0);
+      g.save();
+      g.imageSmoothingEnabled = false;
+      g.drawImage(cv, r.x, r.y, r.w, r.h);
+      g.restore();
+    }
+    function drawSetLines(): void {
+      const a = setA();
+      const b = setB() ?? c(-1);
+      if (!a) return;
+      const circ = (ctr: C, rad: number, from = 0, to = 2 * Math.PI) => {
+        const pts: [number, number][] = [];
+        for (let j = 0; j <= 120; j++) {
+          const t = from + ((to - from) * j) / 120;
+          pts.push([ctr.re + rad * Math.cos(t), ctr.im + rad * Math.sin(t)]);
+        }
+        plot.polyline(pts, { color: COL.z(), width: 2.4 });
+      };
+      if (p.sk === 'disk') circ(a, p.sr);
+      if (p.sk === 'ring') {
+        circ(a, 1);
+        circ(a, p.sr);
+      }
+      if (p.sk === 'sector') {
+        circ(a, p.sr, 0, (p.sphi * Math.PI) / 180);
+        plot.segment([a.re, a.im], [a.re + p.sr, a.im], { color: COL.z(), width: 2.4 });
+        const e = polar(p.sr, (p.sphi * Math.PI) / 180);
+        plot.segment([a.re, a.im], [a.re + e.re, a.im + e.im], { color: COL.z(), width: 2.4 });
+      }
+      if (p.sk === 'half') plot.vline(a.re, { color: COL.z(), width: 2.4 });
+      if (p.sk === 'bisect') {
+        const mid = scale(add(a, b), 0.5);
+        const dir = sub(b, a);
+        plot.line([mid.re, mid.im], [mid.re - dir.im, mid.im + dir.re], { color: COL.z(), width: 2.4 });
+        plot.segment([a.re, a.im], [b.re, b.im], { color: withAlpha(th().text, 0.35), width: 1.2, dash: [4, 4] });
+        dot(b, COL.w(), 'b');
+      }
+      if (p.sk === 'disk' || p.sk === 'ring' || p.sk === 'sector') {
+        plot.segment([a.re, a.im], [a.re + p.sr * Math.cos(-0.6), a.im + p.sr * Math.sin(-0.6)], { color: COL.ang(), width: 1.6, dash: [5, 3] });
+        plot.text(a.re + p.sr * 0.55 * Math.cos(-0.6), a.im + p.sr * 0.55 * Math.sin(-0.6), `r = ${N(p.sr, 1)}`, { color: COL.ang(), size: 12, weight: 'bold', offset: [8, 10], halo: true });
+      }
+      dot(a, COL.z(), 'a');
+    }
+
+    /* -------------------------------------------------------------- */
+    /* Iteration z² + c                                                */
+    /* -------------------------------------------------------------- */
+
+    const iterC = () => parseC(p.ic);
+    plot.addHandle({
+      get: () => {
+        const q = iterC();
+        return q ? [q.re, q.im] : [0, 0];
+      },
+      set: (x, y) => {
+        const r2 = (v: number) => Math.round(v * 100) / 100;
+        ctx.set({ ic: cText(c(r2(x), r2(y)), (v) => fmt.num(v, 2)).replace('−', '-').replace(/ − /g, ' - ') });
+      },
+      enabled: () => !ctx.locked && p.mode === 'iter' && !!iterC(),
+      color: () => COL.w(),
+      axis: 'both',
+    });
+    let mbCache: { key: string; canvas: HTMLCanvasElement } | null = null;
+    function drawMandel(g: CanvasRenderingContext2D): void {
+      const r = plot.rect;
+      const bd = plot.bounds;
+      const key = `${bd.xMin.toFixed(3)}|${bd.xMax.toFixed(3)}|${bd.yMin.toFixed(3)}|${bd.yMax.toFixed(3)}|${Math.round(r.w)}|${th().dark}`;
+      if (!mbCache || mbCache.key !== key) {
+        const nx = Math.max(80, Math.min(300, Math.round(r.w / 2)));
+        const ny = Math.max(50, Math.round((nx * r.h) / r.w));
+        const { canvas: cv, g: cg } = offscreenCanvas(nx, ny, 1);
+        const img = cg.createImageData(nx, ny);
+        const maxIt = 60;
+        for (let j = 0; j < ny; j++) {
+          for (let i = 0; i < nx; i++) {
+            const cc2 = c(bd.xMin + ((i + 0.5) / nx) * (bd.xMax - bd.xMin), bd.yMax - ((j + 0.5) / ny) * (bd.yMax - bd.yMin));
+            const n = escapeCount(cc2, maxIt);
+            const o = (j * nx + i) * 4;
+            if (n >= maxIt) {
+              img.data[o] = 10;
+              img.data[o + 1] = 12;
+              img.data[o + 2] = 20;
+              img.data[o + 3] = 230;
+            } else {
+              const u = Math.sqrt(n / maxIt);
+              img.data[o] = Math.round(40 + 200 * u);
+              img.data[o + 1] = Math.round(90 + 120 * u);
+              img.data[o + 2] = Math.round(220 - 60 * u);
+              img.data[o + 3] = Math.round(30 + 150 * u);
+            }
+          }
+        }
+        cg.putImageData(img, 0, 0);
+        mbCache = { key, canvas: cv };
+      }
+      g.save();
+      g.imageSmoothingEnabled = true;
+      g.drawImage(mbCache.canvas, r.x, r.y, r.w, r.h);
+      g.restore();
+    }
+    function drawIter(): void {
+      const cc2 = iterC();
+      if (!cc2) return;
+      const o = orbit(cc2, p.its);
+      const shown = Math.max(1, Math.round(o.length * (anim.running ? anim.value : 1)));
+      const pts = o.slice(0, shown).filter((q) => abs(q) < 50);
+      plot.polyline(pts.map((q) => [q.re, q.im] as [number, number]), { color: COL.ang(), width: 1.8 });
+      pts.forEach((q, i) => plot.point(q.re, q.im, { color: i === 0 ? th().text : COL.ang(), radius: i === 0 ? 4 : 3 }));
+      const pts2: [number, number][] = [];
+      for (let j = 0; j <= 90; j++) pts2.push([2 * Math.cos((j / 90) * 2 * Math.PI), 2 * Math.sin((j / 90) * 2 * Math.PI)]);
+      plot.polyline(pts2, { color: withAlpha(th().text, 0.4), width: 1.2, dash: [5, 4] });
+      dot(cc2, COL.w(), 'c');
     }
 
     /* -------------------------------------------------------------- */
@@ -801,6 +1220,79 @@ export default defineSimulation({
       const line = (segs: Seg[], d = 0) => (y += segLine(g, segs, x, y, maxW, size + d));
       const bad = (s: string) => line([{ s: tr('bad', { s }), c: COL.w(), w: 600 }], -1);
       const reveal = p.show;
+
+      if (p.mode === 'map') {
+        const names: Record<string, string> = { mulw: `f(z) = ${T(mapW())} · z`, sq: 'f(z) = z²', inv: 'f(z) = 1/z', conj: 'f(z) = z̄', exp: 'f(z) = eᶻ', jouk: 'f(z) = z + 1/z' };
+        line([{ s: ctx.t('mapT'), c: COL.z(), w: 800 }], 0);
+        line([{ s: names[p.fmap] ?? '', c: t.text, w: 700 }], 2);
+        if (p.fmap === 'mulw') line([{ s: `|w| = ${N(abs(mapW()), 3)},  arg(w) = ${N(argDeg(mapW()), 1)}°`, c: COL.w(), w: 600 }], -1);
+        y += 4;
+        line([{ s: ctx.t(`map_${p.fmap}`), c: t.muted }], -1.5);
+        line([{ s: ctx.t('mapMorph'), c: t.muted }], -2);
+        return;
+      }
+      if (p.mode === 'sets') {
+        line([{ s: ctx.t('setT'), c: COL.z(), w: 800 }], 0);
+        const a = setA();
+        if (!a) return void bad(p.sa);
+        const label: Record<string, string> = {
+          disk: `|z − (${T(a, 2)})| ≤ ${N(p.sr, 1)}`,
+          ring: `1 ≤ |z − (${T(a, 2)})| ≤ ${N(p.sr, 1)}`,
+          bisect: `|z − (${T(a, 2)})| ≤ |z − (${T(setB() ?? c(-1), 2)})|`,
+          sector: `0° ≤ arg(z − (${T(a, 2)})) ≤ ${N(p.sphi, 0)}°`,
+          half: `Re(z) ≥ ${N(a.re, 2)}`,
+        };
+        line([{ s: label[p.sk] ?? '', c: t.text, w: 700 }], 1);
+        y += 4;
+        line([{ s: ctx.t(`set_${p.sk}`), c: t.muted }], -1.5);
+        line([{ s: ctx.t('setTry'), c: t.muted }], -2);
+        return;
+      }
+      if (p.mode === 'iter') {
+        line([{ s: ctx.t('iterT'), c: COL.z(), w: 800 }], 0);
+        const cc2 = iterC();
+        if (!cc2) return void bad(p.ic);
+        line([{ s: `c = ${T(cc2, 2)}`, c: COL.w(), w: 700 }], 1);
+        const o = orbit(cc2, Math.min(p.its, 6));
+        if (reveal) line([{ s: o.slice(0, 5).map((q, i) => `z${['₀', '₁', '₂', '₃', '₄'][i]} = ${T(q, 2)}`).join(',  '), c: t.text }], -2);
+        const k = escapeCount(cc2, 200);
+        line([{ s: k >= 200 ? ctx.t('iterIn') : tr('iterOut', { k }), c: k >= 200 ? COL.good() : COL.w(), w: 700 }], -1);
+        y += 4;
+        line([{ s: ctx.t('iterG'), c: t.muted }], -2);
+        return;
+      }
+      if (p.mode === 'poly') {
+        const cs = coeffs();
+        line([{ s: ctx.t('polyT'), c: COL.z(), w: 800 }], 0);
+        if (!cs) return void bad(p.coef);
+        const deg2 = cs.length - 1;
+        const sup = ['', '', '²', '³', '⁴', '⁵', '⁶'];
+        const terms = cs
+          .map((a, i) => {
+            const e = deg2 - i;
+            if (abs(a) < 1e-12) return '';
+            const coefTxt = e > 0 && Math.abs(a.re - 1) < 1e-12 && Math.abs(a.im) < 1e-12 ? '' : Math.abs(a.im) > 1e-12 && Math.abs(a.re) > 1e-12 ? `(${T(a, 2)})` : T(a, 2);
+            return `${coefTxt}${e > 0 ? `z${sup[e]}` : ''}`;
+          })
+          .filter((q) => q)
+          .join(' + ')
+          .replace(/\+ −/g, '− ');
+        line([{ s: `p(z) = ${terms}`, c: t.text, w: 700 }], 1);
+        const roots = polyRoots(cs);
+        if (reveal) {
+          line([{ s: `${ctx.t('polyRoots')} (${roots.length}):`, c: t.muted, w: 600 }], -1);
+          for (const q of roots) line([{ s: `z = ${T(q, 3)}`, c: t.text, w: 600 }], -1);
+          if (deg2 >= 1) {
+            const sum = roots.reduce((acc, q) => add(acc, q), c(0));
+            line([{ s: `${ctx.t('polySum')} = ${T(sum, 3)}`, c: t.muted }], -2);
+          }
+        }
+        y += 4;
+        if (realCoeffs(cs) && roots.some((q) => Math.abs(q.im) > 1e-9)) line([{ s: ctx.t('polyConj'), c: COL.good(), w: 600 }], -1.5);
+        line([{ s: ctx.t('polyG'), c: t.muted }], -2);
+        if (p.dc) line([{ s: ctx.t('polyDc'), c: t.muted }], -2);
+        return;
+      }
 
       if (p.mode === 'equation') {
         if (p.eq === 'quad') {
@@ -1036,6 +1528,14 @@ export default defineSimulation({
         ctx.readout('res', s.length ? s.map((q) => T(q, 3)).join(';  ') : '–');
       } else if (p.mode === 'matrix') {
         ctx.readout('res', z && w ? `z · w = ${T(mul(z, w))}` : '–');
+      } else if (p.mode === 'map' || p.mode === 'sets') {
+        ctx.readout('res', null);
+      } else if (p.mode === 'iter') {
+        const cc2 = iterC();
+        ctx.readout('res', cc2 ? (escapeCount(cc2, 200) >= 200 ? ctx.t('iterIn') : tr('iterOut', { k: escapeCount(cc2, 200) })) : '–');
+      } else if (p.mode === 'poly') {
+        const cs = coeffs();
+        ctx.readout('res', cs ? polyRoots(cs).map((q) => T(q, 3)).join(';  ') : '–');
       } else ctx.readout('res', z ? `r = ${N(abs(z), 4)}, φ = ${N(argDeg(z), 2)}°` : '–');
     }
 
@@ -1049,6 +1549,23 @@ export default defineSimulation({
         if (['z', 'w', 'op', 'g', 'mode'].some((q) => changed.has(q))) verdict = null;
         const structural = ['mode', 'op', 'eq', 'n'].some((q) => changed.has(q)) || source === 'init' || source === 'replace';
         if (structural || (source !== 'input' && (changed.has('z') || changed.has('w') || changed.has('p') || changed.has('q')))) fitRange();
+        if (p.mode === 'map' && (structural || ['fmap', 'shape', 'mw'].some((q) => changed.has(q)))) {
+          fitMap();
+          anim.play();
+        }
+        if (p.mode === 'sets' && structural) {
+          plot.setRange([-4, 4], [-4, 4]);
+          build.play();
+        }
+        if (p.mode === 'iter' && structural) {
+          plot.setRange([-2.3, 1.2], [-1.4, 1.4]);
+          anim.play();
+        }
+        if (p.mode === 'iter' && changed.has('its')) anim.play();
+        if (p.mode === 'poly' && (structural || changed.has('coef'))) {
+          fitPoly();
+          build.play();
+        }
         if (structural) {
           anim.play();
           build.play();
@@ -1062,7 +1579,8 @@ export default defineSimulation({
         if (id === 'check') runCheck();
         if (id === 'task') newTask();
         if (id === 'play') {
-          fitRange();
+          if (p.mode === 'map') fitMap();
+          else fitRange();
           anim.play();
         }
       },
