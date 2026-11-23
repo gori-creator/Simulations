@@ -181,15 +181,11 @@ describe('Länder-Lehrpläne', () => {
   const NOT_IN_CURRICULUM: Record<string, Record<string, string>> = {
     'sachsen-gymnasium-physik': {
       magnete: 'In den erfassten Lernbereichen kommen Dauermagnete nicht vor (bitte am Lehrplan prüfen).',
+      hubble: 'Kosmologie, Rotverschiebung und Hubble-Beziehung kommen im Lehrplan nicht vor.',
     },
     'rheinland-pfalz-gymnasium-physik': {
       magnete: 'In den erfassten Lernbereichen kommen Dauermagnete nicht vor (bitte am Lehrplan prüfen).',
-    },
-    'rheinland-pfalz-gymnasium-physik': {
       schall: 'Akustik erst als Wahlthema in 12/13; die Simulation ist für Klasse 5 bis 11 gedacht.',
-    },
-    'sachsen-gymnasium-physik': {
-      hubble: 'Kosmologie, Rotverschiebung und Hubble-Beziehung kommen im Lehrplan nicht vor.',
     },
     'baden-wuerttemberg-gymnasium-mathematik': {
       uebergangsmatrizen: 'Übergangsmatrizen und Markov-Ketten nicht im Lehrplan',
