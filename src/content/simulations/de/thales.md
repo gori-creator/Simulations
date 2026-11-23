@@ -27,6 +27,11 @@ $$
 2. Was passiert, wenn $C$ ganz nah an $A$ oder $B$ heranrückt? [Beispiel laden](?phi=170)
 3. Schalte die **Beweisidee** ein und beobachte die gleich großen Winkel. [Beweisidee zeigen](?phi=70&proof=1)
 4. Schalte **C frei verschieben** ein und ziehe $C$ in den Kreis hinein bzw. aus ihm heraus. [C innerhalb](?free=1&cx=0.8&cy=1.4) · [C außerhalb](?free=1&cx=-1.2&cy=3.8)
+5. **Beweis Schritt für Schritt:** Mit „Weiter“ entsteht der Beweis in fünf Schritten. Zieh $C$ in jedem Schritt – das Argument bleibt gültig. [Beweis starten](?mode=proof&st=1&phi=65)
+6. **Tangenten an einen Kreis:** Von einem Punkt $P$ außerhalb gibt es zwei Tangenten. Der Thaleskreis über $[OP]$ liefert die Berührpunkte. [Konstruktion](?mode=tangent&st=1)
+7. **Rechtwinkliges Dreieck konstruieren:** Gegeben sind die Hypotenuse $c$ und eine Kathete $a$. Was passiert, wenn $a$ länger als $c$ ist? [c = 6 cm, a = 4 cm](?mode=construct&st=1&hc=6&ha=4)
+8. **Kreismitte finden:** Eine runde Holzscheibe, ein Geodreieck – wo ist die Mitte? Thales rückwärts gedacht. [Ausprobieren](?mode=centre)
+9. **Übung:** Ist der Winkel bei $C$ spitz, recht oder stumpf? [Übung starten](?mode=quiz&qn=1)
 
 ## Aufgaben
 

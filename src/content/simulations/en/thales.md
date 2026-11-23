@@ -27,6 +27,11 @@ $$
 2. What happens when $C$ gets very close to $A$ or $B$? [Load example](?phi=170)
 3. Switch on the **proof idea** and look for the equal angles. [Show proof idea](?phi=70&proof=1)
 4. Switch on **Move C freely** and move $C$ into the circle or out of it. [C inside](?free=1&cx=0.8&cy=1.4) · [C outside](?free=1&cx=-1.2&cy=3.8)
+5. **Proof step by step:** tap “Next” to build the proof in five steps. Drag $C$ in every step – the argument still holds. [Start the proof](?mode=proof&st=1&phi=65)
+6. **Tangents to a circle:** from a point $P$ outside there are two tangents. The Thales circle over $[OP]$ gives the points of contact. [Construction](?mode=tangent&st=1)
+7. **Construct a right triangle:** given the hypotenuse $c$ and a leg $a$. What happens if $a$ is longer than $c$? [c = 6 cm, a = 4 cm](?mode=construct&st=1&hc=6&ha=4)
+8. **Find the centre:** a round wooden disc and a set square – where is the centre? Thales in reverse. [Try it](?mode=centre)
+9. **Practice:** is the angle at $C$ acute, right or obtuse? [Start](?mode=quiz&qn=1)
 
 ## Exercises
 
