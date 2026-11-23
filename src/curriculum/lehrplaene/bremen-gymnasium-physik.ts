@@ -85,7 +85,7 @@ const EP_UNITS: CurriculumUnit[] = [
       'Gleichförmige und gleichmäßig beschleunigte Bewegung, freier Fall, Wurfbewegungen, Addition und Zerlegung von Kräften an der schiefen Ebene, Impuls und Impulserhaltung, Kreisbewegung und Zentripetalkraft, Messunsicherheiten.',
       'Uniform and uniformly accelerated motion, free fall, projectile motion, adding and resolving forces on an inclined plane, momentum and its conservation, circular motion and centripetal force, measurement uncertainty.',
     ),
-    simulations: ['bewegungsdiagramme', 'freier-fall', 'kraefteaddition', 'schiefe-ebene', 'kreisbewegung', 'stoesse', 'schiefer-wurf'],
+    simulations: ['bewegungsdiagramme', 'freier-fall', 'kraefteaddition', 'schiefe-ebene', 'kreisbewegung', 'stoesse', 'schiefer-wurf', 'messunsicherheit'],
   },
   {
     code: 'E2',
