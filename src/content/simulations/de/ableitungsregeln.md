@@ -34,6 +34,9 @@ In der Simulation sind die Teile farbig: $u$ und $v$ bzw. äußere und innere Fu
 3. Kettenregel: Ändere die innere Funktion von $2x + 1$ auf $3x + 1$. Was ändert sich an der Ableitung? [Kette](?f=e%5E(2x%2B1)&mode=rule&x0=-1)
 4. Verschobener Sinus $f(x) = 2\sin(3(x-1)) + 1$: Welche Parameter tauchen in der Ableitung noch auf? [Sinus](?f=2*sin(3*(x-1))%2B1&mode=rule&x0=1)
 5. Gib selbst einen Term ein, z. B. $\ln(x^2 + 1)$ oder $\sqrt{x^2 + 4}$, und lass dir alle Schritte zeigen. [Alle Schritte](?f=x%5E2*e%5E(-x)&mode=steps&x0=2)
+6. **Graph von f′ entsteht:** Tippe auf „Tangente laufen lassen“. Die Tangente fährt über $f$, unten wird Punkt für Punkt ihre Steigung eingetragen. Wo hat $f$ einen Hochpunkt, wo hat $f'$ dann eine Nullstelle? [x³ − 3x](?f=x%5E3%20-%203x&mode=graph&x0=-2) · [sin(x)](?f=sin(x)&mode=graph&x0=0)
+7. **Übung „Welche Regel zuerst?“:** Du siehst einen Term und wählst die Regel, mit der du anfangen musst. Mit „Nächste Aufgabe“ geht es weiter. [Übung starten](?mode=quiz&qn=1)
+8. **Übung „f und f′ zuordnen“:** Links steht der Graph von $f$, rechts vier Graphen. Welcher davon ist $f'$? Achte auf die Stellen, an denen $f$ waagerecht verläuft. [Übung starten](?mode=match&qn=1)
 
 ## Aufgaben
 
@@ -100,6 +103,17 @@ Leite $f(x) = (2x + 1)^3$ ab, gib dein Ergebnis in der Simulation ein und drück
 <summary>Lösung anzeigen</summary>
 
 Kettenregel: $f'(x) = 3(2x+1)^2 \cdot 2 = 6(2x+1)^2$. Auch ausmultipliziert ($24x^2 + 24x + 6$) erkennt die Simulation es als richtig.
+
+</details>
+
+### Aufgabe 7: Vom Graphen zur Ableitung
+
+Skizziere zuerst von Hand den Graphen von $f'$ für $f(x) = x^3 - 3x$: Wo ist $f'$ positiv, wo negativ, wo null? Vergleiche dann mit der Simulation. [Aufgabe laden](?f=x%5E3%20-%203x&mode=graph&x0=-2)
+
+<details>
+<summary>Lösung anzeigen</summary>
+
+$f$ steigt für $x < -1$ und für $x > 1$, dort ist $f' > 0$. Zwischen $-1$ und $1$ fällt $f$, dort ist $f' < 0$. Am Hochpunkt $(-1 \mid 2)$ und am Tiefpunkt $(1 \mid -2)$ ist die Tangente waagerecht, also $f'(-1) = f'(1) = 0$. Zusammen ergibt das die nach oben offene Parabel $f'(x) = 3x^2 - 3$.
 
 </details>
 
