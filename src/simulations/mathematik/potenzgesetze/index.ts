@@ -1,5 +1,5 @@
 import { defineSimulation, drawCard, ease, Plot, roundRect, Surface, Tween, withAlpha, type Rect } from '../../../sim-core';
-import { monoPowerForm, monoText, monoValue, nodeText, parseTerm, powQ, q, qText, sameTerm, simplify, sup, type Law, type Mono, type Step } from './model';
+import { monoPowerForm, monoText, monoValue, nodeText, parseTerm, powQ, q, qText, sameTerm, simplify, sup, type Law, type Mono, type Step, checkDrill, makeDrill, type Drill, domainOf, orderRatio, powReal, prefixFor, sciParts, symmetryOf, THINGS } from './model';
 
 const L = (de: string, en: string) => ({ de, en });
 type Loc = { de: string; en: string };
@@ -40,6 +40,9 @@ export default defineSimulation({
         { value: 'ladder', label: L('Treppe: a⁰ und negative Exponenten', 'Ladder: a⁰ and negative exponents') },
         { value: 'roots', label: L('Gebrochene Exponenten und Wurzeln', 'Fractional exponents and roots') },
         { value: 'terms', label: L('Terme vereinfachen', 'Simplifying terms') },
+        { value: 'fn', label: L('Potenzfunktionen y = xⁿ', 'Power functions y = xⁿ') },
+        { value: 'sci', label: L('Zehnerpotenzen: vom Atom zur Galaxie', 'Powers of ten: from atom to galaxy') },
+        { value: 'drill', label: L('Üben: Kopfrechnen mit Potenzen', 'Practice: mental arithmetic with powers') },
       ],
       default: 'laws',
     },
@@ -77,11 +80,24 @@ export default defineSimulation({
       visibleIf: (v) => v.mode === 'terms',
     },
     { key: 'g', type: 'text', label: L('Deine Vereinfachung', 'Your simplification'), default: '', maxLength: 40, placeholder: L('z. B. a^2 · b', 'e.g. a^2 · b'), visibleIf: (v) => v.mode === 'terms' },
+    { key: 'fm', type: 'number', label: L('Exponent: Zähler', 'Exponent: numerator'), min: -4, max: 6, step: 1, default: 3, visibleIf: (v) => v.mode === 'fn' },
+    { key: 'fd', type: 'number', label: L('Exponent: Nenner', 'Exponent: denominator'), min: 1, max: 4, step: 1, default: 1, visibleIf: (v) => v.mode === 'fn' },
+    { key: 'fam', type: 'boolean', label: L('Verwandte Exponenten blass zeigen', 'Show related exponents faintly'), default: true, visibleIf: (v) => v.mode === 'fn' },
+    { key: 'inv', type: 'boolean', label: L('Umkehrfunktion (an y = x gespiegelt)', 'Inverse function (reflected in y = x)'), default: false, visibleIf: (v) => v.mode === 'fn' },
+    { key: 'fx', type: 'number', label: L('Stelle x', 'Point x'), help: L('Oder den Punkt auf dem Graphen ziehen.', 'Or drag the point on the graph.'), min: -3, max: 3, step: 0.05, default: 1.5, visibleIf: (v) => v.mode === 'fn' },
+    { key: 'zx', type: 'number', label: L('Bildbreite: 10^k Meter, k =', 'Picture width: 10^k metres, k ='), min: -15, max: 21, step: 0.1, default: 0, visibleIf: (v) => v.mode === 'sci' },
+    { key: 'dq', type: 'number', label: L('Aufgabe Nr.', 'Task no.'), min: 1, max: 999, step: 1, default: 1, visibleIf: (v) => v.mode === 'drill' },
+    { key: 'da', type: 'text', label: L('Deine Antwort für ?', 'Your answer for ?'), default: '', maxLength: 12, placeholder: L('eine Zahl', 'a number'), visibleIf: (v) => v.mode === 'drill' },
     { key: 'show', type: 'boolean', label: L('Ergebnis zeigen', 'Show result'), default: true },
   ],
   resultsParam: 'show',
   actions: [
-    { id: 'play', label: L('Abspielen', 'Play'), primary: true, visibleIf: (v) => v.mode !== 'terms' },
+    { id: 'play', label: L('Abspielen', 'Play'), primary: true, visibleIf: (v) => v.mode !== 'terms' && v.mode !== 'sci' },
+    { id: 'dcheck', label: L('Prüfen', 'Check'), primary: true, visibleIf: (v) => v.mode === 'drill' },
+    { id: 'dnext', label: L('Nächste Aufgabe', 'Next task'), visibleIf: (v) => v.mode === 'drill' },
+    { id: 'tour', label: L('Reise vom Proton zur Milchstraße', 'Journey from proton to Milky Way'), primary: true, visibleIf: (v) => v.mode === 'sci' },
+    { id: 'in', label: L('10-mal näher', '10 times closer'), visibleIf: (v) => v.mode === 'sci' },
+    { id: 'out', label: L('10-mal weiter weg', '10 times farther'), visibleIf: (v) => v.mode === 'sci' },
     { id: 'check', label: L('Prüfen', 'Check'), primary: true, visibleIf: (v) => v.mode === 'terms' },
   ],
   readouts: [
@@ -100,10 +116,46 @@ export default defineSimulation({
     { id: 'rootneg', label: L('4^(−1/2) = 0,5', '4^(−1/2) = 0.5'), values: { mode: 'roots', a: 4, pm: -1, pn: 2 } },
     { id: 'sqrt', label: L('√2 · √8 = 4', '√2 · √8 = 4'), values: { mode: 'terms', t: '√2 · √8', g: '' } },
     { id: 'term', label: L('(a² · b)³ : (a⁴ · b²)', '(a² · b)³ : (a⁴ · b²)'), values: { mode: 'terms', t: '(a^2 · b)^3 : (a^4 · b^2)', g: '' } },
+    { id: 'fn3', label: L('y = x³: punktsymmetrisch', 'y = x³: point-symmetric'), values: { mode: 'fn', fm: 3, fd: 1, fam: true, inv: false, fx: 1.5 } },
+    { id: 'fn-2', label: L('y = x⁻²: Hyperbel mit Polstelle', 'y = x⁻²: hyperbola with a pole'), values: { mode: 'fn', fm: -2, fd: 1, fam: true, inv: false, fx: 1 } },
+    { id: 'fnroot', label: L('y = x^(1/2) ist die Umkehrung von x²', 'y = x^(1/2) is the inverse of x²'), values: { mode: 'fn', fm: 2, fd: 1, fam: false, inv: true, fx: 1.5 } },
+    { id: 'drill', label: L('Üben: zehn Aufgaben im Kopf', 'Practice: ten mental tasks'), values: { mode: 'drill', dq: 1, da: '' } },
+    { id: 'sci', label: L('Zehnerpotenzen: Mensch, Ameise, Haar', 'Powers of ten: human, ant, hair'), values: { mode: 'sci', zx: 0 } },
+    { id: 'sci2', label: L('Die Erde: 1,27 · 10⁷ m', 'The Earth: 1.27 · 10⁷ m'), values: { mode: 'sci', zx: 7.4 } },
     { id: 'practice', label: L('Übung: (x²)³ : x⁴ selbst vereinfachen', 'Practice: simplify (x²)³ : x⁴'), values: { mode: 'terms', t: '(x^2)^3 : x^4', g: '', show: false } },
   ],
   strings: {
     de: {
+      drT: 'Kopfrechnen mit Potenzen',
+      drHow: 'Setze für ? die passende Zahl ein und tippe auf „Prüfen“.',
+      drOk: 'Richtig!',
+      drNo: 'Noch nicht.',
+      drScore: '{k} von {n} richtig · Serie: {s}',
+      dr_mul: 'Gleiche Basis malnehmen: Exponenten addieren.',
+      dr_div: 'Gleiche Basis teilen: Exponenten subtrahieren.',
+      dr_powpow: 'Potenz potenzieren: Exponenten multiplizieren.',
+      dr_neg: 'Negativer Exponent: a⁻ⁿ = 1 : aⁿ.',
+      dr_frac: 'Gebrochener Exponent: a^(m/n) = (ⁿ√a)ᵐ – erst die Wurzel, dann die Potenz.',
+      dr_sci: 'Wie viele Stellen wandert das Komma? Nach rechts: negativer Exponent.',
+      dr_zero: 'aⁿ : aⁿ = aⁿ⁻ⁿ = a⁰ = 1.',
+      fnT: 'Potenzfunktion f(x) = {e}',
+      sym_axis: 'Gerader Exponent: achsensymmetrisch zur y-Achse.',
+      sym_point: 'Ungerader Exponent: punktsymmetrisch zum Ursprung.',
+      sym_none: 'Gerader Wurzelexponent: nur für x ≥ 0 definiert, keine Symmetrie.',
+      dom: 'Definitionsbereich',
+      dom_R: 'alle reellen Zahlen',
+      'dom_R0+': 'x ≥ 0',
+      'dom_R+': 'x > 0',
+      'dom_R\\0': 'x ≠ 0',
+      fnNeg: 'Negativer Exponent: x^(−n) = 1/xⁿ. An x = 0 gibt es eine Polstelle, für große x geht der Graph gegen 0.',
+      fnPos: 'Alle Graphen y = xⁿ mit n > 0 gehen durch (0 | 0) und (1 | 1).',
+      fnInv: 'Gespiegelt an y = x: Die Umkehrfunktion von xⁿ ist x^(1/n), also die n-te Wurzel.',
+      sciT: 'Zehnerpotenzen',
+      sciScale: 'Bildbreite: 10{k} m = {v}',
+      sciG: 'Jeder Schritt nach rechts macht das Bild zehnmal breiter. Von der Breite eines Protons bis zur Milchstraße sind es 36 Zehnerpotenzen.',
+      sciIn: 'Im Bild',
+      sciRatio: '{a} ist etwa 10^{k}-mal so groß wie {b}.',
+      sciPrefix: 'Vorsilbe',
       canvas: 'Potenzgesetze zum Anschauen: Faktor-Kacheln, die zusammengeschoben, gekürzt oder gruppiert werden, eine Treppe der Exponenten, der Graph von y = aˣ und ein Termumformer mit Schritten.',
       factors: '{k} Faktoren',
       cancel: 'Gleiche Faktoren oben und unten kürzen sich.',
@@ -135,6 +187,36 @@ export default defineSimulation({
       check: 'Probe mit Zahlen',
     },
     en: {
+      drT: 'Mental arithmetic with powers',
+      drHow: 'Replace ? with the right number and tap “Check”.',
+      drOk: 'Correct!',
+      drNo: 'Not yet.',
+      drScore: '{k} of {n} correct · streak: {s}',
+      dr_mul: 'Multiplying with the same base: add the exponents.',
+      dr_div: 'Dividing with the same base: subtract the exponents.',
+      dr_powpow: 'Power of a power: multiply the exponents.',
+      dr_neg: 'Negative exponent: a⁻ⁿ = 1 : aⁿ.',
+      dr_frac: 'Fractional exponent: a^(m/n) = (ⁿ√a)ᵐ – first the root, then the power.',
+      dr_sci: 'How many places does the decimal point move? To the right: negative exponent.',
+      dr_zero: 'aⁿ : aⁿ = aⁿ⁻ⁿ = a⁰ = 1.',
+      fnT: 'Power function f(x) = {e}',
+      sym_axis: 'Even exponent: symmetric about the y-axis.',
+      sym_point: 'Odd exponent: symmetric about the origin.',
+      sym_none: 'Even root exponent: defined only for x ≥ 0, no symmetry.',
+      dom: 'domain',
+      dom_R: 'all real numbers',
+      'dom_R0+': 'x ≥ 0',
+      'dom_R+': 'x > 0',
+      'dom_R\\0': 'x ≠ 0',
+      fnNeg: 'Negative exponent: x^(−n) = 1/xⁿ. At x = 0 there is a pole; for large x the graph approaches 0.',
+      fnPos: 'All graphs y = xⁿ with n > 0 pass through (0 | 0) and (1 | 1).',
+      fnInv: 'Reflected in y = x: the inverse of xⁿ is x^(1/n), the n-th root.',
+      sciT: 'Powers of ten',
+      sciScale: 'picture width: 10{k} m = {v}',
+      sciG: 'Each step to the right makes the picture ten times wider. From the width of a proton to the Milky Way there are 36 powers of ten.',
+      sciIn: 'In the picture',
+      sciRatio: '{a} is about 10^{k} times as large as {b}.',
+      sciPrefix: 'prefix',
       canvas: 'Laws of exponents made visible: factor tiles that are pushed together, cancelled or grouped, a ladder of exponents, the graph of y = aˣ and a term simplifier with steps.',
       factors: '{k} factors',
       cancel: 'Equal factors on top and bottom cancel.',
@@ -596,6 +678,55 @@ export default defineSimulation({
       const size = R.w < 330 ? 13 : R.w < 440 ? 14 : 15;
       let y = R.y + 22;
       const line = (segs: Seg[], d = 0) => (y += segLine(g, segs, x, y, maxW, size + d));
+      if (p.mode === 'fn') {
+        const e = fe();
+        line([{ s: tr('fnT', { e: e.d === 1 ? `x${sup(qText(e).replace('−', '-'))}` : `x^(${qText(e)})` }), c: COL.a(), w: 800 }], 0);
+        const sy = symmetryOf(e.n, e.d);
+        const dm = domainOf(e.n, e.d);
+        line([{ s: `${ctx.t('dom')}: ${ctx.t(`dom_${dm}`)}`, c: t.text, w: 600 }], -1);
+        line([{ s: ctx.t(`sym_${sy}`), c: COL.res(), w: 600 }], -1);
+        if (p.show) {
+          const y2 = powReal(p.fx, e.n, e.d);
+          if (y2 !== null) line([{ s: `f(${N(p.fx, 2)}) = ${N(p.fx, 2)}${e.d === 1 ? sup(qText(e).replace('−', '-')) : `^(${qText(e)})`} = ${N(y2, 4)}`, c: t.text }], -1.5);
+          if (e.n !== 0 && e.d === 1 && e.n > 0) line([{ s: `f(−x) = ${e.n % 2 === 0 ? 'f(x)' : '−f(x)'}`, c: t.muted }], -1.5);
+        }
+        y += 4;
+        line([{ s: ctx.t(e.n < 0 ? 'fnNeg' : 'fnPos'), c: t.muted }], -2);
+        if (p.inv) line([{ s: ctx.t('fnInv'), c: COL.b() }], -2);
+        return;
+      }
+      if (p.mode === 'sci') {
+        const zv = sciView();
+        const W = Math.pow(10, zv);
+        line([{ s: ctx.t('sciT'), c: COL.a(), w: 800 }], 0);
+        line([{ s: tr('sciScale', { k: Math.abs(zv - Math.round(zv)) < 0.05 ? sup(String(Math.round(zv))) : `^${fmt.num(zv, 1)}`, v: (() => {
+          const pr = prefixFor(W);
+          return `${N(W / Math.pow(10, pr.exp), 2)} ${pr.sym}m${pr.de ? ` (${ctx.lang === 'de' ? pr.de : pr.en})` : ''}`;
+        })() }), c: t.text, w: 700 }], -0.5);
+        const areaW = Math.max(100, regions().main.w - 20);
+        const vis = THINGS.filter((o) => (o.size / W) * areaW > 4 && o.size / W < 1.3);
+        if (vis.length) {
+          line([{ s: `${ctx.t('sciIn')}:`, c: t.muted, w: 600 }], -1.5);
+          for (const o of vis.slice(0, 4)) line([{ s: `${ctx.lang === 'de' ? o.de : o.en}: ${lenText(o.size)}`, c: t.text }], -2);
+          if (vis.length >= 2) {
+            const big = vis[vis.length - 1]!;
+            const small = vis[0]!;
+            line([{ s: tr('sciRatio', { a: ctx.lang === 'de' ? big.de : big.en, b: ctx.lang === 'de' ? small.de : small.en, k: orderRatio(big.size, small.size) }).replace('10^', '10').replace(/10(\d+)/, (_, d: string) => `10${sup(d)}`), c: COL.res(), w: 600 }], -1.5);
+          }
+        }
+        y += 4;
+        line([{ s: ctx.t('sciG'), c: t.muted }], -2);
+        return;
+      }
+      if (p.mode === 'drill') {
+        line([{ s: ctx.t('drT'), c: COL.a(), w: 800 }], 0);
+        line([{ s: ctx.t('drHow'), c: t.muted }], -1.5);
+        if (drScore.all) line([{ s: tr('drScore', { k: drScore.right, n: drScore.all, s: drScore.streak }), c: t.text, w: 700 }], -1);
+        if (drRes === false && drTries >= 2) line([{ s: `${ctx.lang === 'de' ? 'Lösung' : 'Solution'}: ? = ${drill.answer}`, c: COL.b(), w: 700 }], -1);
+        y += 4;
+        for (const r of ['mul', 'div', 'powpow', 'neg', 'frac']) line([{ s: ctx.t(`dr_${r}`), c: t.muted }], -2.5);
+        return;
+      }
       if (p.mode === 'laws') {
         const m = p.m;
         const n = p.n;
@@ -706,6 +837,337 @@ export default defineSimulation({
     }
 
     /* -------------------------------------------------------------- */
+    /* Potenzfunktionen                                                */
+    /* -------------------------------------------------------------- */
+
+    const fe = () => q(p.fm, p.fd);
+    plot.addHandle({
+      get: () => {
+        const y = powReal(p.fx, fe().n, fe().d);
+        return [p.fx, y ?? 0];
+      },
+      set: (x) => ctx.set({ fx: Math.round(clamp(x, -3, 3) * 20) / 20 }),
+      enabled: () => !ctx.locked && p.mode === 'fn' && powReal(p.fx, fe().n, fe().d) !== null,
+      color: () => COL.res(),
+      axis: 'x',
+    });
+    /** Graph von x^(m/n) mit Lücke an Polstellen. */
+    function powGraph(m: number, n: number, col: string, width: number, upto: number): void {
+      const b = plot.bounds;
+      let cur: [number, number][] = [];
+      const flush = () => {
+        if (cur.length > 1) plot.polyline(cur, { color: col, width });
+        cur = [];
+      };
+      const N2 = 400;
+      for (let i = 0; i <= N2; i++) {
+        const x = b.xMin + ((b.xMax - b.xMin) * i) / N2;
+        if (x > b.xMin + (b.xMax - b.xMin) * upto) break;
+        const y = powReal(Math.abs(x) < 1e-9 ? 0 : x, m, n);
+        if (y === null || !Number.isFinite(y) || Math.abs(y) > 60) {
+          flush();
+          continue;
+        }
+        const last = cur[cur.length - 1];
+        if (last && Math.sign(last[0]) !== Math.sign(x) && Math.abs(y - last[1]) > 5) flush();
+        cur.push([x, y]);
+      }
+      flush();
+    }
+    function drawFn(g: CanvasRenderingContext2D, R: Rect): void {
+      const t = th();
+      plotArea = { x: R.x + 8, y: R.y + 34, w: R.w - 16, h: R.h - 42 };
+      const e = fe();
+      const ratio = plotArea.w / plotArea.h;
+      const yr = 4;
+      plot.setRange([-yr * Math.max(1, ratio * 0.8), yr * Math.max(1, ratio * 0.8)], [-yr, yr]);
+      plot.resize();
+      plot.begin();
+      plot.grid({ minor: true });
+      plot.axes();
+      const u = k();
+      if (p.fam) {
+        const fam = e.n > 0 ? [1, 2, 3, 4, 5] : [-1, -2, -3];
+        for (const f of fam) if (!(f === e.n && e.d === 1)) powGraph(f, 1, withAlpha(t.muted, 0.35), 1.2, 1);
+      }
+      if (p.inv) {
+        plot.line([0, 0], [1, 1], { color: withAlpha(t.text, 0.35), width: 1.2, dash: [5, 4] });
+        // Umkehrung: x^(n/m) (nur sinnvoll für m ≠ 0)
+        if (e.n !== 0) powGraph(e.d * Math.sign(e.n), Math.abs(e.n), withAlpha(COL.b(), 0.9), 2.4, u);
+      }
+      powGraph(e.n, e.d, COL.a(), 3, u);
+      plot.point(1, 1, { color: withAlpha(t.text, 0.6), radius: 3 });
+      const y = powReal(p.fx, e.n, e.d);
+      if (y !== null && Math.abs(y) < 50 && u > 0.98) {
+        plot.segment([p.fx, 0], [p.fx, y], { color: withAlpha(COL.res(), 0.6), width: 1.2, dash: [4, 3] });
+        plot.point(p.fx, y, { color: COL.res(), radius: 6 });
+        if (p.show) plot.text(p.fx, y, `(${N(p.fx, 2)} | ${N(y, 3)})`, { color: COL.res(), size: 12, weight: 'bold', offset: [10, -12], align: 'left', halo: true });
+      }
+      plot.end();
+      segLine(g, [{ s: `f(x) = x${sup(e.d === 1 ? qText(e) : '')}${e.d === 1 ? '' : `^(${qText(e)})`}`, c: COL.a(), w: 800 }], R.x + 18, R.y + 18, R.w - 36, 15);
+    }
+
+    /* -------------------------------------------------------------- */
+    /* Zehnerpotenzen                                                  */
+    /* -------------------------------------------------------------- */
+
+    /** angezeigte Größenordnung (gleitet weich zum eingestellten Wert) */
+    let zCur = p.zx;
+    const tourTw = new Tween(16000, ease.inOutCubic);
+    let touring = false;
+    let lastT = performance.now();
+    let sciViewEnd = p.zx;
+    function sciView(): number {
+      return tourTw.running ? -15 + 36 * tourTw.value : zCur;
+    }
+    function lenText(v: number): string {
+      const { a, k: kk } = sciParts(v);
+      const pr = prefixFor(v);
+      const inPr = v / Math.pow(10, pr.exp);
+      return `${N(a, 2)} · 10${sup(String(kk))} m = ${N(inPr, inPr < 10 ? 2 : inPr < 100 ? 1 : 0)} ${pr.sym}m`;
+    }
+    function thingIcon(g: CanvasRenderingContext2D, id: string, cx: number, cy: number, r: number): void {
+      const t = th();
+      g.save();
+      g.lineWidth = Math.max(1, r * 0.06);
+      switch (id) {
+        case 'atom': {
+          g.strokeStyle = COL.a();
+          for (const rot of [0, Math.PI / 3, -Math.PI / 3]) {
+            g.beginPath();
+            g.ellipse(cx, cy, r, r * 0.35, rot, 0, Math.PI * 2);
+            g.stroke();
+          }
+          g.fillStyle = COL.b();
+          g.beginPath();
+          g.arc(cx, cy, r * 0.12, 0, Math.PI * 2);
+          g.fill();
+          break;
+        }
+        case 'human': {
+          g.strokeStyle = t.text;
+          g.lineWidth = Math.max(1.5, r * 0.08);
+          g.beginPath();
+          g.arc(cx, cy - r * 0.75, r * 0.15, 0, Math.PI * 2);
+          g.moveTo(cx, cy - r * 0.6);
+          g.lineTo(cx, cy + r * 0.2);
+          g.lineTo(cx - r * 0.25, cy + r);
+          g.moveTo(cx, cy + r * 0.2);
+          g.lineTo(cx + r * 0.25, cy + r);
+          g.moveTo(cx - r * 0.35, cy - r * 0.3);
+          g.lineTo(cx + r * 0.35, cy - r * 0.3);
+          g.stroke();
+          break;
+        }
+        case 'earth': {
+          const gr = g.createRadialGradient(cx - r * 0.3, cy - r * 0.3, r * 0.1, cx, cy, r);
+          gr.addColorStop(0, '#7fb8ff');
+          gr.addColorStop(1, '#1f4fa8');
+          g.fillStyle = gr;
+          g.beginPath();
+          g.arc(cx, cy, r, 0, Math.PI * 2);
+          g.fill();
+          g.fillStyle = 'rgba(90,170,90,0.85)';
+          g.beginPath();
+          g.ellipse(cx - r * 0.2, cy - r * 0.1, r * 0.35, r * 0.25, 0.5, 0, Math.PI * 2);
+          g.fill();
+          break;
+        }
+        case 'sun': {
+          const gr = g.createRadialGradient(cx, cy, 0, cx, cy, r);
+          gr.addColorStop(0, '#fff3b0');
+          gr.addColorStop(1, '#f0a020');
+          g.fillStyle = gr;
+          g.beginPath();
+          g.arc(cx, cy, r, 0, Math.PI * 2);
+          g.fill();
+          break;
+        }
+        case 'galaxy': {
+          g.strokeStyle = withAlpha(COL.res(), 0.8);
+          for (const arm of [0, Math.PI]) {
+            g.beginPath();
+            for (let i = 0; i <= 40; i++) {
+              const a2 = arm + (i / 40) * 4;
+              const rr = r * (0.1 + (0.9 * i) / 40);
+              const x = cx + rr * Math.cos(a2);
+              const y = cy + rr * Math.sin(a2) * 0.5;
+              if (i) g.lineTo(x, y);
+              else g.moveTo(x, y);
+            }
+            g.stroke();
+          }
+          break;
+        }
+        case 'virus': {
+          g.strokeStyle = COL.good();
+          g.fillStyle = withAlpha(COL.good(), 0.3);
+          g.beginPath();
+          g.arc(cx, cy, r * 0.7, 0, Math.PI * 2);
+          g.fill();
+          g.stroke();
+          for (let i = 0; i < 12; i++) {
+            const a2 = (i / 12) * Math.PI * 2;
+            g.beginPath();
+            g.moveTo(cx + Math.cos(a2) * r * 0.7, cy + Math.sin(a2) * r * 0.7);
+            g.lineTo(cx + Math.cos(a2) * r, cy + Math.sin(a2) * r);
+            g.stroke();
+          }
+          break;
+        }
+        case 'bacterium': {
+          g.fillStyle = withAlpha(COL.good(), 0.45);
+          g.strokeStyle = COL.good();
+          roundRect(g, cx - r, cy - r * 0.35, 2 * r, r * 0.7, r * 0.35);
+          g.fill();
+          g.stroke();
+          break;
+        }
+        default: {
+          g.strokeStyle = COL.aux();
+          g.fillStyle = withAlpha(COL.aux(), 0.18);
+          g.beginPath();
+          g.arc(cx, cy, r, 0, Math.PI * 2);
+          g.fill();
+          g.stroke();
+        }
+      }
+      g.restore();
+    }
+    function drawSci(g: CanvasRenderingContext2D, R: Rect): void {
+      const t = th();
+      const now = performance.now();
+      const dt = Math.min(0.1, (now - lastT) / 1000);
+      lastT = now;
+      zCur += (p.zx - zCur) * Math.min(1, dt * 5);
+      if (touring && !tourTw.running) {
+        touring = false;
+        zCur = 21;
+        ctx.set({ zx: 21 });
+      }
+      sciViewEnd = sciView();
+      const zv = sciView();
+      const W = Math.pow(10, zv);
+      const area: Rect = { x: R.x + 10, y: R.y + 40, w: R.w - 20, h: R.h - 96 };
+      // Dinge, die im Bild sichtbar groß sind
+      const vis = THINGS.map((th2, i) => ({ th2, i, px: (th2.size / W) * area.w })).filter((o) => o.px > 4 && o.px < area.w * 1.3);
+      g.save();
+      roundRect(g, area.x, area.y, area.w, area.h, 10);
+      g.clip();
+      g.fillStyle = t.dark ? '#0d121b' : '#f5f7fb';
+      g.fillRect(area.x, area.y, area.w, area.h);
+      vis.forEach((o, j) => {
+        const r = o.px / 2;
+        const cx = area.x + area.w * (0.2 + 0.6 * ((o.i * 0.37) % 1));
+        const cy = area.y + area.h * (0.35 + 0.3 * ((o.i * 0.53) % 1));
+        thingIcon(g, o.th2.id, cx, cy, r);
+        if (r < area.w * 0.6) {
+          g.font = `700 12px ${t.font}`;
+          g.fillStyle = t.text;
+          g.textAlign = 'center';
+          g.fillText(ctx.lang === 'de' ? o.th2.de : o.th2.en, cx, Math.min(area.y + area.h - 8, cy + r + 16 + (j % 2) * 14));
+        }
+      });
+      g.restore();
+      // Maßstab
+      const ly = R.y + R.h - 44;
+      g.save();
+      g.strokeStyle = t.text;
+      g.lineWidth = 2;
+      g.beginPath();
+      g.moveTo(area.x, ly);
+      g.lineTo(area.x + area.w, ly);
+      g.moveTo(area.x, ly - 6);
+      g.lineTo(area.x, ly + 6);
+      g.moveTo(area.x + area.w, ly - 6);
+      g.lineTo(area.x + area.w, ly + 6);
+      g.stroke();
+      g.font = `700 13px ${t.font}`;
+      g.fillStyle = t.text;
+      g.textAlign = 'center';
+      g.fillText(lenText(W), area.x + area.w / 2, ly + 22);
+      g.restore();
+      // Zehnerpotenz-Leiste
+      g.save();
+      g.font = `800 ${R.w < 420 ? 15 : 18}px ${t.font}`;
+      g.fillStyle = COL.a();
+      g.textAlign = 'left';
+      g.fillText(`10${sup(String(Math.round(zv)))} m`, R.x + 16, R.y + 26);
+      g.restore();
+      if (Math.abs(p.zx - zCur) > 0.005 || tourTw.running) ctx.requestRender();
+    }
+
+    /* -------------------------------------------------------------- */
+    /* Übung: Kopfrechnen                                              */
+    /* -------------------------------------------------------------- */
+
+    let drill: Drill = makeDrill(1);
+    let drRes: boolean | null = null;
+    let drTries = 0;
+    let drScore = { right: 0, all: 0, streak: 0 };
+    const drPop = new Tween(450, ease.outBack);
+    function checkDr(): void {
+      const r = checkDrill(drill, p.da);
+      if (r === null) return;
+      drRes = r;
+      drTries += 1;
+      if (drTries === 1) drScore = { right: drScore.right + (r ? 1 : 0), all: drScore.all + 1, streak: r ? drScore.streak + 1 : 0 };
+      drPop.play();
+    }
+    function drawDrill(g: CanvasRenderingContext2D, R: Rect): void {
+      const t = th();
+      const cx = R.x + R.w / 2;
+      const cy = R.y + R.h * 0.4;
+      const fs = Math.min(54, R.w / 11);
+      g.save();
+      g.textAlign = 'center';
+      g.textBaseline = 'middle';
+      const ans = drRes ? String(drill.answer) : p.da.trim() ? p.da.trim().replace('-', '−') : '?';
+      const filled = drill.task.includes('^?') && ans !== '?' ? drill.task.replace('^?', sup(ans.replace('−', '-'))) : drill.task.replace('?', ans);
+      // Aufgabe groß, die Lücke farbig
+      g.font = `800 ${fs}px ${t.font}`;
+      const parts = filled.split(/(\^?[−\-]?\d+$|\?$)/);
+      const full = g.measureText(filled).width;
+      let x = cx - full / 2;
+      g.textAlign = 'left';
+      const shownAns = drill.task.includes('^?') && ans !== '?' ? sup(ans.replace('−', '-')) : ans;
+      const idx = filled.lastIndexOf(shownAns);
+      const head = filled.slice(0, idx);
+      const tail = filled.slice(idx);
+      g.fillStyle = t.text;
+      g.fillText(head, x, cy);
+      x += g.measureText(head).width;
+      const s2 = drPop.running ? drPop.value : 1;
+      g.save();
+      g.translate(x + g.measureText(tail).width / 2, cy);
+      g.scale(s2, s2);
+      g.fillStyle = drRes === null ? COL.res() : drRes ? COL.good() : COL.b();
+      g.textAlign = 'center';
+      g.fillText(tail, 0, 0);
+      g.restore();
+      void parts;
+      // Rückmeldung
+      g.textAlign = 'center';
+      if (drRes !== null) {
+        g.font = `800 ${Math.round(fs * 0.5)}px ${t.font}`;
+        g.fillStyle = drRes ? COL.good() : COL.b();
+        g.fillText(ctx.t(drRes ? 'drOk' : 'drNo'), cx, cy + fs * 1.3);
+        g.font = `500 ${Math.round(fs * 0.32)}px ${t.font}`;
+        g.fillStyle = t.muted;
+        g.fillText(ctx.t(`dr_${drill.rule}`), cx, cy + fs * 1.95);
+      }
+      // Fortschrittspunkte
+      const n = Math.min(10, drScore.all);
+      for (let i = 0; i < 10; i++) {
+        g.beginPath();
+        g.arc(cx - 90 + i * 20, R.y + R.h - 30, 6, 0, Math.PI * 2);
+        g.fillStyle = i < n ? (i < drScore.right ? COL.good() : COL.b()) : withAlpha(t.muted, 0.25);
+        g.fill();
+      }
+      g.restore();
+    }
+
+    /* -------------------------------------------------------------- */
     /* Ergebnisse und Ablauf                                           */
     /* -------------------------------------------------------------- */
 
@@ -713,6 +1175,22 @@ export default defineSimulation({
       if (p.mode === 'terms') {
         ctx.readout('term', p.t);
         ctx.readout('res', term.ok ? monoText(term.mono) : term.msg);
+        return;
+      }
+      if (p.mode === 'fn') {
+        const y = powReal(p.fx, fe().n, fe().d);
+        ctx.readout('term', `f(x) = x^(${qText(fe())})`);
+        ctx.readout('res', y === null ? '–' : `f(${N(p.fx, 2)}) = ${N(y, 4)}`);
+        return;
+      }
+      if (p.mode === 'drill') {
+        ctx.readout('term', drill.task);
+        ctx.readout('res', drRes ? String(drill.answer) : '–');
+        return;
+      }
+      if (p.mode === 'sci') {
+        ctx.readout('term', `10^${N(p.zx, 1)} m`);
+        ctx.readout('res', lenText(Math.pow(10, p.zx)));
         return;
       }
       if (p.mode === 'roots') {
@@ -756,11 +1234,36 @@ export default defineSimulation({
       update(changed, source) {
         if (changed.has('t') || source === 'init' || source === 'replace') term = readTerm();
         if (changed.has('t') || changed.has('g')) verdict = null;
-        if (['mode', 'law', 'm', 'n', 'a', 'b', 'pm', 'pn', 't', 'sym'].some((x) => changed.has(x)) || source === 'init' || source === 'replace') anim.play(changed.has('m') || changed.has('n') ? 1400 : 2200);
+        if (['mode', 'law', 'm', 'n', 'a', 'b', 'pm', 'pn', 't', 'sym', 'fm', 'fd', 'inv'].some((x) => changed.has(x)) || source === 'init' || source === 'replace') anim.play(changed.has('m') || changed.has('n') ? 1400 : 2200);
+        if (changed.has('zx') && source !== 'input') zCur = p.zx;
+        if (changed.has('dq') || source === 'init' || source === 'replace') {
+          drill = makeDrill(p.dq);
+          drRes = null;
+          drTries = 0;
+        }
+        if (changed.has('da') && drRes === false) drRes = null;
+        if (changed.has('zx') && source === 'input' && tourTw.running) {
+          tourTw.finish();
+          touring = false;
+          zCur = sciViewEnd;
+        }
         updateReadouts();
       },
       action(id) {
         if (id === 'play') anim.play();
+        if (id === 'tour') {
+          tourTw.play();
+          touring = true;
+          ctx.requestRender();
+        }
+        if (id === 'dcheck') {
+          checkDr();
+          updateReadouts();
+          ctx.requestRender();
+        }
+        if (id === 'dnext') ctx.set({ dq: p.dq >= 999 ? 1 : p.dq + 1, da: '' });
+        if (id === 'in') ctx.set({ zx: Math.max(-15, Math.round((p.zx - 1) * 10) / 10) });
+        if (id === 'out') ctx.set({ zx: Math.min(21, Math.round((p.zx + 1) * 10) / 10) });
         if (id === 'check') runCheck();
       },
       render() {
@@ -770,9 +1273,13 @@ export default defineSimulation({
         if (p.mode === 'laws') drawLaws(g, R.main);
         else if (p.mode === 'ladder') drawLadder(g, R.main);
         else if (p.mode === 'roots') drawRoots(g, R.main);
+        else if (p.mode === 'fn') drawFn(g, R.main);
+        else if (p.mode === 'sci') drawSci(g, R.main);
+        else if (p.mode === 'drill') drawDrill(g, R.main);
         else drawTermSteps(g, R.main);
         drawCardBody(g, R.card);
-        if (anim.running || verdictTw.running) ctx.requestRender();
+        if (tourTw.running) ctx.requestRender();
+        if (anim.running || verdictTw.running || drPop.running) ctx.requestRender();
       },
       destroy: () => surface.destroy(),
     };

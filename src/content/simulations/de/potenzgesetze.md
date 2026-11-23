@@ -35,6 +35,9 @@ Beispiele: $8^{2/3} = (\sqrt[3]{8})^2 = 2^2 = 4$ und $4^{-1/2} = \tfrac{1}{\sqrt
 4. Gehe die Treppe hinunter. Warum muss $2^0 = 1$ sein? [Treppe](?mode=ladder&a=2)
 5. Stelle $8^{1/3}$, $8^{2/3}$ und $8^{-1/3}$ ein. Wo liegen die Punkte auf dem Graphen? [Wurzeln](?mode=roots&a=8&pm=2&pn=3)
 6. Lass dir $(a^2 \cdot b)^3 : (a^4 \cdot b^2)$ Schritt für Schritt vereinfachen. [Term](?mode=terms&t=(a%5E2%20%C2%B7%20b)%5E3%20%3A%20(a%5E4%20%C2%B7%20b%5E2))
+7. Vergleiche y = x², x³, x⁻¹ und x^(1/2). Welche Graphen sind symmetrisch? [Potenzfunktionen](?mode=fn&fm=3&fd=1&fam=1&fx=1.5)
+8. Reise in Zehnerpotenzen vom Proton bis zur Milchstraße. [Zehnerpotenzen](?mode=sci&zx=0)
+9. Zehn Aufgaben im Kopf: Wie lang wird deine Serie? [Kopfrechnen](?mode=drill&dq=1)
 
 ## Aufgaben
 
@@ -68,6 +71,17 @@ Vereinfache $(x^2)^3 : x^4$, gib dein Ergebnis ein und drücke „Prüfen“. [A
 <summary>Lösung anzeigen</summary>
 
 $(x^2)^3 = x^6$, dann $x^6 : x^4 = x^2$.
+
+</details>
+
+### Aufgabe: Größenordnungen
+
+Die Erde hat einen Durchmesser von etwa $1{,}27 \cdot 10^7\,\text{m}$, ein Mensch ist etwa $1{,}7\,\text{m}$ groß. Wie viele Menschen müsste man ungefähr aufeinanderstellen, um den Erddurchmesser zu erreichen?
+
+<details>
+<summary>Lösung anzeigen</summary>
+
+$\frac{1{,}27 \cdot 10^7}{1{,}7} \approx 0{,}75 \cdot 10^7 = 7{,}5 \cdot 10^6$, also etwa siebeneinhalb Millionen Menschen. Die Größenordnung unterscheidet sich um etwa $10^7$. [In der Simulation zeigen](?mode=sci&zx=7.4)
 
 </details>
 

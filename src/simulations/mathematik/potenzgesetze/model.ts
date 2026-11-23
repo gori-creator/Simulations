@@ -491,3 +491,190 @@ export function sameTerm(a: Node, b: Node): boolean {
     return false;
   }
 }
+
+/* ------------------------------------------------------------------ */
+/* Potenzfunktionen f(x) = x^(m/n)                                     */
+/* ------------------------------------------------------------------ */
+
+/**
+ * Wert von x^(m/n) für reelles x (gekürzter Bruch). Für negatives x nur,
+ * wenn n ungerade ist (z. B. x^(1/3)); sonst null. x = 0 mit negativem
+ * Exponenten: null (Polstelle).
+ */
+export function powReal(x: number, m: number, n = 1): number | null {
+  const e = q(m, n);
+  if (x === 0) return qval(e) > 0 ? 0 : qval(e) === 0 ? 1 : null;
+  if (x > 0) return Math.pow(x, qval(e));
+  if (e.d % 2 === 0) return null;
+  const v = Math.pow(-x, qval(e));
+  return e.n % 2 === 0 ? v : -v;
+}
+
+export type Symmetry = 'axis' | 'point' | 'none';
+/** Symmetrie des Graphen von x^(m/n): gerade/ungerade bei ganzem Exponenten bzw. ungeradem Nenner. */
+export function symmetryOf(m: number, n = 1): Symmetry {
+  const e = q(m, n);
+  if (e.d % 2 === 0) return 'none';
+  return e.n % 2 === 0 ? 'axis' : 'point';
+}
+
+/** Definitionsbereich als Kurztext-Schlüssel. */
+export function domainOf(m: number, n = 1): 'R' | 'R0+' | 'R+' | 'R\\0' {
+  const e = q(m, n);
+  if (e.d % 2 === 0) return qval(e) > 0 ? 'R0+' : 'R+';
+  return qval(e) < 0 ? 'R\\0' : 'R';
+}
+
+/* ------------------------------------------------------------------ */
+/* Zehnerpotenzen und wissenschaftliche Schreibweise                    */
+/* ------------------------------------------------------------------ */
+
+/** Zerlegung v = a · 10ᵏ mit 1 ≤ |a| < 10. */
+export function sciParts(v: number): { a: number; k: number } {
+  if (v === 0 || !Number.isFinite(v)) return { a: v, k: 0 };
+  let k = Math.floor(Math.log10(Math.abs(v)));
+  let a = v / Math.pow(10, k);
+  if (Math.abs(a) >= 10 - 1e-12) {
+    a /= 10;
+    k += 1;
+  }
+  return { a, k };
+}
+
+export interface Prefix {
+  sym: string;
+  de: string;
+  en: string;
+  exp: number;
+}
+export const PREFIXES: readonly Prefix[] = [
+  { sym: 'f', de: 'Femto', en: 'femto', exp: -15 },
+  { sym: 'p', de: 'Piko', en: 'pico', exp: -12 },
+  { sym: 'n', de: 'Nano', en: 'nano', exp: -9 },
+  { sym: 'µ', de: 'Mikro', en: 'micro', exp: -6 },
+  { sym: 'm', de: 'Milli', en: 'milli', exp: -3 },
+  { sym: '', de: '', en: '', exp: 0 },
+  { sym: 'k', de: 'Kilo', en: 'kilo', exp: 3 },
+  { sym: 'M', de: 'Mega', en: 'mega', exp: 6 },
+  { sym: 'G', de: 'Giga', en: 'giga', exp: 9 },
+  { sym: 'T', de: 'Tera', en: 'tera', exp: 12 },
+  { sym: 'P', de: 'Peta', en: 'peta', exp: 15 },
+  { sym: 'E', de: 'Exa', en: 'exa', exp: 18 },
+];
+/** Passende Vorsilbe für eine Länge in m (größte mit Wert ≥ 1). */
+export function prefixFor(v: number): Prefix {
+  const k = sciParts(v).k;
+  let best = PREFIXES[0]!;
+  for (const pr of PREFIXES) if (pr.exp <= k) best = pr;
+  return best;
+}
+
+export interface Thing {
+  id: string;
+  /** typische Größe in m */
+  size: number;
+  de: string;
+  en: string;
+}
+/** Größenordnungen von Dingen (gerundete Beispielwerte). */
+export const THINGS: readonly Thing[] = [
+  { id: 'proton', size: 1.7e-15, de: 'Proton', en: 'proton' },
+  { id: 'atom', size: 1e-10, de: 'Atom', en: 'atom' },
+  { id: 'dna', size: 2e-9, de: 'DNA-Strang (Breite)', en: 'DNA strand (width)' },
+  { id: 'virus', size: 1e-7, de: 'Virus', en: 'virus' },
+  { id: 'bacterium', size: 2e-6, de: 'Bakterium', en: 'bacterium' },
+  { id: 'hair', size: 7e-5, de: 'Haar (Dicke)', en: 'hair (thickness)' },
+  { id: 'ant', size: 5e-3, de: 'Ameise', en: 'ant' },
+  { id: 'human', size: 1.7, de: 'Mensch', en: 'human' },
+  { id: 'tower', size: 330, de: 'Eiffelturm', en: 'Eiffel Tower' },
+  { id: 'everest', size: 8.8e3, de: 'Mount Everest', en: 'Mount Everest' },
+  { id: 'earth', size: 1.27e7, de: 'Erde (Durchmesser)', en: 'Earth (diameter)' },
+  { id: 'sun', size: 1.39e9, de: 'Sonne (Durchmesser)', en: 'Sun (diameter)' },
+  { id: 'au', size: 1.5e11, de: 'Abstand Erde–Sonne', en: 'Earth–Sun distance' },
+  { id: 'ly', size: 9.46e15, de: 'Lichtjahr', en: 'light year' },
+  { id: 'galaxy', size: 1e21, de: 'Milchstraße', en: 'Milky Way' },
+];
+/** Wie oft passt das Kleinere in das Größere (Verhältnis als Zehnerpotenz)? */
+export const orderRatio = (big: number, small: number) => Math.round(Math.log10(big / small));
+
+/* ------------------------------------------------------------------ */
+/* Übung: kurze Aufgaben zu den Potenzgesetzen                          */
+/* ------------------------------------------------------------------ */
+
+export interface Drill {
+  /** Aufgabentext mit Lücke „?“ */
+  task: string;
+  /** gesuchte Zahl */
+  answer: number;
+  /** Regel-Schlüssel für den Tipp */
+  rule: 'mul' | 'div' | 'powpow' | 'neg' | 'frac' | 'sci' | 'zero';
+}
+
+/** Aufgabe Nummer n (gleiche Nummer → gleiche Aufgabe). */
+export function makeDrill(num: number): Drill {
+  let s = (Math.floor(num) * 2654435761 + 31337) >>> 0 || 1;
+  const r = () => {
+    s ^= s << 13;
+    s >>>= 0;
+    s ^= s >>> 17;
+    s ^= s << 5;
+    s >>>= 0;
+    return s / 4294967296;
+  };
+  const int = (lo: number, hi: number) => lo + (Math.floor(r() * (hi - lo + 1)) % (hi - lo + 1));
+  const kind = int(0, 6);
+  const S = (v: number) => sup(String(v));
+  switch (kind) {
+    case 0: {
+      const m = int(2, 7);
+      const n = int(2, 7);
+      return { task: `a${S(m)} · a${S(n)} = a^?`, answer: m + n, rule: 'mul' };
+    }
+    case 1: {
+      const m = int(5, 12);
+      const n = int(1, 9);
+      return { task: `x${S(m)} : x${S(n)} = x^?`, answer: m - n, rule: 'div' };
+    }
+    case 2: {
+      const m = int(2, 5);
+      const n = int(2, 4);
+      return { task: `(b${S(m)})${S(n)} = b^?`, answer: m * n, rule: 'powpow' };
+    }
+    case 3: {
+      const a = int(2, 5);
+      const n = int(1, 3);
+      return { task: `${a}${S(-n)} = 1 : ?`, answer: a ** n, rule: 'neg' };
+    }
+    case 4: {
+      const pick = [
+        ['8^(2/3)', 4],
+        ['27^(1/3)', 3],
+        ['16^(3/4)', 8],
+        ['9^(3/2)', 27],
+        ['32^(2/5)', 4],
+        ['4^(5/2)', 32],
+      ] as const;
+      const [t, a] = pick[int(0, pick.length - 1)]!;
+      return { task: `${t} = ?`, answer: a, rule: 'frac' };
+    }
+    case 5: {
+      const mant = int(12, 98) / 10;
+      const k = int(-6, 8);
+      const v = mant * 10 ** k;
+      const txt = k >= 0 ? Math.round(v).toLocaleString('de-DE') : v.toFixed(-k + 1).replace('.', ',');
+      return { task: `${txt} = ${String(mant).replace('.', ',')} · 10^?`, answer: k, rule: 'sci' };
+    }
+    default: {
+      const a = int(2, 9);
+      const m = int(2, 6);
+      return { task: `${a}${S(m)} : ${a}${S(m)} = ${a}^?`, answer: 0, rule: 'zero' };
+    }
+  }
+}
+
+/** Antwort prüfen (ganze Zahl, auch mit Minuszeichen „−“). */
+export function checkDrill(d: Drill, text: string): boolean | null {
+  const t = text.trim().replace('−', '-').replace(',', '.');
+  if (!/^-?\d+(\.\d+)?$/.test(t)) return null;
+  return Math.abs(Number(t) - d.answer) < 1e-9;
+}

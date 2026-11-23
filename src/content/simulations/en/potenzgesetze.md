@@ -15,6 +15,10 @@ Going down the ladder $2^3, 2^2, 2^1$ means dividing by 2 each time, which leads
 3. Fractional exponents: [load](?mode=roots&a=8&pm=2&pn=3)
 4. Simplify a term step by step: [load](?mode=terms&t=(a%5E2%20%C2%B7%20b)%5E3%20%3A%20(a%5E4%20%C2%B7%20b%5E2))
 
+- Power functions y = xⁿ: [load](?mode=fn&fm=3&fd=1&fam=1&fx=1.5)
+- Powers of ten from proton to Milky Way: [load](?mode=sci&zx=0)
+- Mental arithmetic with powers: [load](?mode=drill&dq=1)
+
 ## Tasks
 
 ### Task 1

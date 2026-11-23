@@ -99,3 +99,66 @@ describe('Potenzgesetze: Hilfen', () => {
     expect(powQ(q(27, 8), q(-2, 3)).exact).toEqual(q(4, 9));
   });
 });
+
+import { domainOf, orderRatio, powReal, prefixFor, sciParts, symmetryOf, THINGS } from '../src/simulations/mathematik/potenzgesetze/model';
+
+describe('Potenzgesetze: Potenzfunktionen', () => {
+  it('Werte: 2³ = 8, (−8)^(1/3) = −2, 4^(1/2) = 2, (−4)^(1/2) nicht definiert, 0⁻¹ Pol', () => {
+    expect(powReal(2, 3)).toBe(8);
+    expect(powReal(-8, 1, 3)).toBeCloseTo(-2, 12);
+    expect(powReal(4, 1, 2)).toBeCloseTo(2, 12);
+    expect(powReal(-4, 1, 2)).toBeNull();
+    expect(powReal(0, -1)).toBeNull();
+    expect(powReal(-2, -2)).toBeCloseTo(0.25, 12);
+    expect(powReal(-8, 2, 3)).toBeCloseTo(4, 12);
+  });
+  it('Symmetrie und Definitionsbereich', () => {
+    expect(symmetryOf(2)).toBe('axis');
+    expect(symmetryOf(3)).toBe('point');
+    expect(symmetryOf(-1)).toBe('point');
+    expect(symmetryOf(1, 2)).toBe('none');
+    expect(domainOf(1, 2)).toBe('R0+');
+    expect(domainOf(-1, 2)).toBe('R+');
+    expect(domainOf(-2)).toBe('R\\0');
+    expect(domainOf(1, 3)).toBe('R');
+  });
+});
+
+describe('Potenzgesetze: Zehnerpotenzen', () => {
+  it('wissenschaftliche Schreibweise', () => {
+    expect(sciParts(12700000)).toEqual({ a: 1.27, k: 7 });
+    const s = sciParts(0.00007);
+    expect(s.k).toBe(-5);
+    expect(s.a).toBeCloseTo(7, 12);
+    expect(sciParts(1000).k).toBe(3);
+  });
+  it('Vorsilben und Größenverhältnisse', () => {
+    expect(prefixFor(2e-6).sym).toBe('µ');
+    expect(prefixFor(1.27e7).sym).toBe('M');
+    expect(prefixFor(0.5).sym).toBe('m');
+    const earth = THINGS.find((t) => t.id === 'earth')!.size;
+    const human = THINGS.find((t) => t.id === 'human')!.size;
+    expect(orderRatio(earth, human)).toBe(7);
+  });
+});
+
+import { checkDrill, makeDrill } from '../src/simulations/mathematik/potenzgesetze/model';
+
+describe('Potenzgesetze: Übung', () => {
+  it('Lösungen stimmen nachgerechnet, alle Regeln kommen vor', () => {
+    const rules = new Set<string>();
+    for (let i = 1; i <= 80; i++) {
+      const d = makeDrill(i);
+      rules.add(d.rule);
+      expect(checkDrill(d, String(d.answer))).toBe(true);
+      expect(checkDrill(d, String(d.answer + 1))).toBe(false);
+      if (d.rule === 'frac') {
+        const m = /^(\d+)\^\((\d+)\/(\d+)\)/.exec(d.task)!;
+        expect(Number(m[1]) ** (Number(m[2]) / Number(m[3]))).toBeCloseTo(d.answer, 9);
+      }
+    }
+    expect(rules.size).toBe(7);
+    expect(checkDrill(makeDrill(1), 'abc')).toBeNull();
+    expect(checkDrill({ task: '', answer: -3, rule: 'sci' }, '−3')).toBe(true);
+  });
+});
