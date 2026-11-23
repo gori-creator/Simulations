@@ -149,7 +149,7 @@ const KS_9_10_UNITS: CurriculumUnit[] = [
       'Kenngrößen harmonischer Schwingungen, Fadenpendel und Federschwinger, Dämpfung und Resonanz, Kenngrößen mechanischer Wellen, Reflexion, Brechung, Beugung und Interferenz.',
       'Parameters of harmonic oscillations, the simple pendulum and the spring oscillator, damping and resonance, parameters of mechanical waves, reflection, refraction, diffraction and interference.',
     ),
-    simulations: ['fadenpendel', 'federpendel', 'resonanz', 'wellen-ausbreitung', 'interferenz'],
+    simulations: ['fadenpendel', 'federpendel', 'resonanz', 'wellen-ausbreitung', 'interferenz', 'schall'],
   },
   {
     code: '3.13',

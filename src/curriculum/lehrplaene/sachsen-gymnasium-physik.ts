@@ -248,7 +248,7 @@ const K10: CurriculumUnit[] = [
       'Schwingungen mit Amplitude, Periode und Dämpfung, Faden- und Federpendel, Resonanz, Wellen mit c = λ · f, Akustik und Interferenz zweier Kreiswellen.',
       'Oscillations with amplitude, period and damping, simple and spring pendulums, resonance, waves with c = λ · f, acoustics and interference of two circular waves.',
     ),
-    simulations: ['fadenpendel', 'federpendel', 'resonanz', 'wellen-ausbreitung', 'interferenz'],
+    simulations: ['fadenpendel', 'federpendel', 'resonanz', 'wellen-ausbreitung', 'interferenz', 'schall'],
   },
   {
     code: '3',

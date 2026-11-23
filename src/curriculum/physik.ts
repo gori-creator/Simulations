@@ -274,9 +274,32 @@ export const physik: Subject = {
         'Pendel, Resonanz, Wellenausbreitung und Interferenz – mit Zeitlupe und Diagrammen in Echtzeit.',
         'Pendulums, resonance, wave propagation and interference – with slow motion and real-time graphs.',
       ),
-      grades: [10, 13],
+      grades: [5, 13],
       kmk: ['P-S', 'P-E', 'P-BK-Superposition', 'P-BK-Mathematisieren'],
       topics: [
+        {
+          id: 'akustik',
+          title: L('Akustik', 'Acoustics'),
+          grades: [5, 11],
+          simulations: [
+            {
+              id: 'schall',
+              status: 'ready',
+              slug: L('schall-tonhoehe-lautstaerke', 'sound-pitch-loudness'),
+              title: L('Schall: Tonhöhe und Lautstärke', 'Sound: pitch and loudness'),
+              summary: L(
+                'Höher heißt schneller schwingen, lauter heißt weiter schwingen. Auf dem Oszilloskop sieht man den Unterschied, und hören kann man ihn auch.',
+                'Higher means vibrating faster, louder means vibrating further. You can see the difference on the oscilloscope, and hear it too.',
+              ),
+              grades: [5, 11],
+              kmk: ['P-S', 'P-E', 'P-BK-Wechselwirkung', 'P-BK-Energie', 'P-BK-Mathematisieren'],
+              keywords: L(
+                ['Schall', 'Akustik', 'Tonhöhe', 'Lautstärke', 'Frequenz', 'Hertz', 'Amplitude', 'Periodendauer', 'Oszilloskop', 'Klangfarbe', 'Obertöne', 'Schallgeschwindigkeit', 'Wellenlänge', 'Längswelle', 'Schallausbreitung', 'Vakuum', 'Dezibel', 'Schallpegel', 'Lärm', 'Gehör', 'Hörbereich', 'Ultraschall', 'Infraschall', 'Echo', 'Schwebung', 'Saite', 'Pfeife', 'Sender', 'Empfänger', 'Lautsprecher'],
+                ['sound', 'acoustics', 'pitch', 'loudness', 'frequency', 'hertz', 'amplitude', 'period', 'oscilloscope', 'timbre', 'overtones', 'speed of sound', 'wavelength', 'longitudinal wave', 'propagation of sound', 'vacuum', 'decibel', 'sound level', 'noise', 'hearing', 'range of hearing', 'ultrasound', 'infrasound', 'echo', 'beats', 'string', 'pipe', 'transmitter', 'receiver', 'loudspeaker'],
+              ),
+            },
+          ],
+        },
         {
           id: 'schwingungen',
           title: L('Mechanische Schwingungen', 'Mechanical oscillations'),

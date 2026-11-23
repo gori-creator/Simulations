@@ -187,6 +187,7 @@ const EF_UNITS: CurriculumUnit[] = [
           'Schallgeschwindigkeit, Ton, Klang und Geräusch, Frequenz und Amplitude, Schalldruckpegel, Intervalle und Klangfarbe.',
           'Speed of sound, tone, sound and noise, frequency and amplitude, sound pressure level, intervals and timbre.',
         ),
+        simulations: ['schall'],
       },
       {
         code: 'EF-2.2',

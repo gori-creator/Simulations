@@ -2,7 +2,7 @@
 
 <!-- Automatisch erzeugt mit `npm run lehrplan:luecken` aus src/curriculum/lehrplaene/ – nicht von Hand bearbeiten. -->
 
-Lernbereiche der Länder-Lehrpläne, zu denen es noch **keine** Simulation gibt – Vorrat für neue Simulationen (Anleitung: `docs/NEUE-SIMULATION.md`). Insgesamt **247 von 1773** Lernbereichen ohne Simulation.
+Lernbereiche der Länder-Lehrpläne, zu denen es noch **keine** Simulation gibt – Vorrat für neue Simulationen (Anleitung: `docs/NEUE-SIMULATION.md`). Insgesamt **240 von 1773** Lernbereichen ohne Simulation.
 
 Nicht jeder Lernbereich eignet sich für eine Simulation (z. B. reine Rechenfertigkeiten oder Methoden). Kommt ein Thema in mehreren Ländern vor, lohnt es sich besonders.
 
@@ -136,13 +136,12 @@ Alle Lernbereiche haben eine Simulation.
 | 7–9 | 2.4 | Größen und Messen › Sachaufgaben | Größen in Sachzusammenhängen bestimmen und Ergebnisse und Lösungsweg bewerten. |
 | 12 | S.3 | Stochastik › Hypergeometrische Verteilung | Ziehen ohne Zurücklegen mit der hypergeometrischen Verteilung beschreiben. |
 
-## Physik (186)
+## Physik (179)
 
-### Baden-Württemberg · Gymnasium (5)
+### Baden-Württemberg · Gymnasium (4)
 
 | Stufe | Nr. | Lernbereich | Kurz |
 | --- | --- | --- | --- |
-| 7/8 | 3.1.2 | Einführung in die Physik: Akustik | Schall erzeugen, ausbreiten und hören; Lautstärke und Tonhöhe mit Amplitude und Frequenz einer Schwingung verbinden und Hörschäden durch Lärm bewerten. |
 | 7/8 | 3.1.4 | Einführung in die Physik: Energie effizient nutzen | Grundeigenschaften der Energie und Energieketten; Wärmeleitung, Konvektion und Wärmestrahlung untersuchen, Dämmstoffe prüfen und Regeln zum Energiesparen ableiten. |
 | 7/8 | 3.1.8 | Magnetismus | Magnete, Pole und Magnetfelder experimentell untersuchen und mit Feldlinien von Stab- und Hufeisenmagnet beschreiben, einschließlich Erdmagnetfeld. |
 | 9/10 | 3.2.6 | Wärmelehre und Klimaphysik | Erwärmungsenergie mit der spezifischen Wärmekapazität berechnen und den natürlichen und menschengemachten Treibhauseffekt, Kippelemente und Wege der Energieversorgung beurteilen. |
@@ -191,13 +190,11 @@ Alle Lernbereiche haben eine Simulation.
 
 Alle Lernbereiche haben eine Simulation.
 
-### Hessen · Gymnasium (72)
+### Hessen · Gymnasium (69)
 
 | Stufe | Nr. | Lernbereich | Kurz |
 | --- | --- | --- | --- |
 | 6–8 | 1.1 | Haus der Naturwissenschaften › Körper und deren Eigenschaften | Gegenstände nach messbaren Eigenschaften beschreiben und ordnen. |
-| 6–8 | 2.1 | Erweiterung der Sinne › Wahrnehmung der Umgebung mit den Sinnesorganen | Wie Auge und Ohr Licht und Schall wahrnehmen. |
-| 6–8 | 2.2 | Erweiterung der Sinne › Sender-Empfänger-Modell | Lichtquelle bzw. Schallquelle, Ausbreitung und Empfänger unterscheiden. |
 | 6–8 | 3.1 | Energie in Umwelt und Technik › Anschaulicher Energiebegriff | Energie als Größe, die in vielen Formen vorkommt und Vorgänge antreibt. |
 | 6–8 | 3.2 | Energie in Umwelt und Technik › Energietransport | Wege, auf denen Energie von einem Ort zum anderen gelangt. |
 | 6–8 | 3.3 | Energie in Umwelt und Technik › Energiestrom in die Umgebung als Entwertung von Energie | Verstehen, dass Energie nicht verschwindet, aber an Nutzbarkeit verliert. |
@@ -209,7 +206,6 @@ Alle Lernbereiche haben eine Simulation.
 | 6–8 | 9.1 | Physik in der Verantwortung › Verantwortung gegenüber der Umwelt | Umwelt- und Gesundheitsaspekte beim Experimentieren und im Alltag berücksichtigen. |
 | 6–8 | 9.2 | Physik in der Verantwortung › Rolle der Physik bei Umwelt- und Naturereignissen | Physikalische Informationen aus Meldungen zu Ereignissen entnehmen. |
 | 9/10 | 1.1 | Haus der Naturwissenschaften › Besonderheiten und Gemeinsamkeiten der Physik, Chemie und Biologie | Arbeitsweisen der drei Naturwissenschaften vergleichen. |
-| 9/10 | 2.1 | Erweiterung der Sinne › Schall, Licht und ihre Ausbreitung | Ausbreitung von Licht und Schall vergleichen, auch die Schallgeschwindigkeit. |
 | 9/10 | 4.3 | Elektrizität im Alltag › Elektrostatische Phänomene | Aufladung, Anziehung und Abstoßung mit Ladungen erklären. |
 | 9/10 | 5.1 | Wettererscheinungen und Klima › Übertragung thermischer Energie | Wärmeleitung, Wärmeströmung und Wärmestrahlung untersuchen. |
 | 9/10 | 5.3 | Wettererscheinungen und Klima › Druck- und Temperaturunterschiede | Wettererscheinungen als Ausgleich von Unterschieden erklären. |
@@ -268,19 +264,18 @@ Alle Lernbereiche haben eine Simulation.
 | 13 | Q4.6.4 | Astrophysik › Energieumwandlung in der Sonne (nur LK) | Proton-Proton-Reaktion und weitere Fusionsprozesse. |
 | 13 | Q4.6.5 | Astrophysik › Sterntypen, Sternentstehung und -entwicklung (nur LK) | Hauptreihensterne und Lebenszyklus eines Sterns. |
 
-### Niedersachsen · Gymnasium (7)
+### Niedersachsen · Gymnasium (6)
 
 | Stufe | Nr. | Lernbereich | Kurz |
 | --- | --- | --- | --- |
 | 5/6 | 1 | Dauermagnete | Magnete ziehen manche Stoffe an, haben Nord- und Südpol, die sich nicht trennen lassen; Erde als Magnet, Kompass und das Modell der Elementarmagnete. |
 | 7/8 | 4 | Einführung des Energiebegriffs | Energie in Übertragungsketten und Flussdiagrammen beschreiben, Einheit Joule, qualitative Energiebilanzen und Energieerhaltung mit dem Energiestrom in die Umgebung. |
 | 11 | EF-1.2 | Dynamik › Grundgleichung der Mechanik und newtonsche Axiome | F = m · a, Krafteinheit und die drei Axiome. |
-| 11 | EF-2.1 | Wahlmodule (Vorschläge) › Akustik | Schallgeschwindigkeit, Ton, Klang und Geräusch, Frequenz und Amplitude, Schalldruckpegel, Intervalle und Klangfarbe. |
 | 11 | EF-2.4 | Wahlmodule (Vorschläge) › Strahlungsphysik | Strahlungsgesetze, Strahlungsgleichgewicht, selektive Absorption und der Treibhauseffekt. |
 | 12/13 | Q-3.2 | Quantenobjekte › Komplementarität und Unbestimmtheit | Nur eA: Mach-Zehnder-Interferometer, Delayed-Choice-Experiment, Zustand, Präparation, Superposition und Unbestimmtheit. |
 | 12/13 | Q-5.2 | Atomkern › Energiespektren und Anwendungen | Halbleiterdetektor, Alpha-Spektrum einer Zerfallsreihe, Bragg-Kurve; nur eA: Nukleonen im Potenzialtopf. |
 
-### Nordrhein-Westfalen · Gymnasium (16)
+### Nordrhein-Westfalen · Gymnasium (14)
 
 | Stufe | Nr. | Lernbereich | Kurz |
 | --- | --- | --- | --- |
@@ -288,8 +283,6 @@ Alle Lernbereiche haben eine Simulation.
 | 5/6 | 2.2 | Elektrischer Strom und Magnetismus › Wirkungen des elektrischen Stroms | Wärme-, Licht- und magnetische Wirkung, Sicherungen und Gefahren durch Elektrizität. |
 | 5/6 | 2.3 | Elektrischer Strom und Magnetismus › Magnetische Kräfte und Felder | Anziehung und Abstoßung, Magnetpole, Feldlinienbilder, Magnetfeld der Erde und Kompass. |
 | 5/6 | 2.4 | Elektrischer Strom und Magnetismus › Magnetisierung | Magnetisierbare Stoffe und das Modell der Elementarmagnete. |
-| 5/6 | 3.1 | Schall › Schwingungen und Schallwellen | Tonhöhe und Lautstärke, Schallausbreitung im Teilchenmodell, Absorption und Reflexion. |
-| 5/6 | 3.2 | Schall › Schallquellen und Schallempfänger | Sender-Empfänger-Modell, Ultraschall in Natur, Medizin und Technik, Lärm und Lärmschutz. |
 | 7–10 | 5.3 | Optische Instrumente › Licht und Farben | Zerlegung von Licht am Prisma, Infrarot und Ultraviolett, Absorption und Farbmischung (RGB, CMYK). |
 | 7–10 | 6.2 | Sterne und Weltall › Universum | Himmelsobjekte, Entfernungen in Lichtjahren und typische Stadien der Sternentwicklung. |
 | 7–10 | 8.2 | Druck und Auftrieb › Druckmessung | Druck und Kraftwirkungen, Druck in Pascal angeben und messen. |

@@ -369,7 +369,7 @@ const QPHASE_UNITS: CurriculumUnit[] = [
           'Harmonische Wellen mathematisch beschreiben, Huygens’sches Prinzip, Interferenz, Polarisation, stehende Wellen und Schall.',
           'Describing harmonic waves mathematically, Huygens’ principle, interference, polarisation, standing waves and sound.',
         ),
-        simulations: ['wellen-ausbreitung', 'interferenz', 'stehende-wellen'],
+        simulations: ['wellen-ausbreitung', 'interferenz', 'stehende-wellen', 'schall'],
       },
       {
         code: 'eA-1.3',

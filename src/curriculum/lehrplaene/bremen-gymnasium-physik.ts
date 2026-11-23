@@ -125,7 +125,7 @@ const QP_UNITS: CurriculumUnit[] = [
       'Feder- und Fadenpendel, erzwungene Schwingung, Dämpfung und Resonanz, Wellenausbreitung, Überlagerung und stehende Wellen; Erweiterung: Akustik und Doppler-Effekt.',
       'Spring and simple pendulums, forced oscillation, damping and resonance, wave propagation, superposition and standing waves; extension: acoustics and the Doppler effect.',
     ),
-    simulations: ['fadenpendel', 'federpendel', 'resonanz', 'wellen-ausbreitung', 'doppler-effekt', 'interferenz', 'stehende-wellen'],
+    simulations: ['fadenpendel', 'federpendel', 'resonanz', 'wellen-ausbreitung', 'doppler-effekt', 'interferenz', 'stehende-wellen', 'schall'],
   },
   {
     code: '4',

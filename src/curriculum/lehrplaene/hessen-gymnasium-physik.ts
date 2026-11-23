@@ -98,6 +98,7 @@ export const hessenGymnasiumPhysik: StateCurriculum = {
               code: '2.1',
               title: L('Wahrnehmung der Umgebung mit den Sinnesorganen', 'Perceiving the surroundings with the sense organs'),
               summary: L('Wie Auge und Ohr Licht und Schall wahrnehmen.', 'How eye and ear perceive light and sound.'),
+              simulations: ['schall'],
             },
             {
               code: '2.2',
@@ -106,6 +107,7 @@ export const hessenGymnasiumPhysik: StateCurriculum = {
                 'Lichtquelle bzw. Schallquelle, Ausbreitung und Empfänger unterscheiden.',
                 'Distinguishing source, propagation and receiver of light or sound.',
               ),
+              simulations: ['schall'],
             },
             {
               code: '2.3',
@@ -374,6 +376,7 @@ export const hessenGymnasiumPhysik: StateCurriculum = {
               code: '2.1',
               title: L('Wahrnehmung der Umgebung mit den Sinnesorganen', 'Perceiving the surroundings with the sense organs'),
               summary: L('Wie Auge und Ohr Licht und Schall wahrnehmen.', 'How eye and ear perceive light and sound.'),
+              simulations: ['schall'],
             },
             {
               code: '2.2',
@@ -382,6 +385,7 @@ export const hessenGymnasiumPhysik: StateCurriculum = {
                 'Lichtquelle bzw. Schallquelle, Ausbreitung und Empfänger unterscheiden.',
                 'Distinguishing source, propagation and receiver of light or sound.',
               ),
+              simulations: ['schall'],
             },
             {
               code: '2.3',
@@ -654,6 +658,7 @@ export const hessenGymnasiumPhysik: StateCurriculum = {
               code: '2.1',
               title: L('Wahrnehmung der Umgebung mit den Sinnesorganen', 'Perceiving the surroundings with the sense organs'),
               summary: L('Wie Auge und Ohr Licht und Schall wahrnehmen.', 'How eye and ear perceive light and sound.'),
+              simulations: ['schall'],
             },
             {
               code: '2.2',
@@ -662,6 +667,7 @@ export const hessenGymnasiumPhysik: StateCurriculum = {
                 'Lichtquelle bzw. Schallquelle, Ausbreitung und Empfänger unterscheiden.',
                 'Distinguishing source, propagation and receiver of light or sound.',
               ),
+              simulations: ['schall'],
             },
             {
               code: '2.3',
@@ -936,6 +942,7 @@ export const hessenGymnasiumPhysik: StateCurriculum = {
                 'Ausbreitung von Licht und Schall vergleichen, auch die Schallgeschwindigkeit.',
                 'Comparing how light and sound propagate, including the speed of sound.',
               ),
+              simulations: ['schall'],
             },
             {
               code: '2.2',
@@ -1245,6 +1252,7 @@ export const hessenGymnasiumPhysik: StateCurriculum = {
                 'Ausbreitung von Licht und Schall vergleichen, auch die Schallgeschwindigkeit.',
                 'Comparing how light and sound propagate, including the speed of sound.',
               ),
+              simulations: ['schall'],
             },
             {
               code: '2.2',

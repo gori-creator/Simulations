@@ -49,6 +49,7 @@ export const badenWuerttembergGymnasiumPhysik: StateCurriculum = {
             "Schall erzeugen, ausbreiten und hören; Lautstärke und Tonhöhe mit Amplitude und Frequenz einer Schwingung verbinden und Hörschäden durch Lärm bewerten.",
             "Producing, transmitting and hearing sound; linking loudness and pitch to amplitude and frequency of an oscillation, and judging the risk of hearing damage from noise.",
           ),
+          simulations: ['schall'],
         },
         {
           code: "3.1.3",
@@ -140,6 +141,7 @@ export const badenWuerttembergGymnasiumPhysik: StateCurriculum = {
             "Schall erzeugen, ausbreiten und hören; Lautstärke und Tonhöhe mit Amplitude und Frequenz einer Schwingung verbinden und Hörschäden durch Lärm bewerten.",
             "Producing, transmitting and hearing sound; linking loudness and pitch to amplitude and frequency of an oscillation, and judging the risk of hearing damage from noise.",
           ),
+          simulations: ['schall'],
         },
         {
           code: "3.1.3",

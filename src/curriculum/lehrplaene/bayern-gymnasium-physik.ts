@@ -452,7 +452,7 @@ export const bayernGymnasiumPhysik: StateCurriculum = {
                 "Wahlthemen wie Physik auf dem Jahrmarkt, Akustik und Resonanz, Licht in der Technik oder Computermodelle für Würfe mit Luftwiderstand und Planetenbahnen.",
                 "Optional topics such as physics at the fair, acoustics and resonance, light in technology, or computer models of throws with air resistance and planetary orbits.",
               ),
-              simulations: ["schiefer-wurf", "planetenbahnen", "resonanz"],
+              simulations: ["schiefer-wurf", "planetenbahnen", "resonanz", "schall"],
             },
           ],
         },
