@@ -294,7 +294,7 @@ const SEK_I_UNITS: CurriculumUnit[] = [
           'Dichte, Schweredruck, Auftrieb und Archimedisches Prinzip, Luftdruck; Druck als Folge von Teilchenstößen.',
           'Density, hydrostatic pressure, buoyancy and Archimedes’ principle, air pressure; pressure as a result of particle collisions.',
         ),
-        simulations: ['gasgesetze'],
+        simulations: ['gasgesetze', 'dichte-auftrieb'],
       },
       {
         code: '8.2',

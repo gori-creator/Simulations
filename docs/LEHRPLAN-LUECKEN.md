@@ -2,7 +2,7 @@
 
 <!-- Automatisch erzeugt mit `npm run lehrplan:luecken` aus src/curriculum/lehrplaene/ – nicht von Hand bearbeiten. -->
 
-Lernbereiche der Länder-Lehrpläne, zu denen es noch **keine** Simulation gibt – Vorrat für neue Simulationen (Anleitung: `docs/NEUE-SIMULATION.md`). Insgesamt **186 von 1773** Lernbereichen ohne Simulation.
+Lernbereiche der Länder-Lehrpläne, zu denen es noch **keine** Simulation gibt – Vorrat für neue Simulationen (Anleitung: `docs/NEUE-SIMULATION.md`). Insgesamt **179 von 1773** Lernbereichen ohne Simulation.
 
 Nicht jeder Lernbereich eignet sich für eine Simulation (z. B. reine Rechenfertigkeiten oder Methoden). Kommt ein Thema in mehreren Ländern vor, lohnt es sich besonders.
 
@@ -136,7 +136,7 @@ Alle Lernbereiche haben eine Simulation.
 | 7–9 | 2.4 | Größen und Messen › Sachaufgaben | Größen in Sachzusammenhängen bestimmen und Ergebnisse und Lösungsweg bewerten. |
 | 12 | S.3 | Stochastik › Hypergeometrische Verteilung | Ziehen ohne Zurücklegen mit der hypergeometrischen Verteilung beschreiben. |
 
-## Physik (125)
+## Physik (118)
 
 ### Baden-Württemberg · Gymnasium (1)
 
@@ -180,11 +180,10 @@ Alle Lernbereiche haben eine Simulation.
 
 Alle Lernbereiche haben eine Simulation.
 
-### Hessen · Gymnasium (55)
+### Hessen · Gymnasium (53)
 
 | Stufe | Nr. | Lernbereich | Kurz |
 | --- | --- | --- | --- |
-| 6–8 | 1.1 | Haus der Naturwissenschaften › Körper und deren Eigenschaften | Gegenstände nach messbaren Eigenschaften beschreiben und ordnen. |
 | 6–8 | 3.1 | Energie in Umwelt und Technik › Anschaulicher Energiebegriff | Energie als Größe, die in vielen Formen vorkommt und Vorgänge antreibt. |
 | 6–8 | 3.2 | Energie in Umwelt und Technik › Energietransport | Wege, auf denen Energie von einem Ort zum anderen gelangt. |
 | 6–8 | 4.3 | Elektrizität im Alltag › Gefahren beim Umgang mit Elektrizität im Alltag | Gefahren erkennen und sicheres Verhalten begründen. |
@@ -198,7 +197,6 @@ Alle Lernbereiche haben eine Simulation.
 | 9/10 | 5.3 | Wettererscheinungen und Klima › Druck- und Temperaturunterschiede | Wettererscheinungen als Ausgleich von Unterschieden erklären. |
 | 9/10 | 6.2 | Fortbewegung und Mobilität › Trägheit eines Körpers | Trägheit als Beharrungsvermögen; Bedeutung für die Verkehrssicherheit. |
 | 9/10 | 6.4 | Fortbewegung und Mobilität › Menschliche und technische Leistungen und deren Vergleich | Eigene körperliche Leistung bestimmen und mit Maschinen vergleichen. |
-| 9/10 | 7.2 | Technik im Dienst des Menschen › Phänomen Auftrieb | Schwimmen, Schweben und Sinken experimentell untersuchen und erklären. |
 | 9/10 | 9.3 | Physik in der Verantwortung › Konsequenzen der Nutzung physikalischer Forschungsergebnisse | Chancen und Risiken technologischer Entwicklungen abwägen. |
 | 11 | E.1.5 | Bewegungen und ihre Beschreibung › Idealisierung | Massepunkt und Vernachlässigung der Reibung als Modellannahmen. |
 | 11 | E.2.1 | Newton’sche Axiome und Erhaltungssätze › Die drei Newton’schen Axiome | Trägheitsgesetz, Grundgleichung F = m·a, Wechselwirkungsprinzip und Inertialsysteme. |
@@ -287,22 +285,19 @@ Alle Lernbereiche haben eine Simulation.
 | 12/13 | LF-W.19 | Wahlpflichtbausteine (Leistungsfach, sieben zu wählen) › Chaos und Fraktale – Nichtlineare dynamische Systeme | Chaosphänomene, Merkmale chaotischer Systeme und fraktale Strukturen. |
 | 12/13 | LF-W.20 | Wahlpflichtbausteine (Leistungsfach, sieben zu wählen) › Strömungsphysik | Strömungsarten, Kontinuitätsgleichung, Bernoulli-Gleichung und dynamischer Auftrieb. |
 
-### Saarland · Gymnasium (2)
+### Saarland · Gymnasium (1)
 
 | Stufe | Nr. | Lernbereich | Kurz |
 | --- | --- | --- | --- |
-| 8 | 3 | Druck | Druck als Zustand, Schweredruck in Flüssigkeiten, Luftdruck, Auftrieb. |
 | 13 | 3.4 | Elektromagnetische Wellen | Entstehung und Eigenschaften elektromagnetischer Wellen. |
 
-### Sachsen · Gymnasium (12)
+### Sachsen · Gymnasium (10)
 
 | Stufe | Nr. | Lernbereich | Kurz |
 | --- | --- | --- | --- |
 | 6 | W2 | Wärmedämmung (Wahlbereich) | Wärmeverluste am Haus finden und Dämmung untersuchen. |
 | 6 | W3 | Farben (Wahlbereich) | Zerlegung weißen Lichts, additive und subtraktive Farbmischung. |
 | 7 | W3 | Vom Fliegen (Wahlbereich) | Geschichte des Fliegens und dynamischer Auftrieb am Tragflügel. |
-| 8 | 1 | Mechanik der Flüssigkeiten und Gase | Druck, Schweredruck, Auftrieb nach Archimedes und Luftdruck. |
-| 8 | W1 | Vom Ballonfahren (Wahlbereich) | Statischer Auftrieb in Gasen, Heißluftballon und Luftschiff. |
 | 8 | W2 | Kühlschrank und Wärmepumpe (Wahlbereich) | Wärmeübertragung gegen das Temperaturgefälle mit Energieaufwand. |
 | 8 | W3 | Elektrisches Messen nichtelektrischer Größen (Wahlbereich) | Sensoren wandeln Größen wie Temperatur oder Licht in Spannungen um. |
 | 10 | W2 | Kommunikation mit elektronischen Medien (Wahlbereich) | Informationsübertragung mit Hertz’schen Wellen, Modulation und Demodulation. |
@@ -311,22 +306,20 @@ Alle Lernbereiche haben eine Simulation.
 | 11 | LK-4 | Modellbildung und Simulation (Leistungskurs) | Bewegungen numerisch modellieren, Parameter variieren und mit dem Experiment vergleichen. |
 | 12 | LK-W2 | Deterministisches Chaos (Wahlbereich Leistungskurs) | Nichtlineare Systeme, Attraktoren und begrenzte Vorhersagbarkeit. |
 
-### Sachsen-Anhalt · Gymnasium (5)
+### Sachsen-Anhalt · Gymnasium (4)
 
 | Stufe | Nr. | Lernbereich | Kurz |
 | --- | --- | --- | --- |
-| 7/8 | 4 | Druck und Auftrieb | Druck bei festen Körpern, in Flüssigkeiten und Gasen, Auftrieb nach Archimedes, Schwimmen, Schweben und Sinken, dynamischer Auftrieb. |
 | 10 | 4 | Klimaphysik | Elektromagnetisches Spektrum, Strahlungshaushalt der Erde, Albedo, Stefan-Boltzmann-Gesetz, natürlicher und menschengemachter Treibhauseffekt. |
 | 11/12 | gA-4.2 | Praktika (grundlegendes Anforderungsniveau) › Aufgabenpraktikum | Strategien zum Lösen physikalischer Aufgaben üben: Bilanzen, Analogien, Vereinfachen und passende Modelle wählen. |
 | 11/12 | eA-2.4 | Elektrodynamik (erhöhtes Anforderungsniveau) › Wechselstromwiderstände und elektromagnetische Schwingungen | Effektivwerte, induktiver und kapazitiver Widerstand mit Zeigerdiagramm, Schwingkreis und Thomson’sche Gleichung. |
 | 11/12 | eA-4.2 | Praktika (erhöhtes Anforderungsniveau) › Aufgabenpraktikum | Strategien zum Lösen physikalischer Aufgaben üben, auch mit Kraftansätzen und der Wahl eines geeigneten Bezugssystems. |
 
-### Schleswig-Holstein · Gymnasium (4)
+### Schleswig-Holstein · Gymnasium (3)
 
 | Stufe | Nr. | Lernbereich | Kurz |
 | --- | --- | --- | --- |
 | 7–10 | 3.4 | Elektromagnetische Strahlung › Spektrum und Wellenlänge (Block II) | Spektralfarben, Farbaddition und -subtraktion, Absorption und Transmission, nicht sichtbare Bereiche und Sensoren. |
 | 7–10 | 3.5 | Elektromagnetische Strahlung › Klimaphysik (Block II) | Strahlungshaushalt der Erde, Albedo, natürlicher und anthropogener Treibhauseffekt und Rückkopplungen. |
-| 7–10 | 4.1 | Mechanik › Dichte (Block I) | Masse, Volumen und Dichte, Schwimmen, Schweben und Sinken. |
 | 7–10 | 5.3 | Radioaktivität und ionisierende Strahlung › Kernenergie (Block II) | Kernspaltung und Kettenreaktion, Kernfusion in Reaktoren und Sonne, Chancen und Risiken. |
 

@@ -132,6 +132,7 @@ const K8: CurriculumUnit[] = [
     code: '1',
     title: L('Mechanik der Flüssigkeiten und Gase', 'Mechanics of liquids and gases'),
     summary: L('Druck, Schweredruck, Auftrieb nach Archimedes und Luftdruck.', 'Pressure, hydrostatic pressure, buoyancy according to Archimedes and air pressure.'),
+    simulations: ['dichte-auftrieb'],
   },
   {
     code: '2',
@@ -164,6 +165,7 @@ const K8: CurriculumUnit[] = [
     code: 'W1',
     title: L('Vom Ballonfahren (Wahlbereich)', 'Ballooning (optional)'),
     summary: L('Statischer Auftrieb in Gasen, Heißluftballon und Luftschiff.', 'Static buoyancy in gases, hot-air balloons and airships.'),
+    simulations: ['dichte-auftrieb'],
   },
   {
     code: 'W2',

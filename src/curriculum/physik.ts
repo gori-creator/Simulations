@@ -163,6 +163,29 @@ export const physik: Subject = {
           ],
         },
         {
+          id: 'dichte-auftrieb',
+          title: L('Dichte und Auftrieb', 'Density and buoyancy'),
+          grades: [7, 10],
+          simulations: [
+            {
+              id: 'dichte-auftrieb',
+              status: 'ready',
+              slug: L('dichte-schwimmen-auftrieb', 'density-floating-buoyancy'),
+              title: L('Dichte, Schwimmen und Auftrieb', 'Density, floating and buoyancy'),
+              summary: L(
+                'Holz schwimmt, Eisen sinkt, ein Stahlschiff trägt Ladung: Lege Körper ins Wasser, miss ihre Dichte und lass einen Heißluftballon steigen.',
+                'Wood floats, iron sinks, a steel ship carries cargo: put bodies into water, measure their density and let a hot-air balloon rise.',
+              ),
+              grades: [7, 10],
+              kmk: ['P-S', 'P-E', 'P-BK-Materie', 'P-BK-Wechselwirkung'],
+              keywords: L(
+                ['Dichte', 'Auftrieb', 'Auftriebskraft', 'Archimedes', 'archimedisches Prinzip', 'Schwimmen', 'Schweben', 'Sinken', 'Gewichtskraft', 'Überlaufgefäß', 'Messzylinder', 'Waage', 'Volumen', 'Masse', 'Eintauchtiefe', 'Schiff', 'U-Boot', 'Heißluftballon', 'Luftdichte', 'Eisberg', 'Salzwasser'],
+                ['density', 'buoyancy', 'buoyant force', 'upthrust', 'Archimedes’ principle', 'floating', 'sinking', 'hovering', 'weight', 'overflow can', 'measuring cylinder', 'balance', 'volume', 'mass', 'ship', 'submarine', 'hot-air balloon', 'air density', 'iceberg', 'salt water'],
+              ),
+            },
+          ],
+        },
+        {
           id: 'energie-impuls',
           title: L('Energie und Impuls', 'Energy and momentum'),
           grades: [7, 11],

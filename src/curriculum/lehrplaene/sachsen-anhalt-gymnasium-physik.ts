@@ -124,6 +124,7 @@ const SJ_7_8_UNITS: CurriculumUnit[] = [
       'Druck bei festen Körpern, in Flüssigkeiten und Gasen, Auftrieb nach Archimedes, Schwimmen, Schweben und Sinken, dynamischer Auftrieb.',
       'Pressure in solids, liquids and gases, Archimedes’ principle, floating, hovering and sinking, dynamic lift.',
     ),
+    simulations: ['dichte-auftrieb'],
   },
   {
     code: '5',
