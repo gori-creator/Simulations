@@ -469,7 +469,7 @@ const S_11_UNITS: CurriculumUnit[] = [
       'Sinus- und Kosinusfunktionen mit Parametern in Sachsituationen, ihre Ableitungen und Stammfunktionen, Produkt- und Kettenregel, Flächeninhalte.',
       'Sine and cosine functions with parameters in context, their derivatives and antiderivatives, the product and chain rules, areas.',
     ),
-    simulations: ['sinusfunktion', 'transformationen'],
+    simulations: ['sinusfunktion', 'transformationen', 'ableitungsregeln', 'integrationsregeln'],
   },
   {
     code: '2',
@@ -527,7 +527,7 @@ const S_12_UNITS: CurriculumUnit[] = [
       'Lineare Gleichungssysteme mit dem Gauß-Verfahren, Wachstums- und Umverteilungsprozesse mit Übergangsmatrizen, Matrixpotenzen, Fixvektoren und Langzeitverhalten.',
       'Systems of linear equations with Gaussian elimination, growth and redistribution processes with transition matrices, matrix powers, fixed vectors and long-term behaviour.',
     ),
-    simulations: ['gauss-verfahren'],
+    simulations: ['uebergangsmatrizen', 'gauss-verfahren'],
   },
 ];
 

@@ -2,22 +2,19 @@
 
 <!-- Automatisch erzeugt mit `npm run lehrplan:luecken` aus src/curriculum/lehrplaene/ – nicht von Hand bearbeiten. -->
 
-Lernbereiche der Länder-Lehrpläne, zu denen es noch **keine** Simulation gibt – Vorrat für neue Simulationen (Anleitung: `docs/NEUE-SIMULATION.md`). Insgesamt **315 von 1773** Lernbereichen ohne Simulation.
+Lernbereiche der Länder-Lehrpläne, zu denen es noch **keine** Simulation gibt – Vorrat für neue Simulationen (Anleitung: `docs/NEUE-SIMULATION.md`). Insgesamt **284 von 1773** Lernbereichen ohne Simulation.
 
 Nicht jeder Lernbereich eignet sich für eine Simulation (z. B. reine Rechenfertigkeiten oder Methoden). Kommt ein Thema in mehreren Ländern vor, lohnt es sich besonders.
 
-## Mathematik (100)
+## Mathematik (84)
 
-### Baden-Württemberg · Gymnasium (6)
+### Baden-Württemberg · Gymnasium (3)
 
 | Stufe | Nr. | Lernbereich | Kurz |
 | --- | --- | --- | --- |
 | 7/8 | 3.2.2 | Leitidee Messen (keine Inhalte in den Klassen 7/8) | In den Klassen 7/8 sieht der Bildungsplan für diese Leitidee keine Inhalte vor. |
 | 9/10 | 3.3.1 (1)–(3) | Leitidee Zahl – Variable – Operation › mit Potenzen umgehen | Zahlen in wissenschaftlicher Schreibweise angeben, Potenzen mit rationalen Exponenten als Wurzeln deuten und die Potenzgesetze begründen und anwenden. |
-| 11 | 3.4.1 (2)–(3) | Leitidee Zahl – Variable – Operation › Funktionsterme ableiten | Faktor-, Potenz- und Summenregel anwenden und die Ableitungen von Sinus und Kosinus angeben. |
-| 12/13 | 3.5.1 (3)–(4) | Leitidee Zahl – Variable – Operation (nur Leistungsfach) › weitere Ableitungsregeln anwenden | Produkt- und Kettenregel anwenden, auch für einfache gebrochenrationale Funktionen. |
 | 12/13 | 3.5.3 (8) | Leitidee Raum und Form (nur Leistungsfach) › vektorielle Darstellungen beim Beweisen nutzen | Einfache geometrische Sätze mit Vektoren beweisen. |
-| 12/13 | 3.6.1 (2)–(3) | Leitidee Zahl – Variable – Operation (Basisfach) › weitere Ableitungsregeln anwenden | Produktregel und Kettenregel (mit linearer innerer Funktion) anwenden. |
 
 ### Bayern · Gymnasium (0)
 
@@ -45,7 +42,7 @@ Alle Lernbereiche haben eine Simulation.
 | --- | --- | --- | --- |
 | 9/10 | 11 | Üben und Vertiefen | Üben und Vertiefen zu allen Leitideen und prozessbezogenen Kompetenzen mit Blick auf die Prüfung. |
 
-### Hessen · Gymnasium (53)
+### Hessen · Gymnasium (40)
 
 | Stufe | Nr. | Lernbereich | Kurz |
 | --- | --- | --- | --- |
@@ -58,21 +55,12 @@ Alle Lernbereiche haben eine Simulation.
 | 7/8 | 4.2.4 | Funktionen und Gleichungen › Lösen von Ungleichungen | Lineare Ungleichungen lösen und Lösungsmengen angeben. |
 | 9/10 | 2.2.2 | Körper › Körper aus der Technik und der Lebensumwelt | Reale Gegenstände als Kombination von Grundkörpern modellieren. |
 | 11 | E.1.3 | Funktionen und ihre Darstellung › Modellieren von Realsituationen durch geeignete Funktionsklassen | Sachsituationen vor allem mit linearen und quadratischen Funktionen beschreiben. |
-| 11 | E.2.4 | Einführung des Ableitungsbegriffs › Ableitungsregeln | Potenz-, Faktor- und Summenregel begründen und ganzrationale Funktionen ableiten. |
-| 11 | E.4.3 | Exponentialfunktionen › Produkt- und Kettenregel | Produkte und Verkettungen aus ganzrationalen und Exponentialfunktionen ableiten. |
-| 11 | E.5.3 | Trigonometrische Funktionen › Ableitung von f(x) = a·sin[b·(x − c)] + d beziehungsweise f(x) = a·cos[b·(x − c)] + d | Mit der Kettenregel ableiten und Ableitungswerte im Sachkontext deuten; Tangenten und Normalen. |
 | 11 | E.7.1 | Folgen und Reihen › Folgen | Konvergenz und Divergenz begründen und Grenzwerte mit Grenzwertsätzen bestimmen. |
 | 11 | E.7.2 | Folgen und Reihen › Reihen | Arithmetische und geometrische Reihen und ihre Grenzwerte untersuchen. |
-| 12 | Q1.1.4 | Einführung in die Integralrechnung › Entwickeln der Integrationsregeln mithilfe der Ableitungsregeln | Stammfunktionen von Potenzen, eˣ, sin x und cos x; Faktor- und Summenregel. |
-| 12 | Q1.1.5 | Einführung in die Integralrechnung › Integrieren von e^(ax+b), sin[b·(x − c)], cos[b·(x − c)] | Stammfunktionen von linear verketteten Funktionen bestimmen. |
-| 12 | Q1.1.6 | Einführung in die Integralrechnung › Integrieren von (ax + b)^r mit r ∈ ℚ \ {−1}, Integrieren von g(x) = f′(x)·e^f(x) (nur LK) | Weitere Stammfunktionen über die Umkehrung der Kettenregel. |
 | 12 | Q1.2.1 | Anwendungen der Integralrechnung › Flächeninhaltsberechnung | Flächen zwischen Graphen und Achsenparallelen berechnen, auch rückwärts (Grenze oder Parameter gesucht). |
 | 12 | Q1.2.3 | Anwendungen der Integralrechnung › Argumentieren und Begründen anhand von Integral-Termen | Integralausdrücke im Sachzusammenhang deuten und Aussagen begründen. |
 | 12 | Q1.2.5 | Anwendungen der Integralrechnung › Uneigentliche Integrale (nur LK) | Unendlich ausgedehnte Flächen auf endlichen Inhalt untersuchen. |
 | 12 | Q1.3.5 | Vertiefung der Differenzial- und Integralrechnung › Logistisches Wachstum (nur LK) | Logistische Wachstumsmodelle anwenden (ohne Herleitung aus der Differenzialgleichung). |
-| 12 | Q1.4.1 | Integrationsmethoden › Ermitteln einer Stammfunktion durch Formansatz mit Koeffizientenvergleich | Stammfunktion mit passendem Ansatz und Koeffizientenvergleich bestimmen. |
-| 12 | Q1.4.2 | Integrationsmethoden › Partielle Integration (nur LK) | Produktintegrale mit partieller Integration lösen. |
-| 12 | Q1.4.3 | Integrationsmethoden › Integration durch Substitution (nur LK) | Integrale durch Substitution vereinfachen. |
 | 12 | Q1.5.1 | Gewöhnliche Differenzialgleichungen › Beschreiben und Entwickeln von Modellen für Wachstums- und Zerfallsprozesse mithilfe von Differenzialgleichungen | Wachstumsannahmen in Differenzialgleichungen übersetzen. |
 | 12 | Q1.5.2 | Gewöhnliche Differenzialgleichungen › Lösungsverfahren für Differenzialgleichungen erster Ordnung | Richtungsfelder, Trennung der Variablen und weitere elementare Methoden. |
 | 12 | Q1.5.3 | Gewöhnliche Differenzialgleichungen › Untersuchen von Differenzialgleichungen zweiter Ordnung (nur LK) | Differenzialgleichungen zweiter Ordnung, etwa bei periodischen Vorgängen. |
@@ -81,10 +69,6 @@ Alle Lernbereiche haben eine Simulation.
 | 12 | Q2.3.15 | Geraden und Ebenen im Raum › Geradenscharen (nur LK) | Geraden mit Parameter untersuchen. |
 | 12 | Q2.3.16 | Geraden und Ebenen im Raum › Ebenenscharen, insbesondere in der Darstellung durch eine Koordinatengleichung (nur LK) | Ebenen mit Parameter untersuchen. |
 | 12 | Q2.3.17 | Geraden und Ebenen im Raum › Darstellung von Parabelbahnen mithilfe von Parametern (nur LK) | Flugbahnen (z. B. eines Balls) parametrisch beschreiben. |
-| 12 | Q2.4.1 | Matrizen zur Beschreibung von Übergangsprozessen › Beschreiben von Übergangsprozessen mithilfe von Zustands- beziehungsweise Übergangsgraphen, Zustandsvektoren und Übergangsmatrizen | Z. B. Populationen, Wählerwanderung oder Kundenströme modellieren. |
-| 12 | Q2.4.3 | Matrizen zur Beschreibung von Übergangsprozessen › Markov-Ketten | Zustände schrittweise (auch rückwärts) berechnen und stabile Zustände über Fixvektoren finden. |
-| 12 | Q2.4.4 | Matrizen zur Beschreibung von Übergangsprozessen › Bestimmen und Interpretieren von Matrixeinträgen bei Potenzen von Matrizen | Einträge von M² usw. im Kontext deuten. |
-| 12 | Q2.4.5 | Matrizen zur Beschreibung von Übergangsprozessen › Langfristige Entwicklung von Übergangsprozessen (nur LK) | Matrixpotenzen, Grenzprozesse und Grenzmatrizen interpretieren. |
 | 13 | Q3.3.2 | Hypothesentests › Grafische Darstellung der Wahrscheinlichkeiten für das Beibehalten beziehungsweise Verwerfen der Nullhypothese in Abhängigkeit vom wahren Wert der Trefferwahrscheinlichkeit p (nur LK) | Operationscharakteristik bzw. Gütefunktion darstellen und deuten. |
 | 13 | Q3.4.1 | Prognose- und Konfidenzintervalle › Prognoseintervalle für relative Häufigkeiten | Erwartete Bereiche für Stichprobenergebnisse bestimmen. |
 | 13 | Q3.4.2 | Prognose- und Konfidenzintervalle › Konfidenzintervalle für Wahrscheinlichkeiten | Aus einer Stichprobe einen Bereich für die unbekannte Wahrscheinlichkeit schätzen. |
@@ -176,22 +160,17 @@ Alle Lernbereiche haben eine Simulation.
 | 7–9 | 2.4 | Größen und Messen › Sachaufgaben | Größen in Sachzusammenhängen bestimmen und Ergebnisse und Lösungsweg bewerten. |
 | 12 | S.3 | Stochastik › Hypergeometrische Verteilung | Ziehen ohne Zurücklegen mit der hypergeometrischen Verteilung beschreiben. |
 
-## Physik (215)
+## Physik (200)
 
-### Baden-Württemberg · Gymnasium (11)
+### Baden-Württemberg · Gymnasium (6)
 
 | Stufe | Nr. | Lernbereich | Kurz |
 | --- | --- | --- | --- |
-| 7/8 | 3.1.1 | Denk- und Arbeitsweisen der Physik | Beobachtung und Erklärung unterscheiden, physikalische Aussagen mit Experimenten überprüfen, Modelle nutzen und das SI-Einheitensystem kennen. |
 | 7/8 | 3.1.2 | Einführung in die Physik: Akustik | Schall erzeugen, ausbreiten und hören; Lautstärke und Tonhöhe mit Amplitude und Frequenz einer Schwingung verbinden und Hörschäden durch Lärm bewerten. |
 | 7/8 | 3.1.4 | Einführung in die Physik: Energie effizient nutzen | Grundeigenschaften der Energie und Energieketten; Wärmeleitung, Konvektion und Wärmestrahlung untersuchen, Dämmstoffe prüfen und Regeln zum Energiesparen ableiten. |
 | 7/8 | 3.1.8 | Magnetismus | Magnete, Pole und Magnetfelder experimentell untersuchen und mit Feldlinien von Stab- und Hufeisenmagnet beschreiben, einschließlich Erdmagnetfeld. |
-| 9/10 | 3.2.1 | Denk- und Arbeitsweisen der Physik | Beobachtung und Erklärung unterscheiden, Aussagen experimentell überprüfen, Modelle wie das Atommodell nutzen und die Bedeutung des SI-Systems erläutern. |
 | 9/10 | 3.2.6 | Wärmelehre und Klimaphysik | Erwärmungsenergie mit der spezifischen Wärmekapazität berechnen und den natürlichen und menschengemachten Treibhauseffekt, Kippelemente und Wege der Energieversorgung beurteilen. |
-| 12/13 | 3.4.1 | Denk- und Arbeitsweisen der Physik (Basisfach mit Schwerpunkt Quantenphysik) | Überprüfbarkeit physikalischer Aussagen durch das Experiment, Modelle von Licht und Materie und die Bedeutung von Naturkonstanten wie der Planck’schen Konstanten. |
-| 12/13 | 3.5.1 | Denk- und Arbeitsweisen der Physik (Basisfach mit Schwerpunkt Astrophysik) | Überprüfbarkeit physikalischer Aussagen, Modelle von Licht, Materie und Kosmos und die Rolle von Naturkonstanten; dazu Astronomie als Beobachtungswissenschaft und astronomische Einheiten wie Lichtjahr und Parsec. |
 | 12/13 | 3.5.7 | Astrophysik (Basisfach mit Schwerpunkt Astrophysik) | Entwicklung des Universums vom Urknall an, Galaxien, Rotverschiebung und Hubble-Beziehung; Entstehung, Leben und Ende von Sternen sowie Methoden zum Nachweis und zur Untersuchung von Exoplaneten. |
-| 12/13 | 3.6.1 | Denk- und Arbeitsweisen der Physik (nur Leistungsfach) | Überprüfbarkeit physikalischer Aussagen, Modelle von Licht und Materie und die Bedeutung von Naturkonstanten. |
 | 12/13 | 3.6.7 | Vertiefendes Themengebiet (nur Leistungsfach) | Ein Forschungsgebiet der Physik (z. B. Relativitätstheorie, Laser- oder Teilchenphysik, Astrophysik) vertieft erarbeiten und typische Methoden daran anwenden. |
 
 ### Bayern · Gymnasium (20)
@@ -241,12 +220,11 @@ Alle Lernbereiche haben eine Simulation.
 | 10 | 1.3 | Magnetfelder und Elektromagnetismus | Magnetfelder von geradem Leiter und Spule, Feldlinienmodell und Feldkonzept, Elektromagnet, Relais und Elektromotor, Transport und Speicherung elektrischer Energie. |
 | 11/12 | 4.2 | Aspekte der Astrophysik (Wahlthema) | Himmelsbeobachtung und Instrumente, Raumzeit, Sternentwicklung und schwarze Löcher, Gravitationswellen, Skalen im Universum, Strahlungsbilanzen von Planeten. |
 
-### Hessen · Gymnasium (79)
+### Hessen · Gymnasium (77)
 
 | Stufe | Nr. | Lernbereich | Kurz |
 | --- | --- | --- | --- |
 | 6–8 | 1.1 | Haus der Naturwissenschaften › Körper und deren Eigenschaften | Gegenstände nach messbaren Eigenschaften beschreiben und ordnen. |
-| 6–8 | 1.2 | Haus der Naturwissenschaften › Physikalische Größen und ihre Messung | Größen mit Einheiten messen und Versuche planen und protokollieren. |
 | 6–8 | 2.1 | Erweiterung der Sinne › Wahrnehmung der Umgebung mit den Sinnesorganen | Wie Auge und Ohr Licht und Schall wahrnehmen. |
 | 6–8 | 2.2 | Erweiterung der Sinne › Sender-Empfänger-Modell | Lichtquelle bzw. Schallquelle, Ausbreitung und Empfänger unterscheiden. |
 | 6–8 | 3.1 | Energie in Umwelt und Technik › Anschaulicher Energiebegriff | Energie als Größe, die in vielen Formen vorkommt und Vorgänge antreibt. |
@@ -260,7 +238,6 @@ Alle Lernbereiche haben eine Simulation.
 | 6–8 | 9.1 | Physik in der Verantwortung › Verantwortung gegenüber der Umwelt | Umwelt- und Gesundheitsaspekte beim Experimentieren und im Alltag berücksichtigen. |
 | 6–8 | 9.2 | Physik in der Verantwortung › Rolle der Physik bei Umwelt- und Naturereignissen | Physikalische Informationen aus Meldungen zu Ereignissen entnehmen. |
 | 9/10 | 1.1 | Haus der Naturwissenschaften › Besonderheiten und Gemeinsamkeiten der Physik, Chemie und Biologie | Arbeitsweisen der drei Naturwissenschaften vergleichen. |
-| 9/10 | 1.2 | Haus der Naturwissenschaften › Historische und aktuelle Erkenntniswege der Physik | An Beispielen zeigen, wie physikalisches Wissen entsteht; Messfehler einschätzen. |
 | 9/10 | 2.1 | Erweiterung der Sinne › Schall, Licht und ihre Ausbreitung | Ausbreitung von Licht und Schall vergleichen, auch die Schallgeschwindigkeit. |
 | 9/10 | 4.3 | Elektrizität im Alltag › Elektrostatische Phänomene | Aufladung, Anziehung und Abstoßung mit Ladungen erklären. |
 | 9/10 | 5.1 | Wettererscheinungen und Klima › Übertragung thermischer Energie | Wärmeleitung, Wärmeströmung und Wärmestrahlung untersuchen. |
@@ -397,17 +374,15 @@ Alle Lernbereiche haben eine Simulation.
 | 12/13 | LF-W.20 | Wahlpflichtbausteine (Leistungsfach, sieben zu wählen) › Strömungsphysik | Strömungsarten, Kontinuitätsgleichung, Bernoulli-Gleichung und dynamischer Auftrieb. |
 | 12/13 | LF-W.21 | Wahlpflichtbausteine (Leistungsfach, sieben zu wählen) › Individuelles Thema | Frei gewählte Inhalte, vor allem zur Bewertungskompetenz, etwa Nachhaltigkeit oder Klimawandel. |
 
-### Saarland · Gymnasium (5)
+### Saarland · Gymnasium (3)
 
 | Stufe | Nr. | Lernbereich | Kurz |
 | --- | --- | --- | --- |
 | 8 | 3 | Druck | Druck als Zustand, Schweredruck in Flüssigkeiten, Luftdruck, Auftrieb. |
-| 8 | 6 | Wahlthema oder Praktikum | Wahlthema oder Praktikum nach Wahl der Lehrkraft. |
-| 9 | 3 | Wahlthema oder Praktikum | Vorschläge: Innenwiderstand, spezifischer Widerstand, Transistorschaltungen. |
 | 12 | 1.3 | Magnetisches Feld | Magnetfelder von Leitern und Spulen, magnetische Flussdichte. |
 | 13 | 3.4 | Elektromagnetische Wellen | Entstehung und Eigenschaften elektromagnetischer Wellen. |
 
-### Sachsen · Gymnasium (22)
+### Sachsen · Gymnasium (20)
 
 | Stufe | Nr. | Lernbereich | Kurz |
 | --- | --- | --- | --- |
@@ -430,24 +405,18 @@ Alle Lernbereiche haben eine Simulation.
 | 11 | LK-6 | Magnetisches Feld (Leistungskurs) | Feldlinienbilder, Flussdichte, Feld um Leiter und in Spulen, Materie im Magnetfeld. |
 | 11 | LK-W1 | Einblick in die Relativitätstheorie (Wahlbereich Leistungskurs) | Postulate, Michelson-Experiment, Zeitdilatation und E = m · c². |
 | 11 | LK-W2 | Leitungsvorgänge in Halbleitern (Wahlbereich Leistungskurs) | Bändermodell, pn-Übergang, Diode und Transistor. |
-| 12 | GK-2 | Praktikum Optik und Schwingungen (Grundkurs) | Experimentelle Aufgaben zu Schwingungen und Optik und Analyse von Messunsicherheiten. |
-| 12 | LK-3 | Praktikum Optik und Schwingungen (Leistungskurs) | Experimentelle Aufgaben und quantitative Analyse von Messunsicherheiten. |
 | 12 | LK-W2 | Deterministisches Chaos (Wahlbereich Leistungskurs) | Nichtlineare Systeme, Attraktoren und begrenzte Vorhersagbarkeit. |
 
-### Sachsen-Anhalt · Gymnasium (11)
+### Sachsen-Anhalt · Gymnasium (7)
 
 | Stufe | Nr. | Lernbereich | Kurz |
 | --- | --- | --- | --- |
-| 6 | 1 | Die Naturwissenschaft Physik | Teilgebiete der Physik kennenlernen, Länge, Zeit, Volumen, Masse und Temperatur als Größen mit Einheiten, Längen und Zeiten messen. |
 | 6 | 5 | Magnetismus | Dauermagnete mit Nord- und Südpol, magnetische Stoffe, Magnetfeld im Feldlinienmodell, Erdmagnetfeld und Kompass. |
 | 7/8 | 4 | Druck und Auftrieb | Druck bei festen Körpern, in Flüssigkeiten und Gasen, Auftrieb nach Archimedes, Schwimmen, Schweben und Sinken, dynamischer Auftrieb. |
 | 10 | 4 | Klimaphysik | Elektromagnetisches Spektrum, Strahlungshaushalt der Erde, Albedo, Stefan-Boltzmann-Gesetz, natürlicher und menschengemachter Treibhauseffekt. |
-| 10 | 5 | Experimentalpraktikum | Experimente selbst planen, durchführen und auswerten, mit Blick auf Messabweichungen und das Verallgemeinern zu Gesetzen. |
-| 11/12 | gA-4.1 | Praktika (grundlegendes Anforderungsniveau) › Experimentalpraktikum | Eigene Experimente planen und auswerten, Messunsicherheiten abschätzen. |
 | 11/12 | gA-4.2 | Praktika (grundlegendes Anforderungsniveau) › Aufgabenpraktikum | Strategien zum Lösen physikalischer Aufgaben üben: Bilanzen, Analogien, Vereinfachen und passende Modelle wählen. |
 | 11/12 | eA-2.4 | Elektrodynamik (erhöhtes Anforderungsniveau) › Wechselstromwiderstände und elektromagnetische Schwingungen | Effektivwerte, induktiver und kapazitiver Widerstand mit Zeigerdiagramm, Schwingkreis und Thomson’sche Gleichung. |
 | 11/12 | eA-3.1 | Ausgewählte Gebiete der nichtklassischen Physik (erhöhtes Anforderungsniveau) › Spezielle Relativitätstheorie | Einstein’sche Postulate, Relativität der Gleichzeitigkeit, Zeitdilatation und Längenkontraktion, relativistische Masse und Energie. |
-| 11/12 | eA-4.1 | Praktika (erhöhtes Anforderungsniveau) › Experimentalpraktikum | Eigene Experimente planen und auswerten, Messunsicherheiten abschätzen. |
 | 11/12 | eA-4.2 | Praktika (erhöhtes Anforderungsniveau) › Aufgabenpraktikum | Strategien zum Lösen physikalischer Aufgaben üben, auch mit Kraftansätzen und der Wahl eines geeigneten Bezugssystems. |
 
 ### Schleswig-Holstein · Gymnasium (6)

@@ -500,7 +500,7 @@ const Q12_UNITS: CurriculumUnit[] = [
           'Sekanten- und Tangentensteigung, Ableitung als lokale Änderungsrate, Ableitungsfunktion, Konstanten-, Potenz-, Faktor-, Summen-, Produkt- und Kettenregel; Ableitungsgraph aus dem Funktionsgraphen und umgekehrt.',
           'Secant and tangent slopes, the derivative as the local rate of change, the derivative function, constant, power, factor, sum, product and chain rules; derivative graph from the graph of the function and vice versa.',
         ),
-        simulations: ['sekante-tangente', 'ableitungsfunktion', 'grenzverhalten', 'e-funktion'],
+        simulations: ['sekante-tangente', 'ableitungsfunktion', 'grenzverhalten', 'e-funktion', 'ableitungsregeln'],
       },
       {
         code: 'Q1.2',
@@ -538,7 +538,7 @@ const Q12_UNITS: CurriculumUnit[] = [
           'Bestände aus Änderungsraten rekonstruieren, Flächen mit bestimmten Integralen, Hauptsatz geometrisch begründen, Stammfunktionen; LK: ln als Stammfunktion von 1/x, uneigentliche Integrale und Rotationskörper.',
           'Reconstructing totals from rates of change, areas with definite integrals, justifying the fundamental theorem geometrically, antiderivatives; LK: ln as an antiderivative of 1/x, improper integrals and solids of revolution.',
         ),
-        simulations: ['ober-untersummen', 'hauptsatz', 'stammfunktion-grafisch', 'aenderungsrate', 'logarithmus', 'umkehrfunktion'],
+        simulations: ['ober-untersummen', 'hauptsatz', 'stammfunktion-grafisch', 'aenderungsrate', 'logarithmus', 'umkehrfunktion', 'integrationsregeln'],
       },
       {
         code: 'Q2.2',

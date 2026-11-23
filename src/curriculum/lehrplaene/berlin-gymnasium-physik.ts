@@ -104,7 +104,7 @@ const KS_9_10_UNITS: CurriculumUnit[] = [
       'Bezugssystem, Momentan- und Durchschnittsgeschwindigkeit, Beschleunigung, Bewegungsgesetze mit s(t)- und v(t)-Diagrammen, freier Fall.',
       'Frames of reference, instantaneous and average speed, acceleration, laws of motion with s(t) and v(t) graphs, free fall.',
     ),
-    simulations: ['bewegungsdiagramme', 'freier-fall'],
+    simulations: ['bewegungsdiagramme', 'freier-fall', 'messunsicherheit'],
   },
   {
     code: '3.8',

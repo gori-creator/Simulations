@@ -404,8 +404,7 @@ const OBERSTUFE_UNITS: CurriculumUnit[] = [
       'grenzverhalten',
       'ganzrationale-funktionen',
       'e-funktion',
-      'parabel-drei-punkte',
-    ],
+      'parabel-drei-punkte', 'ableitungsregeln'],
   },
   {
     code: 'GK-2',
@@ -438,7 +437,7 @@ const OBERSTUFE_UNITS: CurriculumUnit[] = [
       'Stammfunktionen, bestimmtes Integral als rekonstruierter Bestand und Flächeninhalt, Hauptsatz und Flächenberechnung.',
       'Antiderivatives, the definite integral as reconstructed total and area, the fundamental theorem and calculating areas.',
     ),
-    simulations: ['ober-untersummen', 'aenderungsrate', 'hauptsatz', 'stammfunktion-grafisch'],
+    simulations: ['ober-untersummen', 'aenderungsrate', 'hauptsatz', 'stammfunktion-grafisch', 'integrationsregeln'],
   },
   {
     code: 'GK-6',
@@ -507,8 +506,7 @@ const OBERSTUFE_UNITS: CurriculumUnit[] = [
       'grenzverhalten',
       'ganzrationale-funktionen',
       'e-funktion',
-      'parabel-drei-punkte',
-    ],
+      'parabel-drei-punkte', 'ableitungsregeln'],
   },
   {
     code: 'LK-2',
@@ -541,7 +539,7 @@ const OBERSTUFE_UNITS: CurriculumUnit[] = [
       'Wie im Grundkurs, dazu Integralfunktion, lineare Substitution und Volumen von Rotationskörpern.',
       'As in the basic course, plus the integral function, linear substitution and volumes of solids of revolution.',
     ),
-    simulations: ['ober-untersummen', 'aenderungsrate', 'hauptsatz', 'stammfunktion-grafisch', 'rotationskoerper'],
+    simulations: ['ober-untersummen', 'aenderungsrate', 'hauptsatz', 'stammfunktion-grafisch', 'rotationskoerper', 'integrationsregeln'],
   },
   {
     code: 'LK-6',

@@ -674,8 +674,7 @@ const MSS_UNITS: CurriculumUnit[] = [
       'parabel-drei-punkte',
       'funktionenscharen',
       'extremwertprobleme',
-      'funktionsplotter',
-    ],
+      'funktionsplotter', 'ableitungsregeln'],
   },
   {
     code: 'GF-3',
@@ -684,7 +683,7 @@ const MSS_UNITS: CurriculumUnit[] = [
       'Flächen mit Rechtecksummen annähern, das Integral als rekonstruierten Bestand deuten, Integrationsregeln, Hauptsatz und Stammfunktionen, Sachaufgaben bis zum Volumen von Rotationskörpern.',
       'Approximating areas with rectangle sums, reading the integral as a reconstructed total, integration rules, the fundamental theorem and antiderivatives, applications up to the volume of solids of revolution.',
     ),
-    simulations: ['ober-untersummen', 'hauptsatz', 'stammfunktion-grafisch', 'aenderungsrate', 'rotationskoerper'],
+    simulations: ['ober-untersummen', 'hauptsatz', 'stammfunktion-grafisch', 'aenderungsrate', 'rotationskoerper', 'integrationsregeln'],
   },
   {
     code: 'GF-4',
@@ -804,7 +803,7 @@ const MSS_UNITS: CurriculumUnit[] = [
       'Produkt-, Quotienten- und Kettenregel, gebrochen-rationale Funktionen, Ableitung von Sinus, Kosinus und Tangens, e-Funktion und ln, Substitution und partielle Integration sowie Beispiele für Differentialgleichungen.',
       'Product, quotient and chain rules, rational functions, derivatives of sine, cosine and tangent, the exponential function and ln, substitution and integration by parts, and examples of differential equations.',
     ),
-    simulations: ['polstellen-asymptoten', 'e-funktion', 'logarithmus', 'umkehrfunktion'],
+    simulations: ['polstellen-asymptoten', 'e-funktion', 'logarithmus', 'umkehrfunktion', 'ableitungsregeln', 'integrationsregeln'],
   },
   {
     code: 'LF-5',

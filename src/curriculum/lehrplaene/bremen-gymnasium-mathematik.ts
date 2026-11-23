@@ -289,7 +289,7 @@ const EP_UNITS: CurriculumUnit[] = [
     code: 'A 1',
     title: L('Einführung in die Differentialrechnung', 'Introduction to differential calculus'),
     summary: L('Mittlere und lokale Änderungsrate, Tangente und Ableitungsfunktion, Ableitungsregeln, Monotonie, Krümmung, Extrem- und Wendepunkte, Steckbriefaufgaben; Newton-Verfahren als Anregung.', 'Average and local rate of change, tangent and derivative function, rules of differentiation, monotonicity, curvature, extreme and inflection points, reconstructing functions; Newton’s method as a suggestion.'),
-    simulations: ['sekante-tangente', 'ableitungsfunktion', 'newton-verfahren', 'kurvendiskussion'],
+    simulations: ['sekante-tangente', 'ableitungsfunktion', 'newton-verfahren', 'kurvendiskussion', 'ableitungsregeln'],
   },
 ];
 
@@ -299,7 +299,7 @@ const QP_UNITS: CurriculumUnit[] = [
     code: 'A 2',
     title: L('Einführung in die Integralrechnung', 'Introduction to integral calculus'),
     summary: L('Integral als rekonstruierter Bestand und Flächeninhalt, Hauptsatz, Stammfunktionen; LK: Ober- und Untersummen, Mittelwerte, Rotationskörper.', 'The integral as reconstructed total and area, the fundamental theorem, antiderivatives; LK: upper and lower sums, mean values, solids of revolution.'),
-    simulations: ['stammfunktion-grafisch', 'ober-untersummen', 'hauptsatz', 'aenderungsrate', 'rotationskoerper'],
+    simulations: ['stammfunktion-grafisch', 'ober-untersummen', 'hauptsatz', 'aenderungsrate', 'rotationskoerper', 'integrationsregeln'],
   },
   {
     code: 'A 3',
@@ -335,7 +335,7 @@ const QP_UNITS: CurriculumUnit[] = [
     code: 'LA',
     title: L('Schwerpunkt Lineare Algebra (LA 2 bis LA 4)', 'Focus linear algebra (LA 2 to LA 4)'),
     summary: L('Lineare Gleichungssysteme und Matrizenkalkül, Umverteilungen und Populationsentwicklungen mit Übergangs- und Populationsmatrizen, Fixvektoren und Langzeitverhalten; LK: Eigenvektoren.', 'Systems of linear equations and matrix calculus, redistribution and population models with transition and population matrices, fixed vectors and long-term behaviour; LK: eigenvectors.'),
-    simulations: ['gauss-verfahren'],
+    simulations: ['uebergangsmatrizen', 'gauss-verfahren'],
   },
   {
     code: 'AG',
