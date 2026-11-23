@@ -735,6 +735,7 @@ export const bayernGymnasiumPhysik: StateCurriculum = {
             "Parallaxe, Helligkeit und Leuchtkraft, Spektralklassen, Hertzsprung-Russell-Diagramm und Sternentwicklung, Doppelsterne, Gravitationswellen und Exoplaneten.",
             "Parallax, brightness and luminosity, spectral classes, the Hertzsprung–Russell diagram and stellar evolution, binary stars, gravitational waves and exoplanets.",
           ),
+          simulations: ['hr-diagramm'],
         },
         {
           code: "A5",

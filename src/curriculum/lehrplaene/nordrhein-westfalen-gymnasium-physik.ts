@@ -223,6 +223,7 @@ const SEK_I_UNITS: CurriculumUnit[] = [
           'Himmelsobjekte, Entfernungen in Lichtjahren und typische Stadien der Sternentwicklung.',
           'Celestial objects, distances in light years and typical stages of stellar evolution.',
         ),
+        simulations: ['hr-diagramm'],
       },
     ],
   },

@@ -782,9 +782,32 @@ export const physik: Subject = {
         'Radioaktiver Zerfall, Spektrallinien und Photoeffekt – Zufall und Quantisierung erleben.',
         'Radioactive decay, spectral lines and the photoelectric effect – experience randomness and quantisation.',
       ),
-      grades: [9, 14],
+      grades: [7, 14],
       kmk: ['P-S', 'P-E', 'P-BK-Zufall', 'P-BK-Materie'],
       topics: [
+        {
+          id: 'sterne',
+          title: L('Sterne', 'Stars'),
+          grades: [7, 13],
+          simulations: [
+            {
+              id: 'hr-diagramm',
+              status: 'ready',
+              slug: L('sterne-hertzsprung-russell-diagramm', 'stars-hertzsprung-russell-diagram'),
+              title: L('Sterne und Hertzsprung-Russell-Diagramm', 'Stars and the Hertzsprung–Russell diagram'),
+              summary: L(
+                'Blaue Riesen, Rote Zwerge, Weiße Zwerge: Im HR-Diagramm bekommt jeder Stern seinen Platz. Du verfolgst den Lebensweg eines Sterns bis zur Supernova und misst Entfernungen mit der Parallaxe.',
+                'Blue giants, red dwarfs, white dwarfs: in the HR diagram every star gets its place. Follow the life of a star up to a supernova and measure distances with the parallax.',
+              ),
+              grades: [7, 13],
+              kmk: ['P-S', 'P-E', 'P-BK-Materie', 'P-BK-Mathematisieren'],
+              keywords: L(
+                ['Stern', 'Sterne', 'Hertzsprung-Russell-Diagramm', 'HR-Diagramm', 'Hauptreihe', 'Roter Riese', 'Überriese', 'Weißer Zwerg', 'Leuchtkraft', 'Oberflächentemperatur', 'Spektralklasse', 'Stefan-Boltzmann-Gesetz', 'Wiensches Verschiebungsgesetz', 'Planck', 'Schwarzer Körper', 'Sternentwicklung', 'Supernova', 'Neutronenstern', 'Schwarzes Loch', 'Planetarischer Nebel', 'Parallaxe', 'Parsec', 'Lichtjahr', 'absolute Helligkeit', 'Sonne', 'Beteigeuze', 'Sirius'],
+                ['star', 'stars', 'Hertzsprung–Russell diagram', 'HR diagram', 'main sequence', 'red giant', 'supergiant', 'white dwarf', 'luminosity', 'surface temperature', 'spectral class', 'Stefan–Boltzmann law', 'Wien’s displacement law', 'Planck', 'black body', 'stellar evolution', 'supernova', 'neutron star', 'black hole', 'planetary nebula', 'parallax', 'parsec', 'light year', 'absolute magnitude', 'Sun', 'Betelgeuse', 'Sirius'],
+              ),
+            },
+          ],
+        },
         {
           id: 'radioaktivitaet',
           title: L('Radioaktivität', 'Radioactivity'),
