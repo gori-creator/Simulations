@@ -577,7 +577,7 @@ const KS_9_10_UNITS: CurriculumUnit[] = [
           'Wachstums- und Zerfallsprozesse mit Exponentialfunktionen beschreiben, Eigenschaften der Graphen, einfache Exponentialgleichungen lösen (E); Logarithmusfunktion als Umkehrung (V).',
           'Describing growth and decay with exponential functions, properties of the graphs, solving simple exponential equations (E); the logarithmic function as the inverse (V).',
         ),
-        simulations: ['exponentielles-wachstum', 'logarithmus', 'umkehrfunktion'],
+        simulations: ['exponentielles-wachstum', 'wachstumsmodelle', 'logarithmus', 'umkehrfunktion'],
       },
       {
         code: '4.4',
@@ -692,7 +692,7 @@ const MSS_UNITS: CurriculumUnit[] = [
       'Die e-Funktion, f(x) = a · eᵏˣ und ihre Ableitung, ln als Umkehrung der e-Funktion sowie Sachaufgaben zu Wachstum und Zerfall.',
       'The natural exponential function, f(x) = a · eᵏˣ and its derivative, ln as the inverse of the exponential function, and growth and decay problems.',
     ),
-    simulations: ['e-funktion', 'logarithmus', 'umkehrfunktion'],
+    simulations: ['e-funktion', 'logarithmus', 'umkehrfunktion', 'wachstumsmodelle'],
   },
   {
     code: 'GF-5',

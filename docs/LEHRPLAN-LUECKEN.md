@@ -2,11 +2,11 @@
 
 <!-- Automatisch erzeugt mit `npm run lehrplan:luecken` aus src/curriculum/lehrplaene/ – nicht von Hand bearbeiten. -->
 
-Lernbereiche der Länder-Lehrpläne, zu denen es noch **keine** Simulation gibt – Vorrat für neue Simulationen (Anleitung: `docs/NEUE-SIMULATION.md`). Insgesamt **266 von 1773** Lernbereichen ohne Simulation.
+Lernbereiche der Länder-Lehrpläne, zu denen es noch **keine** Simulation gibt – Vorrat für neue Simulationen (Anleitung: `docs/NEUE-SIMULATION.md`). Insgesamt **264 von 1773** Lernbereichen ohne Simulation.
 
 Nicht jeder Lernbereich eignet sich für eine Simulation (z. B. reine Rechenfertigkeiten oder Methoden). Kommt ein Thema in mehreren Ländern vor, lohnt es sich besonders.
 
-## Mathematik (66)
+## Mathematik (64)
 
 ### Baden-Württemberg · Gymnasium (2)
 
@@ -41,7 +41,7 @@ Alle Lernbereiche haben eine Simulation.
 | --- | --- | --- | --- |
 | 9/10 | 11 | Üben und Vertiefen | Üben und Vertiefen zu allen Leitideen und prozessbezogenen Kompetenzen mit Blick auf die Prüfung. |
 
-### Hessen · Gymnasium (28)
+### Hessen · Gymnasium (27)
 
 | Stufe | Nr. | Lernbereich | Kurz |
 | --- | --- | --- | --- |
@@ -58,7 +58,6 @@ Alle Lernbereiche haben eine Simulation.
 | 12 | Q1.2.1 | Anwendungen der Integralrechnung › Flächeninhaltsberechnung | Flächen zwischen Graphen und Achsenparallelen berechnen, auch rückwärts (Grenze oder Parameter gesucht). |
 | 12 | Q1.2.3 | Anwendungen der Integralrechnung › Argumentieren und Begründen anhand von Integral-Termen | Integralausdrücke im Sachzusammenhang deuten und Aussagen begründen. |
 | 12 | Q1.2.5 | Anwendungen der Integralrechnung › Uneigentliche Integrale (nur LK) | Unendlich ausgedehnte Flächen auf endlichen Inhalt untersuchen. |
-| 12 | Q1.3.5 | Vertiefung der Differenzial- und Integralrechnung › Logistisches Wachstum (nur LK) | Logistische Wachstumsmodelle anwenden (ohne Herleitung aus der Differenzialgleichung). |
 | 12 | Q2.3.9 | Geraden und Ebenen im Raum › Untersuchung von Winkeln (insbesondere auf Orthogonalität und Parallelität) sowie von den genannten Lagebeziehungen jeweils in Abhängigkeit von einem (zusätzlichen) Parameter | Lage und Winkel abhängig von einem Parameter untersuchen. |
 | 12 | Q2.3.11 | Geraden und Ebenen im Raum › Anwendung in Sachzusammenhängen | Schattenwürfe, Projektionen auf Koordinatenebenen und Flächenberechnungen. |
 | 12 | Q2.3.15 | Geraden und Ebenen im Raum › Geradenscharen (nur LK) | Geraden mit Parameter untersuchen. |
@@ -100,7 +99,7 @@ Alle Lernbereiche haben eine Simulation.
 | 8 | 7 | Aussagenlogik (nur Informatik-Zweig) | Aussagen und Wahrheitswerte, Verknüpfungen wie Konjunktion, Disjunktion, NAND und NOR, Wahrheitstafeln. |
 | 8 | 8 | Vertiefung der regulären Themenfelder (nur Informatik-Zweig) | Vertiefungen zu den Themenfeldern 1 bis 5, zum Beispiel Mittelwerte, Parkettierungen und Füllgraphen. |
 
-### Sachsen · Gymnasium (20)
+### Sachsen · Gymnasium (19)
 
 | Stufe | Nr. | Lernbereich | Kurz |
 | --- | --- | --- | --- |
@@ -117,7 +116,6 @@ Alle Lernbereiche haben eine Simulation.
 | 9 | 5 | Vernetzung: Mathematik und moderne Rechentechnik | Rechentechnik beim Problemlösen nutzen und Ergebnisse kritisch werten. |
 | 9 | W1 | Der goldene Schnitt (Wahlbereich) | Definition, Konstruktion und Vorkommen in Kunst und Architektur. |
 | 9 | W3 | Baupläne und Bauzeichnungen (Wahlbereich) | Parallelprojektionen und wahre Größen in Bauzeichnungen. |
-| 10 | W2 | Logistisches Wachstum (Wahlbereich) | Modell des logistischen Wachstums, explizit und rekursiv, mit seinen Grenzen. |
 | 10 | W3 | Kurven in Parameterdarstellung und in Polarkoordinaten (Wahlbereich) | Kurven mit Parametern und Polarkoordinaten beschreiben. |
 | 11/12 | GK-W1 | Kegelschnitte (Wahlbereich Grundkurs) | Kreis, Ellipse, Parabel und Hyperbel als Kegelschnitte; Konstruktion der Ellipse. |
 | 11/12 | GK-W3 | Dynamische Systeme und fraktale Strukturen (Wahlbereich Grundkurs) | Räuber-Beute-System und fraktale Strukturen. |

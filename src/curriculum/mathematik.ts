@@ -1037,6 +1037,22 @@ export const mathematik: Subject = {
             thumb: 'growth',
           },
           {
+            id: 'wachstumsmodelle',
+            status: 'ready',
+            slug: L('wachstumsmodelle', 'growth-models'),
+            title: L('Wachstumsmodelle im Vergleich', 'Growth models compared'),
+            summary: L(
+              'Linear, exponentiell, beschränkt oder logistisch? Die vier Modelle nebeneinander – als Formel und Schritt für Schritt, mit Änderungsrate, Wendepunkt, Kennzeichen in der Wertetabelle und echten Messreihen zum Anpassen.',
+              'Linear, exponential, bounded or logistic? The four models side by side – as a formula and step by step, with rate of change, inflection point, table characteristics and data series to fit.',
+            ),
+            grades: [10, 12],
+            kmk: ['M-L4', 'M-K3', 'M-K4', 'M-K5'],
+            keywords: L(
+              ['Wachstumsmodelle', 'lineares Wachstum', 'exponentielles Wachstum', 'beschränktes Wachstum', 'begrenztes Wachstum', 'logistisches Wachstum', 'Sättigungsgrenze', 'Schranke', 'rekursiv', 'explizit', 'Wachstumsfaktor', 'Verdopplungszeit', 'Halbwertszeit', 'Wendepunkt', 'Änderungsrate', 'Differenzialgleichung', 'Modellieren', 'Messdaten', 'Regression'],
+              ['growth models', 'linear growth', 'exponential growth', 'bounded growth', 'limited growth', 'logistic growth', 'carrying capacity', 'limit', 'recursive', 'explicit', 'growth factor', 'doubling time', 'half-life', 'inflection point', 'rate of change', 'differential equation', 'modelling', 'data', 'regression'],
+            ),
+          },
+          {
             id: 'e-funktion',
             status: 'ready',
             slug: L('natuerliche-exponentialfunktion', 'natural-exponential-function'),

@@ -334,7 +334,7 @@ const K10: CurriculumUnit[] = [
       'Wachstum und Zerfall mit Exponentialfunktionen beschreiben, Parameter und Regression; periodische Vorgänge mit der Sinusfunktion in Grad- und Bogenmaß.',
       'Describing growth and decay with exponential functions, parameters and regression; periodic processes with the sine function in degrees and radians.',
     ),
-    simulations: ['exponentielles-wachstum', 'sinusfunktion', 'einheitskreis', 'transformationen'],
+    simulations: ['exponentielles-wachstum', 'wachstumsmodelle', 'sinusfunktion', 'einheitskreis', 'transformationen'],
   },
   {
     code: '2',
@@ -367,7 +367,7 @@ const K10: CurriculumUnit[] = [
     code: '5',
     title: L('Vernetzung: Zinsrechnung', 'Connections: interest'),
     summary: L('Zinsen und Zinseszinsen, Kredit und Tilgung.', 'Simple and compound interest, loans and repayment.'),
-    simulations: ['exponentielles-wachstum'],
+    simulations: ['exponentielles-wachstum', 'wachstumsmodelle'],
   },
   {
     code: 'W1',
@@ -379,6 +379,7 @@ const K10: CurriculumUnit[] = [
     code: 'W2',
     title: L('Logistisches Wachstum (Wahlbereich)', 'Logistic growth (optional)'),
     summary: L('Modell des logistischen Wachstums, explizit und rekursiv, mit seinen Grenzen.', 'The logistic growth model, explicit and recursive, and its limits.'),
+    simulations: ['wachstumsmodelle'],
   },
   {
     code: 'W3',

@@ -283,7 +283,7 @@ const EP_UNITS: CurriculumUnit[] = [
       'Funktionsbegriff und Darstellungen, Nullstellen und Schnittpunkte, Symmetrie, Transformationen, Grenzwerte und Asymptoten, Umkehrfunktionen; ganzrationale, Exponential-, Sinus- und Kosinusfunktionen, Wurzelfunktion und 1/x.',
       'The concept of function and its representations, zeros and intersections, symmetry, transformations, limits and asymptotes, inverse functions; polynomial, exponential, sine and cosine functions, the square root function and 1/x.',
     ),
-    simulations: ['funktionsplotter', 'hyperbel', 'polstellen-asymptoten', 'potenzfunktionen', 'einheitskreis', 'sinusfunktion', 'exponentielles-wachstum', 'ganzrationale-funktionen', 'transformationen', 'grenzverhalten', 'umkehrfunktion'],
+    simulations: ['funktionsplotter', 'hyperbel', 'polstellen-asymptoten', 'potenzfunktionen', 'einheitskreis', 'sinusfunktion', 'exponentielles-wachstum', 'wachstumsmodelle', 'ganzrationale-funktionen', 'transformationen', 'grenzverhalten', 'umkehrfunktion'],
   },
   {
     code: 'A 1',
@@ -305,7 +305,7 @@ const QP_UNITS: CurriculumUnit[] = [
     code: 'A 3',
     title: L('Fortführung der Analysis', 'Further analysis'),
     summary: L('Natürliche Exponentialfunktion und Logarithmus, verknüpfte und verkettete Funktionen, Funktionen mit Parametern, Anwendungen und begrenztes Wachstum; LK: Funktionenscharen, ln-Funktion, logistisches Wachstum.', 'The natural exponential function and logarithm, combined and composite functions, functions with parameters, applications and limited growth; LK: families of functions, the ln function, logistic growth.'),
-    simulations: ['funktionsplotter', 'logarithmus', 'umkehrfunktion', 'e-funktion', 'kurvendiskussion', 'extremwertprobleme', 'funktionenscharen'],
+    simulations: ['funktionsplotter', 'logarithmus', 'umkehrfunktion', 'e-funktion', 'kurvendiskussion', 'extremwertprobleme', 'funktionenscharen', 'wachstumsmodelle'],
   },
   {
     code: 'S 1',

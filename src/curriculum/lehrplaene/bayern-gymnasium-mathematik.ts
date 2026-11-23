@@ -462,7 +462,7 @@ export const bayernGymnasiumMathematik: StateCurriculum = {
             'Exponentielle Zu- und Abnahme im Vergleich zu linearem Wachstum, Graphen von y = b · aˣ, Logarithmus und Exponentialgleichungen, Modellieren.',
             'Exponential growth and decay compared with linear growth, graphs of y = b · aˣ, logarithms and exponential equations, modelling.',
           ),
-          simulations: ['exponentielles-wachstum', 'logarithmus'],
+          simulations: ['exponentielles-wachstum', 'wachstumsmodelle', 'logarithmus'],
         },
         {
           code: '2',

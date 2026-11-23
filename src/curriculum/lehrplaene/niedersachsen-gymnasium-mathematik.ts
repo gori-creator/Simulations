@@ -657,13 +657,13 @@ const DJ_9_10: CurriculumUnit[] = [
         code: '20.1',
         title: L('Wachstums- und Abnahmeprozesse modellieren', 'Modelling growth and decay'),
         summary: L('Linear und exponentiell abgrenzen, Überlagerung und Grenze beim begrenzten Wachstum.', 'Distinguishing linear and exponential, combinations and the limit of limited growth.'),
-        simulations: ['exponentielles-wachstum'],
+        simulations: ['exponentielles-wachstum', 'wachstumsmodelle'],
       },
       {
         code: '20.2',
         title: L('Exponentialfunktionen untersuchen', 'Investigating exponential functions'),
         summary: L('Parametervariation, Graphen skizzieren, Gleichung aus zwei Punkten.', 'Varying parameters, sketching graphs, the equation from two points.'),
-        simulations: ['exponentielles-wachstum'],
+        simulations: ['exponentielles-wachstum', 'wachstumsmodelle'],
       },
       {
         code: '20.3',
@@ -969,7 +969,7 @@ const Q_UNITS: CurriculumUnit[] = [
         code: 'eA-2.1',
         title: L('Untersuchung von Wachstumsprozessen', 'Investigating growth processes'),
         summary: L('Begrenztes und logistisches Wachstum, asymptotisches Verhalten, Differentialgleichungen.', 'Limited and logistic growth, asymptotic behaviour, differential equations.'),
-        simulations: ['grenzverhalten', 'richtungsfeld'],
+        simulations: ['grenzverhalten', 'richtungsfeld', 'wachstumsmodelle'],
       },
       {
         code: 'eA-2.2',
