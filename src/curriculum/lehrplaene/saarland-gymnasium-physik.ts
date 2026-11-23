@@ -135,7 +135,7 @@ const KS_10_UNITS: CurriculumUnit[] = [
     code: '1',
     title: L('Elektromagnetische Wechselwirkung', 'Electromagnetic interaction'),
     summary: L('Stromdurchflossene Leiter im Magnetfeld, elektromagnetische Induktion, Transformator.', 'Current-carrying conductors in a magnetic field, electromagnetic induction, the transformer.'),
-    simulations: ['lorentzkraft', 'induktion'],
+    simulations: ['lorentzkraft', 'induktion', 'magnetfeld-spule'],
   },
   {
     code: '2',
@@ -200,6 +200,7 @@ const HP_12_UNITS: CurriculumUnit[] = [
     code: '1.3',
     title: L('Magnetisches Feld', 'Magnetic field'),
     summary: L('Magnetfelder von Leitern und Spulen, magnetische Flussdichte.', 'Magnetic fields of conductors and coils, magnetic flux density.'),
+    simulations: ['magnetfeld-spule'],
   },
   {
     code: '1.4',

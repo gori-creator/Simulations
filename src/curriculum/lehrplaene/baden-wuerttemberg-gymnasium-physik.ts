@@ -49,6 +49,7 @@ export const badenWuerttembergGymnasiumPhysik: StateCurriculum = {
             "Schall erzeugen, ausbreiten und hören; Lautstärke und Tonhöhe mit Amplitude und Frequenz einer Schwingung verbinden und Hörschäden durch Lärm bewerten.",
             "Producing, transmitting and hearing sound; linking loudness and pitch to amplitude and frequency of an oscillation, and judging the risk of hearing damage from noise.",
           ),
+          simulations: ['schall'],
         },
         {
           code: "3.1.3",
@@ -141,6 +142,7 @@ export const badenWuerttembergGymnasiumPhysik: StateCurriculum = {
             "Schall erzeugen, ausbreiten und hören; Lautstärke und Tonhöhe mit Amplitude und Frequenz einer Schwingung verbinden und Hörschäden durch Lärm bewerten.",
             "Producing, transmitting and hearing sound; linking loudness and pitch to amplitude and frequency of an oscillation, and judging the risk of hearing damage from noise.",
           ),
+          simulations: ['schall'],
         },
         {
           code: "3.1.3",
@@ -260,7 +262,7 @@ export const badenWuerttembergGymnasiumPhysik: StateCurriculum = {
             "Widerstand und Kennlinien, Ersatzwiderstand in Reihen- und Parallelschaltung; Induktion qualitativ, Generator, Transformator und elektrische Energieversorgung.",
             "Resistance and characteristic curves, equivalent resistance in series and parallel; induction qualitatively, generator, transformer and electrical power supply.",
           ),
-          simulations: ["ohmsches-gesetz", "reihe-parallel"],
+          simulations: ["ohmsches-gesetz", "reihe-parallel", "magnetfeld-spule"],
         },
         {
           code: "3.2.6",
@@ -340,7 +342,7 @@ export const badenWuerttembergGymnasiumPhysik: StateCurriculum = {
             "Widerstand und Kennlinien, Ersatzwiderstand in Reihen- und Parallelschaltung; Induktion qualitativ, Generator, Transformator und elektrische Energieversorgung.",
             "Resistance and characteristic curves, equivalent resistance in series and parallel; induction qualitatively, generator, transformer and electrical power supply.",
           ),
-          simulations: ["induktion"],
+          simulations: ["induktion", "magnetfeld-spule"],
         },
         {
           code: "3.2.6",
@@ -634,6 +636,7 @@ export const badenWuerttembergGymnasiumPhysik: StateCurriculum = {
             "Entwicklung des Universums vom Urknall an, Galaxien, Rotverschiebung und Hubble-Beziehung; Entstehung, Leben und Ende von Sternen sowie Methoden zum Nachweis und zur Untersuchung von Exoplaneten.",
             "Evolution of the universe from the Big Bang, galaxies, redshift and the Hubble relation; birth, life and death of stars, and methods for detecting and studying exoplanets.",
           ),
+          simulations: ['hubble'],
         },
         {
           code: "3.6.1",
@@ -674,7 +677,7 @@ export const badenWuerttembergGymnasiumPhysik: StateCurriculum = {
                 "Magnetfelder von Leiter und Spule, Kraft auf Leiter und Lorentzkraft, Hall-Effekt, Kreisbahnen geladener Teilchen quantitativ sowie gekreuzte Felder in Wien-Filter und Massenspektrograph.",
                 "Magnetic fields of wire and coil, force on a conductor and Lorentz force, Hall effect, quantitative circular paths of charged particles, and crossed fields in the Wien filter and mass spectrometer.",
               ),
-              simulations: ["lorentzkraft"],
+              simulations: ["lorentzkraft", "magnetfeld-spule"],
             },
             {
               code: "3.6.2.3",
@@ -952,6 +955,7 @@ export const badenWuerttembergGymnasiumPhysik: StateCurriculum = {
             "Entwicklung des Universums vom Urknall an, Galaxien, Rotverschiebung und Hubble-Beziehung; Entstehung, Leben und Ende von Sternen sowie Methoden zum Nachweis und zur Untersuchung von Exoplaneten.",
             "Evolution of the universe from the Big Bang, galaxies, redshift and the Hubble relation; birth, life and death of stars, and methods for detecting and studying exoplanets.",
           ),
+          simulations: ['hubble'],
         },
         {
           code: "3.6.1",
@@ -991,7 +995,7 @@ export const badenWuerttembergGymnasiumPhysik: StateCurriculum = {
                 "Magnetfelder von Leiter und Spule, Kraft auf Leiter und Lorentzkraft, Hall-Effekt, Kreisbahnen geladener Teilchen quantitativ sowie gekreuzte Felder in Wien-Filter und Massenspektrograph.",
                 "Magnetic fields of wire and coil, force on a conductor and Lorentz force, Hall effect, quantitative circular paths of charged particles, and crossed fields in the Wien filter and mass spectrometer.",
               ),
-              simulations: ["lorentzkraft"],
+              simulations: ["lorentzkraft", "magnetfeld-spule"],
             },
             {
               code: "3.6.2.3",

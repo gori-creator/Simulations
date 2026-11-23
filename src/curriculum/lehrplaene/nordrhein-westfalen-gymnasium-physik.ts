@@ -124,6 +124,7 @@ const ERPROBUNG_UNITS: CurriculumUnit[] = [
           'Tonhöhe und Lautstärke, Schallausbreitung im Teilchenmodell, Absorption und Reflexion.',
           'Pitch and loudness, sound propagation in the particle model, absorption and reflection.',
         ),
+        simulations: ['schall'],
       },
       {
         code: '3.2',
@@ -132,6 +133,7 @@ const ERPROBUNG_UNITS: CurriculumUnit[] = [
           'Sender-Empfänger-Modell, Ultraschall in Natur, Medizin und Technik, Lärm und Lärmschutz.',
           'Sender–receiver model, ultrasound in nature, medicine and technology, noise and noise protection.',
         ),
+        simulations: ['schall'],
       },
     ],
   },
@@ -379,7 +381,7 @@ const SEK_I_UNITS: CurriculumUnit[] = [
           'Magnetfelder von Leiter und Spule, Elektromotor, Generator, Wechselspannung und Transformator.',
           'Magnetic fields of wires and coils, electric motors, generators, alternating voltage and transformers.',
         ),
-        simulations: ['induktion'],
+        simulations: ['induktion', 'magnetfeld-spule'],
       },
       {
         code: '11.2',

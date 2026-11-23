@@ -188,6 +188,7 @@ const EF_UNITS: CurriculumUnit[] = [
           'Schallgeschwindigkeit, Ton, Klang und Geräusch, Frequenz und Amplitude, Schalldruckpegel, Intervalle und Klangfarbe.',
           'Speed of sound, tone, sound and noise, frequency and amplitude, sound pressure level, intervals and timbre.',
         ),
+        simulations: ['schall'],
       },
       {
         code: 'EF-2.2',
@@ -254,7 +255,7 @@ const Q_UNITS: CurriculumUnit[] = [
           'Kraft auf stromdurchflossene Leiter, Flussdichte, Elektronen unter Lorentzkraft, im Querfeld und im Wien-Filter; nur eA: e/m mit dem Fadenstrahlrohr.',
           'Force on current-carrying wires, flux density, electrons under the Lorentz force, in a transverse field and in a Wien filter; higher level only: e/m with the fine-beam tube.',
         ),
-        simulations: ['lorentzkraft'],
+        simulations: ['lorentzkraft', 'magnetfeld-spule'],
       },
       {
         code: 'Q-1.4',

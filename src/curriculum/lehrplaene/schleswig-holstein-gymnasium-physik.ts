@@ -104,7 +104,7 @@ const SEK_I_UNITS: CurriculumUnit[] = [
           'Magnetfeld von Leiter und Spule, Induktion, Elektromotor, Generator, Transformator und Hochspannungsleitung.',
           'Magnetic field of a wire and a coil, induction, electric motor, generator, transformer and power lines.',
         ),
-        simulations: ['induktion'],
+        simulations: ['induktion', 'magnetfeld-spule'],
       },
     ],
   },
@@ -262,7 +262,7 @@ const WELLEN: CurriculumUnit = {
       code: 'W.2',
       title: L('Eigenschaften und Ausbreitung von Wellen', 'Properties and propagation of waves'),
       summary: L('Wellenlänge, Frequenz und Geschwindigkeit, Huygens’sches Prinzip, Beugung und Brechung, Transversal- und Longitudinalwellen, Dopplereffekt (qualitativ) und Polarisation.', 'Wavelength, frequency and speed, Huygens’ principle, diffraction and refraction, transverse and longitudinal waves, the Doppler effect (qualitative) and polarisation.'),
-      simulations: ['wellen-ausbreitung', 'doppler-effekt'],
+      simulations: ['wellen-ausbreitung', 'doppler-effekt', 'schall'],
     },
     {
       code: 'W.3',
@@ -349,7 +349,7 @@ const QP_UNITS: CurriculumUnit[] = [
       'Beispiele, auch für ein Profilseminar: Astronomie, Astrophysik, Relativitätstheorie, Kernphysik, Elementarteilchenphysik, Festkörperphysik, Thermodynamik, Klimaphysik, Biophysik, Ozean und Klima, Medizin und Sensorik, Elektromobilität.',
       'Examples, also for a profile seminar: astronomy, astrophysics, relativity, nuclear physics, particle physics, solid-state physics, thermodynamics, climate physics, biophysics, ocean and climate, medicine and sensors, electric mobility.',
     ),
-    simulations: ['planetenbahnen', 'radioaktiver-zerfall', 'gasgesetze'],
+    simulations: ['planetenbahnen', 'radioaktiver-zerfall', 'gasgesetze', 'hubble'],
   },
 ];
 
