@@ -28,6 +28,9 @@ Die **Ausgleichsgerade** $y=a\,t+b$ beschreibt eine Bewegung. Die Zeiten $t_i=i\
 4. Erzeuge weitere Beispielmessungen. **Systematische Abweichung** und **Streuung** wirken nur auf neue Daten; vorhandene Messwerte ändern sich dadurch nicht. Die Versuchsnummer macht das Beispiel reproduzierbar.
 5. Lege in der dritten Ansicht eine Gerade selbst an. Versuche, die Quadratsumme zu verkleinern; vergleiche dann mit der besten Geraden. [Eigene Gerade](?mode=fit&data=1.1%3B2.8%3B5.2%3B6.9%3B9&manual=1)
 6. Erhöhe in der vierten Ansicht $n$ von 1 auf 100. Vergleiche anschließend einen Versatz von 1 cm mit keinem Versatz. [40 Versuche](?mode=repeat&noise=1&repn=25)
+7. Messschieber: Ziehe den Schieber und suche in der Lupe den Noniusstrich, der genau auf einen Millimeterstrich fällt. Probiere auch den 1/20-Nonius. [Messschieber](?mode=caliper&jaw=23.4&nonius=0.1) · [Üben](?mode=caliper&jaw=37.6&nonius=0.1&quiz=1)
+8. Fallbeschleunigung aus dem Pendel: Welche Messung musst du verbessern – die Länge oder die Zeit? Halbiere beide Unsicherheiten nacheinander. [Pendel](?mode=propagate&formula=pendulum&x1=1&u1=0.005&x2=2.006&u2=0.01)
+9. Stoppe das Pendel selbst – einmal über eine, einmal über zehn Schwingungen. Wie stark streuen deine Werte? [Stoppen](?mode=stopwatch&periods=1)
 
 ## Aufgaben
 
@@ -72,6 +75,28 @@ Zu $t=0;1;2\,\text{s}$ gehören $y=1;2;4\,\text{cm}$. Bestimme die Ausgleichsger
 <summary>Lösung anzeigen</summary>
 
 $\bar t=1\,\text{s}$, $\bar y=7/3\,\text{cm}$, $\sum(t_i-\bar t)^2=2\,\text{s}^2$ und $\sum(t_i-\bar t)(y_i-\bar y)=3\,\text{cm}\,\text{s}$. Daher $a=1{,}5\,\text{cm/s}$, $b=5/6\,\text{cm}$. Die Residuen sind $1/6;-1/3;1/6\,\text{cm}$; ihre Quadratsumme ist $1/6\,\text{cm}^2$. [Zeigen](?mode=fit&data=1%3B2%3B4)
+
+</details>
+
+### Aufgabe 5: Messschieber ablesen
+
+Der Nullstrich des 1/10-Nonius steht zwischen 23 mm und 24 mm, und der Noniusstrich 4 fällt genau auf einen Strich der Hauptskala. Wie lang ist der Gegenstand?
+
+<details>
+<summary>Lösung anzeigen</summary>
+
+$23\,\text{mm} + 4 \cdot 0{,}1\,\text{mm} = 23{,}4\,\text{mm}$. Der Noniusstrich 4 liegt bei $23{,}4\,\text{mm} + 4 \cdot 0{,}9\,\text{mm} = 27{,}0\,\text{mm}$, also genau auf einem Millimeterstrich. [In der Simulation zeigen](?mode=caliper&jaw=23.4&nonius=0.1)
+
+</details>
+
+### Aufgabe 6: Fallbeschleunigung mit Unsicherheit
+
+Ein Fadenpendel ist $l = (1{,}000 \pm 0{,}005)\,\text{m}$ lang und hat die Periodendauer $T = (2{,}006 \pm 0{,}010)\,\text{s}$. Berechne $g = 4\pi^2 l / T^2$ mit Unsicherheit.
+
+<details>
+<summary>Lösung anzeigen</summary>
+
+$g = 4\pi^2 \cdot 1{,}000 / 2{,}006^2 \approx 9{,}811\,\text{m/s}^2$. Relative Unsicherheiten: $0{,}005/1{,}000 = 0{,}5\,\%$ für $l$ und $2 \cdot 0{,}010/2{,}006 \approx 1{,}0\,\%$ für $T$ (das Quadrat zählt doppelt). Nach Gauß: $\sqrt{0{,}5^2 + 1{,}0^2}\,\% \approx 1{,}12\,\%$, also $u(g) \approx 0{,}11\,\text{m/s}^2$ und $g = (9{,}81 \pm 0{,}11)\,\text{m/s}^2$. Die Zeitmessung verbessern bringt am meisten. [In der Simulation zeigen](?mode=propagate&formula=pendulum&x1=1&u1=0.005&x2=2.006&u2=0.01)
 
 </details>
 

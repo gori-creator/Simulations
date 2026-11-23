@@ -218,3 +218,180 @@ export function axisTicks(lo: number, hi: number, target = 4, integers = false):
   }
   return result;
 }
+
+/* ------------------------------------------------------------------ */
+/* Messschieber mit Nonius                                              */
+/* ------------------------------------------------------------------ */
+
+export type NoniusKind = '0.1' | '0.05';
+export interface NoniusScale {
+  /** Zahl der Noniusteilstriche (Intervalle) */
+  divisions: number;
+  /** Länge des Nonius in mm (10 Teile auf 9 mm bzw. 20 Teile auf 39 mm) */
+  length: number;
+  /** Auflösung in mm */
+  resolution: number;
+}
+
+/** Klassische Noniusteilungen: 1/10 mm (10 Teile auf 9 mm) und 1/20 mm (20 Teile auf 39 mm). */
+export function noniusScale(kind: NoniusKind): NoniusScale {
+  return kind === '0.1' ? { divisions: 10, length: 9, resolution: 0.1 } : { divisions: 20, length: 39, resolution: 0.05 };
+}
+
+export interface NoniusReading {
+  /** ganze Millimeter vor dem Nullstrich des Nonius */
+  mainMm: number;
+  /** Nummer des Noniusstrichs, der mit einem Strich der Hauptskala zusammenfällt */
+  k: number;
+  /** abgelesener Wert in mm */
+  reading: number;
+}
+
+/**
+ * Ablesung am Messschieber: ganze Millimeter links vom Noniusnullstrich plus
+ * k · Auflösung, wobei k der Noniusstrich ist, der am besten mit einem
+ * Hauptskalenstrich zusammenfällt.
+ */
+export function noniusReading(lengthMm: number, kind: NoniusKind): NoniusReading {
+  const s = noniusScale(kind);
+  const steps = Math.round(lengthMm / s.resolution + 1e-9);
+  const rounded = steps * s.resolution;
+  const mainMm = Math.floor(rounded + 1e-9);
+  const k = Math.round((rounded - mainMm) / s.resolution);
+  return { mainMm, k: k % s.divisions, reading: Number((mainMm + (k % s.divisions) * s.resolution).toFixed(3)) };
+}
+
+/** Lage des k-ten Noniusstrichs (mm, ab Nullpunkt der Hauptskala) bei Schieberstellung x. */
+export const noniusLine = (x: number, k: number, kind: NoniusKind) => x + (k * noniusScale(kind).length) / noniusScale(kind).divisions;
+
+/** Abstand des k-ten Noniusstrichs zum nächsten Hauptskalenstrich (mm). */
+export function noniusMismatch(x: number, k: number, kind: NoniusKind): number {
+  const pos = noniusLine(x, k, kind);
+  return Math.abs(pos - Math.round(pos));
+}
+
+/* ------------------------------------------------------------------ */
+/* Fortpflanzung von Unsicherheiten                                     */
+/* ------------------------------------------------------------------ */
+
+export type FormulaId = 'area' | 'speed' | 'density' | 'pendulum';
+export interface FormulaDef {
+  id: FormulaId;
+  /** Vorfaktor c in f = c · x₁^e₁ · x₂^e₂ */
+  c: number;
+  exps: [number, number];
+}
+
+export const FORMULAS: Record<FormulaId, FormulaDef> = {
+  area: { id: 'area', c: 1, exps: [1, 1] },
+  speed: { id: 'speed', c: 1, exps: [1, -1] },
+  density: { id: 'density', c: 1, exps: [1, -1] },
+  pendulum: { id: 'pendulum', c: 4 * Math.PI * Math.PI, exps: [1, -2] },
+};
+
+export interface Propagation {
+  value: number;
+  /** Beiträge (eᵢ · uᵢ/xᵢ) jeder Eingangsgröße, relativ */
+  contributions: [number, number];
+  /** relative Unsicherheit nach Gauß (quadratisch addiert) */
+  relGauss: number;
+  /** relative Größtunsicherheit (Beträge addiert) */
+  relMax: number;
+  uGauss: number;
+  uMax: number;
+  /** Index der Größe mit dem größten Beitrag */
+  dominant: 0 | 1;
+}
+
+/**
+ * Potenzprodukt f = c · x₁^e₁ · x₂^e₂ mit unabhängigen Unsicherheiten:
+ * u(f)/|f| = √Σ (eᵢ·uᵢ/xᵢ)² (Gauß) bzw. Σ |eᵢ|·uᵢ/|xᵢ| (Größtfehler).
+ */
+export function propagate(f: FormulaDef, x: [number, number], u: [number, number]): Propagation | null {
+  if (x.some((v) => !Number.isFinite(v) || v === 0) || u.some((v) => !Number.isFinite(v) || v < 0)) return null;
+  const value = f.c * x[0] ** f.exps[0] * x[1] ** f.exps[1];
+  const contributions: [number, number] = [Math.abs((f.exps[0] * u[0]) / x[0]), Math.abs((f.exps[1] * u[1]) / x[1])];
+  const relGauss = Math.hypot(contributions[0], contributions[1]);
+  const relMax = contributions[0] + contributions[1];
+  return { value, contributions, relGauss, relMax, uGauss: Math.abs(value) * relGauss, uMax: Math.abs(value) * relMax, dominant: contributions[0] >= contributions[1] ? 0 : 1 };
+}
+
+/** Anteil an der Varianz (Gauß), 0 … 1. */
+export function varianceShares(p: Propagation): [number, number] {
+  const a = p.contributions[0] ** 2;
+  const b = p.contributions[1] ** 2;
+  const s = a + b;
+  return s === 0 ? [0, 0] : [a / s, b / s];
+}
+
+/**
+ * Ergebnis mit Unsicherheit sinnvoll runden: Unsicherheit auf 2 geltende
+ * Ziffern, wenn ihre erste Ziffer 1 oder 2 ist, sonst auf 1; der Wert auf
+ * dieselbe Dezimalstelle.
+ */
+export function roundResult(value: number, u: number): { value: number; u: number; decimals: number } {
+  if (!(u > 0) || !Number.isFinite(u)) return { value, u: 0, decimals: 3 };
+  const exp = Math.floor(Math.log10(u));
+  const lead = Math.floor(u / 10 ** exp);
+  const sig = lead <= 2 ? 2 : 1;
+  const decimals = Math.max(0, sig - 1 - exp);
+  const factor = 10 ** (sig - 1 - exp);
+  const ru = Math.ceil(u * factor - 1e-9) / factor;
+  // nach dem Aufrunden kann eine Stelle hinzukommen (0,099 → 0,1)
+  const rv = Math.round(value * factor) / factor;
+  return { value: Number(rv.toFixed(Math.max(0, decimals))), u: Number(ru.toFixed(Math.max(0, decimals))), decimals };
+}
+
+/** Monte-Carlo-Probe: n Ergebnisse aus normalverteilten Eingangswerten. */
+export function monteCarlo(f: FormulaDef, x: [number, number], u: [number, number], n: number, seed: number): number[] {
+  let state = seed >>> 0;
+  const random = () => {
+    state = (1664525 * state + 1013904223) >>> 0;
+    return (state + 0.5) / 4294967296;
+  };
+  const gauss = () => Math.sqrt(-2 * Math.log(random())) * Math.cos(2 * Math.PI * random());
+  const out: number[] = [];
+  for (let i = 0; i < n; i++) {
+    const a = x[0] + u[0] * gauss();
+    const b = x[1] + u[1] * gauss();
+    const v = f.c * a ** f.exps[0] * b ** f.exps[1];
+    if (Number.isFinite(v)) out.push(v);
+  }
+  return out;
+}
+
+/* ------------------------------------------------------------------ */
+/* Zeit stoppen: Reaktionszeit                                          */
+/* ------------------------------------------------------------------ */
+
+/** Periodendauer des Beispielpendels (l = 1 m, g = 9,81 m/s²): T = 2π·√(l/g). */
+export const PENDULUM_T = 2 * Math.PI * Math.sqrt(1 / 9.81);
+
+/** Aus der gestoppten Zeit für n Schwingungen die Periodendauer. */
+export function periodFromStops(total: number, n: number): number {
+  if (!(n > 0) || !Number.isFinite(total)) throw new RangeError('Ungültige Messung.');
+  return total / n;
+}
+
+/**
+ * Simulierte Stoppuhrmessungen über n Schwingungen: Start- und Stopp-Druck
+ * kommen je mit einer zufälligen Reaktionsverzögerung (Mittel mu, Streuung sd).
+ * Gleiche mittlere Verzögerungen heben sich auf; übrig bleibt die Streuung,
+ * die sich auf n Perioden verteilt: u(T) ≈ √2·sd / n.
+ */
+export function simulatedStops(n: number, count: number, seed: number, mu = 0.2, sd = 0.06, period = PENDULUM_T): number[] {
+  let state = seed >>> 0;
+  const random = () => {
+    state = (1664525 * state + 1013904223) >>> 0;
+    return (state + 0.5) / 4294967296;
+  };
+  const gauss = () => Math.sqrt(-2 * Math.log(random())) * Math.cos(2 * Math.PI * random());
+  return Array.from({ length: count }, () => {
+    const startDelay = Math.max(0.05, mu + sd * gauss());
+    const stopDelay = Math.max(0.05, mu + sd * gauss());
+    return Math.round((n * period - startDelay + stopDelay) * 100) / 100;
+  });
+}
+
+/** Erwartete Standardunsicherheit von T bei n gestoppten Schwingungen. */
+export const stopUncertainty = (n: number, sd = 0.06) => (Math.SQRT2 * sd) / n;
