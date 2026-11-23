@@ -463,6 +463,7 @@ const OBERSTUFE_UNITS: CurriculumUnit[] = [
     code: 'GK-W1',
     title: L('Kegelschnitte (Wahlbereich Grundkurs)', 'Conic sections (optional, basic course)'),
     summary: L('Kreis, Ellipse, Parabel und Hyperbel als Kegelschnitte; Konstruktion der Ellipse.', 'Circle, ellipse, parabola and hyperbola as conic sections; constructing the ellipse.'),
+    simulations: ['kegelschnitte'],
   },
   {
     code: 'GK-W2',
@@ -575,6 +576,7 @@ const OBERSTUFE_UNITS: CurriculumUnit[] = [
     code: 'LK-W1',
     title: L('Kegelschnitte (Wahlbereich Leistungskurs)', 'Conic sections (optional, advanced course)'),
     summary: L('Kegelschnitte, Ellipse mit Konstruktion und Tangenten.', 'Conic sections, the ellipse with construction and tangents.'),
+    simulations: ['kegelschnitte'],
   },
   {
     code: 'LK-W2',

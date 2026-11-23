@@ -781,6 +781,24 @@ export const mathematik: Subject = {
             thumb: 'circle-pi',
           },
         ]),
+        topic('kegelschnitte', L('Kegelschnitte', 'Conic sections'), [
+          {
+            id: 'kegelschnitte',
+            status: 'ready',
+            slug: L('kegelschnitte-ortslinien', 'conic-sections-loci'),
+            title: L('Kegelschnitte als Ortslinien', 'Conic sections as loci'),
+            summary: L(
+              'Ellipse mit Faden und zwei Pflöcken, Parabel aus Brennpunkt und Leitlinie, Hyperbel über die Abstandsdifferenz – und alle drei als Schnitt einer Ebene mit einem Doppelkegel. Eine Exzentrizität ε verbindet sie.',
+              'An ellipse with a string and two pegs, a parabola from focus and directrix, a hyperbola from the difference of distances – and all three as the section of a plane with a double cone. One eccentricity ε connects them.',
+            ),
+            grades: [9, 12],
+            kmk: ['M-L3', 'M-L4', 'M-K5', 'M-K1'],
+            keywords: L(
+              ['Kegelschnitte', 'Ortslinie', 'Ellipse', 'Parabel', 'Hyperbel', 'Kreis', 'Brennpunkt', 'Leitlinie', 'Gärtnerkonstruktion', 'Fadenkonstruktion', 'Halbachse', 'Exzentrizität', 'Asymptote', 'Doppelkegel', 'Dandelin', 'Abstandssumme', 'Abstandsdifferenz'],
+              ['conic sections', 'locus', 'ellipse', 'parabola', 'hyperbola', 'circle', 'focus', 'directrix', 'gardener’s method', 'string construction', 'semi-axis', 'eccentricity', 'asymptote', 'double cone', 'Dandelin', 'sum of distances', 'difference of distances'],
+            ),
+          },
+        ]),
       ],
     }),
     area({

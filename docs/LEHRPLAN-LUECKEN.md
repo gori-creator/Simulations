@@ -2,11 +2,11 @@
 
 <!-- Automatisch erzeugt mit `npm run lehrplan:luecken` aus src/curriculum/lehrplaene/ – nicht von Hand bearbeiten. -->
 
-Lernbereiche der Länder-Lehrpläne, zu denen es noch **keine** Simulation gibt – Vorrat für neue Simulationen (Anleitung: `docs/NEUE-SIMULATION.md`). Insgesamt **264 von 1773** Lernbereichen ohne Simulation.
+Lernbereiche der Länder-Lehrpläne, zu denen es noch **keine** Simulation gibt – Vorrat für neue Simulationen (Anleitung: `docs/NEUE-SIMULATION.md`). Insgesamt **261 von 1773** Lernbereichen ohne Simulation.
 
 Nicht jeder Lernbereich eignet sich für eine Simulation (z. B. reine Rechenfertigkeiten oder Methoden). Kommt ein Thema in mehreren Ländern vor, lohnt es sich besonders.
 
-## Mathematik (64)
+## Mathematik (61)
 
 ### Baden-Württemberg · Gymnasium (2)
 
@@ -73,13 +73,12 @@ Alle Lernbereiche haben eine Simulation.
 | 13 | Q4.2.4 | Problemlösen und Argumentieren › Nachvollziehen, Erläutern und Entwickeln von Argumentationen und logischen Schlussfolgerungen | Argumentationsketten verstehen und selbst aufbauen. |
 | 13 | Q4.2.5 | Problemlösen und Argumentieren › Anwendung auf exemplarisch durch die Lehrkraft ausgewählte Themenfelder | Beispiele aus Analysis, Analytischer Geometrie, Linearer Algebra und Stochastik. |
 
-### Niedersachsen · Gymnasium (3)
+### Niedersachsen · Gymnasium (2)
 
 | Stufe | Nr. | Lernbereich | Kurz |
 | --- | --- | --- | --- |
 | 7/8 | 8.3 | Umgang mit negativen Zahlen › Multiplizieren und dividieren | Schuldenmodell, Permanenzprinzip und Vorzeichenregeln. |
 | 7/8 | 9.3 | Wahrscheinlichkeit › Additions- und Komplementärregel | Regeln begründen und anwenden. |
-| 9/10 | 18.4 | Quadratische Zusammenhänge › Parabel als Ortslinie | Gleicher Abstand zu einem Punkt und einer Geraden. |
 
 ### Nordrhein-Westfalen · Gymnasium (0)
 
@@ -99,7 +98,7 @@ Alle Lernbereiche haben eine Simulation.
 | 8 | 7 | Aussagenlogik (nur Informatik-Zweig) | Aussagen und Wahrheitswerte, Verknüpfungen wie Konjunktion, Disjunktion, NAND und NOR, Wahrheitstafeln. |
 | 8 | 8 | Vertiefung der regulären Themenfelder (nur Informatik-Zweig) | Vertiefungen zu den Themenfeldern 1 bis 5, zum Beispiel Mittelwerte, Parkettierungen und Füllgraphen. |
 
-### Sachsen · Gymnasium (19)
+### Sachsen · Gymnasium (17)
 
 | Stufe | Nr. | Lernbereich | Kurz |
 | --- | --- | --- | --- |
@@ -117,9 +116,7 @@ Alle Lernbereiche haben eine Simulation.
 | 9 | W1 | Der goldene Schnitt (Wahlbereich) | Definition, Konstruktion und Vorkommen in Kunst und Architektur. |
 | 9 | W3 | Baupläne und Bauzeichnungen (Wahlbereich) | Parallelprojektionen und wahre Größen in Bauzeichnungen. |
 | 10 | W3 | Kurven in Parameterdarstellung und in Polarkoordinaten (Wahlbereich) | Kurven mit Parametern und Polarkoordinaten beschreiben. |
-| 11/12 | GK-W1 | Kegelschnitte (Wahlbereich Grundkurs) | Kreis, Ellipse, Parabel und Hyperbel als Kegelschnitte; Konstruktion der Ellipse. |
 | 11/12 | GK-W3 | Dynamische Systeme und fraktale Strukturen (Wahlbereich Grundkurs) | Räuber-Beute-System und fraktale Strukturen. |
-| 11/12 | LK-W1 | Kegelschnitte (Wahlbereich Leistungskurs) | Kegelschnitte, Ellipse mit Konstruktion und Tangenten. |
 | 11/12 | LK-W3 | Dynamische Systeme und fraktale Strukturen (Wahlbereich Leistungskurs) | Räuber-Beute-System, Fraktale, Feigenbaum-Diagramm und Chaos. |
 | 11/12 | LK-W4 | Funktionen mit zwei Veränderlichen (Wahlbereich Leistungskurs) | Graphen im Raum, Schnittfiguren und partielle Ableitungen. |
 
