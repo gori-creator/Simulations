@@ -357,7 +357,7 @@ const HP_12_UNITS: CurriculumUnit[] = [
     code: '2',
     title: L('Integralrechnung', 'Integral calculus'),
     summary: L('Flächeninhalte und Rekonstruktion von Beständen, Integralfunktion und Hauptsatz, Integrationsregeln, Anwendungen bis zu Rotationskörpern.', 'Areas and reconstructing totals, the integral function and the fundamental theorem, rules of integration, applications including solids of revolution.'),
-    simulations: ['stammfunktion-grafisch', 'ober-untersummen', 'hauptsatz', 'aenderungsrate', 'rotationskoerper'],
+    simulations: ['stammfunktion-grafisch', 'ober-untersummen', 'hauptsatz', 'aenderungsrate', 'rotationskoerper', 'integrationsregeln'],
   },
   {
     code: '3',

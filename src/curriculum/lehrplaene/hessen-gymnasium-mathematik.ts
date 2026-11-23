@@ -2624,6 +2624,7 @@ export const hessenGymnasiumMathematik: StateCurriculum = {
                 'Stammfunktionen von Potenzen, eˣ, sin x und cos x; Faktor- und Summenregel.',
                 'Antiderivatives of powers, eˣ, sin x and cos x; constant-factor and sum rule.',
               ),
+              simulations: ['integrationsregeln'],
             },
             {
               code: 'Q1.1.5',
@@ -2632,6 +2633,7 @@ export const hessenGymnasiumMathematik: StateCurriculum = {
                 'Stammfunktionen von linear verketteten Funktionen bestimmen.',
                 'Finding antiderivatives of functions with a linear inner function.',
               ),
+              simulations: ['integrationsregeln'],
             },
             {
               code: 'Q1.1.6',
@@ -2640,6 +2642,7 @@ export const hessenGymnasiumMathematik: StateCurriculum = {
                 'Integrating (ax + b)^r with r ∈ ℚ \\ {−1}, integrating g(x) = f′(x)·e^f(x) (advanced course only)',
               ),
               summary: L('Weitere Stammfunktionen über die Umkehrung der Kettenregel.', 'Further antiderivatives by reversing the chain rule.'),
+              simulations: ['integrationsregeln'],
             },
           ],
         },
@@ -2773,16 +2776,19 @@ export const hessenGymnasiumMathematik: StateCurriculum = {
                 'Stammfunktion mit passendem Ansatz und Koeffizientenvergleich bestimmen.',
                 'Determining an antiderivative with a suitable ansatz and comparison of coefficients.',
               ),
+              simulations: ['integrationsregeln'],
             },
             {
               code: 'Q1.4.2',
               title: L('Partielle Integration (nur LK)', 'Integration by parts (advanced course only)'),
               summary: L('Produktintegrale mit partieller Integration lösen.', 'Solving integrals of products by integration by parts.'),
+              simulations: ['integrationsregeln'],
             },
             {
               code: 'Q1.4.3',
               title: L('Integration durch Substitution (nur LK)', 'Integration by substitution (advanced course only)'),
               summary: L('Integrale durch Substitution vereinfachen.', 'Simplifying integrals by substitution.'),
+              simulations: ['integrationsregeln'],
             },
           ],
         },
@@ -2874,7 +2880,7 @@ export const hessenGymnasiumMathematik: StateCurriculum = {
                 'The natural logarithm as antiderivative of 1/x (advanced course only)',
               ),
               summary: L('Ln(x) als Stammfunktion von 1/x nutzen.', 'Using ln(x) as the antiderivative of 1/x.'),
-              simulations: ['logarithmus'],
+              simulations: ['logarithmus', 'integrationsregeln'],
             },
             {
               code: 'Q2.1.6',

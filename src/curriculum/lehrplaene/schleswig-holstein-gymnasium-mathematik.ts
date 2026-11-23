@@ -637,7 +637,7 @@ const Q1_UNITS: CurriculumUnit[] = [
         code: 'A.3',
         title: L('Vertiefung der Differenzial- und Integralrechnung', 'further differential and integral calculus'),
         summary: L('Produkt- und Kettenregel, Untersuchung zusammengesetzter Funktionen, Optimierung und Integrationsregeln.', 'Product and chain rules, analysing combined functions, optimisation and integration rules.'),
-        simulations: ['kurvendiskussion', 'extremwertprobleme', 'ableitungsfunktion', 'ableitungsregeln'],
+        simulations: ['kurvendiskussion', 'extremwertprobleme', 'ableitungsfunktion', 'ableitungsregeln', 'integrationsregeln'],
       },
     ],
   },

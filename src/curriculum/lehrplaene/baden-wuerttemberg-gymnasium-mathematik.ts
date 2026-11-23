@@ -1426,7 +1426,7 @@ export const badenWuerttembergGymnasiumMathematik: StateCurriculum = {
                 "Stammfunktionen mit Potenz-, Faktor- und Summenregel und linearer Substitution bestimmen, bestimmte Integrale mit dem Hauptsatz berechnen und uneigentliche Integrale untersuchen.",
                 "Finding antiderivatives with the power, constant-factor and sum rules and linear substitution, calculating definite integrals with the fundamental theorem and investigating improper integrals.",
               ),
-              simulations: ["hauptsatz"],
+              simulations: ["hauptsatz", "integrationsregeln"],
             },
             {
               code: "3.5.1 (9)–(10)",
@@ -1699,7 +1699,7 @@ export const badenWuerttembergGymnasiumMathematik: StateCurriculum = {
                 "Stammfunktionen mit den Grundregeln und linearer Substitution bestimmen und bestimmte Integrale mit dem Hauptsatz berechnen.",
                 "Finding antiderivatives with the basic rules and linear substitution and calculating definite integrals with the fundamental theorem.",
               ),
-              simulations: ["hauptsatz"],
+              simulations: ["hauptsatz", "integrationsregeln"],
             },
             {
               code: "3.6.1 (7)–(8)",
@@ -1934,7 +1934,7 @@ export const badenWuerttembergGymnasiumMathematik: StateCurriculum = {
                 "Stammfunktionen mit Potenz-, Faktor- und Summenregel und linearer Substitution bestimmen, bestimmte Integrale mit dem Hauptsatz berechnen und uneigentliche Integrale untersuchen.",
                 "Finding antiderivatives with the power, constant-factor and sum rules and linear substitution, calculating definite integrals with the fundamental theorem and investigating improper integrals.",
               ),
-              simulations: ["hauptsatz"],
+              simulations: ["hauptsatz", "integrationsregeln"],
             },
             {
               code: "3.5.1 (9)–(10)",
@@ -2198,7 +2198,7 @@ export const badenWuerttembergGymnasiumMathematik: StateCurriculum = {
                 "Stammfunktionen mit den Grundregeln und linearer Substitution bestimmen und bestimmte Integrale mit dem Hauptsatz berechnen.",
                 "Finding antiderivatives with the basic rules and linear substitution and calculating definite integrals with the fundamental theorem.",
               ),
-              simulations: ["hauptsatz"],
+              simulations: ["hauptsatz", "integrationsregeln"],
             },
             {
               code: "3.6.1 (7)–(8)",
