@@ -316,6 +316,7 @@ const J11: CurriculumUnit[] = [
     code: 'GK-3',
     title: L('Magnetisches Feld (Grundkurs)', 'Magnetic field (basic course)'),
     summary: L('Feldlinienbilder, Flussdichte, Feld um Leiter und in Spulen.', 'Field-line patterns, flux density, the field around wires and inside coils.'),
+    simulations: ['magnetfeld-spule'],
   },
   {
     code: 'GK-4',
@@ -380,6 +381,7 @@ const J11: CurriculumUnit[] = [
     code: 'LK-6',
     title: L('Magnetisches Feld (Leistungskurs)', 'Magnetic field (advanced course)'),
     summary: L('Feldlinienbilder, Flussdichte, Feld um Leiter und in Spulen, Materie im Magnetfeld.', 'Field-line patterns, flux density, the field around wires and inside coils, matter in a magnetic field.'),
+    simulations: ['magnetfeld-spule'],
   },
   {
     code: 'LK-7',

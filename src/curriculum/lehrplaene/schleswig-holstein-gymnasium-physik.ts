@@ -103,7 +103,7 @@ const SEK_I_UNITS: CurriculumUnit[] = [
           'Magnetfeld von Leiter und Spule, Induktion, Elektromotor, Generator, Transformator und Hochspannungsleitung.',
           'Magnetic field of a wire and a coil, induction, electric motor, generator, transformer and power lines.',
         ),
-        simulations: ['induktion'],
+        simulations: ['induktion', 'magnetfeld-spule'],
       },
     ],
   },

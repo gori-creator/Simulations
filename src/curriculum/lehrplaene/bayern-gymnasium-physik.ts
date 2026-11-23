@@ -266,7 +266,7 @@ export const bayernGymnasiumPhysik: StateCurriculum = {
             "Magnetfelder mit Feldlinien beschreiben, Kraft auf stromdurchflossene Leiter und Lorentzkraft, Elektromotor, Induktion, Generator und idealer Transformator.",
             "Describing magnetic fields with field lines, the force on current-carrying conductors and the Lorentz force, electric motors, induction, generators and the ideal transformer.",
           ),
-          simulations: ["induktion", "lorentzkraft"],
+          simulations: ["induktion", "lorentzkraft", "magnetfeld-spule"],
         },
         {
           code: "2",

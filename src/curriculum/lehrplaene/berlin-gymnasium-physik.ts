@@ -122,7 +122,7 @@ const KS_9_10_UNITS: CurriculumUnit[] = [
       'Dauer- und Elektromagnete, magnetische Feldlinien, Kräfte auf stromführende Leiter, Elektromotor, Induktionsgesetz (qualitativ), Generator und Transformator.',
       'Permanent magnets and electromagnets, magnetic field lines, forces on current-carrying wires, the electric motor, the law of induction (qualitative), generator and transformer.',
     ),
-    simulations: ['induktion'],
+    simulations: ['induktion', 'magnetfeld-spule'],
   },
   {
     code: '3.10',
@@ -171,7 +171,7 @@ const Q12_UNITS: CurriculumUnit[] = [
       'Gravitationsgesetz und Gravitationsfeld mit Feldlinienbildern, Keplersche Gesetze und Satellitenbahnen, elektrisches Feld mit Kondensator und Kapazität, Magnetfeld von Spulen; Messunsicherheiten.',
       'The law of gravitation and gravitational fields with field line patterns, Kepler’s laws and satellite orbits, the electric field with capacitor and capacitance, the magnetic field of coils; measurement uncertainty.',
     ),
-    simulations: ['planetenbahnen', 'feldlinien', 'kondensator'],
+    simulations: ['planetenbahnen', 'feldlinien', 'kondensator', 'magnetfeld-spule'],
   },
   {
     code: '3.2.2',

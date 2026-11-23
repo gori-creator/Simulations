@@ -2,7 +2,7 @@
 
 <!-- Automatisch erzeugt mit `npm run lehrplan:luecken` aus src/curriculum/lehrplaene/ – nicht von Hand bearbeiten. -->
 
-Lernbereiche der Länder-Lehrpläne, zu denen es noch **keine** Simulation gibt – Vorrat für neue Simulationen (Anleitung: `docs/NEUE-SIMULATION.md`). Insgesamt **254 von 1773** Lernbereichen ohne Simulation.
+Lernbereiche der Länder-Lehrpläne, zu denen es noch **keine** Simulation gibt – Vorrat für neue Simulationen (Anleitung: `docs/NEUE-SIMULATION.md`). Insgesamt **247 von 1773** Lernbereichen ohne Simulation.
 
 Nicht jeder Lernbereich eignet sich für eine Simulation (z. B. reine Rechenfertigkeiten oder Methoden). Kommt ein Thema in mehreren Ländern vor, lohnt es sich besonders.
 
@@ -136,7 +136,7 @@ Alle Lernbereiche haben eine Simulation.
 | 7–9 | 2.4 | Größen und Messen › Sachaufgaben | Größen in Sachzusammenhängen bestimmen und Ergebnisse und Lösungsweg bewerten. |
 | 12 | S.3 | Stochastik › Hypergeometrische Verteilung | Ziehen ohne Zurücklegen mit der hypergeometrischen Verteilung beschreiben. |
 
-## Physik (193)
+## Physik (186)
 
 ### Baden-Württemberg · Gymnasium (5)
 
@@ -187,13 +187,11 @@ Alle Lernbereiche haben eine Simulation.
 | 11/12 | 4 | Elektromagnetische Schwingungen | Harmonische elektromagnetische Schwingungen, Schwingkreis, Ausbreitung und Spektrum elektromagnetischer Wellen. |
 | 11/12 | 8 | Struktur der Materie (LK) | LK: Bausteine der Materie, Kernmasse und Kernradius, Paarbildung, Quarks und Teilchenzoo. |
 
-### Hamburg · Gymnasium (1)
+### Hamburg · Gymnasium (0)
 
-| Stufe | Nr. | Lernbereich | Kurz |
-| --- | --- | --- | --- |
-| 10 | 1.3 | Magnetfelder und Elektromagnetismus | Magnetfelder von geradem Leiter und Spule, Feldlinienmodell und Feldkonzept, Elektromagnet, Relais und Elektromotor, Transport und Speicherung elektrischer Energie. |
+Alle Lernbereiche haben eine Simulation.
 
-### Hessen · Gymnasium (75)
+### Hessen · Gymnasium (72)
 
 | Stufe | Nr. | Lernbereich | Kurz |
 | --- | --- | --- | --- |
@@ -218,7 +216,6 @@ Alle Lernbereiche haben eine Simulation.
 | 9/10 | 6.2 | Fortbewegung und Mobilität › Trägheit eines Körpers | Trägheit als Beharrungsvermögen; Bedeutung für die Verkehrssicherheit. |
 | 9/10 | 6.4 | Fortbewegung und Mobilität › Menschliche und technische Leistungen und deren Vergleich | Eigene körperliche Leistung bestimmen und mit Maschinen vergleichen. |
 | 9/10 | 7.2 | Technik im Dienst des Menschen › Phänomen Auftrieb | Schwimmen, Schweben und Sinken experimentell untersuchen und erklären. |
-| 9/10 | 7.3 | Technik im Dienst des Menschen › Magnetische Wirkung des elektrischen Stroms | Elektromagnete und elektromagnetische Energiewandler wie Motoren verstehen. |
 | 9/10 | 8.2 | Zukunftssichere Energieversorgung › Großenergieanlagen | Kraftwerkstypen vergleichen. |
 | 9/10 | 8.3 | Zukunftssichere Energieversorgung › Speicherung und Transport von Energie | Speicher und Hochspannungsübertragung mit Transformatoren untersuchen. |
 | 9/10 | 8.4 | Zukunftssichere Energieversorgung › Energieversorgungsnetze | Zentrale und dezentrale Versorgung bewerten. |
@@ -235,8 +232,6 @@ Alle Lernbereiche haben eine Simulation.
 | 12 | Q1.1.4 | Elektrisches Feld › Coulomb’sches Gesetz | Kraft zwischen Punktladungen. |
 | 12 | Q1.1.5 | Elektrisches Feld › Kräfte auf Körper in homogenen elektrischen Feldern, Bahnformen (qualitativ), Energiebetrachtung | Millikan-Versuch, Beschleunigung geladener Teilchen und Ablenkung quer zum Feld. |
 | 12 | Q1.1.9 | Elektrisches Feld › Kräfte auf Körper in homogenen elektrischen Feldern, Bahnformen, Energiebetrachtung (nur LK) | Quantitative Ablenkung (Vergleich mit waagerechtem Wurf), Linearbeschleuniger. |
-| 12 | Q1.2.1 | Magnetisches Feld › Begriff des Feldes am Beispiel von magnetischen Feldern | Feldlinien von Dauermagnet, geradem Leiter und Spule. |
-| 12 | Q1.2.2 | Magnetisches Feld › Magnetische Flussdichte | Flussdichte definieren und im Inneren einer langen Spule bestimmen. |
 | 12 | Q1.2.5 | Magnetisches Feld › Hall-Effekt (nur LK) | Spannung quer zum Strom im Magnetfeld erklären. |
 | 12 | Q1.2.6 | Magnetisches Feld › Teilchenbeschleuniger (nur LK) | Funktionsprinzip z. B. von Zyklotron und Synchrotron. |
 | 12 | Q2.2.3 | Induktion und elektromagnetische Schwingungen › Selbstinduktion und Induktivität einer langen Spule (phänomenologisch) | Selbstinduktion an Spulen beobachten und beschreiben. |
@@ -343,15 +338,14 @@ Alle Lernbereiche haben eine Simulation.
 | 12/13 | LF-W.20 | Wahlpflichtbausteine (Leistungsfach, sieben zu wählen) › Strömungsphysik | Strömungsarten, Kontinuitätsgleichung, Bernoulli-Gleichung und dynamischer Auftrieb. |
 | 12/13 | LF-W.21 | Wahlpflichtbausteine (Leistungsfach, sieben zu wählen) › Individuelles Thema | Frei gewählte Inhalte, vor allem zur Bewertungskompetenz, etwa Nachhaltigkeit oder Klimawandel. |
 
-### Saarland · Gymnasium (3)
+### Saarland · Gymnasium (2)
 
 | Stufe | Nr. | Lernbereich | Kurz |
 | --- | --- | --- | --- |
 | 8 | 3 | Druck | Druck als Zustand, Schweredruck in Flüssigkeiten, Luftdruck, Auftrieb. |
-| 12 | 1.3 | Magnetisches Feld | Magnetfelder von Leitern und Spulen, magnetische Flussdichte. |
 | 13 | 3.4 | Elektromagnetische Wellen | Entstehung und Eigenschaften elektromagnetischer Wellen. |
 
-### Sachsen · Gymnasium (20)
+### Sachsen · Gymnasium (18)
 
 | Stufe | Nr. | Lernbereich | Kurz |
 | --- | --- | --- | --- |
@@ -366,12 +360,10 @@ Alle Lernbereiche haben eine Simulation.
 | 9 | W2 | Energie von Wind und Sonne (Wahlbereich) | Windkraftanlagen, Solarthermie und Fotovoltaik. |
 | 10 | W2 | Kommunikation mit elektronischen Medien (Wahlbereich) | Informationsübertragung mit Hertz’schen Wellen, Modulation und Demodulation. |
 | 10 | W3 | Fernsehbildtechnik (Wahlbereich) | Aufbau des Fernsehbilds und Funktionsweise von Bildschirmen. |
-| 11 | GK-3 | Magnetisches Feld (Grundkurs) | Feldlinienbilder, Flussdichte, Feld um Leiter und in Spulen. |
 | 11 | GK-W1 | Leitungsvorgänge in Halbleitern (Wahlbereich Grundkurs) | Bändermodell, pn-Übergang, Diode und Transistor. |
 | 11 | GK-W2 | Messen und Modellieren (Wahlbereich Grundkurs) | Messreihen mit Videoanalyse und Messschnittstellen erfassen und mit Modellen vergleichen. |
 | 11 | GK-W3 | Relativität von Zeit und Raum (Wahlbereich Grundkurs) | Postulate, Zeitdilatation und Längenkontraktion. |
 | 11 | LK-4 | Modellbildung und Simulation (Leistungskurs) | Bewegungen numerisch modellieren, Parameter variieren und mit dem Experiment vergleichen. |
-| 11 | LK-6 | Magnetisches Feld (Leistungskurs) | Feldlinienbilder, Flussdichte, Feld um Leiter und in Spulen, Materie im Magnetfeld. |
 | 11 | LK-W1 | Einblick in die Relativitätstheorie (Wahlbereich Leistungskurs) | Postulate, Michelson-Experiment, Zeitdilatation und E = m · c². |
 | 11 | LK-W2 | Leitungsvorgänge in Halbleitern (Wahlbereich Leistungskurs) | Bändermodell, pn-Übergang, Diode und Transistor. |
 | 12 | LK-W2 | Deterministisches Chaos (Wahlbereich Leistungskurs) | Nichtlineare Systeme, Attraktoren und begrenzte Vorhersagbarkeit. |

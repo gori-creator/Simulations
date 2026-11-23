@@ -1123,6 +1123,7 @@ export const hessenGymnasiumPhysik: StateCurriculum = {
                 'Elektromagnete und elektromagnetische Energiewandler wie Motoren verstehen.',
                 'Understanding electromagnets and electromagnetic energy converters such as motors.',
               ),
+              simulations: ['magnetfeld-spule'],
             },
           ],
         },
@@ -1428,6 +1429,7 @@ export const hessenGymnasiumPhysik: StateCurriculum = {
                 'Elektromagnete und elektromagnetische Energiewandler wie Motoren verstehen.',
                 'Understanding electromagnets and electromagnetic energy converters such as motors.',
               ),
+              simulations: ['magnetfeld-spule'],
             },
           ],
         },
@@ -1870,6 +1872,7 @@ export const hessenGymnasiumPhysik: StateCurriculum = {
               code: 'Q1.2.1',
               title: L('Begriff des Feldes am Beispiel von magnetischen Feldern', 'Concept of a field using magnetic fields'),
               summary: L('Feldlinien von Dauermagnet, geradem Leiter und Spule.', 'Field lines of permanent magnet, straight wire and solenoid.'),
+              simulations: ['magnetfeld-spule'],
             },
             {
               code: 'Q1.2.2',
@@ -1878,6 +1881,7 @@ export const hessenGymnasiumPhysik: StateCurriculum = {
                 'Flussdichte definieren und im Inneren einer langen Spule bestimmen.',
                 'Defining flux density and determining it inside a long solenoid.',
               ),
+              simulations: ['magnetfeld-spule'],
             },
             {
               code: 'Q1.2.3',

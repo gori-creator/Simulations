@@ -475,8 +475,24 @@ export const physik: Subject = {
         {
           id: 'felder',
           title: L('Elektrische und magnetische Felder', 'Electric and magnetic fields'),
-          grades: [9, 13],
+          grades: [8, 13],
           simulations: [
+            {
+              id: 'magnetfeld-spule',
+              status: 'ready',
+              slug: L('magnetfeld-leiter-spule', 'magnetic-field-wire-coil'),
+              title: L('Magnetfeld von Leiter und Spule', 'Magnetic field of a wire and a coil'),
+              summary: L(
+                'Fließt Strom durch einen Draht, dreht sich die Kompassnadel daneben weg. Wickelt man den Draht zur Spule, entsteht ein Elektromagnet, der Relais schaltet und Motoren antreibt.',
+                'When current flows through a wire, the compass needle next to it turns away. Wind the wire into a coil and you get an electromagnet that switches relays and drives motors.',
+              ),
+              grades: [8, 12],
+              kmk: ['P-S', 'P-E', 'P-BK-Wechselwirkung', 'P-BK-Mathematisieren'],
+              keywords: L(
+                ['Magnetfeld', 'Elektromagnetismus', 'Ørsted', 'Oersted', 'Kompass', 'Rechte-Faust-Regel', 'Feldlinien', 'magnetische Flussdichte', 'Tesla', 'Hallsonde', 'gerader Leiter', 'Leiterschleife', 'Spule', 'Windungszahl', 'Eisenkern', 'Permeabilität', 'Elektromagnet', 'Relais', 'Elektromotor', 'Stromwender', 'Kommutator', 'Drehmoment', 'magnetische Feldkonstante'],
+                ['magnetic field', 'electromagnetism', 'Ørsted', 'Oersted', 'compass', 'right-hand grip rule', 'field lines', 'magnetic flux density', 'tesla', 'Hall probe', 'straight wire', 'current loop', 'coil', 'solenoid', 'number of turns', 'iron core', 'permeability', 'electromagnet', 'relay', 'electric motor', 'commutator', 'torque', 'magnetic constant'],
+              ),
+            },
             {
               id: 'induktion',
               status: 'ready',

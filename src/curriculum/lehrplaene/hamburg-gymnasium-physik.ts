@@ -115,6 +115,7 @@ const KS_10_UNITS: CurriculumUnit[] = [
       'Magnetfelder von geradem Leiter und Spule, Feldlinienmodell und Feldkonzept, Elektromagnet, Relais und Elektromotor, Transport und Speicherung elektrischer Energie.',
       'Magnetic fields of a straight conductor and a coil, the field line model and field concept, electromagnet, relay and electric motor, transport and storage of electrical energy.',
     ),
+    simulations: ['magnetfeld-spule'],
   },
   {
     code: '2.3',
