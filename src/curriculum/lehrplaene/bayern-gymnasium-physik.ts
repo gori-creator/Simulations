@@ -46,6 +46,7 @@ export const bayernGymnasiumPhysik: StateCurriculum = {
                 "Eigenschaften von Dauermagneten, Elementarmagnete und Erdmagnetfeld; dazu die Dichte als Stoffeigenschaft, bestimmt im eigenen Experiment.",
                 "Properties of permanent magnets, the model of elementary magnets and the Earth’s magnetic field; plus density as a property of a material, measured in an own experiment.",
               ),
+              simulations: ['magnete'],
             },
             {
               code: "1.2",

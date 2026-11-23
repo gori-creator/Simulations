@@ -46,7 +46,7 @@ const KS_7_UNITS: CurriculumUnit[] = [
       'Magnetismus, elektrischer Stromkreis, Spannung und Stromstärke, Wirkungen des Stroms, ohmsches Gesetz, sicherer Umgang mit Elektrizität.',
       'Magnetism, the electric circuit, voltage and current, effects of current, Ohm’s law, using electricity safely.',
     ),
-    simulations: ['einfacher-stromkreis', 'reihe-parallel', 'ohmsches-gesetz'],
+    simulations: ['einfacher-stromkreis', 'reihe-parallel', 'ohmsches-gesetz', 'magnete'],
   },
   {
     code: '2',

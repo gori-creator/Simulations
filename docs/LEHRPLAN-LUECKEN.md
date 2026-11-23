@@ -2,7 +2,7 @@
 
 <!-- Automatisch erzeugt mit `npm run lehrplan:luecken` aus src/curriculum/lehrplaene/ – nicht von Hand bearbeiten. -->
 
-Lernbereiche der Länder-Lehrpläne, zu denen es noch **keine** Simulation gibt – Vorrat für neue Simulationen (Anleitung: `docs/NEUE-SIMULATION.md`). Insgesamt **320 von 1773** Lernbereichen ohne Simulation.
+Lernbereiche der Länder-Lehrpläne, zu denen es noch **keine** Simulation gibt – Vorrat für neue Simulationen (Anleitung: `docs/NEUE-SIMULATION.md`). Insgesamt **312 von 1773** Lernbereichen ohne Simulation.
 
 Nicht jeder Lernbereich eignet sich für eine Simulation (z. B. reine Rechenfertigkeiten oder Methoden). Kommt ein Thema in mehreren Ländern vor, lohnt es sich besonders.
 
@@ -182,16 +182,15 @@ Alle Lernbereiche haben eine Simulation.
 | 7–9 | 2.4 | Größen und Messen › Sachaufgaben | Größen in Sachzusammenhängen bestimmen und Ergebnisse und Lösungsweg bewerten. |
 | 12 | S.3 | Stochastik › Hypergeometrische Verteilung | Ziehen ohne Zurücklegen mit der hypergeometrischen Verteilung beschreiben. |
 
-## Physik (215)
+## Physik (207)
 
-### Baden-Württemberg · Gymnasium (11)
+### Baden-Württemberg · Gymnasium (10)
 
 | Stufe | Nr. | Lernbereich | Kurz |
 | --- | --- | --- | --- |
 | 7/8 | 3.1.1 | Denk- und Arbeitsweisen der Physik | Beobachtung und Erklärung unterscheiden, physikalische Aussagen mit Experimenten überprüfen, Modelle nutzen und das SI-Einheitensystem kennen. |
 | 7/8 | 3.1.2 | Einführung in die Physik: Akustik | Schall erzeugen, ausbreiten und hören; Lautstärke und Tonhöhe mit Amplitude und Frequenz einer Schwingung verbinden und Hörschäden durch Lärm bewerten. |
 | 7/8 | 3.1.4 | Einführung in die Physik: Energie effizient nutzen | Grundeigenschaften der Energie und Energieketten; Wärmeleitung, Konvektion und Wärmestrahlung untersuchen, Dämmstoffe prüfen und Regeln zum Energiesparen ableiten. |
-| 7/8 | 3.1.8 | Magnetismus | Magnete, Pole und Magnetfelder experimentell untersuchen und mit Feldlinien von Stab- und Hufeisenmagnet beschreiben, einschließlich Erdmagnetfeld. |
 | 9/10 | 3.2.1 | Denk- und Arbeitsweisen der Physik | Beobachtung und Erklärung unterscheiden, Aussagen experimentell überprüfen, Modelle wie das Atommodell nutzen und die Bedeutung des SI-Systems erläutern. |
 | 9/10 | 3.2.6 | Wärmelehre und Klimaphysik | Erwärmungsenergie mit der spezifischen Wärmekapazität berechnen und den natürlichen und menschengemachten Treibhauseffekt, Kippelemente und Wege der Energieversorgung beurteilen. |
 | 12/13 | 3.4.1 | Denk- und Arbeitsweisen der Physik (Basisfach mit Schwerpunkt Quantenphysik) | Überprüfbarkeit physikalischer Aussagen durch das Experiment, Modelle von Licht und Materie und die Bedeutung von Naturkonstanten wie der Planck’schen Konstanten. |
@@ -200,11 +199,10 @@ Alle Lernbereiche haben eine Simulation.
 | 12/13 | 3.6.1 | Denk- und Arbeitsweisen der Physik (nur Leistungsfach) | Überprüfbarkeit physikalischer Aussagen, Modelle von Licht und Materie und die Bedeutung von Naturkonstanten. |
 | 12/13 | 3.6.7 | Vertiefendes Themengebiet (nur Leistungsfach) | Ein Forschungsgebiet der Physik (z. B. Relativitätstheorie, Laser- oder Teilchenphysik, Astrophysik) vertieft erarbeiten und typische Methoden daran anwenden. |
 
-### Bayern · Gymnasium (20)
+### Bayern · Gymnasium (19)
 
 | Stufe | Nr. | Lernbereich | Kurz |
 | --- | --- | --- | --- |
-| 7 | 1.1 | Physik in Natur und Technik entdecken (Entwurf: Überschrift nicht aus dem Original übernommen) › Magnetismus und Dichte (Entwurf: Überschrift nicht aus dem Original übernommen) | Eigenschaften von Dauermagneten, Elementarmagnete und Erdmagnetfeld; dazu die Dichte als Stoffeigenschaft, bestimmt im eigenen Experiment. |
 | 8 | 4.1 | Profilbereich am NTG (nur NTG) › Untersuchungen an Solarzellen und anderen Elektrizitätsquellen | Solarmodule in Reihe und parallel messen und äußere Einflüsse wie Neigung und Schatten untersuchen; weitere Quellen wie galvanische Elemente oder Netzgeräte erkunden. |
 | 9 | 1.2 | Energie als Erhaltungsgröße › Elektrische Energie | Ladung als Vielfaches der Elementarladung, Spannung als Potentialdifferenz, elektrische Energie und Leistung in Schaltungen sowie der Wirkungsgrad von Geräten. |
 | 9 | 3.2 | Wärmelehre › Thermischer Energietransport und Einflüsse auf unser Klima | Spezifische Wärmekapazität, Wärme als Prozessgröße, Wärmeleitung, Konvektion und Wärmestrahlung sowie Treibhauseffekt und Strahlungsgleichgewicht der Erde. |
@@ -247,7 +245,7 @@ Alle Lernbereiche haben eine Simulation.
 | 10 | 1.3 | Magnetfelder und Elektromagnetismus | Magnetfelder von geradem Leiter und Spule, Feldlinienmodell und Feldkonzept, Elektromagnet, Relais und Elektromotor, Transport und Speicherung elektrischer Energie. |
 | 11/12 | 4.2 | Aspekte der Astrophysik (Wahlthema) | Himmelsbeobachtung und Instrumente, Raumzeit, Sternentwicklung und schwarze Löcher, Gravitationswellen, Skalen im Universum, Strahlungsbilanzen von Planeten. |
 
-### Hessen · Gymnasium (79)
+### Hessen · Gymnasium (78)
 
 | Stufe | Nr. | Lernbereich | Kurz |
 | --- | --- | --- | --- |
@@ -261,7 +259,6 @@ Alle Lernbereiche haben eine Simulation.
 | 6–8 | 4.3 | Elektrizität im Alltag › Gefahren beim Umgang mit Elektrizität im Alltag | Gefahren erkennen und sicheres Verhalten begründen. |
 | 6–8 | 5.4 | Wettererscheinungen und Klima › Stoffe bei Temperaturänderung | Ausdehnung von festen, flüssigen und gasförmigen Stoffen untersuchen. |
 | 6–8 | 5.5 | Wettererscheinungen und Klima › Anomalie des Wassers und seine Bedeutung für das irdische Leben | Dichteverhalten von Wasser bei 4 °C und Folgen für Gewässer. |
-| 6–8 | 7.1 | Technik im Dienst des Menschen › Magnetismus | Magnete untersuchen, Feldlinien zeichnen und mit Elementarmagneten erklären. |
 | 6–8 | 8.1 | Zukunftssichere Energieversorgung › Unterscheidung zwischen regenerativen und erschöpfbaren Energien | Energieträger nach Verfügbarkeit einordnen und eigenes Verhalten bewerten. |
 | 6–8 | 9.1 | Physik in der Verantwortung › Verantwortung gegenüber der Umwelt | Umwelt- und Gesundheitsaspekte beim Experimentieren und im Alltag berücksichtigen. |
 | 6–8 | 9.2 | Physik in der Verantwortung › Rolle der Physik bei Umwelt- und Naturereignissen | Physikalische Informationen aus Meldungen zu Ereignissen entnehmen. |
@@ -331,11 +328,10 @@ Alle Lernbereiche haben eine Simulation.
 | 13 | Q4.6.4 | Astrophysik › Energieumwandlung in der Sonne (nur LK) | Proton-Proton-Reaktion und weitere Fusionsprozesse. |
 | 13 | Q4.6.5 | Astrophysik › Sterntypen, Sternentstehung und -entwicklung (nur LK) | Hauptreihensterne und Lebenszyklus eines Sterns. |
 
-### Niedersachsen · Gymnasium (7)
+### Niedersachsen · Gymnasium (6)
 
 | Stufe | Nr. | Lernbereich | Kurz |
 | --- | --- | --- | --- |
-| 5/6 | 1 | Dauermagnete | Magnete ziehen manche Stoffe an, haben Nord- und Südpol, die sich nicht trennen lassen; Erde als Magnet, Kompass und das Modell der Elementarmagnete. |
 | 7/8 | 4 | Einführung des Energiebegriffs | Energie in Übertragungsketten und Flussdiagrammen beschreiben, Einheit Joule, qualitative Energiebilanzen und Energieerhaltung mit dem Energiestrom in die Umgebung. |
 | 11 | EF-1.2 | Dynamik › Grundgleichung der Mechanik und newtonsche Axiome | F = m · a, Krafteinheit und die drei Axiome. |
 | 11 | EF-2.1 | Wahlmodule (Vorschläge) › Akustik | Schallgeschwindigkeit, Ton, Klang und Geräusch, Frequenz und Amplitude, Schalldruckpegel, Intervalle und Klangfarbe. |
@@ -343,14 +339,12 @@ Alle Lernbereiche haben eine Simulation.
 | 12/13 | Q-3.2 | Quantenobjekte › Komplementarität und Unbestimmtheit | Nur eA: Mach-Zehnder-Interferometer, Delayed-Choice-Experiment, Zustand, Präparation, Superposition und Unbestimmtheit. |
 | 12/13 | Q-5.2 | Atomkern › Energiespektren und Anwendungen | Halbleiterdetektor, Alpha-Spektrum einer Zerfallsreihe, Bragg-Kurve; nur eA: Nukleonen im Potenzialtopf. |
 
-### Nordrhein-Westfalen · Gymnasium (16)
+### Nordrhein-Westfalen · Gymnasium (14)
 
 | Stufe | Nr. | Lernbereich | Kurz |
 | --- | --- | --- | --- |
 | 5/6 | 1.2 | Temperatur und Wärme › Wärmetransport | Wärmemitführung, Wärmeleitung und Wärmestrahlung, Temperaturausgleich und Wärmedämmung. |
 | 5/6 | 2.2 | Elektrischer Strom und Magnetismus › Wirkungen des elektrischen Stroms | Wärme-, Licht- und magnetische Wirkung, Sicherungen und Gefahren durch Elektrizität. |
-| 5/6 | 2.3 | Elektrischer Strom und Magnetismus › Magnetische Kräfte und Felder | Anziehung und Abstoßung, Magnetpole, Feldlinienbilder, Magnetfeld der Erde und Kompass. |
-| 5/6 | 2.4 | Elektrischer Strom und Magnetismus › Magnetisierung | Magnetisierbare Stoffe und das Modell der Elementarmagnete. |
 | 5/6 | 3.1 | Schall › Schwingungen und Schallwellen | Tonhöhe und Lautstärke, Schallausbreitung im Teilchenmodell, Absorption und Reflexion. |
 | 5/6 | 3.2 | Schall › Schallquellen und Schallempfänger | Sender-Empfänger-Modell, Ultraschall in Natur, Medizin und Technik, Lärm und Lärmschutz. |
 | 7–10 | 5.3 | Optische Instrumente › Licht und Farben | Zerlegung von Licht am Prisma, Infrarot und Ultraviolett, Absorption und Farbmischung (RGB, CMYK). |
@@ -440,12 +434,11 @@ Alle Lernbereiche haben eine Simulation.
 | 12 | LK-3 | Praktikum Optik und Schwingungen (Leistungskurs) | Experimentelle Aufgaben und quantitative Analyse von Messunsicherheiten. |
 | 12 | LK-W2 | Deterministisches Chaos (Wahlbereich Leistungskurs) | Nichtlineare Systeme, Attraktoren und begrenzte Vorhersagbarkeit. |
 
-### Sachsen-Anhalt · Gymnasium (11)
+### Sachsen-Anhalt · Gymnasium (10)
 
 | Stufe | Nr. | Lernbereich | Kurz |
 | --- | --- | --- | --- |
 | 6 | 1 | Die Naturwissenschaft Physik | Teilgebiete der Physik kennenlernen, Länge, Zeit, Volumen, Masse und Temperatur als Größen mit Einheiten, Längen und Zeiten messen. |
-| 6 | 5 | Magnetismus | Dauermagnete mit Nord- und Südpol, magnetische Stoffe, Magnetfeld im Feldlinienmodell, Erdmagnetfeld und Kompass. |
 | 7/8 | 4 | Druck und Auftrieb | Druck bei festen Körpern, in Flüssigkeiten und Gasen, Auftrieb nach Archimedes, Schwimmen, Schweben und Sinken, dynamischer Auftrieb. |
 | 10 | 4 | Klimaphysik | Elektromagnetisches Spektrum, Strahlungshaushalt der Erde, Albedo, Stefan-Boltzmann-Gesetz, natürlicher und menschengemachter Treibhauseffekt. |
 | 10 | 5 | Experimentalpraktikum | Experimente selbst planen, durchführen und auswerten, mit Blick auf Messabweichungen und das Verallgemeinern zu Gesetzen. |
@@ -456,12 +449,11 @@ Alle Lernbereiche haben eine Simulation.
 | 11/12 | eA-4.1 | Praktika (erhöhtes Anforderungsniveau) › Experimentalpraktikum | Eigene Experimente planen und auswerten, Messunsicherheiten abschätzen. |
 | 11/12 | eA-4.2 | Praktika (erhöhtes Anforderungsniveau) › Aufgabenpraktikum | Strategien zum Lösen physikalischer Aufgaben üben, auch mit Kraftansätzen und der Wahl eines geeigneten Bezugssystems. |
 
-### Schleswig-Holstein · Gymnasium (6)
+### Schleswig-Holstein · Gymnasium (5)
 
 | Stufe | Nr. | Lernbereich | Kurz |
 | --- | --- | --- | --- |
 | 7–10 | 1.3 | Energie › Herausforderungen der Energieversorgung (Block II) | Arten der Energieversorgung vergleichen und bewerten, Transport und Speicherung, regenerative Energien und verantwortungsvoller Umgang mit Energie. |
-| 7–10 | 2.2 | Elektrizitätslehre und Magnetismus › Permanentmagnetismus (Block I) | Magnetische Pole, Anziehung und Abstoßung, Magnetisierbarkeit und Magnetfelder. |
 | 7–10 | 3.4 | Elektromagnetische Strahlung › Spektrum und Wellenlänge (Block II) | Spektralfarben, Farbaddition und -subtraktion, Absorption und Transmission, nicht sichtbare Bereiche und Sensoren. |
 | 7–10 | 3.5 | Elektromagnetische Strahlung › Klimaphysik (Block II) | Strahlungshaushalt der Erde, Albedo, natürlicher und anthropogener Treibhauseffekt und Rückkopplungen. |
 | 7–10 | 4.1 | Mechanik › Dichte (Block I) | Masse, Volumen und Dichte, Schwimmen, Schweben und Sinken. |

@@ -99,11 +99,13 @@ const ERPROBUNG_UNITS: CurriculumUnit[] = [
           'Anziehung und Abstoßung, Magnetpole, Feldlinienbilder, Magnetfeld der Erde und Kompass.',
           'Attraction and repulsion, magnetic poles, field-line patterns, the Earth’s magnetic field and the compass.',
         ),
+        simulations: ['magnete'],
       },
       {
         code: '2.4',
         title: L('Magnetisierung', 'Magnetisation'),
         summary: L('Magnetisierbare Stoffe und das Modell der Elementarmagnete.', 'Magnetisable materials and the model of elementary magnets.'),
+        simulations: ['magnete'],
       },
     ],
   },

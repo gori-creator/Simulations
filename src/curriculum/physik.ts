@@ -391,9 +391,32 @@ export const physik: Subject = {
         'Stromkreise bauen, Spannungen messen, Felder sichtbar machen und Induktion verstehen.',
         'Build circuits, measure voltages, visualise fields and understand induction.',
       ),
-      grades: [6, 13],
+      grades: [5, 13],
       kmk: ['P-S', 'P-E', 'P-BK-System', 'P-BK-Wechselwirkung'],
       topics: [
+        {
+          id: 'magnetismus',
+          title: L('Magnetismus', 'Magnetism'),
+          grades: [5, 7],
+          simulations: [
+            {
+              id: 'magnete',
+              status: 'ready',
+              slug: L('magnete-kompass', 'magnets-compass'),
+              title: L('Magnete und Kompass', 'Magnets and compass'),
+              summary: L(
+                'Nordpol trifft Südpol: Die Magnete schnappen zusammen. Eisenfeilspäne und Kompassnadeln zeigen das unsichtbare Feld, und die ganze Erde ist ein riesiger Magnet.',
+                'North pole meets south pole: the magnets snap together. Iron filings and compass needles show the invisible field, and the whole Earth is a giant magnet.',
+              ),
+              grades: [5, 7],
+              kmk: ['P-S', 'P-E', 'P-BK-Wechselwirkung', 'P-BK-System'],
+              keywords: L(
+                ['Magnet', 'Dauermagnet', 'Permanentmagnet', 'Stabmagnet', 'Hufeisenmagnet', 'Nordpol', 'Südpol', 'Anziehung', 'Abstoßung', 'Magnetfeld', 'Feldlinien', 'Kompass', 'Kompassnadel', 'Eisenfeilspäne', 'Elementarmagnete', 'Magnetisierung', 'Entmagnetisieren', 'Curie-Temperatur', 'Erdmagnetfeld', 'Inklination', 'Eisen', 'Nickel', 'Kobalt', 'ferromagnetisch'],
+                ['magnet', 'permanent magnet', 'bar magnet', 'horseshoe magnet', 'north pole', 'south pole', 'attraction', 'repulsion', 'magnetic field', 'field lines', 'compass', 'compass needle', 'iron filings', 'elementary magnets', 'magnetisation', 'demagnetise', 'Curie temperature', 'Earth’s magnetic field', 'inclination', 'iron', 'nickel', 'cobalt', 'ferromagnetic'],
+              ),
+            },
+          ],
+        },
         {
           id: 'stromkreise',
           title: L('Stromkreise', 'Circuits'),

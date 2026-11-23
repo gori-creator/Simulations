@@ -86,6 +86,7 @@ const SEK_I_UNITS: CurriculumUnit[] = [
         code: '2.2',
         title: L('Permanentmagnetismus (Block I)', 'Permanent magnetism (block I)'),
         summary: L('Magnetische Pole, Anziehung und Abstoßung, Magnetisierbarkeit und Magnetfelder.', 'Magnetic poles, attraction and repulsion, magnetisability and magnetic fields.'),
+        simulations: ['magnete'],
       },
       {
         code: '2.3',

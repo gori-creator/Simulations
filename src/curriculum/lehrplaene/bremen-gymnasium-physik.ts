@@ -63,7 +63,7 @@ const KS_7_9_UNITS: CurriculumUnit[] = [
       'Magnetische Grundphänomene und Elementarmagnete, Magnetfelder von Magneten, Erde und Spule, Elektromagnet und Elektromotor, Induktion, Generator und Transformator.',
       'Basic magnetic phenomena and elementary magnets, magnetic fields of magnets, the Earth and coils, the electromagnet and electric motor, induction, generator and transformer.',
     ),
-    simulations: ['induktion'],
+    simulations: ['induktion', 'magnete'],
   },
   {
     code: '5',

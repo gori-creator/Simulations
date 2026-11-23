@@ -37,6 +37,7 @@ const DJ_5_6: CurriculumUnit[] = [
       'Magnete ziehen manche Stoffe an, haben Nord- und Südpol, die sich nicht trennen lassen; Erde als Magnet, Kompass und das Modell der Elementarmagnete.',
       'Magnets attract some materials and have north and south poles that cannot be separated; the Earth as a magnet, the compass and the model of elementary magnets.',
     ),
+    simulations: ['magnete'],
   },
   {
     code: '2',
