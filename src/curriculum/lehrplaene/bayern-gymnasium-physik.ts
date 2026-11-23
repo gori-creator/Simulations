@@ -321,6 +321,7 @@ export const bayernGymnasiumPhysik: StateCurriculum = {
                 "Kennlinie einer Diode aufnehmen, Transistor als Schalter und Verstärker einsetzen und einfache Halbleiterschaltungen mit Modellen erklären.",
                 "Recording the characteristic curve of a diode, using a transistor as a switch and amplifier, and explaining simple semiconductor circuits with models.",
               ),
+              simulations: ["diode-transistor"],
             },
             {
               code: "5.2",

@@ -221,6 +221,7 @@ describe('Länder-Lehrpläne', () => {
       hubble: 'Kosmologie, Rotverschiebung und Hubble-Beziehung kommen im Lehrplan nicht vor.',
       magnete: 'Dauermagnete erst im Zusammenhang mit Elektromagnetismus (Jahrgang 9/10); die Simulation ist für Klasse 5–7 gedacht.',
       'hr-diagramm': 'Astrophysik und Sterne kommen in den erfassten Lernbereichen nicht vor (bitte am Lehrplan prüfen).',
+      'diode-transistor': 'Halbleiter, Diode und Transistor nicht im Rahmenlehrplan (siehe docs/lehrplaene/berlin-gymnasium-physik.md)',
       stoesse: 'Impuls und Stöße nur im Wahlpflichtthema der Einführungsphase an ISS/Gemeinschaftsschulen, nicht am Gymnasium (siehe docs/lehrplaene/berlin-gymnasium-physik.md)',
       'schiefer-wurf': 'Wurfbewegungen nur im Wahlpflichtthema der Einführungsphase an ISS/Gemeinschaftsschulen, nicht am Gymnasium',
       'doppler-effekt': 'Doppler-Effekt nicht im Rahmenlehrplan',
@@ -241,6 +242,7 @@ describe('Länder-Lehrpläne', () => {
       hubble: 'Kosmologie, Rotverschiebung und Hubble-Beziehung kommen im Lehrplan nicht vor.',
       magnete: 'Dauermagnete erst im Zusammenhang mit Elektromagnetismus (Jahrgang 9/10); die Simulation ist für Klasse 5–7 gedacht.',
       'hr-diagramm': 'Astrophysik und Sterne kommen in den erfassten Lernbereichen nicht vor (bitte am Lehrplan prüfen).',
+      'diode-transistor': 'Halbleiter, Diode und Transistor nicht im Rahmenlehrplan (wie Berlin)',
       stoesse: 'Impuls und Stöße nur im Wahlpflichtthema der Einführungsphase an Gesamtschulen, nicht am Gymnasium (siehe docs/lehrplaene/brandenburg-gymnasium-physik.md)',
       'schiefer-wurf': 'Wurfbewegungen nur im Wahlpflichtthema der Einführungsphase an Gesamtschulen, nicht am Gymnasium',
       'doppler-effekt': 'Doppler-Effekt nicht im Rahmenlehrplan',
@@ -262,6 +264,7 @@ describe('Länder-Lehrpläne', () => {
     'bremen-gymnasium-physik': {
       hubble: 'Kosmologie, Rotverschiebung und Hubble-Beziehung kommen im Lehrplan nicht vor.',
       'hr-diagramm': 'Astrophysik und Sterne kommen in den erfassten Lernbereichen nicht vor (bitte am Lehrplan prüfen).',
+      'diode-transistor': 'Halbleiter, Diode und Transistor nicht im Bildungsplan (siehe docs/lehrplaene/bremen-gymnasium-physik.md)',
       hebelgesetz: 'Hebel und Drehmoment nicht im Bildungsplan (siehe docs/lehrplaene/bremen-gymnasium-physik.md)',
       zeitdilatation: 'Spezielle Relativitätstheorie nicht im Bildungsplan der Oberstufe',
     },
@@ -276,6 +279,7 @@ describe('Länder-Lehrpläne', () => {
     },
     'hamburg-gymnasium-physik': {
       magnete: 'Dauermagnete erst im Zusammenhang mit Elektromagnetismus (Jahrgang 9/10); die Simulation ist für Klasse 5–7 gedacht.',
+      'diode-transistor': 'Halbleiter, Diode und Transistor nicht im Bildungsplan (siehe docs/lehrplaene/hamburg-gymnasium-physik.md)',
       'licht-schatten': 'Optik vollständig im Fach Naturwissenschaften und Technik 5/6 (siehe docs/lehrplaene/hamburg-gymnasium-physik.md)',
       reflexion: 'Strahlenoptik vollständig im Fach Naturwissenschaften und Technik 5/6',
       brechung: 'Strahlenoptik vollständig im Fach Naturwissenschaften und Technik 5/6',
@@ -330,6 +334,7 @@ describe('Länder-Lehrpläne', () => {
     },
     'nordrhein-westfalen-gymnasium-physik': {
       hubble: 'Nur „Universum“ in Klasse 7–10 (Sterne, Lichtjahre); Kosmologie und Hubble-Beziehung fehlen.',
+      'diode-transistor': 'Halbleiter, Diode und Transistor nicht im Kernlehrplan (siehe docs/lehrplaene/nordrhein-westfalen-gymnasium-physik.md)',
       'doppler-effekt': 'Doppler-Effekt nicht im Kernlehrplan (siehe docs/lehrplaene/nordrhein-westfalen-gymnasium-physik.md)',
     },
     'rheinland-pfalz-gymnasium-mathematik': {
@@ -393,6 +398,7 @@ describe('Länder-Lehrpläne', () => {
       'fourier-reihen': 'nicht in den Fachanforderungen (Hochschule)',
     },
     'schleswig-holstein-gymnasium-physik': {
+      'diode-transistor': 'Halbleiter, Diode und Transistor nicht in den Fachanforderungen (siehe docs/lehrplaene/schleswig-holstein-gymnasium-physik.md)',
       hebelgesetz: 'Hebel und Drehmoment nicht in den Fachanforderungen (siehe docs/lehrplaene/schleswig-holstein-gymnasium-physik.md)',
     },
   };

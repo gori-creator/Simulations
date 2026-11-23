@@ -124,6 +124,7 @@ const SEK_I_UNITS: CurriculumUnit[] = [
       'Physikalische Grundprinzipien alltäglicher Technik: wie Sensoren und Signalwandler mit bekannten Wechselwirkungen Messgrößen in elektrische Signale umwandeln, etwa Mikrofon, CCD oder NTC.',
       'Basic physics of everyday technology: how sensors and transducers use known interactions to turn quantities into electrical signals, for example microphone, CCD or thermistor.',
     ),
+    simulations: ['diode-transistor'],
   },
   {
     code: '12',
@@ -402,6 +403,7 @@ const QP_UNITS: CurriculumUnit[] = [
         code: 'GF-W.7',
         title: L('Elektronik', 'Electronics'),
         summary: L('Grundschaltungen, Eigen- und Störstellenleitung, Diode und Transistor.', 'Basic circuits, intrinsic and extrinsic conduction, diode and transistor.'),
+        simulations: ['diode-transistor'],
       },
       {
         code: 'GF-W.8',
@@ -654,6 +656,7 @@ const QP_UNITS: CurriculumUnit[] = [
         code: 'LF-W.7',
         title: L('Elektronik', 'Electronics'),
         summary: L('Grundschaltungen, Eigen- und Störstellenleitung, Diode und Transistor.', 'Basic circuits, intrinsic and extrinsic conduction, diode and transistor.'),
+        simulations: ['diode-transistor'],
       },
       {
         code: 'LF-W.8',

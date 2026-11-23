@@ -2,7 +2,7 @@
 
 <!-- Automatisch erzeugt mit `npm run lehrplan:luecken` aus src/curriculum/lehrplaene/ – nicht von Hand bearbeiten. -->
 
-Lernbereiche der Länder-Lehrpläne, zu denen es noch **keine** Simulation gibt – Vorrat für neue Simulationen (Anleitung: `docs/NEUE-SIMULATION.md`). Insgesamt **196 von 1773** Lernbereichen ohne Simulation.
+Lernbereiche der Länder-Lehrpläne, zu denen es noch **keine** Simulation gibt – Vorrat für neue Simulationen (Anleitung: `docs/NEUE-SIMULATION.md`). Insgesamt **186 von 1773** Lernbereichen ohne Simulation.
 
 Nicht jeder Lernbereich eignet sich für eine Simulation (z. B. reine Rechenfertigkeiten oder Methoden). Kommt ein Thema in mehreren Ländern vor, lohnt es sich besonders.
 
@@ -136,7 +136,7 @@ Alle Lernbereiche haben eine Simulation.
 | 7–9 | 2.4 | Größen und Messen › Sachaufgaben | Größen in Sachzusammenhängen bestimmen und Ergebnisse und Lösungsweg bewerten. |
 | 12 | S.3 | Stochastik › Hypergeometrische Verteilung | Ziehen ohne Zurücklegen mit der hypergeometrischen Verteilung beschreiben. |
 
-## Physik (135)
+## Physik (125)
 
 ### Baden-Württemberg · Gymnasium (1)
 
@@ -144,14 +144,13 @@ Alle Lernbereiche haben eine Simulation.
 | --- | --- | --- | --- |
 | 7/8 | 3.1.4 | Einführung in die Physik: Energie effizient nutzen | Grundeigenschaften der Energie und Energieketten; Wärmeleitung, Konvektion und Wärmestrahlung untersuchen, Dämmstoffe prüfen und Regeln zum Energiesparen ableiten. |
 
-### Bayern · Gymnasium (13)
+### Bayern · Gymnasium (12)
 
 | Stufe | Nr. | Lernbereich | Kurz |
 | --- | --- | --- | --- |
 | 8 | 4.1 | Profilbereich am NTG (nur NTG) › Untersuchungen an Solarzellen und anderen Elektrizitätsquellen | Solarmodule in Reihe und parallel messen und äußere Einflüsse wie Neigung und Schatten untersuchen; weitere Quellen wie galvanische Elemente oder Netzgeräte erkunden. |
 | 9 | 3.2 | Wärmelehre › Thermischer Energietransport und Einflüsse auf unser Klima | Spezifische Wärmekapazität, Wärme als Prozessgröße, Wärmeleitung, Konvektion und Wärmestrahlung sowie Treibhauseffekt und Strahlungsgleichgewicht der Erde. |
 | 9 | 4.1 | Profilbereich am NTG (nur NTG) › Klima | Weitere Aspekte des Klimasystems wie Meeresspiegelanstieg, Rückkopplungen und Kippelemente; alternative Erklärungen für die Erderwärmung physikalisch prüfen. |
-| 10 | 5.1 | Profilbereich am NTG (nur NTG) › Halbleiterbauelemente in Experimenten | Kennlinie einer Diode aufnehmen, Transistor als Schalter und Verstärker einsetzen und einfache Halbleiterschaltungen mit Modellen erklären. |
 | 11 | 4.1 | Profilbereich am NTG (27 Std.) (nur NTG) › Die Methode der kleinen Schritte | Bewegungen mit veränderlicher Kraft schrittweise am Computer berechnen, z. B. Fall mit Luftwiderstand und harmonische Schwingung, und mit Experimenten vergleichen. |
 | 11 | 4.2 | Profilbereich am NTG (27 Std.) (nur NTG) › Photovoltaik in Anwendungen | U-I-Kennlinie einer Solarzelle und den Punkt maximaler Leistung bestimmen, Komponenten von Photovoltaikanlagen kennen und ihren Nutzen bewerten. |
 | 11 | 4.3 | Profilbereich am NTG (27 Std.) (nur NTG) › Außerunterrichtliche Aktivität | Mindestens eine Aktivität außerhalb des Unterrichts, etwa Schülerlabor, Museum, Betriebsbesuch oder ein eigenes Forschungsprojekt. |
@@ -181,7 +180,7 @@ Alle Lernbereiche haben eine Simulation.
 
 Alle Lernbereiche haben eine Simulation.
 
-### Hessen · Gymnasium (58)
+### Hessen · Gymnasium (55)
 
 | Stufe | Nr. | Lernbereich | Kurz |
 | --- | --- | --- | --- |
@@ -238,10 +237,7 @@ Alle Lernbereiche haben eine Simulation.
 | 13 | Q4.3.3 | Kernphysik › Bindungsenergie | Massendefekt, Bindungsenergie pro Nukleon, Kernreaktionen. |
 | 13 | Q4.3.5 | Kernphysik › Potenzialtopfmodell für Kerne (nur qualitativ) (nur LK) | Getrennte Töpfe für Protonen und Neutronen; Alpha-Zerfall durch Tunneln. |
 | 13 | Q4.4.3 | Spezielle Relativitätstheorie › Lorentztransformation und Addition von Geschwindigkeiten (nur LK) | Umrechnung zwischen bewegten Bezugssystemen. |
-| 13 | Q4.5.1 | Festkörperphysik › Leiter, Nichtleiter und Halbleiter | Bändermodell (qualitativ) und Dotierung. |
-| 13 | Q4.5.2 | Festkörperphysik › Diode und Transistor | p-n-Übergang, Kennlinie, Gleichrichter, Transistor als Schalter. |
 | 13 | Q4.5.3 | Festkörperphysik › Quantenphysikalische Erklärung der Energiebänder (nur LK) | Fermienergie (qualitativ). |
-| 13 | Q4.5.4 | Festkörperphysik › Verstärkerschaltung (nur LK) | Transistor als Verstärker im Experiment. |
 | 13 | Q4.5.5 | Festkörperphysik › Supraleitung (nur qualitativ) (nur LK) | Phänomen der Supraleitung. |
 
 ### Niedersachsen · Gymnasium (5)
@@ -267,17 +263,15 @@ Alle Lernbereiche haben eine Simulation.
 | 7–10 | 10.3 | Ionisierende Strahlung und Kernenergie › Kernenergie | Kernspaltung, Kernfusion, Kernkraftwerke und Endlagerung. |
 | 12/13 | LK-4.4 | Atom- und Kernphysik (Leistungskurs) › Kernspaltung und -fusion | Bindungsenergien, Massendefekt und Kettenreaktion. |
 
-### Rheinland-Pfalz · Gymnasium (22)
+### Rheinland-Pfalz · Gymnasium (19)
 
 | Stufe | Nr. | Lernbereich | Kurz |
 | --- | --- | --- | --- |
 | 7–10 | 7 | Kosmos und Forschung | Physik als sich weiter entwickelnde Wissenschaft: Methode der Erkenntnisgewinnung, Recherche und Präsentation zu Themen moderner Physik wie Sternen, Raumfahrt oder Exoplaneten. |
 | 7–10 | 8 | Wärmetransporte und ihre Beeinflussung | Thermische Energieströme im Basiskonzept System: Temperaturdifferenz als Antrieb, thermischer Widerstand, Kühlung und Wärmedämmung, Wärmepumpe und Wärmekraftmaschine. |
-| 7–10 | 11 | Sensoren im Alltag | Physikalische Grundprinzipien alltäglicher Technik: wie Sensoren und Signalwandler mit bekannten Wechselwirkungen Messgrößen in elektrische Signale umwandeln, etwa Mikrofon, CCD oder NTC. |
 | 7–10 | 12 | Praxis und Forschung | Selbstständig und fragengeleitet experimentieren: Hypothesen aufstellen, Experimente planen, durchführen und auswerten, mit Inhalten aus früheren oder neuen Themenfeldern. |
 | 12/13 | GF-W.5 | Wahlpflichtbausteine (Grundfach, fünf zu wählen) › Elektromagnetische Wellen | Rückkopplung, offener Schwingkreis, Ausbreitung und Modulation, Anwendungen und Spektrum. |
 | 12/13 | GF-W.6 | Wahlpflichtbausteine (Grundfach, fünf zu wählen) › Wechselstromkreise | Effektivwerte, Impedanz und Phasenverschiebung, Wirk- und Blindleistung. |
-| 12/13 | GF-W.7 | Wahlpflichtbausteine (Grundfach, fünf zu wählen) › Elektronik | Grundschaltungen, Eigen- und Störstellenleitung, Diode und Transistor. |
 | 12/13 | GF-W.8 | Wahlpflichtbausteine (Grundfach, fünf zu wählen) › Festkörperphysik | Bändermodell und Eigenschaften von Festkörpern. |
 | 12/13 | GF-W.12 | Wahlpflichtbausteine (Grundfach, fünf zu wählen) › Strahlenbiophysik | Dosis, biologische Wirkung, Strahlenschutz und medizinische Anwendungen. |
 | 12/13 | GF-W.13 | Wahlpflichtbausteine (Grundfach, fünf zu wählen) › Elementarteilchenphysik | Fundamentalteilchen und Wechselwirkungen, Standardmodell und offene Fragen. |
@@ -288,7 +282,6 @@ Alle Lernbereiche haben eine Simulation.
 | 12/13 | LF-W.2 | Wahlpflichtbausteine (Leistungsfach, sieben zu wählen) › Veränderliche elektromagnetische Felder II | Maxwell-Gleichungen, Felder und Bezugssysteme, Lorentz-Transformation. |
 | 12/13 | LF-W.5 | Wahlpflichtbausteine (Leistungsfach, sieben zu wählen) › Elektromagnetische Wellen | Rückkopplung, offener Schwingkreis, Ausbreitung und Modulation, Anwendungen und Spektrum. |
 | 12/13 | LF-W.6 | Wahlpflichtbausteine (Leistungsfach, sieben zu wählen) › Wechselstromkreise | Effektivwerte, Impedanz und Phasenverschiebung, Wirk- und Blindleistung. |
-| 12/13 | LF-W.7 | Wahlpflichtbausteine (Leistungsfach, sieben zu wählen) › Elektronik | Grundschaltungen, Eigen- und Störstellenleitung, Diode und Transistor. |
 | 12/13 | LF-W.8 | Wahlpflichtbausteine (Leistungsfach, sieben zu wählen) › Festkörperphysik | Bändermodell und Eigenschaften von Festkörpern. |
 | 12/13 | LF-W.13 | Wahlpflichtbausteine (Leistungsfach, sieben zu wählen) › Elementarteilchenphysik | Standardmodell, fundamentale Wechselwirkungen, experimentelle Befunde und offene Fragen. |
 | 12/13 | LF-W.19 | Wahlpflichtbausteine (Leistungsfach, sieben zu wählen) › Chaos und Fraktale – Nichtlineare dynamische Systeme | Chaosphänomene, Merkmale chaotischer Systeme und fraktale Strukturen. |
@@ -301,7 +294,7 @@ Alle Lernbereiche haben eine Simulation.
 | 8 | 3 | Druck | Druck als Zustand, Schweredruck in Flüssigkeiten, Luftdruck, Auftrieb. |
 | 13 | 3.4 | Elektromagnetische Wellen | Entstehung und Eigenschaften elektromagnetischer Wellen. |
 
-### Sachsen · Gymnasium (15)
+### Sachsen · Gymnasium (12)
 
 | Stufe | Nr. | Lernbereich | Kurz |
 | --- | --- | --- | --- |
@@ -312,13 +305,10 @@ Alle Lernbereiche haben eine Simulation.
 | 8 | W1 | Vom Ballonfahren (Wahlbereich) | Statischer Auftrieb in Gasen, Heißluftballon und Luftschiff. |
 | 8 | W2 | Kühlschrank und Wärmepumpe (Wahlbereich) | Wärmeübertragung gegen das Temperaturgefälle mit Energieaufwand. |
 | 8 | W3 | Elektrisches Messen nichtelektrischer Größen (Wahlbereich) | Sensoren wandeln Größen wie Temperatur oder Licht in Spannungen um. |
-| 9 | 1 | Grundlagen der Elektronik | Halbleiterbauelemente wie Diode und Solarzelle, Leitungsmechanismen in Halbleitern und einfache Schaltungen. |
 | 10 | W2 | Kommunikation mit elektronischen Medien (Wahlbereich) | Informationsübertragung mit Hertz’schen Wellen, Modulation und Demodulation. |
 | 10 | W3 | Fernsehbildtechnik (Wahlbereich) | Aufbau des Fernsehbilds und Funktionsweise von Bildschirmen. |
-| 11 | GK-W1 | Leitungsvorgänge in Halbleitern (Wahlbereich Grundkurs) | Bändermodell, pn-Übergang, Diode und Transistor. |
 | 11 | GK-W2 | Messen und Modellieren (Wahlbereich Grundkurs) | Messreihen mit Videoanalyse und Messschnittstellen erfassen und mit Modellen vergleichen. |
 | 11 | LK-4 | Modellbildung und Simulation (Leistungskurs) | Bewegungen numerisch modellieren, Parameter variieren und mit dem Experiment vergleichen. |
-| 11 | LK-W2 | Leitungsvorgänge in Halbleitern (Wahlbereich Leistungskurs) | Bändermodell, pn-Übergang, Diode und Transistor. |
 | 12 | LK-W2 | Deterministisches Chaos (Wahlbereich Leistungskurs) | Nichtlineare Systeme, Attraktoren und begrenzte Vorhersagbarkeit. |
 
 ### Sachsen-Anhalt · Gymnasium (5)
