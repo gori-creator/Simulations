@@ -18,6 +18,9 @@ Ellipse $a = 5$, $b = 3$: $e = 4$, foci $(\pm 4 \mid 0)$, sum of distances $10$.
 2. Parabola from focus and directrix: [load](?mode=parabola&f=1&t=50)
 3. Vary ε: [load](?mode=focal&eps=0.8&d=2.25&t=60)
 4. Cut the cone: [load](?mode=cone&alpha=30&beta=35&h=1)
+5. Tangent and reflection – the tangent makes equal angles with both focal rays: [whispering gallery](?mode=ellipse&a=5&b=3&t=70&tan=1) · [parabolic mirror](?mode=parabola&f=1.5&t=60&tan=1)
+6. Director circle around $F_1$ with radius $2a$: $\lvert PF_2\rvert = \lvert PQ\rvert$, so $\lvert PF_1\rvert + \lvert PF_2\rvert = 2a$: [load](?mode=ellipse&a=4&b=3&t=40&cons=circle)
+7. Practice – drag the foci to the right place: [load](?mode=quiz&q=1)
 
 ## Tasks
 
@@ -40,6 +43,17 @@ Focus and directrix of $y = x^2/4$?
 <summary>Show solution</summary>
 
 $F(0 \mid 1)$, $y = -1$.
+
+</details>
+
+### Task 3
+
+Foci of $\dfrac{(x-2)^2}{2.25} + \dfrac{(y+1)^2}{6.25} = 1$?
+
+<details>
+<summary>Show solution</summary>
+
+Centre $(2 \mid -1)$, long axis vertical, $a = 2.5$, $b = 1.5$, $e = 2$: $F_1(2 \mid -3)$, $F_2(2 \mid 1)$. [Practise](?mode=quiz&q=2)
 
 </details>
 

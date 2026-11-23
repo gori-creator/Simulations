@@ -1,5 +1,35 @@
 import { defineSimulation, drawCard, ease, Plot, Surface, Tween, View3D, withAlpha, type Rect, type Vec3 } from '../../../sim-core';
-import { coneEccentricity, coneSection, coneSectionKind, dist, ellipse, ellipsePoint, focalCurve, focalRadius, hyperbola, hyperbolaPoint, kindOf, parabola, parabolaFromDirectrix, parabolaPoint, type Kind, type Pt } from './model';
+import {
+  checkFoci,
+  coneEccentricity,
+  coneSection,
+  coneSectionKind,
+  directorCirclePoint,
+  dist,
+  ellipse,
+  ellipsePoint,
+  ellipseTangent,
+  focalAngles,
+  focalCurve,
+  focalRadius,
+  hyperbola,
+  hyperbolaPoint,
+  hyperbolaTangent,
+  kindOf,
+  makeTask,
+  parabola,
+  parabolaFromDirectrix,
+  parabolaPoint,
+  parabolaTangent,
+  reflect,
+  taskCurve,
+  taskE,
+  taskEquation,
+  taskFoci,
+  type ConicTask,
+  type Kind,
+  type Pt,
+} from './model';
 
 const L = (de: string, en: string) => ({ de, en });
 type Loc = { de: string; en: string };
@@ -35,8 +65,20 @@ export default defineSimulation({
         { value: 'hyperbola', label: L('Hyperbel: Abstandsdifferenz', 'Hyperbola: difference of distances') },
         { value: 'focal', label: L('Alle über die Exzentrizität ε', 'All via the eccentricity ε') },
         { value: 'cone', label: L('Schnitt am Doppelkegel (3D)', 'Section of a double cone (3D)') },
+        { value: 'quiz', label: L('Üben: Brennpunkte finden', 'Practice: find the foci') },
       ],
       default: 'ellipse',
+    },
+    {
+      key: 'cons',
+      type: 'choice',
+      label: L('Konstruktion', 'Construction'),
+      options: [
+        { value: 'dist', label: L('Abstände zu F₁ und F₂', 'Distances to F₁ and F₂') },
+        { value: 'circle', label: L('Leitkreis um F₁', 'Director circle around F₁') },
+      ],
+      default: 'dist',
+      visibleIf: (v) => v.mode === 'ellipse' || v.mode === 'hyperbola',
     },
     { key: 'a', type: 'number', label: L('Halbachse a', 'Semi-axis a'), min: 0.5, max: 8, step: 0.1, default: 5, visibleIf: (v) => v.mode === 'ellipse' || v.mode === 'hyperbola' },
     { key: 'b', type: 'number', label: L('Halbachse b', 'Semi-axis b'), min: 0.5, max: 8, step: 0.1, default: 3, visibleIf: (v) => v.mode === 'ellipse' || v.mode === 'hyperbola' },
@@ -46,12 +88,18 @@ export default defineSimulation({
     { key: 'alpha', type: 'number', label: L('Halber Öffnungswinkel α des Kegels', 'Half opening angle α of the cone'), min: 10, max: 60, step: 1, default: 30, unit: '°', visibleIf: (v) => v.mode === 'cone' },
     { key: 'beta', type: 'number', label: L('Neigung β der Ebene', 'Tilt β of the plane'), min: 0, max: 89, step: 1, default: 40, unit: '°', visibleIf: (v) => v.mode === 'cone' },
     { key: 'h', type: 'number', label: L('Höhe der Ebene über der Spitze', 'Height of the plane above the apex'), min: 0.2, max: 3, step: 0.05, default: 1, visibleIf: (v) => v.mode === 'cone' },
-    { key: 't', type: 'number', label: L('Punkt P auf der Kurve', 'Point P on the curve'), min: -180, max: 180, step: 1, default: 50, visibleIf: (v) => v.mode !== 'cone' },
+    { key: 't', type: 'number', label: L('Punkt P auf der Kurve', 'Point P on the curve'), min: -180, max: 180, step: 1, default: 50, visibleIf: (v) => v.mode !== 'cone' && v.mode !== 'quiz' },
+    { key: 'tan', type: 'boolean', label: L('Tangente und Spiegelung zeigen', 'Show tangent and reflection'), default: false, visibleIf: (v) => v.mode === 'ellipse' || v.mode === 'parabola' || v.mode === 'hyperbola' },
+    { key: 'q', type: 'number', label: L('Aufgabe Nr.', 'Task no.'), min: 1, max: 999, step: 1, default: 1, visibleIf: (v) => v.mode === 'quiz' },
     { key: 'dir', type: 'boolean', label: L('Leitlinien zeigen', 'Show directrices'), default: false, visibleIf: (v) => v.mode === 'ellipse' || v.mode === 'hyperbola' },
     { key: 'show', type: 'boolean', label: L('Werte zeigen', 'Show values'), default: true },
   ],
   resultsParam: 'show',
-  actions: [{ id: 'play', label: L('Konstruktion abspielen', 'Play the construction'), primary: true }],
+  actions: [
+    { id: 'play', label: L('Konstruktion abspielen', 'Play the construction'), primary: true, visibleIf: (v) => v.mode !== 'quiz' },
+    { id: 'check', label: L('Prüfen', 'Check'), primary: true, visibleIf: (v) => v.mode === 'quiz' },
+    { id: 'task', label: L('Neue Aufgabe', 'New task'), visibleIf: (v) => v.mode === 'quiz' },
+  ],
   readouts: [
     { key: 'eq', label: L('Gleichung', 'Equation') },
     { key: 'foci', label: L('Brennpunkte', 'Foci') },
@@ -69,6 +117,12 @@ export default defineSimulation({
     { id: 'cone-e', label: L('Kegel: Ellipse', 'Cone: ellipse'), values: { mode: 'cone', alpha: 30, beta: 35, h: 1 } },
     { id: 'cone-p', label: L('Kegel: Parabel (Ebene parallel zur Mantellinie)', 'Cone: parabola (plane parallel to a generator)'), values: { mode: 'cone', alpha: 30, beta: 60, h: 1 } },
     { id: 'cone-h', label: L('Kegel: Hyperbel', 'Cone: hyperbola'), values: { mode: 'cone', alpha: 30, beta: 75, h: 1 } },
+    { id: 'whisper', label: L('Flüstergewölbe: Ellipse spiegelt F₁ nach F₂', 'Whispering gallery: the ellipse reflects F₁ to F₂'), values: { mode: 'ellipse', a: 5, b: 3, t: 70, tan: true, cons: 'dist' } },
+    { id: 'mirror', label: L('Parabolspiegel: parallele Strahlen in den Brennpunkt', 'Parabolic mirror: parallel rays into the focus'), values: { mode: 'parabola', f: 1.5, t: 60, tan: true } },
+    { id: 'hyp-mirror', label: L('Hyperbel als Spiegel', 'Hyperbola as a mirror'), values: { mode: 'hyperbola', a: 3, b: 4, t: 25, tan: true, cons: 'dist' } },
+    { id: 'lk-e', label: L('Leitkreis: Ellipse', 'Director circle: ellipse'), values: { mode: 'ellipse', a: 4, b: 3, t: 40, cons: 'circle' } },
+    { id: 'lk-h', label: L('Leitkreis: Hyperbel', 'Director circle: hyperbola'), values: { mode: 'hyperbola', a: 2, b: 3, t: 20, cons: 'circle' } },
+    { id: 'quiz', label: L('Üben: Brennpunkte finden', 'Practice: find the foci'), values: { mode: 'quiz', q: 1 } },
   ],
   strings: {
     de: {
@@ -95,6 +149,23 @@ export default defineSimulation({
       hidden: 'Werte verdeckt',
       pin: 'Pflock',
       pen: 'Stift',
+      tanE: 'Tangente in P: Sie halbiert den Außenwinkel bei P. Ein Lichtstrahl aus F₁ wird an der Ellipse immer nach F₂ gespiegelt (Flüstergewölbe, Nierensteinzertrümmerer).',
+      tanP: 'Tangente in P: Parallel zur Achse einfallendes Licht wird immer in den Brennpunkt gespiegelt (Parabolspiegel, Satellitenschüssel, Scheinwerfer).',
+      tanH: 'Tangente in P: Sie halbiert den Winkel F₁PF₂. Licht aus F₂ wird am Ast so gespiegelt, als käme es aus F₁.',
+      angles: 'Winkel zur Tangente',
+      lkE: 'Leitkreis um F₁ mit Radius 2a. P liegt auf der Mittelsenkrechten von Q und F₂, also |PF₂| = |PQ|. Daraus folgt |PF₁| + |PF₂| = |F₁Q| = 2a. Die Mittelsenkrechte ist die Tangente.',
+      lkH: 'Leitkreis um F₁ mit Radius 2a. P liegt auf der Mittelsenkrechten von Q und F₂, also |PF₂| = |PQ|. Daraus folgt |PF₁| − |PF₂| = ±|F₁Q| = ±2a. Die Mittelsenkrechte ist die Tangente.',
+      lkNone: 'Für diese Lage von Q ist die Mittelsenkrechte parallel zu F₁Q: kein Kurvenpunkt (Richtung einer Asymptote).',
+      quizT: 'Üben: Wo liegen die Brennpunkte?',
+      quizHow2: 'Ziehe F₁ und F₂ an die richtigen Stellen und tippe auf „Prüfen“.',
+      quizHow1: 'Ziehe F an die richtige Stelle und tippe auf „Prüfen“.',
+      hintE: 'Tipp: Mittelpunkt ablesen, dann e = √(a² − b²) entlang der langen Achse.',
+      hintH: 'Tipp: Mittelpunkt ablesen, dann e = √(a² + b²) entlang der Achse mit dem Pluszeichen.',
+      hintP: 'Tipp: Bei y = c·(x − h)² + k ist f = 1/(4c); F liegt f über (bei c < 0 unter) dem Scheitel.',
+      right: 'Richtig!',
+      wrong: 'Noch nicht – um {d} daneben.',
+      solution: 'Lösung',
+      score: '{k} von {n} richtig',
     },
     en: {
       canvas: 'Conic sections as loci in the plane with foci, directrices and a movable point P, or the section of a plane with a double cone in space.',
@@ -120,6 +191,23 @@ export default defineSimulation({
       hidden: 'values hidden',
       pin: 'peg',
       pen: 'pen',
+      tanE: 'Tangent at P: it bisects the exterior angle at P. A light ray from F₁ is always reflected by the ellipse to F₂ (whispering gallery, kidney stone lithotripter).',
+      tanP: 'Tangent at P: light coming in parallel to the axis is always reflected into the focus (parabolic mirror, satellite dish, headlight).',
+      tanH: 'Tangent at P: it bisects the angle F₁PF₂. Light from F₂ is reflected by the branch as if it came from F₁.',
+      angles: 'angles to the tangent',
+      lkE: 'Director circle around F₁ with radius 2a. P lies on the perpendicular bisector of Q and F₂, so |PF₂| = |PQ|. Hence |PF₁| + |PF₂| = |F₁Q| = 2a. The bisector is the tangent.',
+      lkH: 'Director circle around F₁ with radius 2a. P lies on the perpendicular bisector of Q and F₂, so |PF₂| = |PQ|. Hence |PF₁| − |PF₂| = ±|F₁Q| = ±2a. The bisector is the tangent.',
+      lkNone: 'For this position of Q the bisector is parallel to F₁Q: no curve point (direction of an asymptote).',
+      quizT: 'Practice: where are the foci?',
+      quizHow2: 'Drag F₁ and F₂ to the right places and tap “Check”.',
+      quizHow1: 'Drag F to the right place and tap “Check”.',
+      hintE: 'Hint: read off the centre, then e = √(a² − b²) along the long axis.',
+      hintH: 'Hint: read off the centre, then e = √(a² + b²) along the axis with the plus sign.',
+      hintP: 'Hint: for y = c·(x − h)² + k, f = 1/(4c); F lies f above (for c < 0 below) the vertex.',
+      right: 'Correct!',
+      wrong: 'Not yet – off by {d}.',
+      solution: 'Solution',
+      score: '{k} of {n} correct',
     },
   },
   mount(ctx) {
@@ -174,14 +262,33 @@ export default defineSimulation({
     /* Bereich und Punkt P                                             */
     /* -------------------------------------------------------------- */
 
+    const circleMode = () => (p.mode === 'ellipse' || p.mode === 'hyperbola') && p.cons === 'circle';
+    /** Brennpunkte und Radius 2a des Leitkreises (Ellipse/Hyperbel). */
+    function dirCircle(): { F1: Pt; F2: Pt; R: number } {
+      const C = p.mode === 'ellipse' ? ellipse(p.a, p.b) : hyperbola(p.a, p.b);
+      return { F1: C.foci[0], F2: C.foci[1], R: 2 * C.a };
+    }
+    /** Leitkreis-Konstruktion zum Winkel φ (Grad) von Q um F₁; null ohne (sichtbaren) Kurvenpunkt. */
+    function dirAt(phiDeg: number) {
+      const { F1, F2, R } = dirCircle();
+      const c = directorCirclePoint(F1, F2, R, phiDeg * DEG);
+      if (!c || Math.hypot(c.P[0], c.P[1]) > 60) return null;
+      return c;
+    }
+
     function fitRange(): void {
       let m = 5;
       if (p.mode === 'ellipse') m = Math.max(p.a, p.b) * 1.25 + 0.5;
       if (p.mode === 'hyperbola') m = hyperbola(p.a, p.b).e * 1.7 + 1;
       if (p.mode === 'parabola') m = Math.max(4, p.f * 5);
       if (p.mode === 'focal') m = Math.max(4, p.d * 2.6, p.eps < 1 ? (p.eps * p.d) / (1 - p.eps) * 1.2 : 0);
+      if (circleMode()) {
+        const e = p.mode === 'ellipse' ? ellipse(p.a, p.b).e : hyperbola(p.a, p.b).e;
+        m = Math.max(m, (e + 2 * Math.max(p.a, p.mode === 'ellipse' ? p.b : 0)) * 1.04);
+      }
       m = Math.min(m, 25);
       plot.setRange([-m, m], [-m * 0.75, m * 0.75]);
+      if (p.mode === 'quiz') plot.setRange([-10.5, 10.5], [-8, 8]);
       if (p.mode === 'parabola') plot.setRange([-m, m], [-p.f * 2.2, m * 1.2]);
       if (p.mode === 'focal' && p.eps < 1) {
         const rFar = focalRadius(p.eps, p.d, 0) ?? m;
@@ -196,6 +303,10 @@ export default defineSimulation({
     /** Punkt P zum Parameter t (Grad). */
     function pointAt(tDeg: number): { P: Pt; side?: 1 | -1 } | null {
       const t = tDeg * DEG;
+      if (circleMode()) {
+        const c = dirAt(tDeg);
+        return c ? { P: c.P } : null;
+      }
       switch (p.mode) {
         case 'ellipse':
           return { P: ellipsePoint(ellipse(p.a, p.b), t) };
@@ -227,6 +338,10 @@ export default defineSimulation({
 
     /** Parameter t zu einer Mausposition (nächster Kurvenpunkt). */
     function paramFrom(x: number, y: number): number {
+      if (circleMode()) {
+        const { F1 } = dirCircle();
+        return Math.atan2(y - F1[1], x - F1[0]) / DEG;
+      }
       switch (p.mode) {
         case 'ellipse': {
           const E = ellipse(p.a, p.b);
@@ -249,14 +364,55 @@ export default defineSimulation({
 
     plot.addHandle({
       get: () => {
+        if (circleMode()) {
+          const { F1, R } = dirCircle();
+          return [F1[0] + R * Math.cos(p.t * DEG), F1[1] + R * Math.sin(p.t * DEG)];
+        }
         const r = pointAt(p.t);
         return r ? [r.P[0], r.P[1]] : [0, 0];
       },
       set: (x, y) => ctx.set({ t: Math.round(clamp(paramFrom(x, y), -180, 180)) }),
-      enabled: () => !ctx.locked && p.mode !== 'cone' && !!pointAt(p.t),
+      enabled: () => !ctx.locked && p.mode !== 'cone' && p.mode !== 'quiz' && !(circleMode() && trace.running) && (circleMode() || !!pointAt(p.t)),
       color: () => COL.p(),
       axis: 'both',
     });
+
+    /* -------------------------------------------------------------- */
+    /* Übung: Zustand und Griffe                                       */
+    /* -------------------------------------------------------------- */
+
+    let task: ConicTask = makeTask(1);
+    let guess: Pt[] = [];
+    let verdict: { err: number; ok: boolean } | null = null;
+    let tries = 0;
+    let quizCount = 0;
+    let quizRight = 0;
+    const solved = new Set<number>();
+    function newTask(): void {
+      task = makeTask(p.q);
+      const one = task.kind === 'parabola';
+      guess = one ? [[-6, -6]] : [[-6, -6], [6, -6]];
+      verdict = null;
+      tries = 0;
+    }
+    for (const i of [0, 1]) {
+      plot.addHandle({
+        get: () => {
+          const q = guess[i] ?? [0, 0];
+          return [q[0], q[1]];
+        },
+        set: (x, y) => {
+          if (!guess[i]) return;
+          // auf halbe Kästchen einrasten, damit glatte Lösungen treffbar sind
+          guess[i] = [Math.round(x * 10) / 10, Math.round(y * 10) / 10];
+          if (verdict && !verdict.ok) verdict = null;
+          ctx.requestRender();
+        },
+        enabled: () => !ctx.locked && p.mode === 'quiz' && i < guess.length && !verdict?.ok,
+        color: () => (i === 0 ? COL.f1() : COL.f2()),
+        axis: 'both',
+      });
+    }
 
     /* -------------------------------------------------------------- */
     /* Zeichenhilfen                                                   */
@@ -279,11 +435,206 @@ export default defineSimulation({
       plot.polyline(pts.slice(0, n).map((q) => [q[0], q[1]] as [number, number]), { color: col, width });
     }
 
+    /** Gefüllter Winkelbogen bei P zwischen zwei Richtungen (kürzester Weg). */
+    function angleArc(P: Pt, u: Pt, v: Pt, rPx: number, col: string): void {
+      const a1 = Math.atan2(u[1], u[0]);
+      let d = Math.atan2(v[1], v[0]) - a1;
+      while (d > Math.PI) d -= 2 * Math.PI;
+      while (d < -Math.PI) d += 2 * Math.PI;
+      plot.arcPx(P[0], P[1], rPx, Math.min(a1, a1 + d), Math.max(a1, a1 + d), { stroke: col, width: 1.8, fill: withAlpha(col, 0.2), sector: true });
+    }
+
+    /**
+     * Tangente in P (Richtung T) mit Normale und den Winkeln zwischen
+     * Tangente und den Richtungen dirs (Brennstrahlen bzw. einfallendes Licht).
+     */
+    function tangentAt(P: Pt, T: Pt, dirs: [Pt, string][]): void {
+      plot.line([P[0], P[1]], [P[0] + T[0], P[1] + T[1]], { color: COL.aux(), width: 2.2 });
+      plot.line([P[0], P[1]], [P[0] - T[1], P[1] + T[0]], { color: withAlpha(th().text, 0.28), width: 1.1, dash: [4, 4] });
+      for (const [v, col] of dirs) {
+        const sgn = v[0] * T[0] + v[1] * T[1] >= 0 ? 1 : -1;
+        angleArc(P, [sgn * T[0], sgn * T[1]], v, 30, col);
+      }
+    }
+
+    /** Lichtstrahl als Pfeilzug A → B → C. */
+    function ray(A: Pt, B: Pt, C: Pt, col: string): void {
+      seg(A, B, col, 1.3);
+      plot.arrow([B[0], B[1]], [C[0], C[1]], { color: col, width: 1.3, head: 7 });
+    }
+
+    /** Spiegelung und Tangente für Ellipse, Parabel und Hyperbel. */
+    function drawReflection(): void {
+      const rayCol = withAlpha(COL.aux(), 0.5);
+      if (p.mode === 'ellipse') {
+        const E = ellipse(p.a, p.b);
+        for (let k = 0; k < 10; k++) {
+          const Pk = ellipsePoint(E, (2 * Math.PI * (k + 0.5)) / 10);
+          ray(E.foci[0], Pk, E.foci[1], rayCol);
+        }
+        const t = p.t * DEG;
+        const P = ellipsePoint(E, t);
+        tangentAt(P, ellipseTangent(E, t), [
+          [[E.foci[0][0] - P[0], E.foci[0][1] - P[1]], COL.f1()],
+          [[E.foci[1][0] - P[0], E.foci[1][1] - P[1]], COL.f2()],
+        ]);
+        return;
+      }
+      if (p.mode === 'parabola') {
+        const Pb = parabola(p.f);
+        const b = plot.bounds;
+        const xm = Math.min(Math.abs(b.xMin), b.xMax) * 0.85;
+        for (let k = 0; k < 7; k++) {
+          const x = -xm + (2 * xm * k) / 6;
+          const Pk = parabolaPoint(Pb, x);
+          if (Pk[1] > b.yMax) continue;
+          plot.arrow([x, b.yMax], [Pk[0], Pk[1]], { color: rayCol, width: 1.3, head: 7 });
+          plot.arrow([Pk[0], Pk[1]], [Pb.focus[0], Pb.focus[1]], { color: rayCol, width: 1.3, head: 7 });
+        }
+        const x = (p.t / 180) * p.f * 6;
+        const P = parabolaPoint(Pb, x);
+        tangentAt(P, parabolaTangent(Pb, x), [
+          [[0, 1], COL.dir()],
+          [[Pb.focus[0] - P[0], Pb.focus[1] - P[1]], COL.f1()],
+        ]);
+        return;
+      }
+      const H = hyperbola(p.a, p.b);
+      const b = plot.bounds;
+      const far = (b.xMax - b.xMin) * 2;
+      for (let k = 0; k < 7; k++) {
+        const u = -1.1 + (2.2 * k) / 6;
+        const Pk = hyperbolaPoint(H, u, 1);
+        const r = reflect([Pk[0] - H.foci[1][0], Pk[1] - H.foci[1][1]], hyperbolaTangent(H, u, 1));
+        const l = Math.hypot(r[0], r[1]) || 1;
+        ray(H.foci[1], Pk, [Pk[0] + (r[0] / l) * far * 0.04, Pk[1] + (r[1] / l) * far * 0.04], rayCol);
+        seg(Pk, [Pk[0] + (r[0] / l) * far, Pk[1] + (r[1] / l) * far], rayCol, 1.3);
+        seg(H.foci[0], Pk, withAlpha(COL.aux(), 0.35), 1, [3, 4]);
+      }
+      const r = pointAt(p.t);
+      if (!r) return;
+      const side = r.side ?? 1;
+      const u = Math.asinh(r.P[1] / H.b);
+      tangentAt(r.P, hyperbolaTangent(H, u, side), [
+        [[H.foci[0][0] - r.P[0], H.foci[0][1] - r.P[1]], COL.f1()],
+        [[H.foci[1][0] - r.P[0], H.foci[1][1] - r.P[1]], COL.f2()],
+      ]);
+    }
+
+    /** Winkel zwischen Tangente und den beiden Richtungen in P (Grad), für die Karte. */
+    function reflectionAngles(): [number, number] | null {
+      const r = pointAt(p.t);
+      if (!r) return null;
+      if (p.mode === 'ellipse') {
+        const E = ellipse(p.a, p.b);
+        const [w1, w2] = focalAngles(r.P, E.foci[0], E.foci[1], ellipseTangent(E, p.t * DEG));
+        return [w1 / DEG, w2 / DEG];
+      }
+      if (p.mode === 'parabola') {
+        const Pb = parabola(p.f);
+        const T = parabolaTangent(Pb, r.P[0]);
+        const [w1, w2] = focalAngles(r.P, [r.P[0], r.P[1] + 1], Pb.focus, T);
+        return [w1 / DEG, w2 / DEG];
+      }
+      const H = hyperbola(p.a, p.b);
+      const [w1, w2] = focalAngles(r.P, H.foci[0], H.foci[1], hyperbolaTangent(H, Math.asinh(r.P[1] / H.b), r.side ?? 1));
+      return [w1 / DEG, w2 / DEG];
+    }
+
     /* -------------------------------------------------------------- */
     /* Ansichten                                                       */
     /* -------------------------------------------------------------- */
 
+    /** Leitkreis-Konstruktion für Ellipse und Hyperbel. */
+    function drawDirector(): void {
+      const isE = p.mode === 'ellipse';
+      const { F1, F2, R } = dirCircle();
+      const running = trace.running;
+      const tt = running ? trace.value : 1;
+      const faint = withAlpha(COL.curve(), running ? 0.18 : 1);
+      if (isE) {
+        const E = ellipse(p.a, p.b);
+        poly(Array.from({ length: 241 }, (_, i) => ellipsePoint(E, (i / 240) * 2 * Math.PI)), 1, faint);
+      } else {
+        const H = hyperbola(p.a, p.b);
+        const b = plot.bounds;
+        const uMax = Math.asinh(Math.max(b.yMax, b.xMax) / H.b) + 0.2;
+        for (const side of [1, -1] as const) poly(Array.from({ length: 161 }, (_, i) => hyperbolaPoint(H, -uMax + (2 * uMax * i) / 160, side)), 1, faint);
+      }
+      plot.circle(F1[0], F1[1], R, { stroke: withAlpha(COL.f1(), 0.7), width: 1.6, dash: [6, 5] });
+      const phiDeg = running ? -180 + 360 * tt : p.t;
+      if (running) {
+        // Ortslinie wächst mit Q mit
+        const parts: Pt[][] = [];
+        let cur: Pt[] = [];
+        for (let ph = -180; ph <= phiDeg; ph += 0.5) {
+          const c = dirAt(ph);
+          const last = cur[cur.length - 1];
+          if (!c || (last && dist(c.P, last) > 2)) {
+            if (cur.length > 1) parts.push(cur);
+            cur = c ? [c.P] : [];
+            continue;
+          }
+          cur.push(c.P);
+        }
+        if (cur.length > 1) parts.push(cur);
+        for (const part of parts) poly(part, 1);
+      }
+      const u: Pt = [Math.cos(phiDeg * DEG), Math.sin(phiDeg * DEG)];
+      const Q: Pt = [F1[0] + R * u[0], F1[1] + R * u[1]];
+      plot.line([F1[0], F1[1]], [Q[0], Q[1]], { color: withAlpha(th().text, 0.22), width: 1.1 });
+      seg(Q, F2, withAlpha(th().text, 0.35), 1.2, [3, 3]);
+      const mid: Pt = [(Q[0] + F2[0]) / 2, (Q[1] + F2[1]) / 2];
+      plot.line([mid[0], mid[1]], [mid[0] - (Q[1] - F2[1]), mid[1] + (Q[0] - F2[0])], { color: withAlpha(COL.aux(), 0.9), width: 1.6, dash: [7, 4] });
+      plot.point(mid[0], mid[1], { color: COL.aux(), radius: 3.5 });
+      pin(F1, 'F₁', COL.f1());
+      pin(F2, 'F₂', COL.f2());
+      const c = dirAt(phiDeg);
+      if (c) {
+        seg(F1, c.P, COL.f1(), 2.4);
+        seg(c.P, F2, COL.f2(), 2.6);
+        seg(c.P, Q, COL.dir(), 2.6);
+        if (p.show) {
+          midLabel(c.P, F2, N(dist(c.P, F2), 2), COL.f2(), [10, 12]);
+          midLabel(c.P, Q, N(dist(c.P, Q), 2), COL.dir(), [-10, -10]);
+        }
+        plot.point(c.P[0], c.P[1], { color: COL.p(), radius: 5 });
+        plot.text(c.P[0], c.P[1], 'P', { color: COL.p(), size: 13, weight: 'bold', offset: [12, -12], align: 'left', halo: true });
+      }
+      plot.point(Q[0], Q[1], { color: COL.dir(), radius: 5.5 });
+      plot.text(Q[0], Q[1], 'Q', { color: COL.dir(), size: 13, weight: 'bold', offset: [Q[0] >= F1[0] ? 12 : -12, -12], align: Q[0] >= F1[0] ? 'left' : 'right', halo: true });
+    }
+
+    /** Übung: Kurve mit Gleichung, Brennpunkte ziehen. */
+    function drawQuiz(): void {
+      for (const part of taskCurve(task, 16)) poly(part, 1);
+      const F = taskFoci(task);
+      const reveal = !!verdict?.ok || tries >= 3;
+      if (reveal) {
+        for (const [i, q] of F.entries()) {
+          plot.circle(q[0], q[1], 0.32, { stroke: COL.p(), width: 2 });
+          plot.text(q[0], q[1], F.length === 1 ? 'F' : i === 0 ? 'F₁' : 'F₂', { color: COL.p(), size: 12, weight: 'bold', offset: [16, 14], halo: true });
+        }
+        // Probe an einem Kurvenpunkt
+        if (task.kind !== 'parabola') {
+          const part = taskCurve(task, 4)[0]!;
+          const P = part[Math.floor(part.length * 0.18)]!;
+          seg(F[0]!, P, withAlpha(COL.f1(), 0.7), 1.6, [5, 4]);
+          seg(P, F[1]!, withAlpha(COL.f2(), 0.7), 1.6, [5, 4]);
+          plot.point(P[0], P[1], { color: COL.p(), radius: 4 });
+        } else {
+          plot.hline(task.cy - task.f, { color: withAlpha(COL.dir(), 0.8), width: 1.6, dash: [6, 5] });
+        }
+      }
+      for (const [i, g] of guess.entries()) {
+        const col = i === 0 ? COL.f1() : COL.f2();
+        plot.point(g[0], g[1], { color: col, radius: 7 });
+        plot.text(g[0], g[1], guess.length === 1 ? 'F?' : i === 0 ? 'F₁?' : 'F₂?', { color: col, size: 13, weight: 'bold', offset: [0, -18], halo: true });
+      }
+    }
+
     function drawEllipse(): void {
+      if (circleMode()) return drawDirector();
       const E = ellipse(p.a, p.b);
       const tt = trace.value;
       const pts: Pt[] = Array.from({ length: 241 }, (_, i) => ellipsePoint(E, (i / 240) * 2 * Math.PI));
@@ -296,6 +647,7 @@ export default defineSimulation({
         plot.vline(E.directrix, { color: withAlpha(COL.dir(), 0.7), width: 1.6, dash: [6, 5] });
         plot.vline(-E.directrix, { color: withAlpha(COL.dir(), 0.7), width: 1.6, dash: [6, 5] });
       }
+      if (p.tan && !trace.running) drawReflection();
       // Gärtnerkonstruktion: Stift läuft während der Animation
       const tPen = trace.running ? tt * 2 * Math.PI : p.t * DEG;
       poly(pts, trace.running ? tt : 1);
@@ -324,6 +676,7 @@ export default defineSimulation({
       // gezeichnet bis zum aktuellen Q (während der Animation von links nach rechts)
       if (trace.running) poly(pts.filter((q) => q[0] <= qx));
       else poly(pts);
+      if (p.tan && !trace.running) drawReflection();
       const c = parabolaFromDirectrix(Pb, qx);
       // Senkrechte durch Q und Mittelsenkrechte von F und Q (= Tangente)
       plot.vline(qx, { color: withAlpha(th().text, 0.25), width: 1.2, dash: [4, 4] });
@@ -346,6 +699,7 @@ export default defineSimulation({
     }
 
     function drawHyperbola(): void {
+      if (circleMode()) return drawDirector();
       const H = hyperbola(p.a, p.b);
       const tt = trace.running ? trace.value : 1;
       const xs = plot.bounds;
@@ -370,6 +724,7 @@ export default defineSimulation({
         plot.vline(H.directrix, { color: withAlpha(COL.dir(), 0.7), width: 1.6, dash: [6, 5] });
         plot.vline(-H.directrix, { color: withAlpha(COL.dir(), 0.7), width: 1.6, dash: [6, 5] });
       }
+      if (p.tan && !trace.running) drawReflection();
       const r = pointAt(p.t);
       pin(H.foci[0], 'F₁', COL.f1());
       pin(H.foci[1], 'F₂', COL.f2());
@@ -506,7 +861,46 @@ export default defineSimulation({
       let y = R.y + 22;
       const line = (segs: Seg[], d = 0) => (y += segLine(g, segs, x, y, maxW, size + d));
       const r = pointAt(p.t);
+      /** Zusatzzeilen für Leitkreis und Spiegelung (Ellipse/Hyperbel/Parabel). */
+      const extras = (base: string): void => {
+        if (circleMode()) {
+          const { F2 } = dirCircle();
+          const c = dirAt(p.t);
+          if (c && p.show) line([{ s: '|PF₂| = ', c: t.text }, { s: N(dist(c.P, F2), 3), c: COL.f2(), w: 700 }, { s: ' = |PQ| = ', c: t.text }, { s: N(dist(c.P, c.Q), 3), c: COL.dir(), w: 700 }], -0.5);
+          if (!c) line([{ s: tr('lkNone'), c: COL.dir(), w: 600 }], -1.5);
+          y += 4;
+          line([{ s: tr(p.mode === 'ellipse' ? 'lkE' : 'lkH'), c: t.muted }], -2);
+          return;
+        }
+        if (p.tan) {
+          const w = reflectionAngles();
+          if (w && p.show) line([{ s: `${tr('angles')}: `, c: t.text }, { s: `${N(w[0], 1)}°`, c: p.mode === 'parabola' ? COL.dir() : COL.f1(), w: 700 }, { s: ' = ' }, { s: `${N(w[1], 1)}°`, c: p.mode === 'parabola' ? COL.f1() : COL.f2(), w: 700 }], -0.5);
+          y += 4;
+          line([{ s: tr(p.mode === 'ellipse' ? 'tanE' : p.mode === 'parabola' ? 'tanP' : 'tanH'), c: t.muted }], -2);
+          return;
+        }
+        line([{ s: tr(base), c: t.muted }], -2);
+      };
       switch (p.mode) {
+        case 'quiz': {
+          line([{ s: tr('quizT'), c: COL.curve(), w: 800 }], 0.5);
+          line([{ s: taskEquation(task, (v) => N(v, 4)), c: t.text, w: 700 }], 1.5);
+          line([{ s: tr(guess.length === 1 ? 'quizHow1' : 'quizHow2'), c: t.muted }], -1.5);
+          y += 4;
+          const F = taskFoci(task);
+          const fociTxt = F.map((q, i) => `${F.length === 1 ? 'F' : i === 0 ? 'F₁' : 'F₂'}(${N(q[0], 2)} | ${N(q[1], 2)})`).join(',  ');
+          if (verdict) {
+            if (verdict.ok) line([{ s: tr('right'), c: COL.p(), w: 800 }, { s: `  ${fociTxt}`, c: t.text, w: 600 }], 1);
+            else line([{ s: tr('wrong', { d: N(verdict.err, 2) }), c: COL.f1(), w: 700 }], 0);
+          }
+          if (tries >= 1 && !verdict?.ok) line([{ s: tr(task.kind === 'ellipse' ? 'hintE' : task.kind === 'hyperbola' ? 'hintH' : 'hintP'), c: t.muted }], -2);
+          if (tries >= 3 && !verdict?.ok) line([{ s: `${tr('solution')}: `, c: t.text, w: 700 }, { s: `e = ${N(taskE(task), 3)},  ${fociTxt}`, c: COL.p(), w: 700 }], -1);
+          if (quizCount) {
+            y += 4;
+            line([{ s: tr('score', { k: quizRight, n: quizCount }), c: t.muted, w: 600 }], -1.5);
+          }
+          return;
+        }
         case 'ellipse': {
           const E = ellipse(p.a, p.b);
           line([{ s: tr('ellT'), c: COL.curve(), w: 800 }], 0.5);
@@ -523,7 +917,7 @@ export default defineSimulation({
             line([{ s: `d₁ + d₂ = `, c: t.text }, { s: N(d1, 3), c: COL.f1(), w: 700 }, { s: ' + ' }, { s: N(d2, 3), c: COL.f2(), w: 700 }, { s: ` = ${N(d1 + d2, 3)} = 2a`, c: COL.p(), w: 800 }], 1);
           }
           y += 6;
-          line([{ s: tr('ellG'), c: t.muted }], -2);
+          extras('ellG');
           if (Math.abs(p.a - p.b) < 1e-9) line([{ s: `a = b: ${KIND_NAMES.circle[ctx.lang]}, F₁ = F₂`, c: COL.curve(), w: 700 }], -1);
           return;
         }
@@ -540,7 +934,7 @@ export default defineSimulation({
             line([{ s: '|PF| = ', c: t.text }, { s: N(df, 3), c: COL.f1(), w: 700 }, { s: ',  |Pl| = ', c: t.text }, { s: N(dl, 3), c: COL.dir(), w: 700 }], 1);
           }
           y += 6;
-          line([{ s: tr('parG'), c: t.muted }], -2);
+          extras('parG');
           return;
         }
         case 'hyperbola': {
@@ -558,7 +952,7 @@ export default defineSimulation({
             line([{ s: '|d₁ − d₂| = ', c: t.text }, { s: `|${N(d1, 3)} − ${N(d2, 3)}|`, c: t.text, w: 600 }, { s: ` = ${N(Math.abs(d1 - d2), 3)} = 2a`, c: COL.p(), w: 800 }], 1);
           }
           y += 6;
-          line([{ s: tr('hypG'), c: t.muted }], -2);
+          extras('hypG');
           return;
         }
         case 'focal': {
@@ -624,6 +1018,15 @@ export default defineSimulation({
           ctx.readout('eps', `${N(p.eps, 2)} (${KIND_NAMES[kindOf(p.eps, 0.005)][ctx.lang]})`);
           ctx.readout('prop', `|PF| = ${N(p.eps, 2)} · |Pl|`);
           break;
+        case 'quiz': {
+          const show = !!verdict?.ok || tries >= 3;
+          const F = taskFoci(task);
+          ctx.readout('eq', taskEquation(task, (v) => N(v, 4)));
+          ctx.readout('foci', show ? F.map((q) => `(${N(q[0], 2)} | ${N(q[1], 2)})`).join(', ') : '?');
+          ctx.readout('eps', task.kind === 'parabola' ? '1' : N(taskE(task) / task.a, 3));
+          ctx.readout('prop', KIND_NAMES[task.kind][ctx.lang]);
+          break;
+        }
         case 'cone':
           ctx.readout('eq', KIND_NAMES[coneSectionKind(p.alpha, p.beta, 0.5)][ctx.lang]);
           ctx.readout('foci', '–');
@@ -635,12 +1038,33 @@ export default defineSimulation({
 
     return {
       update(changed, source) {
-        if (['mode', 'a', 'b', 'f', 'eps', 'd'].some((q) => changed.has(q)) || source === 'init' || source === 'replace') fitRange();
+        if (['mode', 'a', 'b', 'f', 'eps', 'd', 'cons'].some((q) => changed.has(q)) || source === 'init' || source === 'replace') fitRange();
+        if (changed.has('q') || changed.has('mode') || source === 'init' || source === 'replace') newTask();
+        if (changed.has('cons')) trace.play();
         if (changed.has('mode') || source === 'replace') trace.play();
         updateReadouts();
       },
       action(id) {
         if (id === 'play') trace.play();
+        if (id === 'check' && p.mode === 'quiz') {
+          verdict = checkFoci(task, guess);
+          tries++;
+          if (!solved.has(p.q)) {
+            if (tries === 1) quizCount++;
+            if (verdict.ok) {
+              quizRight++;
+              solved.add(p.q);
+            }
+          }
+          updateReadouts();
+          ctx.requestRender();
+        }
+        if (id === 'task' && p.mode === 'quiz') {
+          ctx.set({ q: p.q >= 999 ? 1 : p.q + 1 });
+          newTask();
+          updateReadouts();
+          ctx.requestRender();
+        }
       },
       resetView() {
         fitRange();
@@ -662,6 +1086,7 @@ export default defineSimulation({
           if (p.mode === 'ellipse') drawEllipse();
           else if (p.mode === 'parabola') drawParabola();
           else if (p.mode === 'hyperbola') drawHyperbola();
+          else if (p.mode === 'quiz') drawQuiz();
           else drawFocal();
           plot.end();
         }

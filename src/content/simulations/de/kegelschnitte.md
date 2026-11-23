@@ -20,6 +20,10 @@ Eine **Ortslinie** ist die Menge aller Punkte mit einer bestimmten Eigenschaft. 
 
 **Eine Regel für alle:** Mit Brennpunkt $F$ und Leitlinie $l$ gilt $\lvert PF\rvert = \varepsilon \cdot \lvert Pl\rvert$. Die **Exzentrizität** $\varepsilon$ entscheidet: $\varepsilon < 1$ Ellipse, $\varepsilon = 1$ Parabel, $\varepsilon > 1$ Hyperbel.
 
+**Tangente und Spiegelung:** Die Tangente in $P$ bildet mit beiden Brennstrahlen $PF_1$ und $PF_2$ gleich große Winkel. Ein Lichtstrahl aus $F_1$ wird an einer spiegelnden Ellipse deshalb immer nach $F_2$ gelenkt (Flüstergewölbe). Bei der Parabel wird Licht, das parallel zur Achse einfällt, in den Brennpunkt gespiegelt. Bei der Hyperbel scheint das gespiegelte Licht aus $F_2$ aus $F_1$ zu kommen.
+
+**Leitkreis:** Zeichnet man um $F_1$ einen Kreis mit Radius $2a$ und wählt darauf einen Punkt $Q$, dann schneidet die Mittelsenkrechte von $Q$ und $F_2$ die Gerade $F_1Q$ in einem Kurvenpunkt $P$. Wegen $\lvert PF_2vert = \lvert PQvert$ gilt $\lvert PF_1vert + \lvert PF_2vert = 2a$. Liegt $F_2$ außerhalb des Kreises, entsteht eine Hyperbel.
+
 **Kegelschnitte:** Schneidet man einen Doppelkegel mit einer Ebene, entsteht je nach Neigung ein Kreis, eine Ellipse, eine Parabel (Ebene parallel zu einer Mantellinie) oder eine Hyperbel (Ebene schneidet beide Kegelhälften).
 
 ## Ausprobieren
@@ -29,6 +33,9 @@ Eine **Ortslinie** ist die Menge aller Punkte mit einer bestimmten Eigenschaft. 
 3. Ziehe $P$ auf der Parabel. Sind die beiden farbigen Strecken immer gleich lang? [Parabel](?mode=parabola&f=1&t=50)
 4. Verändere $\varepsilon$ langsam von $0$ bis $2$. Bei welchem Wert springt die Kurve auf? [Exzentrizität](?mode=focal&eps=0.8&d=2.25&t=60)
 5. Kippe die Ebene am Kegel. Bei welchem Winkel entsteht genau eine Parabel? [Kegel](?mode=cone&alpha=30&beta=35&h=1)
+6. Schalte die Tangente ein und ziehe $P$. Bleiben die beiden Winkel gleich? [Flüstergewölbe](?mode=ellipse&a=5&b=3&t=70&tan=1) · [Parabolspiegel](?mode=parabola&f=1.5&t=60&tan=1)
+7. Ziehe $Q$ auf dem Leitkreis einmal herum. Welche Kurve zeichnet $P$? [Leitkreis](?mode=ellipse&a=4&b=3&t=40&cons=circle)
+8. Üben: Ziehe die Brennpunkte an die richtige Stelle und prüfe. [Üben](?mode=quiz&q=1)
 
 ## Aufgaben
 
@@ -65,9 +72,21 @@ $a = 3$, $b = 2$, $e = \sqrt{9 - 4} = \sqrt5 \approx 2{,}24$ m. Die Pflöcke ste
 
 </details>
 
+### Aufgabe 4: Verschobene Ellipse
+
+Wo liegen die Brennpunkte der Ellipse $\dfrac{(x-2)^2}{2{,}25} + \dfrac{(y+1)^2}{6{,}25} = 1$?
+
+<details>
+<summary>Lösung anzeigen</summary>
+
+Mittelpunkt $(2 \mid -1)$. Die größere Zahl $6{,}25$ steht bei $y$, die lange Achse ist also senkrecht: $a = 2{,}5$, $b = 1{,}5$, $e = \sqrt{6{,}25 - 2{,}25} = 2$. Brennpunkte $F_1(2 \mid -3)$ und $F_2(2 \mid 1)$. [In der Simulation üben](?mode=quiz&q=2)
+
+</details>
+
 ## Ideen für den Unterricht
 
 - **Einsatz:** Ortslinien handlungsorientiert (Faden, Pflöcke, Faltpapier) und dann in der Simulation; Verbindung zu Parabeln als Funktionsgraphen.
+- **Üben:** In der Übungsansicht hat jede Aufgabe eine Nummer. Gleiche Nummer bedeutet gleiche Aufgabe, so können alle dieselbe Kurve bearbeiten.
 - **Anwendungen:** Planetenbahnen (Ellipsen mit der Sonne im Brennpunkt), Parabolspiegel und Satellitenschüsseln, Flüstergewölbe.
 - **Häufige Stolpersteine:**
   - Bei der Ellipse $e = \sqrt{a^2 + b^2}$ statt $\sqrt{a^2 - b^2}$ rechnen (das gilt nur für die Hyperbel).

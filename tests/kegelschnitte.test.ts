@@ -1,5 +1,5 @@
 import { describe, expect, it } from 'vitest';
-import { coneEccentricity, coneSection, coneSectionKind, dist, ellipse, ellipsePoint, focalCurve, focalFromCoef, focalRadius, hyperbola, hyperbolaPoint, kindOf, parabola, parabolaFromDirectrix, parabolaPoint } from '../src/simulations/mathematik/kegelschnitte/model';
+import { checkFoci, directorCirclePoint, ellipseTangent, focalAngles, hyperbolaTangent, makeTask, parabolaTangent, rayLineParam, reflect, taskCurve, taskEquation, taskFoci, coneEccentricity, coneSection, coneSectionKind, dist, ellipse, ellipsePoint, focalCurve, focalFromCoef, focalRadius, hyperbola, hyperbolaPoint, kindOf, parabola, parabolaFromDirectrix, parabolaPoint } from '../src/simulations/mathematik/kegelschnitte/model';
 
 describe('Kegelschnitte: Lehrbuchwerte', () => {
   it('Ellipse a = 5, b = 3 → e = 4, Brennpunkte (±4 | 0), Abstandssumme 10', () => {
@@ -102,5 +102,120 @@ describe('Kegelschnitte: Doppelkegel', () => {
     // Hyperbel: Stücke auf beiden Hälften
     const hyp = coneSection(30, 75, 1, 10);
     expect(hyp.some((p) => p[0]![2] > 0) && hyp.some((p) => p[0]![2] < 0)).toBe(true);
+  });
+});
+
+describe('Kegelschnitte: Tangente und Spiegelung', () => {
+  it('Ellipse: Strahl aus F₁ wird in P zu F₂ gespiegelt (a = 5, b = 3)', () => {
+    const E = ellipse(5, 3);
+    for (const t of [0.3, 1, 2.2, 4]) {
+      const P = ellipsePoint(E, t);
+      const T = ellipseTangent(E, t);
+      const d: [number, number] = [P[0] - E.foci[0][0], P[1] - E.foci[0][1]];
+      const r = reflect(d, T);
+      // r zeigt von P genau auf F₂
+      const toF2: [number, number] = [E.foci[1][0] - P[0], E.foci[1][1] - P[1]];
+      const cross = r[0] * toF2[1] - r[1] * toF2[0];
+      expect(Math.abs(cross) / (Math.hypot(...r) * Math.hypot(...toF2))).toBeLessThan(1e-9);
+      expect(r[0] * toF2[0] + r[1] * toF2[1]).toBeGreaterThan(0);
+      const [w1, w2] = focalAngles(P, E.foci[0], E.foci[1], T);
+      expect(w1).toBeCloseTo(w2, 9);
+    }
+  });
+  it('Parabel: senkrecht einfallende Strahlen gehen durch den Brennpunkt (Parabolspiegel)', () => {
+    const Pb = parabola(1.5);
+    for (const x of [-4, -1, 0.5, 3]) {
+      const P = parabolaPoint(Pb, x);
+      const r = reflect([0, -1], parabolaTangent(Pb, x));
+      const s = rayLineParam(P, r, [0, 0], [1, 0.0]);
+      // Strahl trifft die y-Achse genau bei y = f
+      const k = -P[0] / r[0];
+      expect(P[1] + k * r[1]).toBeCloseTo(1.5, 9);
+      expect(s === null || s >= 0).toBe(true);
+    }
+  });
+  it('Hyperbel: Tangente halbiert den Winkel F₁PF₂', () => {
+    const H = hyperbola(3, 4);
+    for (const u of [-1, 0.4, 1.3]) {
+      const P = hyperbolaPoint(H, u, 1);
+      const [w1, w2] = focalAngles(P, H.foci[0], H.foci[1], hyperbolaTangent(H, u, 1));
+      expect(w1).toBeCloseTo(w2, 9);
+    }
+  });
+  it('Hyperbel: Licht aus F₂ wird am rechten Ast so gespiegelt, als käme es aus F₁', () => {
+    const H = hyperbola(3, 4);
+    for (const u of [-1.1, -0.3, 0.6, 1.1]) {
+      const P = hyperbolaPoint(H, u, 1);
+      const r = reflect([P[0] - H.foci[1][0], P[1] - H.foci[1][1]], hyperbolaTangent(H, u, 1));
+      const fromF1: [number, number] = [P[0] - H.foci[0][0], P[1] - H.foci[0][1]];
+      const cross = r[0] * fromF1[1] - r[1] * fromF1[0];
+      expect(Math.abs(cross) / (Math.hypot(...r) * Math.hypot(...fromF1))).toBeLessThan(1e-9);
+      expect(r[0] * fromF1[0] + r[1] * fromF1[1]).toBeGreaterThan(0);
+    }
+  });
+  it('Strahl-Geraden-Schnitt: von (0|0) nach rechts trifft x = 3 bei s = 3', () => {
+    expect(rayLineParam([0, 0], [1, 0], [3, -1], [0, 1])).toBeCloseTo(3, 12);
+    expect(rayLineParam([0, 0], [-1, 0], [3, -1], [0, 1])).toBeNull();
+  });
+});
+
+describe('Kegelschnitte: Leitkreis', () => {
+  it('Ellipse a = 5, e = 4: |PF₁| + |PF₂| = 10 und |PF₂| = |PQ|', () => {
+    const F1: [number, number] = [-4, 0];
+    const F2: [number, number] = [4, 0];
+    for (const phi of [0, 0.8, 2, 3.1, 4.5]) {
+      const c = directorCirclePoint(F1, F2, 10, phi)!;
+      expect(dist(c.P, F2)).toBeCloseTo(dist(c.P, c.Q), 9);
+      expect(dist(c.P, F1) + dist(c.P, F2)).toBeCloseTo(10, 9);
+      const [x, y] = c.P;
+      expect((x * x) / 25 + (y * y) / 9).toBeCloseTo(1, 9);
+    }
+  });
+  it('Hyperbel a = 3, e = 5: ||PF₁| − |PF₂|| = 6, P auf x²/9 − y²/16 = 1', () => {
+    const F1: [number, number] = [-5, 0];
+    const F2: [number, number] = [5, 0];
+    let n = 0;
+    for (let phi = -3; phi <= 3; phi += 0.37) {
+      const c = directorCirclePoint(F1, F2, 6, phi);
+      if (!c) continue;
+      n++;
+      expect(Math.abs(dist(c.P, F1) - dist(c.P, F2))).toBeCloseTo(6, 8);
+      expect((c.P[0] ** 2) / 9 - (c.P[1] ** 2) / 16).toBeCloseTo(1, 8);
+    }
+    expect(n).toBeGreaterThan(10);
+  });
+});
+
+describe('Kegelschnitte: Übungsaufgaben', () => {
+  const f = (v: number) => String(Math.round(v * 1000) / 1000).replace('.', ',');
+  it('gleiche Nummer → gleiche Aufgabe, alle Arten kommen vor', () => {
+    expect(makeTask(17)).toEqual(makeTask(17));
+    const kinds = new Set(Array.from({ length: 40 }, (_, i) => makeTask(i + 1).kind));
+    expect(kinds.size).toBe(3);
+  });
+  it('Brennpunkte liegen auf der Kurve passend (Ellipse: Summe 2a an allen Kurvenpunkten)', () => {
+    for (let n = 1; n <= 60; n++) {
+      const T = makeTask(n);
+      const F = taskFoci(T);
+      for (const part of taskCurve(T, 6)) {
+        for (const P of part.filter((_, i) => i % 15 === 0)) {
+          if (T.kind === 'ellipse') expect(dist(P, F[0]!) + dist(P, F[1]!)).toBeCloseTo(2 * T.a, 8);
+          if (T.kind === 'hyperbola') expect(Math.abs(dist(P, F[0]!) - dist(P, F[1]!))).toBeCloseTo(2 * T.a, 8);
+          if (T.kind === 'parabola') expect(dist(P, F[0]!)).toBeCloseTo(Math.abs(P[1] - (T.cy - T.f)), 8);
+        }
+      }
+    }
+  });
+  it('Gleichungen mit Komma und Verschiebung', () => {
+    expect(taskEquation({ kind: 'ellipse', cx: 1, cy: -2, a: 5, b: 4, f: 0, vertical: false }, f)).toBe('(x − 1)²/25 + (y + 2)²/16 = 1');
+    expect(taskEquation({ kind: 'hyperbola', cx: 0, cy: 0, a: 1.5, b: 2, f: 0, vertical: true }, f)).toBe('y²/2,25 − x²/4 = 1');
+    expect(taskEquation({ kind: 'parabola', cx: -2, cy: -1, a: 0, b: 0, f: 0.5, vertical: true }, f)).toBe('y = 0,5 · (x + 2)² − 1');
+  });
+  it('Prüfen: Reihenfolge egal, Toleranz 0,25', () => {
+    const T = makeTask(5);
+    const F = taskFoci(T);
+    const g = F.map((q) => [q[0] + 0.1, q[1] - 0.1] as [number, number]).reverse();
+    expect(checkFoci(T, g).ok).toBe(true);
+    expect(checkFoci(T, F.map((q) => [q[0] + 1, q[1]] as [number, number])).ok).toBe(false);
   });
 });
