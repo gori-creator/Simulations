@@ -1,4 +1,4 @@
-import { defineSimulation, drawCard, ease, offscreenCanvas, Plot, roundRect, Surface, Tween, withAlpha, type Rect } from '../../../sim-core';
+import { defineSimulation, drawCard, ease, offscreenCanvas, Plot, prefersReducedMotion, roundRect, Surface, Tween, withAlpha, type Rect } from '../../../sim-core';
 import {
   coilField,
   commutatorSign,
@@ -597,6 +597,7 @@ export default defineSimulation({
         let d = target - a;
         d = Math.atan2(Math.sin(d), Math.cos(d));
         a += d * Math.min(1, frameDt * 5);
+        if (prefersReducedMotion()) a = target;
         needleAng.set(i, a);
         if (Math.abs(d) > 0.002) animating = true;
         const [cx, cy] = plotS.toPx(q[0], q[1]);
@@ -1761,7 +1762,8 @@ export default defineSimulation({
         if (changed.has('mode') || source === 'init' || source === 'replace') {
           intro.play();
           needleAng.clear();
-          ctx.clock.play();
+          // Bei „reduzierter Bewegung“ läuft nichts von selbst (Abspielen startet es auf Wunsch).
+          if (!prefersReducedMotion()) ctx.clock.play();
           if (p.mode === 'motor' && source !== 'init') {
             phi = 0.35;
             omega = 0;
