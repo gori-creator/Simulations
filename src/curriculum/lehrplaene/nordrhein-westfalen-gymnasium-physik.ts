@@ -408,7 +408,7 @@ const EF_UNITS: CurriculumUnit[] = [
           'Gleichförmige und gleichmäßig beschleunigte Bewegung, freier Fall, waagerechter Wurf und vektorielle Größen.',
           'Uniform and uniformly accelerated motion, free fall, horizontal projection and vector quantities.',
         ),
-        simulations: ['bewegungsdiagramme', 'freier-fall', 'schiefer-wurf'],
+        simulations: ['bewegungsdiagramme', 'freier-fall', 'schiefer-wurf', 'messunsicherheit'],
       },
       {
         code: 'EF-1.2',
