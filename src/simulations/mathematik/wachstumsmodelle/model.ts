@@ -420,3 +420,234 @@ export function puzzle(rnd: () => number): { kind: ModelKind; p: Params; values:
   const values = Array.from({ length: 9 }, (_, t) => Math.round(value(kind, p, t) * 100) / 100);
   return { kind, p, values };
 }
+
+/* ------------------------------------------------------------------ */
+/* Anwendungen                                                          */
+/* ------------------------------------------------------------------ */
+
+/** Zinseszins: K(n) = K₀·(1 + p/(100·m))^(m·n) bei m Zinsterminen pro Jahr. */
+export const compound = (K0: number, pct: number, years: number, perYear = 1) => K0 * Math.pow(1 + pct / 100 / perYear, perYear * years);
+/** Stetige Verzinsung K(t) = K₀·e^(p/100·t). */
+export const continuousCompound = (K0: number, pct: number, t: number) => K0 * Math.exp((pct / 100) * t);
+/** Einfache Verzinsung (ohne Zinseszins): K(n) = K₀·(1 + p/100·n) – linear. */
+export const simpleInterest = (K0: number, pct: number, years: number) => K0 * (1 + (pct / 100) * years);
+/** Faustregel: Verdopplung nach etwa 72/p Jahren. */
+export const rule72 = (pct: number) => 72 / pct;
+/** Genaue Verdopplungszeit bei jährlicher Verzinsung: n = ln 2 / ln(1 + p/100). */
+export const exactDoubling = (pct: number) => Math.log(2) / Math.log(1 + pct / 100);
+
+/**
+ * Medikament: Alle τ Stunden wird die Dosis D eingenommen, dazwischen baut
+ * der Körper exponentiell ab (Halbwertszeit h). Liefert den Verlauf der Menge
+ * im Körper (direkt nach jeder Einnahme springt sie um D nach oben).
+ */
+export function doseCurve(D: number, halfLife: number, tau: number, hours: number, dt = 0.1): { t: number[]; c: number[] } {
+  const lambda = Math.log(2) / halfLife;
+  const t: number[] = [];
+  const c: number[] = [];
+  let amount = 0;
+  let next = 0;
+  for (let i = 0; i * dt <= hours + 1e-9; i++) {
+    const time = i * dt;
+    if (time >= next - 1e-9) {
+      // Wert kurz vor der Einnahme, dann der Sprung
+      t.push(time);
+      c.push(amount);
+      amount += D;
+      next += tau;
+    }
+    t.push(time);
+    c.push(amount);
+    amount *= Math.exp(-lambda * dt);
+  }
+  return { t, c };
+}
+/** Restanteil nach τ Stunden q = 0,5^(τ/h). */
+export const keepFraction = (halfLife: number, tau: number) => Math.pow(0.5, tau / halfLife);
+/** Höchstwert im Gleichgewicht (direkt nach der Einnahme): D / (1 − q). */
+export const steadyPeak = (D: number, halfLife: number, tau: number) => D / (1 - keepFraction(halfLife, tau));
+/** Tiefstwert im Gleichgewicht (direkt vor der Einnahme): D·q / (1 − q). */
+export const steadyTrough = (D: number, halfLife: number, tau: number) => steadyPeak(D, halfLife, tau) * keepFraction(halfLife, tau);
+/** Höchstwert nach der n-ten Einnahme: D·(1 − qⁿ)/(1 − q) (geometrische Reihe). */
+export const peakAfter = (D: number, halfLife: number, tau: number, n: number) => {
+  const q = keepFraction(halfLife, tau);
+  return (D * (1 - Math.pow(q, n))) / (1 - q);
+};
+
+/**
+ * Gerücht in einer Schule mit N Personen (diskret logistisch): Jeden Tag
+ * erzählen es die Wissenden weiter, neu informiert werden k·I·(N − I)/N.
+ */
+export function rumor(N: number, I0: number, k: number, days: number): number[] {
+  const out = [I0];
+  let I = I0;
+  for (let d = 0; d < days; d++) {
+    I = Math.min(N, I + (k * I * (N - I)) / N);
+    out.push(I);
+  }
+  return out;
+}
+
+/** Newtonsches Abkühlungsgesetz: T(t) = T_U + (T₀ − T_U)·e^(−k·t). */
+export const coolingTemp = (T0: number, Tr: number, k: number, t: number) => Tr + (T0 - Tr) * Math.exp(-k * t);
+/** Zeit, bis die Temperatur T erreicht ist: t = ln((T₀ − T_U)/(T − T_U)) / k, sonst null. */
+export function coolingTime(T0: number, Tr: number, k: number, T: number): number | null {
+  if ((T0 - Tr) * (T - Tr) <= 0 || Math.abs(T - Tr) >= Math.abs(T0 - Tr)) return null;
+  return Math.log((T0 - Tr) / (T - Tr)) / k;
+}
+
+/* ------------------------------------------------------------------ */
+/* Spinnwebdiagramm (rekursive Folge als Treppe)                        */
+/* ------------------------------------------------------------------ */
+
+/** Ein Schritt der rekursiven Vorschrift B(n+1) = f(B(n)) wie in recursive(). */
+export function stepFn(kind: ModelKind, p: Params, B: number): number {
+  switch (kind) {
+    case 'linear':
+      return B + p.d;
+    case 'exp':
+      return B * Math.exp(p.k);
+    case 'bounded':
+      return B + (1 - Math.exp(-p.k)) * (p.S - B);
+    case 'logistic':
+      return B + p.k * B * (1 - B / p.S);
+  }
+}
+
+/**
+ * Treppenzug des Spinnwebdiagramms: (B₀|0) → (B₀|B₁) → (B₁|B₁) → (B₁|B₂) …
+ */
+export function cobweb(kind: ModelKind, p: Params, steps: number): [number, number][] {
+  const pts: [number, number][] = [[p.B0, 0]];
+  let B = p.B0;
+  for (let n = 0; n < steps; n++) {
+    const next = stepFn(kind, p, B);
+    if (!Number.isFinite(next) || Math.abs(next) > 1e9) break;
+    pts.push([B, next], [next, next]);
+    B = next;
+  }
+  return pts;
+}
+
+/**
+ * Verhalten der diskreten logistischen Folge abhängig von r = k (für
+ * 0 < B₀ < S): monoton gegen S (r ≤ 1), gedämpft schwingend gegen S
+ * (1 < r < 2), Zweier-Zyklus (2 < r < √6 ≈ 2,449), Viererzyklus und mehr
+ * (bis ≈ 2,57), danach chaotisch, über 3 läuft sie aus dem Ruder.
+ */
+export function logisticBehaviour(r: number): 'decline' | 'monotone' | 'damped' | 'cycle2' | 'cycle4' | 'chaos' | 'explode' {
+  if (r <= 0) return 'decline';
+  if (r <= 1) return 'monotone';
+  if (r < 2) return 'damped';
+  if (r < Math.sqrt(6)) return 'cycle2';
+  if (r < 2.5699) return 'cycle4';
+  if (r <= 3) return 'chaos';
+  return 'explode';
+}
+
+/* ------------------------------------------------------------------ */
+/* Übung: Modell aus einem Text aufstellen                              */
+/* ------------------------------------------------------------------ */
+
+export interface Task {
+  kind: ModelKind;
+  /** Text mit Platzhaltern sind schon eingesetzt */
+  de: string;
+  en: string;
+  answer: Params;
+}
+
+/** Textaufgabe Nummer n (gleiche Nummer → gleiche Aufgabe). */
+export function makeTask(n: number): Task {
+  let s = (Math.floor(n) * 2654435761 + 97) >>> 0 || 1;
+  const r = () => {
+    s ^= s << 13;
+    s >>>= 0;
+    s ^= s >>> 17;
+    s ^= s << 5;
+    s >>>= 0;
+    return s / 4294967296;
+  };
+  const pick = <T>(xs: readonly T[]): T => xs[Math.floor(r() * xs.length) % xs.length]!;
+  const type = Math.floor(r() * 6) % 6;
+  const deNum = (v: number) => String(v).replace('.', ',');
+  switch (type) {
+    case 0: {
+      const B0 = pick([200, 500, 800, 1000]);
+      const T = pick([2, 3, 4, 5]);
+      return {
+        kind: 'exp',
+        de: `Eine Bakterienkultur besteht anfangs aus ${B0} Bakterien und verdoppelt sich alle ${T} Stunden (t in Stunden).`,
+        en: `A culture starts with ${B0} bacteria and doubles every ${T} hours (t in hours).`,
+        answer: { B0, d: 0, k: Math.log(2) / T, S: 100 },
+      };
+    }
+    case 1: {
+      const B0 = pick([80, 100, 120, 200]);
+      const T = pick([4, 5, 6, 8]);
+      return {
+        kind: 'exp',
+        de: `Im Blut sind ${B0} mg eines Wirkstoffs. Die Menge halbiert sich alle ${T} Stunden.`,
+        en: `There are ${B0} mg of a drug in the blood. The amount halves every ${T} hours.`,
+        answer: { B0, d: 0, k: -Math.log(2) / T, S: 100 },
+      };
+    }
+    case 2: {
+      const B0 = pick([20, 24, 30]);
+      const d = pick([1.5, 2, 2.5, 3]);
+      return {
+        kind: 'linear',
+        de: `Eine Kerze ist ${B0} cm hoch und brennt pro Stunde ${deNum(d)} cm ab.`,
+        en: `A candle is ${B0} cm tall and burns down ${d} cm per hour.`,
+        answer: { B0, d: -d, k: 0, S: 100 },
+      };
+    }
+    case 3: {
+      const B0 = pick([5, 8, 10]);
+      const S = pick([20, 22, 25]);
+      const pct = pick([10, 20, 30]);
+      return {
+        kind: 'bounded',
+        de: `Ein Getränk mit ${B0} °C steht in einem Raum mit ${S} °C. Pro Minute verringert sich der Abstand zur Raumtemperatur um ${pct} %.`,
+        en: `A drink at ${B0} °C stands in a room at ${S} °C. Each minute the gap to room temperature shrinks by ${pct} %.`,
+        answer: { B0, d: 0, k: -Math.log(1 - pct / 100), S },
+      };
+    }
+    case 4: {
+      const S = pick([100, 200, 500]);
+      const B0 = pick([2, 5, 10]);
+      const pct = pick([30, 40, 50, 60]);
+      return {
+        kind: 'logistic',
+        de: `Auf einem Teich haben höchstens ${S} Seerosen Platz. Anfangs sind es ${B0}; solange es wenige sind, nimmt ihre Zahl pro Tag um etwa ${pct} % zu (diskret logistisch, k = Zuwachsrate).`,
+        en: `A pond has room for at most ${S} water lilies. At first there are ${B0}; while they are few, their number grows by about ${pct} % per day (discrete logistic, k = growth rate).`,
+        answer: { B0, d: 0, k: pct / 100, S },
+      };
+    }
+    default: {
+      const B0 = pick([500, 1000, 2000]);
+      const pct = pick([2, 3, 4, 5]);
+      return {
+        kind: 'exp',
+        de: `Ein Guthaben von ${B0} € wird jährlich mit ${pct} % verzinst (t in Jahren).`,
+        en: `A balance of €${B0} earns ${pct} % interest per year (t in years).`,
+        answer: { B0, d: 0, k: Math.log(1 + pct / 100), S: 100 },
+      };
+    }
+  }
+}
+
+/**
+ * Prüft eine Antwort: Art muss stimmen, die nötigen Größen bis auf 3 %
+ * (bzw. 0,01 bei k, 0,5 bei d, 1 bei B₀ und S). Liefert die falschen Größen.
+ */
+export function checkTask(t: Task, kind: ModelKind, p: Params): { ok: boolean; wrong: string[] } {
+  const wrong: string[] = [];
+  if (kind !== t.kind) return { ok: false, wrong: ['kind'] };
+  const near = (a: number, b: number, abs: number) => Math.abs(a - b) <= Math.max(abs, Math.abs(b) * 0.03);
+  if (!near(p.B0, t.answer.B0, 1)) wrong.push('B0');
+  if (t.kind === 'linear' && !near(p.d, t.answer.d, 0.5)) wrong.push('d');
+  if (t.kind !== 'linear' && !near(p.k, t.answer.k, 0.01)) wrong.push('k');
+  if ((t.kind === 'bounded' || t.kind === 'logistic') && !near(p.S, t.answer.S, 1)) wrong.push('S');
+  return { ok: wrong.length === 0, wrong };
+}

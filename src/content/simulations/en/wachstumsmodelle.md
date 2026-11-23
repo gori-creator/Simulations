@@ -19,6 +19,10 @@ Example: $S = 100$, $B(0) = 10$, $k = 0.5$ gives $B(t) = 100/(1 + 9e^{-0.5t})$ w
 2. Logistic in detail: [load](?mode=single&model=logistic&B0=10&k=0.5&S=100&tmax=14)
 3. Fit a model to data: [sunflower](?mode=data&ds=sunflower&model=logistic&B0=18&k=0.4&S=220)
 
+- Everyday applications: [compound interest](?mode=apps&sc=interest&K0=1000&pz=5&yrs=20), [medicine](?mode=apps&sc=drug&dose=400&hl=8&tau=8), [rumour](?mode=apps&sc=rumor&N=400&kr=0.8), [tea](?mode=apps&sc=cooling&T0=90&Tr=20&kc=0.05&Tt=50)
+- Cobweb diagram of the recursive sequence: [load](?mode=cobweb&model=logistic&B0=10&k=2.3&S=100&tmax=40)
+- Practice setting up models: [load](?mode=exam&q=1)
+
 ## Tasks
 
 ### Task 1

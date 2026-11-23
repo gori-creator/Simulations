@@ -111,3 +111,76 @@ describe('Wachstumsmodelle: eigene Daten und Rätsel', () => {
     }
   });
 });
+
+import { compound, continuousCompound, coolingTemp, coolingTime, doseCurve, exactDoubling, keepFraction, peakAfter, rule72, rumor, simpleInterest, steadyPeak, steadyTrough } from '../src/simulations/mathematik/wachstumsmodelle/model';
+
+describe('Wachstumsmodelle: Anwendungen', () => {
+  it('Zinseszins: 1000 € zu 5 % nach 10 Jahren ≈ 1628,89 €, einfach 1500 €', () => {
+    expect(compound(1000, 5, 10)).toBeCloseTo(1628.89, 2);
+    expect(simpleInterest(1000, 5, 10)).toBeCloseTo(1500, 9);
+    expect(compound(1000, 5, 10, 12)).toBeCloseTo(1647.01, 2);
+    expect(continuousCompound(1000, 5, 10)).toBeCloseTo(1648.72, 2);
+  });
+  it('Verdopplung bei 6 %: Faustregel 12 Jahre, genau 11,9 Jahre', () => {
+    expect(rule72(6)).toBe(12);
+    expect(exactDoubling(6)).toBeCloseTo(11.896, 3);
+  });
+  it('Medikament: 400 mg alle 8 h, Halbwertszeit 8 h → Gleichgewicht 800 mg / 400 mg', () => {
+    expect(keepFraction(8, 8)).toBeCloseTo(0.5, 12);
+    expect(steadyPeak(400, 8, 8)).toBeCloseTo(800, 9);
+    expect(steadyTrough(400, 8, 8)).toBeCloseTo(400, 9);
+    expect(peakAfter(400, 8, 8, 3)).toBeCloseTo(700, 9);
+    const c = doseCurve(400, 8, 8, 72, 0.01);
+    const last = Math.max(...c.c.slice(-900));
+    expect(Math.abs(last - 800)).toBeLessThan(2);
+  });
+  it('Gerücht: steigt S-förmig bis N, nie darüber', () => {
+    const r = rumor(500, 2, 0.8, 40);
+    expect(r[0]).toBe(2);
+    for (let i = 1; i < r.length; i++) expect(r[i]!).toBeGreaterThanOrEqual(r[i - 1]!);
+    expect(r[40]!).toBeLessThanOrEqual(500);
+    expect(r[40]!).toBeGreaterThan(495);
+  });
+  it('Abkühlung: Tee 90 °C, Raum 20 °C, k = 0,05/min → nach 10 min ≈ 62,5 °C; 50 °C nach ≈ 16,9 min', () => {
+    expect(coolingTemp(90, 20, 0.05, 10)).toBeCloseTo(62.46, 2);
+    expect(coolingTime(90, 20, 0.05, 50)).toBeCloseTo(16.946, 3);
+    expect(coolingTime(90, 20, 0.05, 15)).toBeNull();
+  });
+});
+
+import { checkTask, cobweb, logisticBehaviour, makeTask, recursive as rec2, stepFn } from '../src/simulations/mathematik/wachstumsmodelle/model';
+
+describe('Wachstumsmodelle: Spinnwebdiagramm und Übung', () => {
+  const P = { B0: 10, d: 5, k: 0.5, S: 100 };
+  it('Treppenzug stimmt mit der rekursiven Folge überein', () => {
+    const seq = rec2('logistic', P, 6);
+    const cw = cobweb('logistic', P, 6);
+    expect(cw[0]).toEqual([10, 0]);
+    for (let n = 0; n < 6; n++) {
+      expect(cw[1 + 2 * n]![1]).toBeCloseTo(seq[n + 1]!, 9);
+      expect(stepFn('logistic', P, seq[n]!)).toBeCloseTo(seq[n + 1]!, 9);
+    }
+  });
+  it('Verhalten der diskreten logistischen Folge', () => {
+    expect(logisticBehaviour(0.5)).toBe('monotone');
+    expect(logisticBehaviour(1.5)).toBe('damped');
+    expect(logisticBehaviour(2.3)).toBe('cycle2');
+    expect(logisticBehaviour(2.8)).toBe('chaos');
+    // r = 2,3 pendelt tatsächlich zwischen zwei Werten
+    const s = rec2('logistic', { ...P, k: 2.3 }, 400);
+    expect(Math.abs(s[398]! - s[396]!)).toBeLessThan(1e-6);
+    expect(Math.abs(s[399]! - s[398]!)).toBeGreaterThan(10);
+  });
+  it('Textaufgaben: reproduzierbar, Musterlösung wird akzeptiert, falsche Art nicht', () => {
+    expect(makeTask(3)).toEqual(makeTask(3));
+    const kinds = new Set(Array.from({ length: 60 }, (_, i) => makeTask(i).kind));
+    expect(kinds.size).toBe(4);
+    for (let i = 0; i < 30; i++) {
+      const t = makeTask(i);
+      expect(checkTask(t, t.kind, t.answer).ok).toBe(true);
+      expect(checkTask(t, t.kind === 'linear' ? 'exp' : 'linear', t.answer).ok).toBe(false);
+    }
+    const t = makeTask(0);
+    expect(checkTask(t, t.kind, { ...t.answer, B0: t.answer.B0 * 2 }).wrong).toContain('B0');
+  });
+});
