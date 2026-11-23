@@ -21,8 +21,8 @@
     "new:sim": "node scripts/new-simulation.mjs"
   },
   "dependencies": {
-    "@astrojs/markdown-satteri": "^0.4.9",
-    "astro": "^7.4.11",
+    "@astrojs/markdown-satteri": "^0.4.10",
+    "astro": "^7.4.13",
     "katex": "^0.19.1",
     "qrcode-generator": "^2.0.4"
   },
@@ -30,6 +30,6 @@
     "@astrojs/check": "^0.9.12",
     "@types/node": "^22.20.5",
     "typescript": "^6.0.3",
-    "vitest": "^5.1.0"
+    "vitest": "^5.1.1"
   }
 }
