@@ -22,6 +22,9 @@ The simulation colours the parts ($u$ and $v$, outer and inner function) and dra
 1. A product: which colour is $u$, which is $v$? [Product](?f=x%5E2*sin(x)&mode=rule&x0=3.15)
 2. Drag the point on $f$ and watch the point on $f'$. [Example](?f=x%5E3-3x&mode=rule&x0=1)
 3. Chain rule: [load](?f=e%5E(2x%2B1)&mode=rule&x0=-1). All steps: [load](?f=x%5E2*e%5E(-x)&mode=steps&x0=2)
+4. **Building the graph of f′:** tap “Run the tangent”. The tangent slides along $f$ and its slope is plotted point by point below. Where $f$ has a maximum, what does $f'$ do? [x³ − 3x](?f=x%5E3%20-%203x&mode=graph&x0=-2) · [sin(x)](?f=sin(x)&mode=graph&x0=0)
+5. **Practice “which rule first?”:** you see a term and choose the rule you have to start with. [Start](?mode=quiz&qn=1)
+6. **Practice “match f and f′”:** the graph of $f$ is on the left, four graphs on the right. Which one is $f'$? Look at the places where $f$ is horizontal. [Start](?mode=match&qn=1)
 
 ## Tasks
 
@@ -55,6 +58,17 @@ Differentiate $(2x + 1)^3$, type your answer and press "Check". [Load](?f=(2x%2B
 <summary>Show solution</summary>
 
 $6(2x+1)^2$ – the expanded form $24x^2 + 24x + 6$ counts as correct too.
+
+</details>
+
+### Task 4: From the graph to the derivative
+
+Sketch the graph of $f'$ for $f(x) = x^3 - 3x$ by hand first: where is $f'$ positive, negative or zero? Then compare with the simulation. [Load](?f=x%5E3%20-%203x&mode=graph&x0=-2)
+
+<details>
+<summary>Show solution</summary>
+
+$f$ rises for $x < -1$ and $x > 1$, so $f' > 0$ there; between $-1$ and $1$ it falls, so $f' < 0$. At the maximum $(-1 \mid 2)$ and the minimum $(1 \mid -2)$ the tangent is horizontal: $f'(-1) = f'(1) = 0$. Together this gives the upward parabola $f'(x) = 3x^2 - 3$.
 
 </details>
 

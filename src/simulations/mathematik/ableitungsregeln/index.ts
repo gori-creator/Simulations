@@ -1,5 +1,5 @@
-import { defineSimulation, drawCard, ease, Plot, roundRect, Surface, text, Tween, withAlpha, type Rect } from '../../../sim-core';
-import { derive, evaluate, hasX, mainStep, NotSupported, numericSlope, parse, sameFunction, simplify, substitute, toText, type Expr, type Part, type RuleId, type Step } from './model';
+import { defineSimulation, drawCard, ease, Plot, prefersReducedMotion, roundRect, Surface, TapTarget, text, Tween, withAlpha, type Rect } from '../../../sim-core';
+import { matchRound, ruleQuiz, stationaryPoints, type RuleChoice, derive, evaluate, hasX, mainStep, NotSupported, numericSlope, parse, sameFunction, simplify, substitute, toText, type Expr, type Part, type RuleId, type Step } from './model';
 
 const L = (de: string, en: string) => ({ de, en });
 type Loc = { de: string; en: string };
@@ -47,6 +47,7 @@ export default defineSimulation({
       type: 'text',
       label: L('Funktion f(x)', 'Function f(x)'),
       default: 'x^2·sin(x)',
+      visibleIf: (v) => v.mode !== 'quiz' && v.mode !== 'match',
       maxLength: 60,
       placeholder: L('z. B. x^2·sin(x)', 'e.g. x^2·sin(x)'),
       help: L(
@@ -62,8 +63,41 @@ export default defineSimulation({
         { value: 'rule', label: L('Regel für den ganzen Term', 'Rule for the whole term') },
         { value: 'steps', label: L('Alle Schritte', 'All steps') },
         { value: 'check', label: L('Selbst ableiten und prüfen', 'Differentiate yourself and check') },
+        { value: 'graph', label: L('Graph von f′ entsteht', 'Building the graph of f′') },
+        { value: 'quiz', label: L('Übung: Welche Regel zuerst?', 'Practice: which rule first?') },
+        { value: 'match', label: L('Übung: f und f′ zuordnen', 'Practice: match f and f′') },
       ],
       default: 'rule',
+    },
+    { key: 'qn', type: 'number', label: L('Aufgabe Nr.', 'Task no.'), min: 1, max: 999, step: 1, default: 1, visibleIf: (v) => v.mode === 'quiz' || v.mode === 'match' },
+    {
+      key: 'qa',
+      type: 'choice',
+      label: L('Deine Antwort', 'Your answer'),
+      options: [
+        { value: 'sum', label: L('Summenregel', 'Sum rule') },
+        { value: 'factor', label: L('Faktorregel', 'Constant multiple rule') },
+        { value: 'power', label: L('Potenzregel', 'Power rule') },
+        { value: 'product', label: L('Produktregel', 'Product rule') },
+        { value: 'quotient', label: L('Quotientenregel', 'Quotient rule') },
+        { value: 'chain', label: L('Kettenregel', 'Chain rule') },
+        { value: 'basic', label: L('Grundableitung', 'Basic derivative') },
+      ],
+      default: 'sum',
+      visibleIf: (v) => v.mode === 'quiz',
+    },
+    {
+      key: 'ma',
+      type: 'choice',
+      label: L('Graph von f′', 'Graph of f′'),
+      options: [
+        { value: '0', label: L('A', 'A') },
+        { value: '1', label: L('B', 'B') },
+        { value: '2', label: L('C', 'C') },
+        { value: '3', label: L('D', 'D') },
+      ],
+      default: '0',
+      visibleIf: (v) => v.mode === 'match',
     },
     {
       key: 'g',
@@ -83,6 +117,9 @@ export default defineSimulation({
   actions: [
     { id: 'check', label: L('Prüfen', 'Check'), primary: true, visibleIf: (v) => v.mode === 'check' },
     { id: 'reveal', label: L('Lösung zeigen', 'Show solution'), visibleIf: (v) => v.mode === 'check' },
+    { id: 'trace', label: L('Tangente laufen lassen', 'Run the tangent'), primary: true, visibleIf: (v) => v.mode === 'graph' },
+    { id: 'qcheck', label: L('Prüfen', 'Check'), primary: true, visibleIf: (v) => v.mode === 'quiz' || v.mode === 'match' },
+    { id: 'qnext', label: L('Nächste Aufgabe', 'Next task'), visibleIf: (v) => v.mode === 'quiz' || v.mode === 'match' },
   ],
   readouts: [
     { key: 'f', label: L('Funktion', 'Function') },
@@ -98,10 +135,25 @@ export default defineSimulation({
     { id: 'sine', label: L('Sinus verschoben: 2 sin(3(x − 1)) + 1', 'Shifted sine: 2 sin(3(x − 1)) + 1'), values: { f: '2·sin(3·(x−1)) + 1', mode: 'rule', x0: 1 } },
     { id: 'quot', label: L('Quotientenregel: (x + 1)/(x² + 1)', 'Quotient rule: (x + 1)/(x² + 1)'), values: { f: '(x+1)/(x^2+1)', mode: 'rule', x0: 0 } },
     { id: 'mix', label: L('Produkt mit Kette: x² · e^(−x)', 'Product with chain: x² · e^(−x)'), values: { f: 'x^2·e^(-x)', mode: 'steps', x0: 2 } },
+    { id: 'graphx3', label: L('Graph von f′: x³ − 3x', 'Graph of f′: x³ − 3x'), values: { f: 'x^3 - 3x', mode: 'graph', x0: -2 } },
+    { id: 'graphsin', label: L('Graph von f′: sin(x)', 'Graph of f′: sin(x)'), values: { f: 'sin(x)', mode: 'graph', x0: 0 } },
+    { id: 'quiz', label: L('Übung: Welche Regel zuerst?', 'Practice: which rule first?'), values: { mode: 'quiz', qn: 1 } },
+    { id: 'match', label: L('Übung: f und f′ zuordnen', 'Practice: match f and f′'), values: { mode: 'match', qn: 1 } },
     { id: 'practice', label: L('Übung: (2x + 1)³ selbst ableiten', 'Practice: differentiate (2x + 1)³'), values: { f: '(2x+1)^3', mode: 'check', g: '', show: false, x0: 0 } },
   ],
   strings: {
     de: {
+      graphT: 'Vom Graphen von f zum Graphen von f′',
+      graphG: 'Die Steigung der Tangente an f ist der Wert von f′. Steigt f, ist f′ positiv; fällt f, ist f′ negativ.',
+      graphAt: 'bei x = {x}: Steigung {m}',
+      graphUp: 'f steigt → f′ > 0', graphDown: 'f fällt → f′ < 0', graphFlat: 'waagerechte Tangente → f′ = 0',
+      graphMax: 'Hochpunkt bei x ≈ {x}', graphMin: 'Tiefpunkt bei x ≈ {x}', graphSad: 'Sattelpunkt bei x ≈ {x}',
+      graphRule: 'Hoch- und Tiefpunkte von f sind Nullstellen von f′ mit Vorzeichenwechsel.',
+      graphNone: 'Keine waagerechte Tangente im Bild.',
+      quizT: 'Welche Regel brauchst du zuerst?', quizHow: 'Schau, was ganz außen steht: eine Summe, ein Produkt, ein Bruch oder eine verkettete Funktion? Wähle und tippe auf „Prüfen“.',
+      quizOk: 'Richtig!', quizNo: 'Leider nicht – zuerst kommt die {r}.', quizScore: '{k} von {n} richtig', basicName: 'Grundableitung',
+      matchT: 'Welcher Graph gehört zu f′?', matchHow: 'Tippe auf A, B, C oder D und dann auf „Prüfen“. Tipp: Wo hat f waagerechte Tangenten? Dort hat f′ Nullstellen.',
+      matchOk: 'Richtig – {c} ist der Graph von f′.', matchNo: 'Noch nicht – richtig ist {c}.',
       canvas: 'Links die Ableitung Schritt für Schritt mit farbig markierten Teilen, rechts die Graphen von f und f′ mit Tangente an einer ziehbaren Stelle.',
       given: 'f(x) =',
       deriv: 'f′(x) =',
@@ -135,6 +187,17 @@ export default defineSimulation({
       gLabel: 'deine',
     },
     en: {
+      graphT: 'From the graph of f to the graph of f′',
+      graphG: 'The slope of the tangent to f is the value of f′. Where f rises, f′ is positive; where f falls, f′ is negative.',
+      graphAt: 'at x = {x}: slope {m}',
+      graphUp: 'f rises → f′ > 0', graphDown: 'f falls → f′ < 0', graphFlat: 'horizontal tangent → f′ = 0',
+      graphMax: 'maximum at x ≈ {x}', graphMin: 'minimum at x ≈ {x}', graphSad: 'saddle point at x ≈ {x}',
+      graphRule: 'Maxima and minima of f are zeros of f′ where the sign changes.',
+      graphNone: 'No horizontal tangent in view.',
+      quizT: 'Which rule do you need first?', quizHow: 'Look at what is outermost: a sum, a product, a fraction or a composite function? Choose and tap “Check”.',
+      quizOk: 'Correct!', quizNo: 'Not quite – first comes the {r}.', quizScore: '{k} of {n} correct', basicName: 'basic derivative',
+      matchT: 'Which graph belongs to f′?', matchHow: 'Tap A, B, C or D and then “Check”. Hint: where does f have horizontal tangents? There f′ has zeros.',
+      matchOk: 'Correct – {c} is the graph of f′.', matchNo: 'Not yet – the right one is {c}.',
       canvas: 'On the left the derivative step by step with coloured parts, on the right the graphs of f and f′ with the tangent at a draggable point.',
       given: 'f(x) =',
       deriv: 'f′(x) =',
@@ -316,7 +379,7 @@ export default defineSimulation({
     }
 
     /** Lösung (f′) sichtbar? Im Übungsmodus nur nach „Lösung zeigen“. */
-    const solutionVisible = () => p.mode !== 'check' || p.show;
+    const solutionVisible = () => (p.mode === 'check' ? p.show : p.mode === 'quiz' ? quizVerdict !== null : true);
 
     function drawPlot(g: CanvasRenderingContext2D, R: Rect): void {
       const t = th();
@@ -333,7 +396,7 @@ export default defineSimulation({
         const xs = plot.bounds;
         const toX = xs.xMin + (xs.xMax - xs.xMin) * clamp((reveal - 0.25) / 0.75, 0, 1);
         // Teilfunktionen blass
-        if (p.parts && top && p.mode !== 'check') {
+        if (p.parts && top && p.mode !== 'check' && solutionVisible()) {
           for (const part of top.parts) {
             if (part.role === 'c' || part.role === 'outer' || !hasX(part.expr)) continue;
             plot.fn((x) => evaluate(part.expr, x), { color: withAlpha(partColor(part.role), 0.55), width: 1.6, dash: [6, 5] });
@@ -557,6 +620,78 @@ export default defineSimulation({
         return;
       }
       const s = st;
+      const line = (segs: Seg[], d = 0) => (y += segLine(g, segs, x, y, maxW, size + d));
+      /** Fließtext mit Zeilenumbruch an Wortgrenzen (feste Schriftgröße). */
+      const para = (text: string, c: string, d = 0, w = 500) => {
+        const fs = Math.max(11, size + d);
+        g.save();
+        g.font = `${w} ${fs}px ${t.font}`;
+        g.fillStyle = c;
+        g.textBaseline = 'middle';
+        g.textAlign = 'left';
+        let cur = '';
+        const flush = () => {
+          g.fillText(cur, x, y);
+          y += fs * 1.4;
+          cur = '';
+        };
+        for (const word of text.split(' ')) {
+          const next = cur ? `${cur} ${word}` : word;
+          if (cur && g.measureText(next).width > maxW) {
+            flush();
+            cur = word;
+          } else cur = next;
+        }
+        if (cur) flush();
+        y += fs * 0.1;
+        g.restore();
+      };
+      if (p.mode === 'graph') {
+        const xt = traceX();
+        const m = evaluate(s.d, xt);
+        line([{ s: ctx.t('graphT'), c: COL.f(), w: 800 }], 0);
+        line([{ s: `${tr('given')} `, c: t.muted, w: 600 }, { s: T(s.fs), c: COL.f(), w: 700 }], -1);
+        line([{ s: `${tr('deriv')} `, c: t.muted, w: 600 }, { s: T(simplify(s.d)), c: COL.fp(), w: 700 }], -1);
+        y += 4;
+        line([{ s: tr('graphAt', { x: fmt.num(xt, 2), m: Number.isFinite(m) ? fmt.num(m, 2) : '–' }), c: COL.fp(), w: 700 }], -1);
+        line([{ s: ctx.t(Math.abs(m) < 0.05 ? 'graphFlat' : m > 0 ? 'graphUp' : 'graphDown'), c: Math.abs(m) < 0.05 ? COL.outer() : m > 0 ? COL.u() : COL.fp(), w: 700 }], -1);
+        y += 4;
+        const sp = stationaryPoints(s.d, -5, 5);
+        if (!sp.length) para(ctx.t('graphNone'), t.muted, -2);
+        for (const q of sp.slice(0, 4)) line([{ s: tr(q.kind === 'max' ? 'graphMax' : q.kind === 'min' ? 'graphMin' : 'graphSad', { x: fmt.num(q.x, 2) }), c: COL.outer(), w: 600 }], -2);
+        y += 4;
+        para(ctx.t('graphRule'), t.text, -2, 600);
+        y += 2;
+        para(ctx.t('graphG'), t.muted, -2.5);
+        return;
+      }
+      if (p.mode === 'quiz') {
+        line([{ s: ctx.t('quizT'), c: COL.f(), w: 800 }], 0);
+        line([{ s: `${tr('given')} `, c: t.muted, w: 600 }, { s: T(s.fs), c: t.text, w: 800 }], 3);
+        y += 4;
+        if (quizVerdict === null) para(ctx.t('quizHow'), t.muted, -2);
+        else {
+          line([{ s: quizVerdict ? ctx.t('quizOk') : tr('quizNo', { r: ruleName(quiz.answer) }), c: quizVerdict ? COL.u() : COL.fp(), w: 800 }], 1);
+          if (quiz.answer !== 'basic') line([{ s: RULES[quiz.answer].formula, c: t.text, w: 600 }], -1);
+          line([{ s: `${tr('deriv')} `, c: t.muted, w: 600 }, { s: T(simplify(s.d)), c: COL.fp(), w: 700 }], -1);
+        }
+        if (score.all) line([{ s: tr('quizScore', { k: score.right, n: score.all }), c: t.muted, w: 600 }], -2);
+        return;
+      }
+      if (p.mode === 'match') {
+        line([{ s: ctx.t('matchT'), c: COL.f(), w: 800 }], 0);
+        line([{ s: `${tr('given')} `, c: t.muted, w: 600 }, { s: T(s.fs), c: COL.f(), w: 800 }], 1);
+        const gh = Math.min(R.h * 0.38, 170);
+        miniF(g, { x, y, w: maxW, h: gh }, s.f);
+        y += gh + 16;
+        if (matchVerdict === null) para(ctx.t('matchHow'), t.muted, -2.5);
+        else {
+          line([{ s: matchVerdict ? tr('matchOk', { c: 'ABCD'[match.target]! }) : tr('matchNo', { c: 'ABCD'[match.target]! }), c: matchVerdict ? COL.u() : COL.fp(), w: 800 }], 0);
+          line([{ s: `${tr('deriv')} `, c: t.muted, w: 600 }, { s: T(simplify(s.d)), c: COL.fp(), w: 700 }], -1);
+        }
+        if (score.all) line([{ s: tr('quizScore', { k: score.right, n: score.all }), c: t.muted, w: 600 }], -2);
+        return;
+      }
       const top = mainStep(s.steps);
       // f(x) mit farbigen Teilen
       y += segLine(g, [{ s: `${tr('given')} `, c: t.muted, w: 600 }, ...coloredF(top, s.f)], x, y, maxW, size + 1.5, fade(0));
@@ -676,6 +811,255 @@ export default defineSimulation({
     /* Ergebnisse                                                      */
     /* -------------------------------------------------------------- */
 
+
+    /* -------------------------------------------------------------- */
+    /* Übungen und Graph von f′                                        */
+    /* -------------------------------------------------------------- */
+
+    let quiz = ruleQuiz(p.qn);
+    let quizVerdict: boolean | null = null;
+    let match = matchRound(p.qn);
+    let matchVerdict: boolean | null = null;
+    let score = { right: 0, all: 0 };
+    let matchBoxes: Rect[] = [];
+    const ruleName = (c: RuleChoice) => (c === 'basic' ? ctx.t('basicName') : RULES[c].name[ctx.lang]);
+    new TapTarget(surface, {
+      hit: (px, py) => {
+        if (p.mode !== 'match') return null;
+        const k = matchBoxes.findIndex((b) => px >= b.x && px <= b.x + b.w && py >= b.y && py <= b.y + b.h);
+        return k < 0 ? null : String(k);
+      },
+      onTap: (id) => {
+        if (!ctx.locked) ctx.set({ ma: id as '0' | '1' | '2' | '3' });
+      },
+    });
+    function check(): void {
+      if (p.mode === 'quiz' && quizVerdict === null) {
+        quizVerdict = p.qa === quiz.answer;
+        score = { right: score.right + (quizVerdict ? 1 : 0), all: score.all + 1 };
+        ctx.announce(quizVerdict ? ctx.t('quizOk') : tr('quizNo', { r: ruleName(quiz.answer) }));
+        verdictTw.play();
+      }
+      if (p.mode === 'match' && matchVerdict === null) {
+        matchVerdict = +p.ma === match.target;
+        score = { right: score.right + (matchVerdict ? 1 : 0), all: score.all + 1 };
+        ctx.announce(matchVerdict ? tr('matchOk', { c: 'ABCD'[match.target]! }) : tr('matchNo', { c: 'ABCD'[match.target]! }));
+        verdictTw.play();
+      }
+      ctx.requestRender();
+    }
+
+    // Graph von f′: zweites Koordinatensystem unter f
+    let dRect: Rect = { x: -1000, y: -1000, w: 10, h: 10 };
+    const plotD = new Plot(surface, {
+      x: [-5, 5],
+      y: [-4, 4],
+      equalAspect: false,
+      zoom: false,
+      pan: false,
+      controls: false,
+      region: () => (p.mode === 'graph' ? { x: dRect.x + 4, y: dRect.y + 4, w: dRect.w - 8, h: dRect.h - 8 } : { x: -1000, y: -1000, w: 10, h: 10 }),
+      xAxis: { label: 'x' },
+      yAxis: { label: 'f′' },
+    });
+    const traceTw = new Tween(7000, ease.linear);
+    const traceX = () => (traceTw.running ? -5 + 10 * traceTw.value : p.x0);
+    function fitD(): void {
+      if (!st.ok) return;
+      const vals: number[] = [];
+      for (let k = 0; k <= 200; k++) {
+        const v = evaluate(st.d, -3.5 + k * 0.035);
+        if (Number.isFinite(v)) vals.push(v);
+      }
+      if (!vals.length) return;
+      vals.sort((a, b) => a - b);
+      let lo = Math.min(0, vals[Math.floor(vals.length * 0.02)]!);
+      let hi = Math.max(0, vals[Math.floor(vals.length * 0.98)]!);
+      if (hi - lo < 2) {
+        lo -= 1;
+        hi += 1;
+      }
+      const pad = (hi - lo) * 0.15;
+      plotD.setRange([-5, 5], [lo - pad, hi + pad]);
+    }
+    function drawGraphMode(g: CanvasRenderingContext2D, R: Rect): void {
+      const t = th();
+      const top: Rect = { x: R.x, y: R.y, w: R.w, h: Math.round(R.h * 0.52) };
+      dRect = { x: R.x, y: R.y + top.h + 8, w: R.w, h: R.h - top.h - 8 };
+      plotRect = top;
+      drawCard(g, top, t);
+      drawCard(g, dRect, t);
+      if (!st.ok) return;
+      const s = st;
+      const xt = traceX();
+      const sp = stationaryPoints(s.d, -5, 5);
+      // oben: f mit Tangente
+      plot.resize();
+      plot.begin();
+      plot.grid({ minor: false });
+      plot.axes();
+      plot.fn((x) => evaluate(s.f, x), { color: COL.f(), width: 2.8 });
+      const y0 = evaluate(s.f, xt);
+      const m = evaluate(s.d, xt);
+      if (Number.isFinite(y0) && Number.isFinite(m)) {
+        const ink = Math.abs(m) < 0.05 ? COL.outer() : m > 0 ? COL.u() : COL.fp();
+        plot.line([xt, y0], [xt + 1, y0 + m], { color: withAlpha(ink, 0.85), width: 2 });
+        plot.point(xt, y0, { color: ink, radius: 5 });
+      }
+      for (const q of sp) {
+        const fy = evaluate(s.f, q.x);
+        if (!Number.isFinite(fy)) continue;
+        plot.point(q.x, fy, { color: COL.outer(), radius: 5, hollow: true });
+        plot.text(q.x, fy, q.kind === 'max' ? 'H' : q.kind === 'min' ? 'T' : 'S', { color: COL.outer(), size: 12, weight: 'bold', offset: [0, q.kind === 'min' ? 16 : -14], halo: true });
+      }
+      plot.end();
+      // unten: f′ entsteht
+      fitD();
+      plotD.resize();
+      plotD.begin();
+      plotD.grid({ minor: false });
+      plotD.axes();
+      plotD.fn((x) => evaluate(s.d, x), { color: withAlpha(COL.fp(), traceTw.running ? 0.15 : 0.35), width: 1.6 });
+      plotD.fn((x) => evaluate(s.d, x), { color: COL.fp(), width: 2.8, to: xt });
+      if (Number.isFinite(m)) {
+        plotD.point(xt, m, { color: COL.fp(), radius: 5.5 });
+        plotD.segment([xt, 0], [xt, m], { color: withAlpha(COL.fp(), 0.5), width: 1.2, dash: [3, 4] });
+      }
+      for (const q of sp) plotD.point(q.x, 0, { color: COL.outer(), radius: 5, hollow: true });
+      plotD.end();
+      // Verbindung über beide Diagramme
+      const [px] = plot.toPx(xt, 0);
+      g.save();
+      g.strokeStyle = withAlpha(t.text, 0.25);
+      g.setLineDash([4, 5]);
+      g.beginPath();
+      g.moveTo(px, top.y + 6);
+      g.lineTo(px, dRect.y + dRect.h - 6);
+      g.stroke();
+      g.restore();
+      g.save();
+      g.font = `700 13px ${t.font}`;
+      g.fillStyle = COL.f();
+      g.fillText('f', top.x + 14, top.y + 22);
+      g.fillStyle = COL.fp();
+      g.fillText('f′', dRect.x + 14, dRect.y + 22);
+      g.restore();
+    }
+    function drawMatch(g: CanvasRenderingContext2D, R: Rect): void {
+      const t = th();
+      drawCard(g, R, t);
+      plotRect = { x: -1000, y: -1000, w: 10, h: 10 };
+      plot.resize();
+      const pad = 10;
+      const cw = (R.w - 3 * pad) / 2;
+      const ch = (R.h - 3 * pad) / 2;
+      matchBoxes = [];
+      match.candidates.forEach((e, k) => {
+        const bx = R.x + pad + (k % 2) * (cw + pad);
+        const by = R.y + pad + Math.floor(k / 2) * (ch + pad);
+        matchBoxes.push({ x: bx, y: by, w: cw, h: ch });
+        const chosen = String(k) === p.ma;
+        const isRight = matchVerdict !== null && k === match.target;
+        g.save();
+        g.fillStyle = t.dark ? '#0f141c' : '#f7f9fc';
+        roundRect(g, bx, by, cw, ch, 8);
+        g.fill();
+        g.strokeStyle = isRight ? COL.u() : chosen ? COL.fp() : withAlpha(t.text, 0.2);
+        g.lineWidth = chosen || isRight ? 3 : 1;
+        g.stroke();
+        // Kurve: x von −4 bis 4, y passend skaliert
+        const xs: number[] = [];
+        const ys: number[] = [];
+        for (let i = 0; i <= 120; i++) {
+          const x = -4 + (8 * i) / 120;
+          xs.push(x);
+          ys.push(evaluate(e, x));
+        }
+        const fin = ys.filter(Number.isFinite).sort((a, b) => a - b);
+        let lo = Math.min(-1, fin[Math.floor(fin.length * 0.05)] ?? -1);
+        let hi = Math.max(1, fin[Math.floor(fin.length * 0.95)] ?? 1);
+        const padY = (hi - lo) * 0.15;
+        lo -= padY;
+        hi += padY;
+        const X = (x: number) => bx + ((x + 4) / 8) * cw;
+        const Y = (y: number) => by + ch - ((y - lo) / (hi - lo)) * ch;
+        g.beginPath();
+        g.rect(bx, by, cw, ch);
+        g.clip();
+        g.strokeStyle = withAlpha(t.text, 0.35);
+        g.lineWidth = 1;
+        g.beginPath();
+        g.moveTo(bx, Y(0));
+        g.lineTo(bx + cw, Y(0));
+        g.moveTo(X(0), by);
+        g.lineTo(X(0), by + ch);
+        g.stroke();
+        g.strokeStyle = COL.fp();
+        g.lineWidth = 2.4;
+        g.beginPath();
+        let pen = false;
+        xs.forEach((x, i) => {
+          const y = ys[i]!;
+          if (!Number.isFinite(y)) {
+            pen = false;
+            return;
+          }
+          if (pen) g.lineTo(X(x), Y(y));
+          else g.moveTo(X(x), Y(y));
+          pen = true;
+        });
+        g.stroke();
+        g.font = `800 16px ${t.font}`;
+        g.fillStyle = chosen ? COL.fp() : t.text;
+        g.fillText('ABCD'[k]!, bx + 10, by + 22);
+        g.restore();
+      });
+    }
+    /** Kleiner Graph von f in der Karte (Übung „Paare“). */
+    function miniF(g: CanvasRenderingContext2D, R: Rect, e: Expr): void {
+      const t = th();
+      g.save();
+      g.fillStyle = t.dark ? '#0f141c' : '#f7f9fc';
+      roundRect(g, R.x, R.y, R.w, R.h, 8);
+      g.fill();
+      const ys: number[] = [];
+      for (let i = 0; i <= 120; i++) ys.push(evaluate(e, -4 + (8 * i) / 120));
+      const fin = ys.filter(Number.isFinite).sort((a, b) => a - b);
+      let lo = Math.min(-1, fin[Math.floor(fin.length * 0.05)] ?? -1);
+      let hi = Math.max(1, fin[Math.floor(fin.length * 0.95)] ?? 1);
+      const padY = (hi - lo) * 0.15;
+      lo -= padY;
+      hi += padY;
+      const X = (x: number) => R.x + ((x + 4) / 8) * R.w;
+      const Y = (y: number) => R.y + R.h - ((y - lo) / (hi - lo)) * R.h;
+      g.beginPath();
+      g.rect(R.x, R.y, R.w, R.h);
+      g.clip();
+      g.strokeStyle = withAlpha(t.text, 0.35);
+      g.beginPath();
+      g.moveTo(R.x, Y(0));
+      g.lineTo(R.x + R.w, Y(0));
+      g.moveTo(X(0), R.y);
+      g.lineTo(X(0), R.y + R.h);
+      g.stroke();
+      g.strokeStyle = COL.f();
+      g.lineWidth = 2.6;
+      g.beginPath();
+      let pen = false;
+      ys.forEach((y, i) => {
+        const x = -4 + (8 * i) / 120;
+        if (!Number.isFinite(y)) {
+          pen = false;
+          return;
+        }
+        if (pen) g.lineTo(X(x), Y(y));
+        else g.moveTo(X(x), Y(y));
+        pen = true;
+      });
+      g.stroke();
+      g.restore();
+    }
+
     function updateReadouts(): void {
       if (!st.ok) {
         ctx.readout('f', st.msg);
@@ -714,6 +1098,19 @@ export default defineSimulation({
 
     return {
       update(changed, source) {
+        if (changed.has('qn') || changed.has('mode') || source === 'init' || source === 'replace') {
+          quiz = ruleQuiz(p.qn);
+          match = matchRound(p.qn);
+          quizVerdict = null;
+          matchVerdict = null;
+          const want = p.mode === 'quiz' ? quiz.term : p.mode === 'match' ? match.f : null;
+          if (want !== null && want !== p.f) {
+            ctx.set({ f: want });
+            return;
+          }
+        }
+        if (changed.has('qa') && source === 'input') quizVerdict = null;
+        if (changed.has('ma') && source === 'input') matchVerdict = null;
         if (changed.has('f') || source === 'init') {
           st = analyse();
           fitRange();
@@ -732,6 +1129,13 @@ export default defineSimulation({
         if (ctx.locked) return;
         if (id === 'check') runCheck();
         if (id === 'reveal') ctx.set({ show: true });
+        if (id === 'trace') {
+          if (prefersReducedMotion()) ctx.set({ x0: 5 });
+          else traceTw.play();
+          ctx.requestRender();
+        }
+        if (id === 'qcheck') check();
+        if (id === 'qnext') ctx.set({ qn: p.qn >= 999 ? 1 : p.qn + 1 });
       },
       resetView() {
         fitRange();
@@ -741,8 +1145,13 @@ export default defineSimulation({
         const g = surface.begin();
         const R = regions();
         drawCardBody(g, R.card);
-        drawPlot(g, R.plot);
-        if (buildTw.running || verdictTw.running) ctx.requestRender();
+        if (p.mode === 'graph') drawGraphMode(g, R.plot);
+        else if (p.mode === 'match') drawMatch(g, R.plot);
+        else {
+          dRect = { x: -1000, y: -1000, w: 10, h: 10 };
+          drawPlot(g, R.plot);
+        }
+        if (buildTw.running || verdictTw.running || traceTw.running) ctx.requestRender();
       },
       destroy: () => surface.destroy(),
     };
