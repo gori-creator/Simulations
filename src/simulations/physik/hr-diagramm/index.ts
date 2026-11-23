@@ -842,7 +842,7 @@ export default defineSimulation({
         const yp = planck(lp, s.T) / peak;
         spec.segment([lp, 0], [lp, yp], { color: withAlpha(cols[i]!, 0.6), width: 1.2, dash: [4, 4] });
         spec.point(lp, yp, { color: cols[i]!, radius: 4 });
-        if (p.val) spec.text(lp, yp, `${N(lp, 0)} nm`, { color: cols[i]!, size: 11, weight: 'bold', offset: [6, i === 0 ? -12 : 14], align: 'left' });
+        if (p.val) spec.text(lp, yp, `${N(lp, 0)} nm`, { color: cols[i]!, size: 11, weight: 'bold', offset: [i === 0 ? 6 : -6, -12], align: i === 0 ? 'left' : 'right' });
       });
       spec.text(565, 0.93, ctx.t('visible'), { color: th().muted, size: 11, weight: 'bold' });
       spec.end();
