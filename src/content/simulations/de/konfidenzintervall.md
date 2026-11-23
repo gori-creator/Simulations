@@ -33,6 +33,10 @@ Wichtig: Das **Intervall** ist zufällig, nicht $p$. „95 %“ bedeutet: Zieht 
 3. Verdecke $p$ und schätze es aus den Intervallen. [p verdeckt](?mode=conf&p=0.37&n=200&level=95&show=0)
 4. Kleines $p$, kleines $n$: Warum trifft die Näherung viel seltener als 95 %? Vergleiche mit „Exakt über die Konfidenzellipse“. [Laden](?mode=conf&p=0.05&n=30&level=95&method=wald)
 5. Ziehe in der Konfidenzellipse $h$ und $p$. Wann liegt der Punkt $(p \mid h)$ in der Ellipse? [Ellipse](?mode=ellipse&n=100&h=0.4&p=0.5&level=95&method=wilson)
+6. Hypothesentest: Ist eine Münze gezinkt, wenn bei 100 Würfen 60-mal Kopf fällt? [Test](?mode=test&n=100&p0=0.5&side=right&alpha=5&kobs=60&p=0.6)
+7. Lege den Ablehnungsbereich selbst fest. Was passiert mit α und β? [Eigene Regel](?mode=test&n=100&p0=0.5&side=right&alpha=5&kobs=60&p=0.6&own=1&kc=56)
+8. Wie oft treffen 95-%-Intervalle bei n = 30 wirklich? [Trefferquote](?mode=cover&n=30&level=95&p=0.1)
+9. Übe mit Rechenaufgaben zu Intervallen und Tests. [Üben](?mode=ex&q=1)
 
 ## Aufgaben
 
@@ -66,6 +70,17 @@ Wie viele Personen muss man befragen, damit das 95-%-Intervall höchstens $\pm 5
 <summary>Lösung anzeigen</summary>
 
 $n \ge (1{,}96 / 0{,}1)^2 = 384{,}2$, also mindestens 385 Personen. [In der Simulation zeigen](?mode=size&eps=0.05&level=95)
+
+</details>
+
+### Aufgabe: Gezinkte Münze?
+
+Eine Münze wird 100-mal geworfen. Man testet $H_0$: $p = 0{,}5$ gegen $H_1$: $p > 0{,}5$ mit $\alpha = 5\,\%$. Bestimme den Ablehnungsbereich. Wie groß ist der Fehler 2. Art, wenn in Wahrheit $p = 0{,}6$ gilt?
+
+<details>
+<summary>Lösung anzeigen</summary>
+
+$P(X \ge 59) \approx 4{,}4\,\%$, aber $P(X \ge 58) \approx 6{,}7\,\%$. Also wird $H_0$ ab 59 Kopf verworfen. Bei $p = 0{,}6$ gilt $P(X \le 58) \approx 37{,}7\,\%$: So oft bleibt man irrtümlich bei $H_0$. [In der Simulation zeigen](?mode=test&n=100&p0=0.5&side=right&alpha=5&kobs=60&p=0.6)
 
 </details>
 

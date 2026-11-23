@@ -16,6 +16,10 @@ The **confidence ellipse** contains all $(p \mid h)$ with $|h - p| \le z\sqrt{p(
 2. Small $p$, small $n$: the approximation fails. [Load](?mode=conf&p=0.05&n=30&level=95&method=wald)
 3. The ellipse: [load](?mode=ellipse&n=100&h=0.4&p=0.5&level=95&method=wilson)
 
+- Hypothesis test with rejection region, type I and II errors and power function: [load](?mode=test&n=100&p0=0.5&side=right&alpha=5&kobs=60&p=0.6)
+- Coverage of both methods over p: [load](?mode=cover&n=30&level=95&p=0.1)
+- Practice calculations: [load](?mode=ex&q=1)
+
 ## Tasks
 
 ### Task 1

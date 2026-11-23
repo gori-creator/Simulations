@@ -122,3 +122,65 @@ describe('Konfidenzintervall: Rechenweg', () => {
     expect(runningRate([true, false, true, true])).toEqual([1, 0.5, 2 / 3, 0.75]);
   });
 });
+
+import { betaError, binomCdf, binomialPmf as pmfB, coverageCurve, pValue, rejectionRegion, rejects } from '../src/simulations/mathematik/konfidenzintervall/model';
+
+describe('Konfidenzintervall: Hypothesentest', () => {
+  it('rechtsseitig n = 100, p₀ = 0,5, α = 5 %: Ablehnung ab 59 (P(X ≥ 59) ≈ 4,4 %)', () => {
+    const r = rejectionRegion(100, 0.5, 0.05, 'right');
+    expect(r.hi).toBe(59);
+    expect(r.lo).toBe(-1);
+    expect(r.alpha).toBeCloseTo(0.0443, 3);
+  });
+  it('linksseitig: bis 41; zweiseitig: bis 39 und ab 61 (α ≈ 3,5 %)', () => {
+    expect(rejectionRegion(100, 0.5, 0.05, 'left').lo).toBe(41);
+    const two = rejectionRegion(100, 0.5, 0.05, 'two');
+    expect(two.lo).toBe(39);
+    expect(two.hi).toBe(61);
+    expect(two.alpha).toBeCloseTo(0.0352, 3);
+  });
+  it('Fehler 2. Art: bei p₁ = 0,6 behält der rechtsseitige Test H₀ mit ≈ 37,7 % bei', () => {
+    const r = rejectionRegion(100, 0.5, 0.05, 'right');
+    expect(betaError(100, 0.6, r)).toBeCloseTo(0.3775, 3);
+    expect(betaError(100, 0.5, r)).toBeCloseTo(1 - r.alpha, 12);
+    expect(rejects(60, r)).toBe(true);
+    expect(rejects(58, r)).toBe(false);
+  });
+  it('p-Wert: 60 von 100 bei p₀ = 0,5 rechtsseitig ≈ 2,8 %; Verteilungsfunktion', () => {
+    expect(pValue(100, 0.5, 60, 'right')).toBeCloseTo(0.0284, 3);
+    expect(pValue(100, 0.5, 60, 'two')).toBeCloseTo(0.0569, 3);
+    expect(binomCdf(pmfB(10, 0.5), 10)).toBeCloseTo(1, 12);
+  });
+});
+
+describe('Konfidenzintervall: Trefferquote über p', () => {
+  it('Wilson trifft im Mittel näher an 95 % als die Näherung, die bei kleinem p deutlich darunter liegt', () => {
+    const c = coverageCurve(30, 1.96, 0.01);
+    const mean = (k: 'wald' | 'wilson') => c.reduce((s, q) => s + q[k], 0) / c.length;
+    expect(Math.abs(mean('wilson') - 0.95)).toBeLessThan(Math.abs(mean('wald') - 0.95));
+    const small = c.find((q) => Math.abs(q.p - 0.05) < 1e-9)!;
+    expect(small.wald).toBeLessThan(0.85);
+  });
+});
+
+import { checkExercise, makeExercise, parseNumbers } from '../src/simulations/mathematik/konfidenzintervall/model';
+
+describe('Konfidenzintervall: Übungsaufgaben', () => {
+  it('Zahlen lesen mit Komma, Punkt und Strich', () => {
+    expect(parseNumbers('0,35; 0,42')).toEqual([0.35, 0.42]);
+    expect(parseNumbers('40 – 60')).toEqual([40, 60]);
+    expect(parseNumbers('n = 1068')).toEqual([1068]);
+  });
+  it('Musterlösung wird akzeptiert, alle Aufgabenarten kommen vor', () => {
+    const kinds = new Set<string>();
+    for (let i = 1; i <= 40; i++) {
+      const ex = makeExercise(i);
+      kinds.add(ex.kind);
+      const txt = ex.answer.map((a) => (ex.kind === 'conf' ? a.toFixed(3) : String(Math.round(a)))).join('; ');
+      expect(checkExercise(ex, txt).ok).toBe(true);
+      expect(checkExercise(ex, '1').ok).toBe(ex.answer.length === 1 && Math.abs(ex.answer[0]! - 1) <= ex.tol);
+    }
+    expect(kinds.size).toBe(4);
+    expect(makeExercise(7)).toEqual(makeExercise(7));
+  });
+});

@@ -1,7 +1,17 @@
 import { defineSimulation, drawCard, ease, Plot, prefersReducedMotion, roundRect, Surface, Tween, withAlpha, type Rect } from '../../../sim-core';
 import {
+  betaError,
+  checkExercise,
+  makeExercise,
+  type Exercise,
   binomialPmf,
   confInterval,
+  coverageCurve,
+  pValue,
+  rejectionRegion,
+  rejects,
+  type Region,
+  type Side,
   coverage,
   ellipseAt,
   ellipseQuadratic,
@@ -59,10 +69,43 @@ export default defineSimulation({
         { value: 'ellipse', label: L('Konfidenzellipse', 'Confidence ellipse') },
         { value: 'size', label: L('Nötiger Stichprobenumfang', 'Required sample size') },
         { value: 'game', label: L('Spiel: Umfrage mit geheimem p', 'Game: poll with a secret p') },
+        { value: 'test', label: L('Hypothesentest', 'Hypothesis test') },
+        { value: 'cover', label: L('Trefferquote der Verfahren', 'Coverage of the methods') },
+        { value: 'ex', label: L('Üben: Rechenaufgaben', 'Practice: calculations') },
       ],
       default: 'conf',
     },
-    { key: 'p', type: 'number', label: L('Wahre Wahrscheinlichkeit p', 'True probability p'), min: 0.01, max: 0.99, step: 0.01, default: 0.4, visibleIf: (v) => v.mode !== 'game' },
+    { key: 'p', type: 'number', label: L('Wahre Wahrscheinlichkeit p', 'True probability p'), help: (v) => (v.mode === 'test' ? L('Was in Wirklichkeit gilt – für den Fehler 2. Art.', 'What is actually true – for the type II error.') : null), min: 0.01, max: 0.99, step: 0.01, default: 0.4, visibleIf: (v) => v.mode !== 'game' },
+    { key: 'p0', type: 'number', label: L('Nullhypothese H₀: p = p₀', 'Null hypothesis H₀: p = p₀'), min: 0.05, max: 0.95, step: 0.01, default: 0.5, visibleIf: (v) => v.mode === 'test' },
+    {
+      key: 'side',
+      type: 'choice',
+      label: L('Gegenhypothese H₁', 'Alternative H₁'),
+      options: [
+        { value: 'right', label: L('p > p₀ (rechtsseitig)', 'p > p₀ (right-sided)') },
+        { value: 'left', label: L('p < p₀ (linksseitig)', 'p < p₀ (left-sided)') },
+        { value: 'two', label: L('p ≠ p₀ (zweiseitig)', 'p ≠ p₀ (two-sided)') },
+      ],
+      default: 'right',
+      visibleIf: (v) => v.mode === 'test',
+    },
+    {
+      key: 'alpha',
+      type: 'choice',
+      label: L('Signifikanzniveau α', 'Significance level α'),
+      options: [
+        { value: '1', label: L('1 %', '1%') },
+        { value: '5', label: L('5 %', '5%') },
+        { value: '10', label: L('10 %', '10%') },
+      ],
+      default: '5',
+      visibleIf: (v) => v.mode === 'test',
+    },
+    { key: 'q', type: 'number', label: L('Aufgabe Nr.', 'Task no.'), min: 1, max: 999, step: 1, default: 1, visibleIf: (v) => v.mode === 'ex' },
+    { key: 'ans', type: 'text', label: L('Deine Antwort', 'Your answer'), default: '', maxLength: 40, placeholder: L('z. B. 0,35; 0,42', 'e.g. 0.35; 0.42'), visibleIf: (v) => v.mode === 'ex' },
+    { key: 'own', type: 'boolean', label: L('Ablehnungsbereich selbst festlegen', 'Set the rejection region yourself'), help: L('Die rote Grenze im Diagramm ziehen und beobachten, wie sich α und β verändern.', 'Drag the red boundary in the chart and watch how α and β change.'), default: false, visibleIf: (v) => v.mode === 'test' && v.side !== 'two' },
+    { key: 'kc', type: 'number', label: L('Eigene Grenze', 'Own boundary'), min: 0, max: 2000, step: 1, default: 58, visibleIf: (v) => v.mode === 'test' && v.side !== 'two' && v.own === true },
+    { key: 'kobs', type: 'number', label: L('Beobachtet: Treffer k', 'Observed: hits k'), help: L('Oder die Marke im Diagramm ziehen.', 'Or drag the marker in the chart.'), min: 0, max: 2000, step: 1, default: 60, visibleIf: (v) => v.mode === 'test' },
     { key: 'n', type: 'number', label: L('Stichprobenumfang n', 'Sample size n'), min: 10, max: 2000, step: 10, default: 100 },
     {
       key: 'level',
@@ -101,6 +144,9 @@ export default defineSimulation({
     { id: 'poll', label: L('Umfrage machen', 'Run the poll'), primary: true, visibleIf: (v) => v.mode === 'game' },
     { id: 'reveal', label: L('Auflösen', 'Reveal'), visibleIf: (v) => v.mode === 'game' },
     { id: 'round', label: L('Nächste Runde', 'Next round'), visibleIf: (v) => v.mode === 'game' },
+    { id: 'sim', label: L('100 Tests durchführen', 'Run 100 tests'), primary: true, visibleIf: (v) => v.mode === 'test' },
+    { id: 'checkex', label: L('Prüfen', 'Check'), primary: true, visibleIf: (v) => v.mode === 'ex' },
+    { id: 'newex', label: L('Neue Aufgabe', 'New task'), visibleIf: (v) => v.mode === 'ex' },
   ],
   readouts: [
     { key: 'iv', label: L('Intervall', 'Interval') },
@@ -118,6 +164,12 @@ export default defineSimulation({
     { id: 'size', label: L('Umfrage: ± 3 % bei 95 %', 'Poll: ± 3% at 95%'), values: { mode: 'size', eps: 0.03, level: '95', pre: false } },
     { id: 'game', label: L('Spiel: Wie gut schätzt deine Umfrage?', 'Game: how good is your poll?'), values: { mode: 'game', n: 200, level: '95', method: 'wald' } },
     { id: 'size2', label: L('Umfrage mit Vorwissen p ≈ 0,2', 'Poll with prior p ≈ 0.2'), values: { mode: 'size', eps: 0.03, level: '95', pre: true, p: 0.2 } },
+    { id: 'test', label: L('Test: Ist die Münze gezinkt? 60 Kopf bei 100 Würfen', 'Test: is the coin biased? 60 heads in 100 tosses'), values: { mode: 'test', n: 100, p0: 0.5, side: 'right', alpha: '5', kobs: 60, p: 0.6 } },
+    { id: 'test2', label: L('Zweiseitig: Ablehnung unten und oben', 'Two-sided: rejection at both ends'), values: { mode: 'test', n: 100, p0: 0.5, side: 'two', alpha: '5', kobs: 60, p: 0.6 } },
+    { id: 'trade', label: L('α gegen β: eigene Grenze ziehen', 'α against β: drag your own boundary'), values: { mode: 'test', n: 100, p0: 0.5, side: 'right', alpha: '5', kobs: 60, p: 0.6, own: true, kc: 56 } },
+    { id: 'beta', label: L('Fehler 2. Art: größeres n hilft', 'Type II error: a larger n helps'), values: { mode: 'test', n: 400, p0: 0.5, side: 'right', alpha: '5', kobs: 220, p: 0.55 } },
+    { id: 'ex', label: L('Üben: Rechenaufgaben zu Intervallen und Tests', 'Practice: calculations on intervals and tests'), values: { mode: 'ex', q: 1, ans: '' } },
+    { id: 'cover', label: L('Trefferquote bei n = 30: Näherung gegen Ellipse', 'Coverage at n = 30: approximation against ellipse'), values: { mode: 'cover', n: 30, level: '95', p: 0.1 } },
   ],
   strings: {
     de: {
@@ -168,6 +220,46 @@ export default defineSimulation({
       gameStats: '{r} Runden, {k} Treffer ({q})',
       gameScore: '{s} Punkte',
       gameWidth: 'mittlere Intervallbreite {w}',
+      testTitle: 'Hypothesentest: Passt die Beobachtung zu H₀?',
+      h0: 'H₀: p = {p}',
+      h1: 'H₁: p {op} {p}',
+      region: 'Ablehnungsbereich',
+      accept: 'Annahmebereich',
+      alphaReal: 'Fehler 1. Art (tatsächliches α): {a}',
+      keep: 'k = {k} liegt im Annahmebereich: H₀ wird nicht verworfen.',
+      reject: 'k = {k} liegt im Ablehnungsbereich: H₀ wird verworfen.',
+      pval: 'p-Wert: {v}',
+      beta: 'Fehler 2. Art bei wahrem p = {p}: β = {b}',
+      power: 'Trennschärfe 1 − β = {v}',
+      testG: 'Fehler 1. Art: H₀ ist wahr, wird aber verworfen (höchstens α). Fehler 2. Art: H₀ ist falsch, wird aber beibehalten (β). Größeres n macht β kleiner.',
+      oc: 'Wahrscheinlichkeit, H₀ zu verwerfen (Gütefunktion)',
+      underH0: 'Verteilung unter H₀',
+      underP: 'unter wahrem p',
+      coverTitle: 'Wie oft treffen 95-%-Intervalle wirklich?',
+      coverG: 'Die Näherung h ± z·√(h(1 − h)/n) trifft bei kleinem n und p nahe 0 oder 1 deutlich seltener als versprochen. Über die Konfidenzellipse liegt die Trefferquote fast überall nahe γ. Die Zacken entstehen, weil h nur die Werte k/n annehmen kann.',
+      coverAt: 'Bei p = {p}: Näherung {w}, Ellipse {e}',
+      ownRule: 'Eigene Regel: verwerfen, wenn k {op} {k}',
+      ownG: 'Schiebst du die Grenze nach außen, wird α kleiner, aber β größer. Beide Fehler zugleich klein bekommt man nur mit größerem n.',
+      simRes: '{r} von {n} Tests verwerfen H₀ (wahres p = {p}; erwartet {e})',
+      simAlpha: 'Da p = p₀: Das sind Fehler 1. Art.',
+      simPower: 'Da p ≠ p₀: Richtige Entscheidungen; die übrigen sind Fehler 2. Art.',
+      exTitle: 'Üben: Rechne selbst',
+      exHow: 'Rechne mit Stift und Taschenrechner, trage das Ergebnis oben unter „Deine Antwort“ ein und tippe auf „Prüfen“.',
+      exOk: 'Richtig!',
+      exNo: 'Noch nicht richtig. Prüfe die Formel und runde erst am Ende.',
+      hint_conf: 'Tipp: h = k/n, dann h ± 1,96 · √(h · (1 − h) / n).',
+      hint_prog: 'Tipp: μ = n · 1/6, σ = √(n · 1/6 · 5/6), dann μ ± 1,96 · σ.',
+      hint_size: 'Tipp: n ≥ 1,96² · 0,5 · 0,5 / ε², aufrunden.',
+      hint_test: 'Tipp: kleinstes k mit P(X ≥ k) ≤ 5 % bei n und p₀ (Tabelle oder Taschenrechner).',
+      exFormat: 'Bitte {n} Zahl(en) eingeben.',
+      exSol: 'Lösung',
+      exScore: '{k} von {n} Aufgaben beim ersten Versuch richtig',
+      exYours: 'deine Antwort',
+      exTrue: 'Lösung',
+      k_conf: 'Konfidenzintervall',
+      k_prog: 'Prognoseintervall',
+      k_size: 'Stichprobenumfang',
+      k_test: 'Hypothesentest',
     },
     en: {
       canvas: 'Prediction and confidence intervals: distribution of the relative frequency, many samples with their intervals, the confidence ellipse and the required sample size.',
@@ -217,6 +309,46 @@ export default defineSimulation({
       gameStats: '{r} rounds, {k} hits ({q})',
       gameScore: '{s} points',
       gameWidth: 'mean interval width {w}',
+      testTitle: 'Hypothesis test: does the observation fit H₀?',
+      h0: 'H₀: p = {p}',
+      h1: 'H₁: p {op} {p}',
+      region: 'rejection region',
+      accept: 'acceptance region',
+      alphaReal: 'type I error (actual α): {a}',
+      keep: 'k = {k} is in the acceptance region: H₀ is not rejected.',
+      reject: 'k = {k} is in the rejection region: H₀ is rejected.',
+      pval: 'p-value: {v}',
+      beta: 'type II error for true p = {p}: β = {b}',
+      power: 'power 1 − β = {v}',
+      testG: 'Type I error: H₀ is true but rejected (at most α). Type II error: H₀ is false but kept (β). A larger n makes β smaller.',
+      oc: 'probability of rejecting H₀ (power function)',
+      underH0: 'distribution under H₀',
+      underP: 'under the true p',
+      coverTitle: 'How often do 95 % intervals really hit?',
+      coverG: 'The approximation h ± z·√(h(1 − h)/n) hits clearly less often than promised for small n and p near 0 or 1. Via the confidence ellipse the coverage stays close to γ almost everywhere. The spikes appear because h can only take the values k/n.',
+      coverAt: 'At p = {p}: approximation {w}, ellipse {e}',
+      ownRule: 'Own rule: reject if k {op} {k}',
+      ownG: 'Moving the boundary outwards makes α smaller but β larger. Only a larger n makes both errors small at the same time.',
+      simRes: '{r} of {n} tests reject H₀ (true p = {p}; expected {e})',
+      simAlpha: 'Since p = p₀: these are type I errors.',
+      simPower: 'Since p ≠ p₀: correct decisions; the others are type II errors.',
+      exTitle: 'Practice: calculate yourself',
+      exHow: 'Calculate with pen and calculator, enter the result above under “Your answer” and tap “Check”.',
+      exOk: 'Correct!',
+      exNo: 'Not right yet. Check the formula and round only at the end.',
+      hint_conf: 'Hint: h = k/n, then h ± 1.96 · √(h · (1 − h) / n).',
+      hint_prog: 'Hint: μ = n · 1/6, σ = √(n · 1/6 · 5/6), then μ ± 1.96 · σ.',
+      hint_size: 'Hint: n ≥ 1.96² · 0.5 · 0.5 / ε², round up.',
+      hint_test: 'Hint: smallest k with P(X ≥ k) ≤ 5 % for n and p₀ (table or calculator).',
+      exFormat: 'Please enter {n} number(s).',
+      exSol: 'Solution',
+      exScore: '{k} of {n} tasks right at the first attempt',
+      exYours: 'your answer',
+      exTrue: 'solution',
+      k_conf: 'confidence interval',
+      k_prog: 'prediction interval',
+      k_size: 'sample size',
+      k_test: 'hypothesis test',
     },
   },
   mount(ctx) {
@@ -735,6 +867,62 @@ export default defineSimulation({
       let y = R.y + 22;
       const zz = z();
       const line = (segs: Seg[], d = 0) => (y += segLine(g, segs, x, y, maxW, size + d));
+      if (p.mode === 'ex') {
+        line([{ s: ctx.t('exTitle'), c: BAR(), w: 800 }], 0);
+        line([{ s: ctx.t('exHow'), c: t.muted }], -2);
+        y += 4;
+        if (exResult) {
+          if (exResult.got.length !== exTask.answer.length) line([{ s: tr('exFormat', { n: exTask.answer.length }), c: BAD(), w: 700 }], -1);
+          else if (exResult.ok) line([{ s: ctx.t('exOk'), c: GOOD(), w: 800 }], 1);
+          else {
+            line([{ s: ctx.t('exNo'), c: BAD(), w: 700 }], -1);
+            line([{ s: ctx.t(`hint_${exTask.kind}`), c: t.muted }], -2);
+          }
+          if (!exResult.ok && exTries >= 2) line([{ s: `${ctx.t('exSol')}: ${exTask.answer.map(fmtAns).join('; ')}`, c: t.text, w: 700 }], -1);
+        }
+        if (exScore.all) line([{ s: tr('exScore', { k: exScore.right, n: exScore.all }), c: t.muted, w: 600 }], -2);
+        return;
+      }
+      if (p.mode === 'test') {
+        const k = kObs();
+        const op = p.side === 'right' ? '>' : p.side === 'left' ? '<' : '≠';
+        line([{ s: ctx.t('testTitle'), c: BAR(), w: 800 }], 0);
+        line([{ s: `${tr('h0', { p: N(p.p0, 2) })},  ${tr('h1', { op, p: N(p.p0, 2) })},  n = ${p.n},  α = ${p.alpha} %`, c: t.text, w: 700 }], -0.5);
+        const parts: string[] = [];
+        if (region.lo >= 0) parts.push(`{0, …, ${region.lo}}`);
+        if (region.hi <= p.n) parts.push(`{${region.hi}, …, ${p.n}}`);
+        line([{ s: `${ctx.t('region')}: `, c: t.muted }, { s: parts.join(' ∪ ') || '∅', c: BAD(), w: 800 }], -0.5);
+        line([{ s: tr('alphaReal', { a: pct(region.alpha) }), c: region.alpha > alphaNow() + 1e-9 ? BAD() : t.muted, w: region.alpha > alphaNow() + 1e-9 ? 700 : 500 }], -1.5);
+        if (p.own && p.side !== 'two') line([{ s: tr('ownRule', { op: p.side === 'right' ? '≥' : '≤', k: p.side === 'right' ? region.hi : region.lo }), c: BAD(), w: 600 }], -1.5);
+        y += 4;
+        const rej = rejects(k, region);
+        line([{ s: tr(rej ? 'reject' : 'keep', { k }), c: rej ? BAD() : BAR(), w: 800 }], 0);
+        line([{ s: tr('pval', { v: pct(pValue(p.n, p.p0, k, p.side as Side)) }), c: t.text, w: 600 }], -1);
+        y += 4;
+        const b = betaError(p.n, p.p, region);
+        line([{ s: tr('beta', { p: N(p.p, 2), b: pct(b) }), c: GOOD(), w: 700 }], -1);
+        line([{ s: tr('power', { v: pct(1 - b) }), c: t.muted }], -1.5);
+        if (simRun) {
+          y += 4;
+          line([{ s: tr('simRes', { r: simRun.rej, n: simRun.k.length, p: N(p.p, 2), e: pct(1 - b) }), c: t.text, w: 700 }], -1);
+          line([{ s: ctx.t(Math.abs(p.p - p.p0) < 1e-9 ? 'simAlpha' : 'simPower'), c: t.muted }], -1.5);
+        }
+        y += 4;
+        line([{ s: ctx.t(p.own ? 'ownG' : 'testG'), c: t.muted }], -2);
+        return;
+      }
+      if (p.mode === 'cover') {
+        const c = coverData();
+        const at = c.reduce((best, q) => (Math.abs(q.p - p.p) < Math.abs(best.p - p.p) ? q : best), c[0]!);
+        const mean = (key: 'wald' | 'wilson') => c.reduce((sum, q) => sum + q[key], 0) / c.length;
+        line([{ s: ctx.t('coverTitle').replace('95', p.level), c: BAR(), w: 800 }], 0);
+        line([{ s: `n = ${fmt.num(p.n, 0)},  γ = ${p.level} %`, c: t.text, w: 700 }], -0.5);
+        line([{ s: tr('coverAt', { p: N(p.p, 2), w: pct(at.wald), e: pct(at.wilson) }), c: t.text, w: 600 }], -1);
+        line([{ s: ctx.lang === 'de' ? `Mittel über alle p: Näherung ${pct(mean('wald'))}, Ellipse ${pct(mean('wilson'))}` : `average over all p: approximation ${pct(mean('wald'))}, ellipse ${pct(mean('wilson'))}`, c: t.muted }], -1.5);
+        y += 4;
+        line([{ s: ctx.t('coverG'), c: t.muted }], -2);
+        return;
+      }
       line([{ s: `n = ${fmt.num(p.n, 0)},  γ = ${p.level} %,  z = ${N(zz, 2)}`, c: t.text, w: 700 }], 1);
       if (p.mode === 'prog') {
         const s = Math.sqrt((p.p * (1 - p.p)) / p.n);
@@ -953,8 +1141,354 @@ export default defineSimulation({
     }
 
     /* -------------------------------------------------------------- */
+    /* Hypothesentest                                                  */
+    /* -------------------------------------------------------------- */
+
+    const alphaNow = () => +p.alpha / 100;
+    let region: Region = rejectionRegion(p.n, p.p0, alphaNow(), p.side as Side);
+    let pmf0 = binomialPmf(p.n, p.p0);
+    function computeTest(): void {
+      pmf0 = binomialPmf(p.n, p.p0);
+      if (p.own && p.side !== 'two') {
+        const kc = clamp(p.kc, 0, p.n);
+        const r = p.side === 'right' ? { lo: -1, hi: kc } : { lo: kc, hi: p.n + 1 };
+        let a = 0;
+        pmf0.forEach((q, k) => {
+          if (k <= r.lo || k >= r.hi) a += q;
+        });
+        region = { ...r, alpha: a };
+      } else region = rejectionRegion(p.n, p.p0, alphaNow(), p.side as Side);
+    }
+    /** Ergebnis von „100 Tests durchführen“: Ablehnungen bei wahrem p. */
+    let simRun: { k: number[]; rej: number } | null = null;
+    function runTests(): void {
+      const ks: number[] = [];
+      let rej = 0;
+      for (let i = 0; i < 100; i++) {
+        let k = 0;
+        for (let j = 0; j < p.n; j++) if (Math.random() < p.p) k++;
+        ks.push(k);
+        if (rejects(k, region)) rej++;
+      }
+      simRun = { k: ks, rej };
+      build.play();
+    }
+    // eigene Grenze ziehen
+    plot.addHandle({
+      get: () => [p.side === 'right' ? region.hi - 0.5 : region.lo + 0.5, plot.bounds.yMax * 0.85],
+      set: (x) => ctx.set({ kc: Math.round(clamp(p.side === 'right' ? x + 0.5 : x - 0.5, 0, p.n)) }),
+      enabled: () => !ctx.locked && p.mode === 'test' && p.own && p.side !== 'two',
+      color: () => BAD(),
+      axis: 'x',
+    });
+    const kObs = () => Math.min(p.kobs, p.n);
+    let ocArea: Rect = { x: -100, y: -100, w: 10, h: 10 };
+    const plotOC = new Plot(surface, {
+      x: [0, 1],
+      y: [0, 1],
+      equalAspect: false,
+      zoom: false,
+      pan: false,
+      controls: false,
+      region: () => (p.mode === 'test' ? ocArea : { x: -100, y: -100, w: 10, h: 10 }),
+      xAxis: { label: 'p' },
+      yAxis: { label: '' },
+    });
+    plot.addHandle({
+      get: () => [kObs(), 0],
+      set: (x) => ctx.set({ kobs: Math.round(clamp(x, 0, p.n)) }),
+      enabled: () => !ctx.locked && p.mode === 'test',
+      color: () => P_COL(),
+      axis: 'x',
+    });
+    plotOC.addHandle({
+      get: () => [p.p, 1 - betaError(p.n, p.p, region)],
+      set: (x) => ctx.set({ p: Math.round(clamp(x, 0.01, 0.99) * 100) / 100 }),
+      enabled: () => !ctx.locked && p.mode === 'test',
+      color: () => GOOD(),
+      axis: 'x',
+    });
+    function testRange(): [number, number] {
+      const sd = Math.sqrt(p.n * Math.max(p.p0 * (1 - p.p0), p.p * (1 - p.p)));
+      const lo = Math.max(0, Math.min(p.n * p.p0, p.n * p.p, kObs()) - 4.2 * sd);
+      const hi = Math.min(p.n, Math.max(p.n * p.p0, p.n * p.p, kObs()) + 4.2 * sd);
+      return [Math.floor(lo), Math.ceil(hi)];
+    }
+    function drawTest(g: CanvasRenderingContext2D, R: Rect): void {
+      const t = th();
+      const ocH = Math.round(R.h * 0.3);
+      plotArea = { x: R.x + 8, y: R.y + 30, w: R.w - 16, h: R.h - 46 - ocH };
+      ocArea = { x: R.x + 8, y: R.y + R.h - ocH - 4, w: R.w - 16, h: ocH };
+      const [x0, x1] = testRange();
+      const pmf1 = binomialPmf(p.n, p.p);
+      const top = Math.max(...pmf0.slice(x0, x1 + 1), ...pmf1.slice(x0, x1 + 1)) * 1.18;
+      plot.setAxes({ x: { label: 'k' }, y: { label: 'P', numbers: false } });
+      plot.setRange([x0 - (x1 - x0) * 0.04, x1 + 0.5], [-top * 0.08, top]);
+      plot.resize();
+      plot.begin();
+      plot.grid();
+      plot.axes();
+      const grow = build.value;
+      const bw = Math.max(0.4, 0.84 / 2);
+      // Verteilung unter dem wahren p (Umriss), Annahmebereich darunter = β
+      for (let k = x0; k <= x1; k++) {
+        const v = pmf1[k]! * grow;
+        const inAcc = !rejects(k, region);
+        plot.polygon(
+          [
+            [k - bw, 0],
+            [k + bw, 0],
+            [k + bw, v],
+            [k - bw, v],
+          ],
+          { fill: inAcc ? withAlpha(GOOD(), 0.18) : 'rgba(0,0,0,0)', stroke: withAlpha(GOOD(), 0.8), width: 1 },
+        );
+      }
+      // Verteilung unter H₀: Ablehnungsbereich rot
+      for (let k = x0; k <= x1; k++) {
+        const v = pmf0[k]! * grow;
+        const rej = rejects(k, region);
+        plot.polygon(
+          [
+            [k - bw * 0.62, 0],
+            [k + bw * 0.62, 0],
+            [k + bw * 0.62, v],
+            [k - bw * 0.62, v],
+          ],
+          { fill: rej ? BAD() : BAR(), alpha: rej ? 0.85 : 0.65 },
+        );
+      }
+      // Grenzen des Ablehnungsbereichs
+      for (const b of [region.lo + 0.5, region.hi - 0.5]) {
+        if (b < x0 || b > x1) continue;
+        plot.segment([b, 0], [b, top * 0.92], { color: BAD(), width: 1.6, dash: [5, 4] });
+      }
+      // simulierte Tests als Punkte über der Achse
+      if (simRun) {
+        const counts = new Map<number, number>();
+        simRun.k.forEach((kk, i) => {
+          if (i / simRun!.k.length > grow) return;
+          const c = (counts.get(kk) ?? 0) + 1;
+          counts.set(kk, c);
+          plot.point(kk, -top * 0.02 + c * top * 0.035, { color: rejects(kk, region) ? BAD() : GOOD(), radius: 3 });
+        });
+      }
+      // Beobachtung
+      const k = kObs();
+      plot.segment([k, 0], [k, top * 0.9], { color: P_COL(), width: 2.2 });
+      plot.text(k, top * 0.9, `k = ${k}`, { color: P_COL(), size: 12, weight: 'bold', align: 'left', offset: [6, 4], halo: true });
+      plot.end();
+      // Legende
+      g.save();
+      g.font = `600 12px ${t.font}`;
+      g.textBaseline = 'middle';
+      let lx = R.x + 16;
+      const ly = R.y + 16;
+      const item = (col: string, txt: string, box = true) => {
+        if (box) {
+          g.fillStyle = col;
+          g.fillRect(lx, ly - 5, 12, 10);
+        } else {
+          g.strokeStyle = col;
+          g.strokeRect(lx, ly - 5, 12, 10);
+        }
+        g.fillStyle = t.text;
+        g.fillText(txt, lx + 16, ly);
+        lx += g.measureText(txt).width + 34;
+      };
+      item(BAR(), ctx.t('accept'));
+      item(BAD(), ctx.t('region'));
+      if (R.w > 520) item(GOOD(), `${ctx.t('underP')} ${N(p.p, 2)}`, false);
+      g.restore();
+      // Gütefunktion
+      plotOC.setRange([-0.1, 1], [-0.16, 1.3]);
+      plotOC.resize();
+      plotOC.begin();
+      plotOC.grid();
+      plotOC.axes();
+      plotOC.hline(alphaNow(), { color: withAlpha(BAD(), 0.6), width: 1, dash: [4, 4] });
+      plotOC.fn((pp) => (pp <= 0 || pp >= 1 ? NaN : 1 - betaError(p.n, pp, region)), { color: GOOD(), width: 2.4, from: 0.005, to: 0.995 });
+      plotOC.segment([p.p0, 0], [p.p0, 1], { color: withAlpha(BAR(), 0.8), width: 1.4, dash: [5, 4] });
+      plotOC.end();
+      g.save();
+      g.font = `600 11px ${t.font}`;
+      g.fillStyle = t.muted;
+      g.fillText(ctx.t('oc'), ocArea.x + 46, ocArea.y + 12);
+      g.restore();
+    }
+
+    /* -------------------------------------------------------------- */
+    /* Trefferquote der Verfahren                                      */
+    /* -------------------------------------------------------------- */
+
+    let coverCache: { key: string; curve: { p: number; wald: number; wilson: number }[] } | null = null;
+    function coverData() {
+      const key = `${p.n}|${p.level}`;
+      if (!coverCache || coverCache.key !== key) coverCache = { key, curve: coverageCurve(p.n, z(), p.n > 600 ? 0.01 : 0.005) };
+      return coverCache.curve;
+    }
+    plot.addHandle({
+      get: () => [p.p, 0.62],
+      set: (x) => ctx.set({ p: Math.round(clamp(x, 0.01, 0.99) * 100) / 100 }),
+      enabled: () => !ctx.locked && p.mode === 'cover',
+      color: () => P_COL(),
+      axis: 'x',
+    });
+    function drawCover(g: CanvasRenderingContext2D, R: Rect): void {
+      const t = th();
+      plotArea = { x: R.x + 8, y: R.y + 34, w: R.w - 16, h: R.h - 42 };
+      const c = coverData();
+      plot.setAxes({ x: { label: 'p' }, y: { label: ctx.lang === 'de' ? 'Trefferquote' : 'coverage', format: (v) => `${fmt.num(v * 100, 0)} %` } });
+      plot.setRange([-0.15, 1], [0.55, 1.02]);
+      plot.resize();
+      plot.begin();
+      plot.grid();
+      plot.axes();
+      const gam = +p.level / 100;
+      plot.hline(gam, { color: withAlpha(t.text, 0.6), width: 1.4, dash: [6, 4] });
+      const u = build.value;
+      const nShow = Math.max(2, Math.round(c.length * u));
+      plot.polyline(c.slice(0, nShow).map((q) => [q.p, Math.max(0.55, q.wald)] as [number, number]), { color: BAD(), width: 1.6 });
+      plot.polyline(c.slice(0, nShow).map((q) => [q.p, Math.max(0.55, q.wilson)] as [number, number]), { color: GOOD(), width: 1.8 });
+      plot.segment([p.p, 0.55], [p.p, 1.02], { color: P_COL(), width: 1.4, dash: [4, 3] });
+      plot.end();
+      g.save();
+      g.font = `700 ${R.w < 400 ? 12 : 13}px ${t.font}`;
+      g.fillStyle = BAD();
+      g.fillText(ctx.lang === 'de' ? '— Näherung' : '— approximation', R.x + 16, R.y + 22);
+      g.fillStyle = GOOD();
+      g.fillText(ctx.lang === 'de' ? '— über die Ellipse' : '— via the ellipse', R.x + 16 + (R.w < 400 ? 110 : 140), R.y + 22);
+      g.restore();
+    }
+
+    /* -------------------------------------------------------------- */
+    /* Übung: Rechenaufgaben                                           */
+    /* -------------------------------------------------------------- */
+
+    let exTask: Exercise = makeExercise(1);
+    let exResult: { ok: boolean; got: number[] } | null = null;
+    let exTries = 0;
+    let exScore = { right: 0, all: 0 };
+    const exPop = new Tween(500, ease.outBack);
+    function checkEx(): void {
+      exResult = checkExercise(exTask, p.ans);
+      if (exResult.got.length !== exTask.answer.length) return;
+      exTries += 1;
+      if (exTries === 1) exScore = { right: exScore.right + (exResult.ok ? 1 : 0), all: exScore.all + 1 };
+      exPop.play();
+    }
+    function fmtAns(v: number): string {
+      return exTask.kind === 'conf' ? N(v, 3) : fmt.num(Math.round(v * 10) / 10, exTask.kind === 'prog' ? 1 : 0);
+    }
+    function drawEx(g: CanvasRenderingContext2D, R: Rect): void {
+      const t = th();
+      const x = R.x + 20;
+      const maxW = R.w - 40;
+      let y = R.y + 30;
+      const line = (segs: Seg[], size: number) => (y += segLine(g, segs, x, y, maxW, size));
+      line([{ s: ctx.t(`k_${exTask.kind}`), c: BAR(), w: 800 }], 16);
+      y += 4;
+      line([{ s: ctx.lang === 'de' ? exTask.de : exTask.en, c: t.text, w: 600 }], R.w < 420 ? 14 : 16);
+      y += 12;
+      // kleine Zeichnung zur Aufgabe
+      const icon = Math.min(46, R.h * 0.12);
+      g.save();
+      g.translate(x, y);
+      if (exTask.kind === 'prog') {
+        g.fillStyle = t.dark ? '#e8edf5' : '#ffffff';
+        g.strokeStyle = t.text;
+        g.lineWidth = 2;
+        roundRect(g, 0, 0, icon, icon, 8);
+        g.fill();
+        g.stroke();
+        g.fillStyle = t.text;
+        for (const [dx, dy] of [
+          [0.27, 0.25],
+          [0.27, 0.5],
+          [0.27, 0.75],
+          [0.73, 0.25],
+          [0.73, 0.5],
+          [0.73, 0.75],
+        ]) {
+          g.beginPath();
+          g.arc(dx! * icon, dy! * icon, icon * 0.08, 0, Math.PI * 2);
+          g.fill();
+        }
+      } else {
+        for (let i = 0; i < 10; i++) {
+          const hit = exTask.kind === 'test' ? i < 2 : i < 4;
+          g.fillStyle = hit ? (exTask.kind === 'test' ? BAD() : H_COL()) : withAlpha(t.muted, 0.4);
+          g.beginPath();
+          g.arc(i * icon * 0.38 + icon * 0.2, icon * 0.25, icon * 0.15, 0, Math.PI * 2);
+          g.fill();
+          g.fillRect(i * icon * 0.38 + icon * 0.07, icon * 0.45, icon * 0.26, icon * 0.4);
+        }
+      }
+      g.restore();
+      y += icon + 18;
+      // Zahlenstrahl mit Antwort und Lösung nach der Prüfung
+      if (exResult && exResult.got.length === exTask.answer.length) {
+        const vals = [...exTask.answer, ...exResult.got];
+        const lo = Math.min(...vals);
+        const hi = Math.max(...vals);
+        const pad = Math.max((hi - lo) * 0.25, exTask.kind === 'conf' ? 0.02 : 2);
+        const a = lo - pad;
+        const b = hi + pad;
+        const X = (v: number) => x + ((v - a) / (b - a)) * maxW;
+        const s = exPop.running ? exPop.value : 1;
+        g.save();
+        g.strokeStyle = t.axis;
+        g.lineWidth = 1.4;
+        g.beginPath();
+        g.moveTo(x, y + 30);
+        g.lineTo(x + maxW, y + 30);
+        g.stroke();
+        const bar = (v: number[], yy: number, col: string, label: string) => {
+          g.fillStyle = col;
+          if (v.length === 2) {
+            roundRect(g, X(v[0]!), yy - 6, Math.max(3, (X(v[1]!) - X(v[0]!)) * s), 12, 6);
+            g.fill();
+          } else {
+            g.beginPath();
+            g.arc(X(v[0]!), yy, 7 * s, 0, Math.PI * 2);
+            g.fill();
+          }
+          g.font = `600 12px ${t.font}`;
+          g.textAlign = 'left';
+          g.fillText(`${label}: ${v.map(fmtAns).join(' … ')}`, x, yy - 14);
+        };
+        bar(exResult.got, y + 10, exResult.ok ? GOOD() : BAD(), ctx.t('exYours'));
+        if (exResult.ok || exTries >= 2) bar(exTask.answer, y + 58, BAR(), ctx.t('exTrue'));
+        g.restore();
+      }
+    }
+
+    /* -------------------------------------------------------------- */
     /* Ergebnisse                                                      */
     /* -------------------------------------------------------------- */
+
+    /** Tastatur: Beobachtung, Grenze und wahres p verschieben. */
+    function keys(): void {
+      const de = ctx.lang === 'de';
+      if (p.mode === 'test') {
+        const list = [
+          { id: 'k-', label: de ? 'Beobachtung k − 1' : 'Observation k − 1', activate: () => ctx.set({ kobs: Math.max(0, kObs() - 1) }) },
+          { id: 'k+', label: de ? 'Beobachtung k + 1' : 'Observation k + 1', activate: () => ctx.set({ kobs: Math.min(p.n, kObs() + 1) }) },
+          { id: 'p-', label: de ? 'Wahres p − 0,01' : 'True p − 0.01', activate: () => ctx.set({ p: Math.max(0.01, Math.round((p.p - 0.01) * 100) / 100) }) },
+          { id: 'p+', label: de ? 'Wahres p + 0,01' : 'True p + 0.01', activate: () => ctx.set({ p: Math.min(0.99, Math.round((p.p + 0.01) * 100) / 100) }) },
+        ];
+        if (p.own && p.side !== 'two') {
+          list.push({ id: 'c-', label: de ? 'Grenze nach links' : 'Boundary left', activate: () => ctx.set({ kc: Math.max(0, p.kc - 1) }) });
+          list.push({ id: 'c+', label: de ? 'Grenze nach rechts' : 'Boundary right', activate: () => ctx.set({ kc: Math.min(p.n, p.kc + 1) }) });
+        }
+        ctx.setKeyTargets(list);
+      } else if (p.mode === 'cover') {
+        ctx.setKeyTargets([
+          { id: 'p-', label: de ? 'p − 0,01' : 'p − 0.01', activate: () => ctx.set({ p: Math.max(0.01, Math.round((p.p - 0.01) * 100) / 100) }) },
+          { id: 'p+', label: de ? 'p + 0,01' : 'p + 0.01', activate: () => ctx.set({ p: Math.min(0.99, Math.round((p.p + 0.01) * 100) / 100) }) },
+        ]);
+      } else ctx.setKeyTargets([]);
+    }
 
     function updateReadouts(): void {
       const zz = z();
@@ -970,6 +1504,23 @@ export default defineSimulation({
         const k = samples.filter((q) => q.hit).length;
         ctx.readout('count', samples.length && p.show ? `${k} / ${samples.length} (${pct(k / samples.length)})` : '–');
         ctx.readout('theory', p.show ? pct(coverage(method(), p.n, p.p, zz, pmf)) : '–');
+      } else if (p.mode === 'test') {
+        const parts: string[] = [];
+        if (region.lo >= 0) parts.push(`X ≤ ${region.lo}`);
+        if (region.hi <= p.n) parts.push(`X ≥ ${region.hi}`);
+        ctx.readout('iv', parts.join(ctx.lang === 'de' ? ' oder ' : ' or '));
+        ctx.readout('count', `α = ${pct(region.alpha)}, β = ${pct(betaError(p.n, p.p, region))}`);
+        ctx.readout('theory', `p = ${pct(pValue(p.n, p.p0, kObs(), p.side as Side))}`);
+      } else if (p.mode === 'ex') {
+        ctx.readout('iv', null);
+        ctx.readout('count', exScore.all ? `${exScore.right} / ${exScore.all}` : '–');
+        ctx.readout('theory', exResult && (exResult.ok || exTries >= 2) ? exTask.answer.map(fmtAns).join('; ') : '–');
+      } else if (p.mode === 'cover') {
+        const c = coverData();
+        const at = c.reduce((best, q) => (Math.abs(q.p - p.p) < Math.abs(best.p - p.p) ? q : best), c[0]!);
+        ctx.readout('iv', null);
+        ctx.readout('count', `${pct(at.wald)} / ${pct(at.wilson)}`);
+        ctx.readout('theory', `γ = ${p.level} %`);
       } else if (p.mode === 'ellipse') {
         const ci = method() === 'wald' ? waldInterval(p.h, p.n, zz) : wilsonInterval(p.h, p.n, zz);
         ctx.readout('iv', `[${N(ci[0], 3)}; ${N(ci[1], 3)}]`);
@@ -989,8 +1540,19 @@ export default defineSimulation({
     return {
       update(changed, source) {
         if (changed.has('p') || changed.has('n') || source === 'init') pmf = binomialPmf(p.n, p.p);
+        if (['n', 'p0', 'side', 'alpha', 'own', 'kc'].some((k) => changed.has(k)) || source === 'init' || source === 'replace') computeTest();
+        if (['n', 'p0', 'side', 'alpha', 'own', 'kc', 'p', 'mode'].some((k) => changed.has(k))) simRun = null;
+        if (changed.has('q') || source === 'init' || source === 'replace') {
+          exTask = makeExercise(p.q);
+          exResult = null;
+          exTries = 0;
+        }
+        if (changed.has('ans') && exResult && !exResult.ok) exResult = null;
+        if (changed.has('own') && p.own && source === 'input') ctx.set({ kc: p.side === 'right' ? region.hi : region.lo });
+        if (changed.has('n') && p.kobs > p.n && source === 'input') ctx.set({ kobs: Math.round(p.n * p.p0) });
         if (['p', 'n', 'level', 'method', 'mode'].some((k) => changed.has(k)) && source !== 'init') clearSamples();
         if (changed.has('mode') || source === 'init' || source === 'replace') build.play();
+        keys();
         updateReadouts();
       },
       action(id) {
@@ -1001,6 +1563,9 @@ export default defineSimulation({
         if (id === 'poll') poll();
         if (id === 'reveal') reveal();
         if (id === 'round') newRound();
+        if (id === 'sim') runTests();
+        if (id === 'checkex') checkEx();
+        if (id === 'newex') ctx.set({ q: p.q >= 999 ? 1 : p.q + 1, ans: '' });
         updateReadouts();
         ctx.requestRender();
       },
@@ -1018,9 +1583,12 @@ export default defineSimulation({
         else if (p.mode === 'conf') drawConf(g, R.main, now);
         else if (p.mode === 'ellipse') drawEllipse(g, R.main);
         else if (p.mode === 'game') drawGame(g, R.main);
+        else if (p.mode === 'test') drawTest(g, R.main);
+        else if (p.mode === 'cover') drawCover(g, R.main);
+        else if (p.mode === 'ex') drawEx(g, R.main);
         else drawSize(g, R.main);
         drawCardBody(g, R.card);
-        const animating = revealTw.running || build.running || samples.some((s) => now - s.t < 500) || (p.auto && (p.mode === 'prog' || p.mode === 'conf'));
+        const animating = exPop.running || revealTw.running || build.running || samples.some((s) => now - s.t < 500) || (p.auto && (p.mode === 'prog' || p.mode === 'conf'));
         if (animating) ctx.requestRender();
       },
       destroy: () => surface.destroy(),

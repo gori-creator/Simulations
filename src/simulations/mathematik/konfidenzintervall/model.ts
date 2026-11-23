@@ -220,3 +220,187 @@ export function runningRate(hits: readonly boolean[]): number[] {
     return k / (i + 1);
   });
 }
+
+/* ------------------------------------------------------------------ */
+/* Hypothesentest (Signifikanztest für p)                               */
+/* ------------------------------------------------------------------ */
+
+export type Side = 'left' | 'right' | 'two';
+
+/** Kumulierte Binomialverteilung P(X ≤ k). */
+export function binomCdf(pmf: readonly number[], k: number): number {
+  let s = 0;
+  for (let i = 0; i <= Math.min(k, pmf.length - 1); i++) s += pmf[i]!;
+  return s;
+}
+
+/** Ablehnungsbereich: X ≤ lo und/oder X ≥ hi (−1 bzw. n + 1 bedeuten: leer). */
+export interface Region {
+  lo: number;
+  hi: number;
+  /** tatsächliches Signifikanzniveau (Wahrscheinlichkeit des Fehlers 1. Art) */
+  alpha: number;
+}
+
+/**
+ * Ablehnungsbereich zum Signifikanzniveau α für H₀: p = p₀ (bzw. p ≤ p₀,
+ * p ≥ p₀). Linksseitig: größtes k mit P(X ≤ k) ≤ α. Rechtsseitig: kleinstes
+ * k mit P(X ≥ k) ≤ α. Zweiseitig: je α/2 auf beide Seiten.
+ */
+export function rejectionRegion(n: number, p0: number, alpha: number, side: Side): Region {
+  const pmf = binomialPmf(n, p0);
+  const a = side === 'two' ? alpha / 2 : alpha;
+  let lo = -1;
+  let hi = n + 1;
+  if (side !== 'right') {
+    let s = 0;
+    for (let k = 0; k <= n; k++) {
+      s += pmf[k]!;
+      if (s > a + 1e-12) break;
+      lo = k;
+    }
+  }
+  if (side !== 'left') {
+    let s = 0;
+    for (let k = n; k >= 0; k--) {
+      s += pmf[k]!;
+      if (s > a + 1e-12) break;
+      hi = k;
+    }
+  }
+  return { lo, hi, alpha: probReject(pmf, { lo, hi }) };
+}
+
+/** Wahrscheinlichkeit, im Ablehnungsbereich zu landen (unter der Verteilung pmf). */
+export function probReject(pmf: readonly number[], r: Pick<Region, 'lo' | 'hi'>): number {
+  let s = 0;
+  pmf.forEach((q, k) => {
+    if (k <= r.lo || k >= r.hi) s += q;
+  });
+  return s;
+}
+
+/** Fehler 2. Art: H₀ wird beibehalten, obwohl in Wahrheit p = p₁ gilt. */
+export const betaError = (n: number, p1: number, r: Pick<Region, 'lo' | 'hi'>) => 1 - probReject(binomialPmf(n, p1), r);
+
+/** Entscheidung für ein beobachtetes k. */
+export const rejects = (k: number, r: Pick<Region, 'lo' | 'hi'>) => k <= r.lo || k >= r.hi;
+
+/** p-Wert der Beobachtung k (zweiseitig: doppelte kleinere Randwahrscheinlichkeit, höchstens 1). */
+export function pValue(n: number, p0: number, k: number, side: Side): number {
+  const pmf = binomialPmf(n, p0);
+  const left = binomCdf(pmf, k);
+  const right = 1 - binomCdf(pmf, k - 1);
+  if (side === 'left') return left;
+  if (side === 'right') return right;
+  return Math.min(1, 2 * Math.min(left, right));
+}
+
+/* ------------------------------------------------------------------ */
+/* Trefferquote der Konfidenzintervalle über p                         */
+/* ------------------------------------------------------------------ */
+
+/** Überdeckung beider Verfahren für p = 0,01 … 0,99 (Schritt dp). */
+export function coverageCurve(n: number, z: number, dp = 0.005): { p: number; wald: number; wilson: number }[] {
+  const out: { p: number; wald: number; wilson: number }[] = [];
+  for (let pp = dp; pp < 1 - dp / 2; pp += dp) {
+    const pmf = binomialPmf(n, pp);
+    out.push({ p: pp, wald: coverage('wald', n, pp, z, pmf), wilson: coverage('wilson', n, pp, z, pmf) });
+  }
+  return out;
+}
+
+/* ------------------------------------------------------------------ */
+/* Übung: Rechenaufgaben mit Zufallszahlen                              */
+/* ------------------------------------------------------------------ */
+
+export type ExerciseKind = 'conf' | 'prog' | 'size' | 'test';
+export interface Exercise {
+  kind: ExerciseKind;
+  de: string;
+  en: string;
+  /** Musterlösung: Intervall [a, b], Zahl n bzw. kleinste Ablehnungsgrenze */
+  answer: number[];
+  /** erlaubte Abweichung je Wert */
+  tol: number;
+}
+
+/** Aufgabe Nummer n (gleiche Nummer → gleiche Aufgabe), z = 1,96. */
+export function makeExercise(num: number): Exercise {
+  let s = (Math.floor(num) * 2654435761 + 4242) >>> 0 || 1;
+  const r = () => {
+    s ^= s << 13;
+    s >>>= 0;
+    s ^= s >>> 17;
+    s ^= s << 5;
+    s >>>= 0;
+    return s / 4294967296;
+  };
+  const pick = <T>(xs: readonly T[]): T => xs[Math.floor(r() * xs.length) % xs.length]!;
+  const kind = pick(['conf', 'prog', 'size', 'test'] as const);
+  const z = 1.96;
+  const de = (v: number, d = 2) => v.toFixed(d).replace('.', ',');
+  switch (kind) {
+    case 'conf': {
+      const n = pick([200, 400, 500, 800, 1000]);
+      const k = Math.round(n * pick([0.22, 0.31, 0.38, 0.45, 0.52, 0.6]));
+      const iv = waldInterval(k / n, n, z);
+      return {
+        kind,
+        de: `Bei einer Umfrage unter ${n} Personen antworten ${k} mit „Ja“. Bestimme das 95-%-Konfidenzintervall für den Anteil p (Näherung h ± 1,96·√(h(1 − h)/n)). Antwort: zwei Zahlen, z. B. 0,35; 0,42`,
+        en: `In a poll of ${n} people, ${k} answer “yes”. Find the 95 % confidence interval for the proportion p (approximation h ± 1.96·√(h(1 − h)/n)). Answer: two numbers, e.g. 0.35; 0.42`,
+        answer: [iv[0], iv[1]],
+        tol: 0.006,
+      };
+    }
+    case 'prog': {
+      const n = pick([120, 300, 600, 1200]);
+      const p = 1 / 6;
+      const mu = n * p;
+      const sd = Math.sqrt(n * p * (1 - p));
+      return {
+        kind,
+        de: `Ein fairer Würfel wird ${n}-mal geworfen. In welchem Bereich liegt die Anzahl der Sechsen mit 95 % Wahrscheinlichkeit (μ ± 1,96·σ)? Antwort: zwei Zahlen, z. B. 40; 60`,
+        en: `A fair die is thrown ${n} times. In which range does the number of sixes lie with 95 % probability (μ ± 1.96·σ)? Answer: two numbers, e.g. 40; 60`,
+        answer: [mu - z * sd, mu + z * sd],
+        tol: 1.01,
+      };
+    }
+    case 'size': {
+      const eps = pick([0.02, 0.03, 0.04, 0.05]);
+      return {
+        kind,
+        de: `Wie viele Personen muss man mindestens befragen, damit das 95-%-Konfidenzintervall höchstens ± ${de(eps * 100, 0)} Prozentpunkte breit ist (ohne Vorwissen, p = 0,5)? Antwort: eine Zahl`,
+        en: `How many people must be asked at least so that the 95 % confidence interval is at most ± ${(eps * 100).toFixed(0)} percentage points wide (no prior knowledge, p = 0.5)? Answer: one number`,
+        answer: [requiredN(eps, z)],
+        tol: 3,
+      };
+    }
+    default: {
+      const n = pick([50, 100, 200]);
+      const p0 = pick([0.2, 0.3, 0.5]);
+      const reg = rejectionRegion(n, p0, 0.05, 'right');
+      return {
+        kind: 'test',
+        de: `Ein Hersteller gibt an, dass höchstens ${de(p0 * 100, 0)} % seiner Teile fehlerhaft sind (H₀: p ≤ ${de(p0, 1)}). Man prüft ${n} Teile, α = 5 %. Ab wie vielen fehlerhaften Teilen wird H₀ verworfen? Antwort: eine Zahl`,
+        en: `A manufacturer claims that at most ${(p0 * 100).toFixed(0)} % of its parts are faulty (H₀: p ≤ ${p0.toFixed(1)}). ${n} parts are checked, α = 5 %. From how many faulty parts is H₀ rejected? Answer: one number`,
+        answer: [reg.hi],
+        tol: 0,
+      };
+    }
+  }
+}
+
+/** Zahlen aus einer Eingabe wie „0,35; 0,42“ oder „40 – 60“ lesen. */
+export function parseNumbers(text: string): number[] {
+  return (text.match(/-?\d+(?:[.,]\d+)?/g) ?? []).map((t) => Number(t.replace(',', '.')));
+}
+
+/** Antwort prüfen: gleiche Anzahl Werte, jeder höchstens tol daneben. */
+export function checkExercise(ex: Exercise, text: string): { ok: boolean; got: number[] } {
+  const got = parseNumbers(text);
+  if (got.length !== ex.answer.length) return { ok: false, got };
+  const sorted = ex.answer.length === 2 ? [...got].sort((a, b) => a - b) : got;
+  const ok = ex.answer.every((a, i) => Math.abs(a - sorted[i]!) <= ex.tol + 1e-9);
+  return { ok, got: sorted };
+}
