@@ -2535,6 +2535,7 @@ export const hessenGymnasiumPhysik: StateCurriculum = {
               code: 'Q4.6.2',
               title: L('Kosmologie', 'Cosmology'),
               summary: L('Galaxien, Rotverschiebung und Urknall.', 'Galaxies, redshift and Big Bang.'),
+              simulations: ['hubble'],
             },
             {
               code: 'Q4.6.3',
@@ -2543,6 +2544,7 @@ export const hessenGymnasiumPhysik: StateCurriculum = {
                 'Größe und Alter, Hintergrundstrahlung, dunkle Materie und Energie.',
                 'Size and age, background radiation, dark matter and energy.',
               ),
+              simulations: ['hubble'],
             },
             {
               code: 'Q4.6.4',

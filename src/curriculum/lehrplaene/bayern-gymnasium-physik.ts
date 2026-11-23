@@ -745,6 +745,7 @@ export const bayernGymnasiumPhysik: StateCurriculum = {
             "Aufbau und Masse der Milchstraße, Dunkle Materie, Entfernung von Galaxien, Hubble-Beziehung und Urknallmodell.",
             "Structure and mass of the Milky Way, dark matter, distances of galaxies, the Hubble relation and the Big Bang model.",
           ),
+          simulations: ['hubble'],
         },
         {
           code: "E1",

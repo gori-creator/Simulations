@@ -471,6 +471,7 @@ const QP_UNITS: CurriculumUnit[] = [
         code: 'GF-W.20',
         title: L('Kosmologie', 'Cosmology'),
         summary: L('Struktur und Entwicklung des Universums, Urknall und Hintergrundstrahlung.', 'Structure and evolution of the universe, the Big Bang and background radiation.'),
+        simulations: ['hubble'],
       },
       {
         code: 'GF-W.21',
@@ -707,6 +708,7 @@ const QP_UNITS: CurriculumUnit[] = [
         code: 'LF-W.18',
         title: L('Kosmologie', 'Cosmology'),
         summary: L('Struktur und Entwicklung des Universums, Urknall und Hintergrundstrahlung.', 'Structure and evolution of the universe, the Big Bang and background radiation.'),
+        simulations: ['hubble'],
       },
       {
         code: 'LF-W.19',
