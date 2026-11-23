@@ -41,6 +41,7 @@ Fotos oder gerenderte Bilder dürfen angefordert werden, wo sie die Simulation d
 
 - Eigener Zweig je Simulation von `main`: `physik/luecken-<id>`. **Ein Pull Request pro Simulation** nach `main`.
 - Vor jedem Pull Request: `main` einmischen, `npm run lehrplan:luecken` erneut, `npm run verify` grün (0 Fehler/Warnungen/Hinweise, alle Tests, Build), Bildtests in GitHub grün.
+- Neue Simulationen haben noch keine Referenzbilder („Referenzbild fehlt“). Deshalb in die Commit-Nachricht des Simulations-Commits `[bilder erneuern]` schreiben; dann erzeugt die Aktion „Bildtests“ die Bilder beim Push selbst (`docs/BILDTESTS.md`, Weg 1).
 - **Nie selbst mergen.** Gemergt wird nur, wenn die Person ausdrücklich „merge“ schreibt.
 - Nur die eigenen Dateien ändern (Physik). Gemeinsame Dateien (`docs/BILDER.md`, `docs/LEHRPLAN-LUECKEN.md`, `src/sim-core/`, `src/i18n/ui.ts`, `tests/curriculum.test.ts`) nur klein und gezielt ändern; `docs/LEHRPLAN-LUECKEN.md` nie von Hand, immer neu erzeugen (bei Konflikten: `main` einmischen, neu erzeugen).
 - In `docs/SIMULATIONEN-PLAN.md` (Teil A) hinter der fertigen Simulation „✅ fertig (PR …)“ ergänzen.

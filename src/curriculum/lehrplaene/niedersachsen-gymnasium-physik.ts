@@ -37,6 +37,7 @@ const DJ_5_6: CurriculumUnit[] = [
       'Magnete ziehen manche Stoffe an, haben Nord- und Südpol, die sich nicht trennen lassen; Erde als Magnet, Kompass und das Modell der Elementarmagnete.',
       'Magnets attract some materials and have north and south poles that cannot be separated; the Earth as a magnet, the compass and the model of elementary magnets.',
     ),
+    simulations: ['magnete'],
   },
   {
     code: '2',
@@ -84,7 +85,7 @@ const DJ_7_8: CurriculumUnit[] = [
       'Geradlinige Bewegungen in t-s- und t-v-Diagrammen, Trägheit und Masse, Kraft als Ursache von Bewegungsänderung und Verformung, hookesches Gesetz, Gewichtskraft sowie Kräfte als Pfeile addieren.',
       'Straight-line motion in t–s and t–v graphs, inertia and mass, force as the cause of changes in motion and deformation, Hooke’s law, weight and adding forces as arrows.',
     ),
-    simulations: ['bewegungsdiagramme', 'hookesches-gesetz', 'kraefteaddition'],
+    simulations: ['bewegungsdiagramme', 'hookesches-gesetz', 'kraefteaddition', 'messunsicherheit'],
   },
 ];
 
@@ -187,6 +188,7 @@ const EF_UNITS: CurriculumUnit[] = [
           'Schallgeschwindigkeit, Ton, Klang und Geräusch, Frequenz und Amplitude, Schalldruckpegel, Intervalle und Klangfarbe.',
           'Speed of sound, tone, sound and noise, frequency and amplitude, sound pressure level, intervals and timbre.',
         ),
+        simulations: ['schall'],
       },
       {
         code: 'EF-2.2',
@@ -253,7 +255,7 @@ const Q_UNITS: CurriculumUnit[] = [
           'Kraft auf stromdurchflossene Leiter, Flussdichte, Elektronen unter Lorentzkraft, im Querfeld und im Wien-Filter; nur eA: e/m mit dem Fadenstrahlrohr.',
           'Force on current-carrying wires, flux density, electrons under the Lorentz force, in a transverse field and in a Wien filter; higher level only: e/m with the fine-beam tube.',
         ),
-        simulations: ['lorentzkraft'],
+        simulations: ['lorentzkraft', 'magnetfeld-spule'],
       },
       {
         code: 'Q-1.4',

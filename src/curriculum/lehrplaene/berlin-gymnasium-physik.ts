@@ -104,7 +104,7 @@ const KS_9_10_UNITS: CurriculumUnit[] = [
       'Bezugssystem, Momentan- und Durchschnittsgeschwindigkeit, Beschleunigung, Bewegungsgesetze mit s(t)- und v(t)-Diagrammen, freier Fall.',
       'Frames of reference, instantaneous and average speed, acceleration, laws of motion with s(t) and v(t) graphs, free fall.',
     ),
-    simulations: ['bewegungsdiagramme', 'freier-fall'],
+    simulations: ['bewegungsdiagramme', 'freier-fall', 'messunsicherheit'],
   },
   {
     code: '3.8',
@@ -122,7 +122,7 @@ const KS_9_10_UNITS: CurriculumUnit[] = [
       'Dauer- und Elektromagnete, magnetische Feldlinien, Kräfte auf stromführende Leiter, Elektromotor, Induktionsgesetz (qualitativ), Generator und Transformator.',
       'Permanent magnets and electromagnets, magnetic field lines, forces on current-carrying wires, the electric motor, the law of induction (qualitative), generator and transformer.',
     ),
-    simulations: ['induktion', 'energieversorgung'],
+    simulations: ['induktion', 'magnetfeld-spule', 'energieversorgung'],
   },
   {
     code: '3.10',
@@ -149,7 +149,7 @@ const KS_9_10_UNITS: CurriculumUnit[] = [
       'Kenngrößen harmonischer Schwingungen, Fadenpendel und Federschwinger, Dämpfung und Resonanz, Kenngrößen mechanischer Wellen, Reflexion, Brechung, Beugung und Interferenz.',
       'Parameters of harmonic oscillations, the simple pendulum and the spring oscillator, damping and resonance, parameters of mechanical waves, reflection, refraction, diffraction and interference.',
     ),
-    simulations: ['fadenpendel', 'federpendel', 'resonanz', 'wellen-ausbreitung', 'interferenz'],
+    simulations: ['fadenpendel', 'federpendel', 'resonanz', 'wellen-ausbreitung', 'interferenz', 'schall'],
   },
   {
     code: '3.13',
@@ -171,7 +171,7 @@ const Q12_UNITS: CurriculumUnit[] = [
       'Gravitationsgesetz und Gravitationsfeld mit Feldlinienbildern, Keplersche Gesetze und Satellitenbahnen, elektrisches Feld mit Kondensator und Kapazität, Magnetfeld von Spulen; Messunsicherheiten.',
       'The law of gravitation and gravitational fields with field line patterns, Kepler’s laws and satellite orbits, the electric field with capacitor and capacitance, the magnetic field of coils; measurement uncertainty.',
     ),
-    simulations: ['planetenbahnen', 'feldlinien', 'kondensator'],
+    simulations: ['planetenbahnen', 'feldlinien', 'kondensator', 'magnetfeld-spule'],
   },
   {
     code: '3.2.2',

@@ -46,6 +46,7 @@ export const bayernGymnasiumPhysik: StateCurriculum = {
                 "Eigenschaften von Dauermagneten, Elementarmagnete und Erdmagnetfeld; dazu die Dichte als Stoffeigenschaft, bestimmt im eigenen Experiment.",
                 "Properties of permanent magnets, the model of elementary magnets and the Earth’s magnetic field; plus density as a property of a material, measured in an own experiment.",
               ),
+              simulations: ['magnete'],
             },
             {
               code: "1.2",
@@ -268,7 +269,7 @@ export const bayernGymnasiumPhysik: StateCurriculum = {
             "Magnetfelder mit Feldlinien beschreiben, Kraft auf stromdurchflossene Leiter und Lorentzkraft, Elektromotor, Induktion, Generator und idealer Transformator.",
             "Describing magnetic fields with field lines, the force on current-carrying conductors and the Lorentz force, electric motors, induction, generators and the ideal transformer.",
           ),
-          simulations: ["induktion", "lorentzkraft"],
+          simulations: ["induktion", "lorentzkraft", "magnetfeld-spule"],
         },
         {
           code: "2",
@@ -292,7 +293,7 @@ export const bayernGymnasiumPhysik: StateCurriculum = {
             "Zeit-Ort- und Zeit-Geschwindigkeit-Diagramme, gleichförmige und gleichmäßig beschleunigte Bewegung, freier Fall sowie der waagrechte Wurf in Komponenten.",
             "Time–position and time–velocity graphs, uniform and uniformly accelerated motion, free fall and the horizontal projectile described in components.",
           ),
-          simulations: ["bewegungsdiagramme", "freier-fall", "schiefer-wurf"],
+          simulations: ["bewegungsdiagramme", "freier-fall", "schiefer-wurf", "messunsicherheit"],
         },
         {
           code: "4",
@@ -393,6 +394,7 @@ export const bayernGymnasiumPhysik: StateCurriculum = {
                 "Einsteins Postulate, Relativität der Gleichzeitigkeit, Zeitdilatation und Längenkontraktion sowie Wissenschaft im gesellschaftlichen Spannungsfeld.",
                 "Einstein’s postulates, relativity of simultaneity, time dilation and length contraction, and science under social and political pressure.",
               ),
+              simulations: ["zeitdilatation"],
             },
             {
               code: "3.3",
@@ -455,7 +457,7 @@ export const bayernGymnasiumPhysik: StateCurriculum = {
                 "Wahlthemen wie Physik auf dem Jahrmarkt, Akustik und Resonanz, Licht in der Technik oder Computermodelle für Würfe mit Luftwiderstand und Planetenbahnen.",
                 "Optional topics such as physics at the fair, acoustics and resonance, light in technology, or computer models of throws with air resistance and planetary orbits.",
               ),
-              simulations: ["schiefer-wurf", "planetenbahnen", "resonanz"],
+              simulations: ["schiefer-wurf", "planetenbahnen", "resonanz", "schall"],
             },
           ],
         },
@@ -596,6 +598,7 @@ export const bayernGymnasiumPhysik: StateCurriculum = {
             "lorentzkraft",
             "resonanz",
             "doppelspalt",
+            "messunsicherheit",
           ],
         },
       ],
@@ -736,6 +739,7 @@ export const bayernGymnasiumPhysik: StateCurriculum = {
             "Parallaxe, Helligkeit und Leuchtkraft, Spektralklassen, Hertzsprung-Russell-Diagramm und Sternentwicklung, Doppelsterne, Gravitationswellen und Exoplaneten.",
             "Parallax, brightness and luminosity, spectral classes, the Hertzsprung–Russell diagram and stellar evolution, binary stars, gravitational waves and exoplanets.",
           ),
+          simulations: ['hr-diagramm'],
         },
         {
           code: "A5",
@@ -747,6 +751,7 @@ export const bayernGymnasiumPhysik: StateCurriculum = {
             "Aufbau und Masse der Milchstraße, Dunkle Materie, Entfernung von Galaxien, Hubble-Beziehung und Urknallmodell.",
             "Structure and mass of the Milky Way, dark matter, distances of galaxies, the Hubble relation and the Big Bang model.",
           ),
+          simulations: ['hubble'],
         },
         {
           code: "E1",
@@ -842,7 +847,7 @@ export const bayernGymnasiumPhysik: StateCurriculum = {
             "Pflichtexperimente mit Fehlerbetrachtung, etwa Polarisation, Elektronenbeugung, Gegenfeldmethode zum Photoeffekt, Spektrometerbau und Absorption radioaktiver Strahlung.",
             "Compulsory experiments with uncertainty analysis, e.g. polarisation, electron diffraction, the retarding-field method for the photoelectric effect, building a spectrometer and absorption of radiation.",
           ),
-          simulations: ["elektronenbeugung", "photoeffekt", "linienspektren"],
+          simulations: ["elektronenbeugung", "photoeffekt", "linienspektren", "messunsicherheit"],
         },
       ],
     },

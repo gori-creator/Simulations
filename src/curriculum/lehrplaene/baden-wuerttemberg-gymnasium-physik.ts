@@ -37,6 +37,7 @@ export const badenWuerttembergGymnasiumPhysik: StateCurriculum = {
             "Beobachtung und Erklärung unterscheiden, physikalische Aussagen mit Experimenten überprüfen, Modelle nutzen und das SI-Einheitensystem kennen.",
             "Distinguishing observation from explanation, testing physical statements with experiments, using models and knowing the SI system of units.",
           ),
+          simulations: ['messunsicherheit'],
         },
         {
           code: "3.1.2",
@@ -48,6 +49,7 @@ export const badenWuerttembergGymnasiumPhysik: StateCurriculum = {
             "Schall erzeugen, ausbreiten und hören; Lautstärke und Tonhöhe mit Amplitude und Frequenz einer Schwingung verbinden und Hörschäden durch Lärm bewerten.",
             "Producing, transmitting and hearing sound; linking loudness and pitch to amplitude and frequency of an oscillation, and judging the risk of hearing damage from noise.",
           ),
+          simulations: ['schall'],
         },
         {
           code: "3.1.3",
@@ -106,6 +108,7 @@ export const badenWuerttembergGymnasiumPhysik: StateCurriculum = {
             "Magnete, Pole und Magnetfelder experimentell untersuchen und mit Feldlinien von Stab- und Hufeisenmagnet beschreiben, einschließlich Erdmagnetfeld.",
             "Investigating magnets, poles and magnetic fields experimentally and describing them with field lines of bar and horseshoe magnets, including the Earth’s magnetic field.",
           ),
+          simulations: ['magnete'],
         },
       ],
     },
@@ -127,6 +130,7 @@ export const badenWuerttembergGymnasiumPhysik: StateCurriculum = {
             "Beobachtung und Erklärung unterscheiden, physikalische Aussagen mit Experimenten überprüfen, Modelle nutzen und das SI-Einheitensystem kennen.",
             "Distinguishing observation from explanation, testing physical statements with experiments, using models and knowing the SI system of units.",
           ),
+          simulations: ['messunsicherheit'],
         },
         {
           code: "3.1.2",
@@ -138,6 +142,7 @@ export const badenWuerttembergGymnasiumPhysik: StateCurriculum = {
             "Schall erzeugen, ausbreiten und hören; Lautstärke und Tonhöhe mit Amplitude und Frequenz einer Schwingung verbinden und Hörschäden durch Lärm bewerten.",
             "Producing, transmitting and hearing sound; linking loudness and pitch to amplitude and frequency of an oscillation, and judging the risk of hearing damage from noise.",
           ),
+          simulations: ['schall'],
         },
         {
           code: "3.1.3",
@@ -196,6 +201,7 @@ export const badenWuerttembergGymnasiumPhysik: StateCurriculum = {
             "Magnete, Pole und Magnetfelder experimentell untersuchen und mit Feldlinien von Stab- und Hufeisenmagnet beschreiben, einschließlich Erdmagnetfeld.",
             "Investigating magnets, poles and magnetic fields experimentally and describing them with field lines of bar and horseshoe magnets, including the Earth’s magnetic field.",
           ),
+          simulations: ['magnete'],
         },
       ],
     },
@@ -217,6 +223,7 @@ export const badenWuerttembergGymnasiumPhysik: StateCurriculum = {
             "Beobachtung und Erklärung unterscheiden, Aussagen experimentell überprüfen, Modelle wie das Atommodell nutzen und die Bedeutung des SI-Systems erläutern.",
             "Distinguishing observation from explanation, testing statements experimentally, using models such as the atomic model and explaining the importance of the SI system.",
           ),
+          simulations: ['messunsicherheit'],
         },
         {
           code: "3.2.2",
@@ -255,7 +262,7 @@ export const badenWuerttembergGymnasiumPhysik: StateCurriculum = {
             "Widerstand und Kennlinien, Ersatzwiderstand in Reihen- und Parallelschaltung; Induktion qualitativ, Generator, Transformator und elektrische Energieversorgung.",
             "Resistance and characteristic curves, equivalent resistance in series and parallel; induction qualitatively, generator, transformer and electrical power supply.",
           ),
-          simulations: ["ohmsches-gesetz", "reihe-parallel", "energieversorgung"],
+          simulations: ["ohmsches-gesetz", "reihe-parallel", "magnetfeld-spule", "energieversorgung"],
         },
         {
           code: "3.2.6",
@@ -298,6 +305,7 @@ export const badenWuerttembergGymnasiumPhysik: StateCurriculum = {
             "Beobachtung und Erklärung unterscheiden, Aussagen experimentell überprüfen, Modelle wie das Atommodell nutzen und die Bedeutung des SI-Systems erläutern.",
             "Distinguishing observation from explanation, testing statements experimentally, using models such as the atomic model and explaining the importance of the SI system.",
           ),
+          simulations: ['messunsicherheit'],
         },
         {
           code: "3.2.2",
@@ -335,7 +343,7 @@ export const badenWuerttembergGymnasiumPhysik: StateCurriculum = {
             "Widerstand und Kennlinien, Ersatzwiderstand in Reihen- und Parallelschaltung; Induktion qualitativ, Generator, Transformator und elektrische Energieversorgung.",
             "Resistance and characteristic curves, equivalent resistance in series and parallel; induction qualitatively, generator, transformer and electrical power supply.",
           ),
-          simulations: ["induktion", "energieversorgung"],
+          simulations: ["induktion", "magnetfeld-spule", "energieversorgung"],
         },
         {
           code: "3.2.6",
@@ -437,6 +445,7 @@ export const badenWuerttembergGymnasiumPhysik: StateCurriculum = {
             "Überprüfbarkeit physikalischer Aussagen durch das Experiment, Modelle von Licht und Materie und die Bedeutung von Naturkonstanten wie der Planck’schen Konstanten.",
             "Testability of physical statements by experiment, models of light and matter and the importance of natural constants such as Planck’s constant.",
           ),
+          simulations: ['messunsicherheit'],
         },
         {
           code: "3.4.2",
@@ -530,6 +539,7 @@ export const badenWuerttembergGymnasiumPhysik: StateCurriculum = {
             "Überprüfbarkeit physikalischer Aussagen, Modelle von Licht, Materie und Kosmos und die Rolle von Naturkonstanten; dazu Astronomie als Beobachtungswissenschaft und astronomische Einheiten wie Lichtjahr und Parsec.",
             "Testability of physical statements, models of light, matter and the cosmos and the role of natural constants; plus astronomy as an observational science and astronomical units such as light year and parsec.",
           ),
+          simulations: ['messunsicherheit'],
         },
         {
           code: "3.5.2",
@@ -628,6 +638,7 @@ export const badenWuerttembergGymnasiumPhysik: StateCurriculum = {
             "Entwicklung des Universums vom Urknall an, Galaxien, Rotverschiebung und Hubble-Beziehung; Entstehung, Leben und Ende von Sternen sowie Methoden zum Nachweis und zur Untersuchung von Exoplaneten.",
             "Evolution of the universe from the Big Bang, galaxies, redshift and the Hubble relation; birth, life and death of stars, and methods for detecting and studying exoplanets.",
           ),
+          simulations: ['hubble', 'hr-diagramm'],
         },
         {
           code: "3.6.1",
@@ -639,6 +650,7 @@ export const badenWuerttembergGymnasiumPhysik: StateCurriculum = {
             "Überprüfbarkeit physikalischer Aussagen, Modelle von Licht und Materie und die Bedeutung von Naturkonstanten.",
             "Testability of physical statements, models of light and matter and the importance of natural constants.",
           ),
+          simulations: ['messunsicherheit'],
         },
         {
           code: "3.6.2",
@@ -667,7 +679,7 @@ export const badenWuerttembergGymnasiumPhysik: StateCurriculum = {
                 "Magnetfelder von Leiter und Spule, Kraft auf Leiter und Lorentzkraft, Hall-Effekt, Kreisbahnen geladener Teilchen quantitativ sowie gekreuzte Felder in Wien-Filter und Massenspektrograph.",
                 "Magnetic fields of wire and coil, force on a conductor and Lorentz force, Hall effect, quantitative circular paths of charged particles, and crossed fields in the Wien filter and mass spectrometer.",
               ),
-              simulations: ["lorentzkraft"],
+              simulations: ["lorentzkraft", "magnetfeld-spule"],
             },
             {
               code: "3.6.2.3",
@@ -738,6 +750,7 @@ export const badenWuerttembergGymnasiumPhysik: StateCurriculum = {
             "Ein Forschungsgebiet der Physik (z. B. Relativitätstheorie, Laser- oder Teilchenphysik, Astrophysik) vertieft erarbeiten und typische Methoden daran anwenden.",
             "Studying one field of physics research in depth (e.g. relativity, laser or particle physics, astrophysics) and applying its typical methods.",
           ),
+          simulations: ["zeitdilatation"],
         },
       ],
     },
@@ -759,6 +772,7 @@ export const badenWuerttembergGymnasiumPhysik: StateCurriculum = {
             "Überprüfbarkeit physikalischer Aussagen durch das Experiment, Modelle von Licht und Materie und die Bedeutung von Naturkonstanten wie der Planck’schen Konstanten.",
             "Testability of physical statements by experiment, models of light and matter and the importance of natural constants such as Planck’s constant.",
           ),
+          simulations: ['messunsicherheit'],
         },
         {
           code: "3.4.2",
@@ -851,6 +865,7 @@ export const badenWuerttembergGymnasiumPhysik: StateCurriculum = {
             "Überprüfbarkeit physikalischer Aussagen, Modelle von Licht, Materie und Kosmos und die Rolle von Naturkonstanten; dazu Astronomie als Beobachtungswissenschaft und astronomische Einheiten wie Lichtjahr und Parsec.",
             "Testability of physical statements, models of light, matter and the cosmos and the role of natural constants; plus astronomy as an observational science and astronomical units such as light year and parsec.",
           ),
+          simulations: ['messunsicherheit'],
         },
         {
           code: "3.5.2",
@@ -943,6 +958,7 @@ export const badenWuerttembergGymnasiumPhysik: StateCurriculum = {
             "Entwicklung des Universums vom Urknall an, Galaxien, Rotverschiebung und Hubble-Beziehung; Entstehung, Leben und Ende von Sternen sowie Methoden zum Nachweis und zur Untersuchung von Exoplaneten.",
             "Evolution of the universe from the Big Bang, galaxies, redshift and the Hubble relation; birth, life and death of stars, and methods for detecting and studying exoplanets.",
           ),
+          simulations: ['hubble', 'hr-diagramm'],
         },
         {
           code: "3.6.1",
@@ -954,6 +970,7 @@ export const badenWuerttembergGymnasiumPhysik: StateCurriculum = {
             "Überprüfbarkeit physikalischer Aussagen, Modelle von Licht und Materie und die Bedeutung von Naturkonstanten.",
             "Testability of physical statements, models of light and matter and the importance of natural constants.",
           ),
+          simulations: ['messunsicherheit'],
         },
         {
           code: "3.6.2",
@@ -981,7 +998,7 @@ export const badenWuerttembergGymnasiumPhysik: StateCurriculum = {
                 "Magnetfelder von Leiter und Spule, Kraft auf Leiter und Lorentzkraft, Hall-Effekt, Kreisbahnen geladener Teilchen quantitativ sowie gekreuzte Felder in Wien-Filter und Massenspektrograph.",
                 "Magnetic fields of wire and coil, force on a conductor and Lorentz force, Hall effect, quantitative circular paths of charged particles, and crossed fields in the Wien filter and mass spectrometer.",
               ),
-              simulations: ["lorentzkraft"],
+              simulations: ["lorentzkraft", "magnetfeld-spule"],
             },
             {
               code: "3.6.2.3",
@@ -1052,6 +1069,7 @@ export const badenWuerttembergGymnasiumPhysik: StateCurriculum = {
             "Ein Forschungsgebiet der Physik (z. B. Relativitätstheorie, Laser- oder Teilchenphysik, Astrophysik) vertieft erarbeiten und typische Methoden daran anwenden.",
             "Studying one field of physics research in depth (e.g. relativity, laser or particle physics, astrophysics) and applying its typical methods.",
           ),
+          simulations: ["zeitdilatation"],
         },
       ],
     },
