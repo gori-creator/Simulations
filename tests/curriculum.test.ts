@@ -179,6 +179,9 @@ describe('Länder-Lehrpläne', () => {
    * sie nach Wahl des Bundeslands bei keinem Jahrgang.
    */
   const NOT_IN_CURRICULUM: Record<string, Record<string, string>> = {
+    'rheinland-pfalz-gymnasium-physik': {
+      schall: 'Akustik erst als Wahlthema in 12/13; die Simulation ist für Klasse 5 bis 11 gedacht.',
+    },
     'bayern-gymnasium-mathematik': {
       'taylor-polynome': 'nicht im LehrplanPLUS (Hochschule)',
       'fourier-reihen': 'nicht im LehrplanPLUS (Hochschule)',
@@ -287,6 +290,7 @@ describe('Länder-Lehrpläne', () => {
       'fourier-reihen': 'nicht im Lehrplan (Hochschule)',
     },
     'saarland-gymnasium-physik': {
+      schall: 'Schall und Wellen erst in Klasse 12 (Mechanische Wellen); die Simulation ist für Klasse 5 bis 11 gedacht.',
       'schiefer-wurf': 'Einführungsphase nur mit senkrechtem Wurf; der waagerechte Wurf in der Hauptphase nur als qualitativer Vergleichsversuch (siehe docs/lehrplaene/saarland-gymnasium-physik.md)',
       'doppler-effekt': 'Doppler-Effekt nicht im Lehrplan',
     },
