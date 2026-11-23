@@ -262,7 +262,7 @@ export const badenWuerttembergGymnasiumPhysik: StateCurriculum = {
             "Widerstand und Kennlinien, Ersatzwiderstand in Reihen- und Parallelschaltung; Induktion qualitativ, Generator, Transformator und elektrische Energieversorgung.",
             "Resistance and characteristic curves, equivalent resistance in series and parallel; induction qualitatively, generator, transformer and electrical power supply.",
           ),
-          simulations: ["ohmsches-gesetz", "reihe-parallel", "magnetfeld-spule"],
+          simulations: ["ohmsches-gesetz", "reihe-parallel", "magnetfeld-spule", "energieversorgung"],
         },
         {
           code: "3.2.6",
@@ -274,6 +274,7 @@ export const badenWuerttembergGymnasiumPhysik: StateCurriculum = {
             "Erwärmungsenergie mit der spezifischen Wärmekapazität berechnen und den natürlichen und menschengemachten Treibhauseffekt, Kippelemente und Wege der Energieversorgung beurteilen.",
             "Calculating heating energy with specific heat capacity and evaluating the natural and man-made greenhouse effect, tipping elements and ways of supplying energy.",
           ),
+          simulations: ["energieversorgung"],
         },
         {
           code: "3.2.7",
@@ -342,7 +343,7 @@ export const badenWuerttembergGymnasiumPhysik: StateCurriculum = {
             "Widerstand und Kennlinien, Ersatzwiderstand in Reihen- und Parallelschaltung; Induktion qualitativ, Generator, Transformator und elektrische Energieversorgung.",
             "Resistance and characteristic curves, equivalent resistance in series and parallel; induction qualitatively, generator, transformer and electrical power supply.",
           ),
-          simulations: ["induktion", "magnetfeld-spule"],
+          simulations: ["induktion", "magnetfeld-spule", "energieversorgung"],
         },
         {
           code: "3.2.6",
@@ -354,6 +355,7 @@ export const badenWuerttembergGymnasiumPhysik: StateCurriculum = {
             "Erwärmungsenergie mit der spezifischen Wärmekapazität berechnen und den natürlichen und menschengemachten Treibhauseffekt, Kippelemente und Wege der Energieversorgung beurteilen.",
             "Calculating heating energy with specific heat capacity and evaluating the natural and man-made greenhouse effect, tipping elements and ways of supplying energy.",
           ),
+          simulations: ["energieversorgung"],
         },
         {
           code: "3.2.7",

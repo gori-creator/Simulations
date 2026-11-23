@@ -122,7 +122,7 @@ const KS_9_10_UNITS: CurriculumUnit[] = [
       'Dauer- und Elektromagnete, magnetische Feldlinien, Kräfte auf stromführende Leiter, Elektromotor, Induktionsgesetz (qualitativ), Generator und Transformator.',
       'Permanent magnets and electromagnets, magnetic field lines, forces on current-carrying wires, the electric motor, the law of induction (qualitative), generator and transformer.',
     ),
-    simulations: ['induktion', 'magnetfeld-spule'],
+    simulations: ['induktion', 'magnetfeld-spule', 'energieversorgung'],
   },
   {
     code: '3.10',
@@ -140,7 +140,7 @@ const KS_9_10_UNITS: CurriculumUnit[] = [
       'Potenzielle und kinetische Energie berechnen, Wärme und spezifische Wärmekapazität, Wirkungsgrad und Energieflussschemen.',
       'Calculating potential and kinetic energy, heat and specific heat capacity, efficiency and energy flow diagrams.',
     ),
-    simulations: ['energieerhaltung'],
+    simulations: ['energieerhaltung', 'energieversorgung'],
   },
   {
     code: '3.12',

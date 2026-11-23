@@ -135,13 +135,13 @@ const KS_10_UNITS: CurriculumUnit[] = [
     code: '1',
     title: L('Elektromagnetische Wechselwirkung', 'Electromagnetic interaction'),
     summary: L('Stromdurchflossene Leiter im Magnetfeld, elektromagnetische Induktion, Transformator.', 'Current-carrying conductors in a magnetic field, electromagnetic induction, the transformer.'),
-    simulations: ['lorentzkraft', 'induktion', 'magnetfeld-spule'],
+    simulations: ['lorentzkraft', 'induktion', 'magnetfeld-spule', 'energieversorgung'],
   },
   {
     code: '2',
     title: L('Nachhaltige Energieversorgung', 'Sustainable energy supply'),
     summary: L('Energieumwandlung und Energieerhaltung, Kraftwerke, Energiespeicherung und Energieentwertung.', 'Energy conversion and conservation, power stations, energy storage and dissipation.'),
-    simulations: ['energieerhaltung'],
+    simulations: ['energieerhaltung', 'energieversorgung'],
   },
   {
     code: '3',

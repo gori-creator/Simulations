@@ -63,7 +63,7 @@ const KS_7_9_UNITS: CurriculumUnit[] = [
       'Magnetische Grundphänomene und Elementarmagnete, Magnetfelder von Magneten, Erde und Spule, Elektromagnet und Elektromotor, Induktion, Generator und Transformator.',
       'Basic magnetic phenomena and elementary magnets, magnetic fields of magnets, the Earth and coils, the electromagnet and electric motor, induction, generator and transformer.',
     ),
-    simulations: ['induktion', 'magnetfeld-spule', 'magnete'],
+    simulations: ['induktion', 'magnetfeld-spule', 'magnete', 'energieversorgung'],
   },
   {
     code: '5',
@@ -94,7 +94,7 @@ const EP_UNITS: CurriculumUnit[] = [
       'Energieerhaltung und Energieentwertung mit den Hauptsätzen der Thermodynamik, Wärme und Arbeit, Wirkungsgrad von Wärmekraftmaschinen und Wärmepumpen, Verfahren der Energiegewinnung.',
       'Conservation and dissipation of energy with the laws of thermodynamics, heat and work, efficiency of heat engines and heat pumps, ways of generating energy.',
     ),
-    simulations: ['energieerhaltung', 'gasgesetze'],
+    simulations: ['energieerhaltung', 'gasgesetze', 'energieversorgung'],
   },
 ];
 

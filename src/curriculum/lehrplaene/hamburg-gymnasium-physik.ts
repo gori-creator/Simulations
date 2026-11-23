@@ -64,7 +64,7 @@ const T_1_2: CurriculumUnit = {
     'Elektrischer Widerstand und ohmsches Gesetz, Schaltpläne, Spannungen, Ströme und Leistung von Haushaltsgeräten, elektrische Energie, Generator und Transformator.',
     'Electrical resistance and Ohm’s law, circuit diagrams, voltage, current and power of household appliances, electrical energy, generator and transformer.',
   ),
-  simulations: ['einfacher-stromkreis', 'reihe-parallel', 'ohmsches-gesetz', 'induktion'],
+  simulations: ['einfacher-stromkreis', 'reihe-parallel', 'ohmsches-gesetz', 'induktion', 'energieversorgung'],
 };
 
 const T_3_1: CurriculumUnit = {
@@ -115,7 +115,7 @@ const KS_10_UNITS: CurriculumUnit[] = [
       'Magnetfelder von geradem Leiter und Spule, Feldlinienmodell und Feldkonzept, Elektromagnet, Relais und Elektromotor, Transport und Speicherung elektrischer Energie.',
       'Magnetic fields of a straight conductor and a coil, the field line model and field concept, electromagnet, relay and electric motor, transport and storage of electrical energy.',
     ),
-    simulations: ['magnetfeld-spule'],
+    simulations: ['magnetfeld-spule', 'energieversorgung'],
   },
   {
     code: '2.3',

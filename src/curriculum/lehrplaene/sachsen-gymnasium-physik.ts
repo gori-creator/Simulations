@@ -105,7 +105,7 @@ const K7: CurriculumUnit[] = [
       'Energieformen und Energieumwandlung, potentielle Energie, Energieerhaltung in der Mechanik, Wirkungsgrad und Leistung.',
       'Forms of energy and energy conversion, potential energy, conservation of energy in mechanics, efficiency and power.',
     ),
-    simulations: ['energieerhaltung'],
+    simulations: ['energieerhaltung', 'energieversorgung'],
   },
   {
     code: 'W1',
@@ -149,7 +149,7 @@ const K8: CurriculumUnit[] = [
       'Widerstand und Widerstandsgesetz, Kennlinien verschiedener Bauelemente, ohmsches Gesetz sowie elektrische Energie und Leistung.',
       'Resistance and the resistance law, characteristic curves of components, Ohm’s law, and electrical energy and power.',
     ),
-    simulations: ['ohmsches-gesetz'],
+    simulations: ['ohmsches-gesetz', 'energieversorgung'],
   },
   {
     code: '4',
@@ -191,7 +191,7 @@ const K9: CurriculumUnit[] = [
       'Kraftwerke, elektromagnetische Induktion, Generator und Transformator, Energieübertragung mit Hochspannung sowie Atomkern, Radioaktivität und Kernreaktor.',
       'Power stations, electromagnetic induction, generator and transformer, high-voltage transmission, and the atomic nucleus, radioactivity and nuclear reactors.',
     ),
-    simulations: ['induktion', 'radioaktiver-zerfall'],
+    simulations: ['induktion', 'radioaktiver-zerfall', 'energieversorgung'],
   },
   {
     code: '3',
@@ -221,6 +221,7 @@ const K9: CurriculumUnit[] = [
     code: 'W2',
     title: L('Energie von Wind und Sonne (Wahlbereich)', 'Wind and solar energy (optional)'),
     summary: L('Windkraftanlagen, Solarthermie und Fotovoltaik.', 'Wind turbines, solar thermal energy and photovoltaics.'),
+    simulations: ['energieversorgung'],
   },
   {
     code: 'W3',
