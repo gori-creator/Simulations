@@ -158,7 +158,7 @@ const K8: CurriculumUnit[] = [
       'Widerstände in Reihe und parallel, Potentiometer und Messunsicherheiten, auch mit digitaler Messwerterfassung.',
       'Resistors in series and parallel, potentiometers and measurement uncertainty, also with digital data logging.',
     ),
-    simulations: ['reihe-parallel'],
+    simulations: ['reihe-parallel', 'messunsicherheit'],
   },
   {
     code: 'W1',
@@ -209,7 +209,7 @@ const K9: CurriculumUnit[] = [
       'Aufgaben aus Mechanik und Elektrik experimentell lösen, Beschleunigung und Weg im v(t)-Diagramm deuten.',
       'Solving mechanics and electricity problems experimentally, interpreting acceleration and distance in velocity–time graphs.',
     ),
-    simulations: ['bewegungsdiagramme'],
+    simulations: ['bewegungsdiagramme', 'messunsicherheit'],
   },
   {
     code: 'W1',
@@ -272,7 +272,7 @@ const K10: CurriculumUnit[] = [
     code: '5',
     title: L('Physikalisches Praktikum', 'Physics practical'),
     summary: L('Neues experimentell erarbeiten, etwa die Linsengleichung, und Experimentieranordnungen entwickeln.', 'Developing new knowledge experimentally, for example the lens equation, and designing experiments.'),
-    simulations: ['linsen'],
+    simulations: ['linsen', 'messunsicherheit'],
   },
   {
     code: 'W1',
@@ -316,6 +316,7 @@ const J11: CurriculumUnit[] = [
     code: 'GK-3',
     title: L('Magnetisches Feld (Grundkurs)', 'Magnetic field (basic course)'),
     summary: L('Feldlinienbilder, Flussdichte, Feld um Leiter und in Spulen.', 'Field-line patterns, flux density, the field around wires and inside coils.'),
+    simulations: ['magnetfeld-spule'],
   },
   {
     code: 'GK-4',
@@ -360,7 +361,7 @@ const J11: CurriculumUnit[] = [
     code: 'LK-3',
     title: L('Kinematik und Dynamik – Praktikum (Leistungskurs)', 'Kinematics and dynamics – practical (advanced course)'),
     summary: L('Bewegungen messen und klassifizieren, Diagramme, waagerechter Wurf und Messunsicherheiten.', 'Measuring and classifying motion, graphs, horizontal projection and measurement uncertainty.'),
-    simulations: ['bewegungsdiagramme', 'schiefer-wurf', 'freier-fall'],
+    simulations: ['bewegungsdiagramme', 'schiefer-wurf', 'freier-fall', 'messunsicherheit'],
   },
   {
     code: 'LK-4',
@@ -380,6 +381,7 @@ const J11: CurriculumUnit[] = [
     code: 'LK-6',
     title: L('Magnetisches Feld (Leistungskurs)', 'Magnetic field (advanced course)'),
     summary: L('Feldlinienbilder, Flussdichte, Feld um Leiter und in Spulen, Materie im Magnetfeld.', 'Field-line patterns, flux density, the field around wires and inside coils, matter in a magnetic field.'),
+    simulations: ['magnetfeld-spule'],
   },
   {
     code: 'LK-7',
@@ -423,6 +425,7 @@ const J12: CurriculumUnit[] = [
     code: 'GK-2',
     title: L('Praktikum Optik und Schwingungen (Grundkurs)', 'Practical: optics and oscillations (basic course)'),
     summary: L('Experimentelle Aufgaben zu Schwingungen und Optik und Analyse von Messunsicherheiten.', 'Experimental tasks on oscillations and optics and analysis of measurement uncertainty.'),
+    simulations: ['messunsicherheit'],
   },
   {
     code: 'GK-3',
@@ -473,6 +476,7 @@ const J12: CurriculumUnit[] = [
     code: 'LK-3',
     title: L('Praktikum Optik und Schwingungen (Leistungskurs)', 'Practical: optics and oscillations (advanced course)'),
     summary: L('Experimentelle Aufgaben und quantitative Analyse von Messunsicherheiten.', 'Experimental tasks and quantitative analysis of measurement uncertainty.'),
+    simulations: ['messunsicherheit'],
   },
   {
     code: 'LK-4',

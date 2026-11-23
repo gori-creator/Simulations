@@ -379,7 +379,7 @@ const SEK_I_UNITS: CurriculumUnit[] = [
           'Magnetfelder von Leiter und Spule, Elektromotor, Generator, Wechselspannung und Transformator.',
           'Magnetic fields of wires and coils, electric motors, generators, alternating voltage and transformers.',
         ),
-        simulations: ['induktion'],
+        simulations: ['induktion', 'magnetfeld-spule'],
       },
       {
         code: '11.2',
@@ -410,7 +410,7 @@ const EF_UNITS: CurriculumUnit[] = [
           'Gleichförmige und gleichmäßig beschleunigte Bewegung, freier Fall, waagerechter Wurf und vektorielle Größen.',
           'Uniform and uniformly accelerated motion, free fall, horizontal projection and vector quantities.',
         ),
-        simulations: ['bewegungsdiagramme', 'freier-fall', 'schiefer-wurf'],
+        simulations: ['bewegungsdiagramme', 'freier-fall', 'schiefer-wurf', 'messunsicherheit'],
       },
       {
         code: 'EF-1.2',

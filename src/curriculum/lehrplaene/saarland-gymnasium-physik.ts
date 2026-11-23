@@ -97,6 +97,7 @@ const KS_8_UNITS: CurriculumUnit[] = [
     code: '6',
     title: L('Wahlthema oder Praktikum', 'Elective topic or practical'),
     summary: L('Wahlthema oder Praktikum nach Wahl der Lehrkraft.', 'Elective topic or practical chosen by the teacher.'),
+    simulations: ['messunsicherheit'],
   },
 ];
 
@@ -124,6 +125,7 @@ const KS_9_UNITS: CurriculumUnit[] = [
     code: '3',
     title: L('Wahlthema oder Praktikum', 'Elective topic or practical'),
     summary: L('Vorschläge: Innenwiderstand, spezifischer Widerstand, Transistorschaltungen.', 'Suggestions: internal resistance, resistivity, transistor circuits.'),
+    simulations: ['messunsicherheit'],
   },
 ];
 
@@ -133,7 +135,7 @@ const KS_10_UNITS: CurriculumUnit[] = [
     code: '1',
     title: L('Elektromagnetische Wechselwirkung', 'Electromagnetic interaction'),
     summary: L('Stromdurchflossene Leiter im Magnetfeld, elektromagnetische Induktion, Transformator.', 'Current-carrying conductors in a magnetic field, electromagnetic induction, the transformer.'),
-    simulations: ['lorentzkraft', 'induktion'],
+    simulations: ['lorentzkraft', 'induktion', 'magnetfeld-spule'],
   },
   {
     code: '2',
@@ -157,7 +159,7 @@ const KS_10_UNITS: CurriculumUnit[] = [
     code: '5',
     title: L('Wahlthema oder Praktikum', 'Elective topic or practical'),
     summary: L('Vorschläge: Astronomie, Transistoren in der Informationstechnik, Energiebedarf von Autos.', 'Suggestions: astronomy, transistors in information technology, energy needs of cars.'),
-    simulations: ['planetenbahnen'],
+    simulations: ['planetenbahnen', 'messunsicherheit'],
   },
 ];
 
@@ -198,6 +200,7 @@ const HP_12_UNITS: CurriculumUnit[] = [
     code: '1.3',
     title: L('Magnetisches Feld', 'Magnetic field'),
     summary: L('Magnetfelder von Leitern und Spulen, magnetische Flussdichte.', 'Magnetic fields of conductors and coils, magnetic flux density.'),
+    simulations: ['magnetfeld-spule'],
   },
   {
     code: '1.4',

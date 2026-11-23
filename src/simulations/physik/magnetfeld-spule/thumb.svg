@@ -1,0 +1,19 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 320 180">
+  <g fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round">
+    <!-- Spule im Schnitt mit Feldlinien -->
+    <path d="M90 60H230M90 120H230" stroke-width="2" stroke-opacity="0.35" />
+    <path d="M70 90H250" stroke-width="3" />
+    <path d="M240 82L252 90L240 98" stroke-width="3" />
+    <path d="M70 76C40 76 22 60 22 40C22 18 70 14 160 14C250 14 298 18 298 40C298 60 280 76 250 76" stroke-width="2.5" stroke-opacity="0.7" />
+    <path d="M70 104C40 104 22 120 22 140C22 162 70 166 160 166C250 166 298 162 298 140C298 120 280 104 250 104" stroke-width="2.5" stroke-opacity="0.7" />
+    <path d="M70 66C52 66 44 56 44 46C44 34 90 32 160 32C230 32 276 34 276 46C276 56 268 66 250 66" stroke-width="2" stroke-opacity="0.45" />
+    <path d="M70 114C52 114 44 124 44 134C44 146 90 148 160 148C230 148 276 146 276 134C276 124 268 114 250 114" stroke-width="2" stroke-opacity="0.45" />
+  </g>
+  <g fill="currentColor">
+    <circle cx="100" cy="60" r="7" /><circle cx="128" cy="60" r="7" /><circle cx="156" cy="60" r="7" /><circle cx="184" cy="60" r="7" /><circle cx="212" cy="60" r="7" />
+  </g>
+  <g fill="none" stroke="currentColor" stroke-width="2.5">
+    <circle cx="100" cy="120" r="7" /><circle cx="128" cy="120" r="7" /><circle cx="156" cy="120" r="7" /><circle cx="184" cy="120" r="7" /><circle cx="212" cy="120" r="7" />
+    <path d="M96 116L104 124M104 116L96 124M124 116L132 124M132 116L124 124M152 116L160 124M160 116L152 124M180 116L188 124M188 116L180 124M208 116L216 124M216 116L208 124" stroke-width="2" />
+  </g>
+</svg>

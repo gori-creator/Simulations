@@ -84,7 +84,7 @@ const DJ_7_8: CurriculumUnit[] = [
       'Geradlinige Bewegungen in t-s- und t-v-Diagrammen, Trägheit und Masse, Kraft als Ursache von Bewegungsänderung und Verformung, hookesches Gesetz, Gewichtskraft sowie Kräfte als Pfeile addieren.',
       'Straight-line motion in t–s and t–v graphs, inertia and mass, force as the cause of changes in motion and deformation, Hooke’s law, weight and adding forces as arrows.',
     ),
-    simulations: ['bewegungsdiagramme', 'hookesches-gesetz', 'kraefteaddition'],
+    simulations: ['bewegungsdiagramme', 'hookesches-gesetz', 'kraefteaddition', 'messunsicherheit'],
   },
 ];
 
@@ -254,7 +254,7 @@ const Q_UNITS: CurriculumUnit[] = [
           'Kraft auf stromdurchflossene Leiter, Flussdichte, Elektronen unter Lorentzkraft, im Querfeld und im Wien-Filter; nur eA: e/m mit dem Fadenstrahlrohr.',
           'Force on current-carrying wires, flux density, electrons under the Lorentz force, in a transverse field and in a Wien filter; higher level only: e/m with the fine-beam tube.',
         ),
-        simulations: ['lorentzkraft'],
+        simulations: ['lorentzkraft', 'magnetfeld-spule'],
       },
       {
         code: 'Q-1.4',
