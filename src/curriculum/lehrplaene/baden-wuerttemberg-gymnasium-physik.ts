@@ -88,7 +88,7 @@ export const badenWuerttembergGymnasiumPhysik: StateCurriculum = {
             "Kräfte ändern Bewegungen und verformen Körper: Trägheit, Hooke’sches Gesetz, Masse und Gewichtskraft sowie Kräftegleichgewicht und resultierende Kraft in einer Richtung.",
             "Forces change motion and deform bodies: inertia, Hooke’s law, mass and weight, and balanced forces and resultant force along one line.",
           ),
-          simulations: ["hookesches-gesetz", "hebelgesetz"],
+          simulations: ["hookesches-gesetz", "hebelgesetz", "dichte-auftrieb"],
         },
         {
           code: "3.1.7",
@@ -178,7 +178,7 @@ export const badenWuerttembergGymnasiumPhysik: StateCurriculum = {
             "Kräfte ändern Bewegungen und verformen Körper: Trägheit, Hooke’sches Gesetz, Masse und Gewichtskraft sowie Kräftegleichgewicht und resultierende Kraft in einer Richtung.",
             "Forces change motion and deform bodies: inertia, Hooke’s law, mass and weight, and balanced forces and resultant force along one line.",
           ),
-          simulations: ["hookesches-gesetz", "hebelgesetz"],
+          simulations: ["hookesches-gesetz", "hebelgesetz", "dichte-auftrieb"],
         },
         {
           code: "3.1.7",
@@ -246,7 +246,7 @@ export const badenWuerttembergGymnasiumPhysik: StateCurriculum = {
             "Wärmeausdehnung und Dichte, Celsius- und Kelvinskala mit absolutem Nullpunkt und die drei Arten des Wärmetransports mit technischen Anwendungen.",
             "Thermal expansion and density, Celsius and Kelvin scales with absolute zero, and the three types of heat transfer with technical applications.",
           ),
-          simulations: ["gasgesetze", "teilchenmodell"],
+          simulations: ["gasgesetze", "teilchenmodell", "dichte-auftrieb"],
         },
         {
           code: "3.2.5",
@@ -325,7 +325,7 @@ export const badenWuerttembergGymnasiumPhysik: StateCurriculum = {
             "Wärmeausdehnung und Dichte, Celsius- und Kelvinskala mit absolutem Nullpunkt und die drei Arten des Wärmetransports mit technischen Anwendungen.",
             "Thermal expansion and density, Celsius and Kelvin scales with absolute zero, and the three types of heat transfer with technical applications.",
           ),
-          simulations: ["gasgesetze"],
+          simulations: ["gasgesetze", "dichte-auftrieb"],
         },
         {
           code: "3.2.5",

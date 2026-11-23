@@ -74,6 +74,7 @@ export const hessenGymnasiumPhysik: StateCurriculum = {
                 'Gegenstände nach messbaren Eigenschaften beschreiben und ordnen.',
                 'Describing and classifying objects by measurable properties.',
               ),
+              simulations: ['dichte-auftrieb'],
             },
             {
               code: '1.2',
@@ -349,6 +350,7 @@ export const hessenGymnasiumPhysik: StateCurriculum = {
                 'Gegenstände nach messbaren Eigenschaften beschreiben und ordnen.',
                 'Describing and classifying objects by measurable properties.',
               ),
+              simulations: ['dichte-auftrieb'],
             },
             {
               code: '1.2',
@@ -628,6 +630,7 @@ export const hessenGymnasiumPhysik: StateCurriculum = {
                 'Gegenstände nach messbaren Eigenschaften beschreiben und ordnen.',
                 'Describing and classifying objects by measurable properties.',
               ),
+              simulations: ['dichte-auftrieb'],
             },
             {
               code: '1.2',
@@ -1111,6 +1114,7 @@ export const hessenGymnasiumPhysik: StateCurriculum = {
                 'Schwimmen, Schweben und Sinken experimentell untersuchen und erklären.',
                 'Investigating and explaining floating, hovering and sinking.',
               ),
+              simulations: ['dichte-auftrieb'],
             },
             {
               code: '7.3',
@@ -1415,6 +1419,7 @@ export const hessenGymnasiumPhysik: StateCurriculum = {
                 'Schwimmen, Schweben und Sinken experimentell untersuchen und erklären.',
                 'Investigating and explaining floating, hovering and sinking.',
               ),
+              simulations: ['dichte-auftrieb'],
             },
             {
               code: '7.3',
