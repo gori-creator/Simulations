@@ -1567,6 +1567,24 @@ export const mathematik: Subject = {
             ),
           },
         ]),
+        topic('differenzialgleichungen', L('Differenzialgleichungen', 'Differential equations'), [
+          {
+            id: 'richtungsfeld',
+            status: 'ready',
+            slug: L('richtungsfeld-differenzialgleichungen', 'direction-field-differential-equations'),
+            title: L('Richtungsfeld und Differenzialgleichungen', 'Direction fields and differential equations'),
+            summary: L(
+              'Das Richtungsfeld fließt: Startpunkt ziehen und die Lösungskurve folgt. Euler, Heun und Runge-Kutta im Vergleich zur exakten Lösung – für Wachstum, Zerfall, logistisches Wachstum und Schwingungen.',
+              'The direction field flows: drag the start point and the solution curve follows. Euler, Heun and Runge–Kutta compared with the exact solution – for growth, decay, logistic growth and oscillations.',
+            ),
+            grades: [12, 13],
+            kmk: ['M-L3', 'M-L4', 'M-K3', 'M-K5'],
+            keywords: L(
+              ['Differenzialgleichung', 'Differentialgleichung', 'DGL', 'Richtungsfeld', 'Steigungsfeld', 'Anfangswertproblem', 'Lösungskurve', 'Euler-Verfahren', 'Heun-Verfahren', 'Runge-Kutta', 'Schrittweite', 'exponentielles Wachstum', 'beschränktes Wachstum', 'logistisches Wachstum', 'Abkühlung', 'Schwingung', 'Dämpfung', 'Phasenebene', 'Isokline', 'Trennung der Variablen'],
+              ['differential equation', 'ODE', 'direction field', 'slope field', 'initial value problem', 'solution curve', 'Euler method', 'Heun method', 'Runge–Kutta', 'step size', 'exponential growth', 'bounded growth', 'logistic growth', 'cooling', 'oscillation', 'damping', 'phase plane', 'isocline', 'separation of variables'],
+            ),
+          },
+        ]),
         topic('weiterfuehrend', L('Weiterführend (Hochschule)', 'Further topics (university)'), [
           {
             id: 'taylor-polynome',
