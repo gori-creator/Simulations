@@ -37,6 +37,7 @@ export const badenWuerttembergGymnasiumPhysik: StateCurriculum = {
             "Beobachtung und Erklärung unterscheiden, physikalische Aussagen mit Experimenten überprüfen, Modelle nutzen und das SI-Einheitensystem kennen.",
             "Distinguishing observation from explanation, testing physical statements with experiments, using models and knowing the SI system of units.",
           ),
+          simulations: ['messunsicherheit'],
         },
         {
           code: "3.1.2",
@@ -127,6 +128,7 @@ export const badenWuerttembergGymnasiumPhysik: StateCurriculum = {
             "Beobachtung und Erklärung unterscheiden, physikalische Aussagen mit Experimenten überprüfen, Modelle nutzen und das SI-Einheitensystem kennen.",
             "Distinguishing observation from explanation, testing physical statements with experiments, using models and knowing the SI system of units.",
           ),
+          simulations: ['messunsicherheit'],
         },
         {
           code: "3.1.2",
@@ -217,6 +219,7 @@ export const badenWuerttembergGymnasiumPhysik: StateCurriculum = {
             "Beobachtung und Erklärung unterscheiden, Aussagen experimentell überprüfen, Modelle wie das Atommodell nutzen und die Bedeutung des SI-Systems erläutern.",
             "Distinguishing observation from explanation, testing statements experimentally, using models such as the atomic model and explaining the importance of the SI system.",
           ),
+          simulations: ['messunsicherheit'],
         },
         {
           code: "3.2.2",
@@ -297,6 +300,7 @@ export const badenWuerttembergGymnasiumPhysik: StateCurriculum = {
             "Beobachtung und Erklärung unterscheiden, Aussagen experimentell überprüfen, Modelle wie das Atommodell nutzen und die Bedeutung des SI-Systems erläutern.",
             "Distinguishing observation from explanation, testing statements experimentally, using models such as the atomic model and explaining the importance of the SI system.",
           ),
+          simulations: ['messunsicherheit'],
         },
         {
           code: "3.2.2",
@@ -435,6 +439,7 @@ export const badenWuerttembergGymnasiumPhysik: StateCurriculum = {
             "Überprüfbarkeit physikalischer Aussagen durch das Experiment, Modelle von Licht und Materie und die Bedeutung von Naturkonstanten wie der Planck’schen Konstanten.",
             "Testability of physical statements by experiment, models of light and matter and the importance of natural constants such as Planck’s constant.",
           ),
+          simulations: ['messunsicherheit'],
         },
         {
           code: "3.4.2",
@@ -528,6 +533,7 @@ export const badenWuerttembergGymnasiumPhysik: StateCurriculum = {
             "Überprüfbarkeit physikalischer Aussagen, Modelle von Licht, Materie und Kosmos und die Rolle von Naturkonstanten; dazu Astronomie als Beobachtungswissenschaft und astronomische Einheiten wie Lichtjahr und Parsec.",
             "Testability of physical statements, models of light, matter and the cosmos and the role of natural constants; plus astronomy as an observational science and astronomical units such as light year and parsec.",
           ),
+          simulations: ['messunsicherheit'],
         },
         {
           code: "3.5.2",
@@ -626,6 +632,7 @@ export const badenWuerttembergGymnasiumPhysik: StateCurriculum = {
             "Entwicklung des Universums vom Urknall an, Galaxien, Rotverschiebung und Hubble-Beziehung; Entstehung, Leben und Ende von Sternen sowie Methoden zum Nachweis und zur Untersuchung von Exoplaneten.",
             "Evolution of the universe from the Big Bang, galaxies, redshift and the Hubble relation; birth, life and death of stars, and methods for detecting and studying exoplanets.",
           ),
+          simulations: ['hubble'],
         },
         {
           code: "3.6.1",
@@ -637,6 +644,7 @@ export const badenWuerttembergGymnasiumPhysik: StateCurriculum = {
             "Überprüfbarkeit physikalischer Aussagen, Modelle von Licht und Materie und die Bedeutung von Naturkonstanten.",
             "Testability of physical statements, models of light and matter and the importance of natural constants.",
           ),
+          simulations: ['messunsicherheit'],
         },
         {
           code: "3.6.2",
@@ -757,6 +765,7 @@ export const badenWuerttembergGymnasiumPhysik: StateCurriculum = {
             "Überprüfbarkeit physikalischer Aussagen durch das Experiment, Modelle von Licht und Materie und die Bedeutung von Naturkonstanten wie der Planck’schen Konstanten.",
             "Testability of physical statements by experiment, models of light and matter and the importance of natural constants such as Planck’s constant.",
           ),
+          simulations: ['messunsicherheit'],
         },
         {
           code: "3.4.2",
@@ -849,6 +858,7 @@ export const badenWuerttembergGymnasiumPhysik: StateCurriculum = {
             "Überprüfbarkeit physikalischer Aussagen, Modelle von Licht, Materie und Kosmos und die Rolle von Naturkonstanten; dazu Astronomie als Beobachtungswissenschaft und astronomische Einheiten wie Lichtjahr und Parsec.",
             "Testability of physical statements, models of light, matter and the cosmos and the role of natural constants; plus astronomy as an observational science and astronomical units such as light year and parsec.",
           ),
+          simulations: ['messunsicherheit'],
         },
         {
           code: "3.5.2",
@@ -941,6 +951,7 @@ export const badenWuerttembergGymnasiumPhysik: StateCurriculum = {
             "Entwicklung des Universums vom Urknall an, Galaxien, Rotverschiebung und Hubble-Beziehung; Entstehung, Leben und Ende von Sternen sowie Methoden zum Nachweis und zur Untersuchung von Exoplaneten.",
             "Evolution of the universe from the Big Bang, galaxies, redshift and the Hubble relation; birth, life and death of stars, and methods for detecting and studying exoplanets.",
           ),
+          simulations: ['hubble'],
         },
         {
           code: "3.6.1",
@@ -952,6 +963,7 @@ export const badenWuerttembergGymnasiumPhysik: StateCurriculum = {
             "Überprüfbarkeit physikalischer Aussagen, Modelle von Licht und Materie und die Bedeutung von Naturkonstanten.",
             "Testability of physical statements, models of light and matter and the importance of natural constants.",
           ),
+          simulations: ['messunsicherheit'],
         },
         {
           code: "3.6.2",

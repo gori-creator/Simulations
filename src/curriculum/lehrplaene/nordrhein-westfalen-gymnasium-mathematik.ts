@@ -382,6 +382,7 @@ const ZWEITE_STUFE_UNITS: CurriculumUnit[] = [
         code: '9.3',
         title: L('Gesetze und Regeln', 'Laws and rules'),
         summary: L('Potenzgesetze und Wurzelgesetze, Wurzel- und Potenzschreibweise.', 'Laws of exponents and of roots, root and power notation.'),
+        simulations: ['potenzgesetze'],
       },
       {
         code: '9.4',
@@ -418,7 +419,7 @@ const ZWEITE_STUFE_UNITS: CurriculumUnit[] = [
           'Anfangswert, Wachstumsfaktor und -rate, Verdopplungs- und Halbwertszeit, langfristige Entwicklung im Vergleich mit linearem Wachstum.',
           'Initial value, growth factor and rate, doubling time and half-life, long-term behaviour compared with linear growth.',
         ),
-        simulations: ['exponentielles-wachstum'],
+        simulations: ['exponentielles-wachstum', 'wachstumsmodelle'],
       },
       {
         code: '10.3',
@@ -656,7 +657,7 @@ const Q_UNITS: CurriculumUnit[] = [
           'Produkt- und Kettenregel, Extremwertprobleme mit Nebenbedingung, Steckbriefaufgaben und Funktionen mit Parametern (im LK als Funktionsscharen).',
           'Product and chain rules, optimisation with constraints, reconstructing functions from conditions and functions with parameters (families of functions in the advanced course).',
         ),
-        simulations: ['extremwertprobleme', 'funktionenscharen', 'kurvendiskussion'],
+        simulations: ['extremwertprobleme', 'funktionenscharen', 'kurvendiskussion', 'ableitungsregeln'],
       },
       {
         code: 'Q-A.4',
@@ -665,7 +666,7 @@ const Q_UNITS: CurriculumUnit[] = [
           'Produktsumme, orientierte Fläche, Bestands-, Integral- und Stammfunktion, bestimmtes Integral und Hauptsatz; nur LK: uneigentliche Integrale und Rotationsvolumen.',
           'Riemann sums, signed area, accumulation, integral and antiderivative functions, definite integral and the fundamental theorem; advanced course only: improper integrals and volumes of revolution.',
         ),
-        simulations: ['ober-untersummen', 'aenderungsrate', 'stammfunktion-grafisch', 'hauptsatz', 'rotationskoerper'],
+        simulations: ['ober-untersummen', 'aenderungsrate', 'stammfunktion-grafisch', 'hauptsatz', 'rotationskoerper', 'integrationsregeln'],
       },
     ],
   },
@@ -720,6 +721,7 @@ const Q_UNITS: CurriculumUnit[] = [
           'Ein algorithmisches Lösungsverfahren für bis zu drei Unbekannte, Lösungsmengen deuten.',
           'An algorithmic method for up to three unknowns, interpreting solution sets.',
         ),
+        simulations: ['gauss-verfahren'],
       },
     ],
   },
@@ -768,6 +770,7 @@ const Q_UNITS: CurriculumUnit[] = [
           'Nur LK: Prognoseintervall, Konfidenzintervall und nötiger Stichprobenumfang.',
           'Advanced course only: prediction interval, confidence interval and required sample size.',
         ),
+        simulations: ['konfidenzintervall'],
       },
       {
         code: 'Q-S.6',

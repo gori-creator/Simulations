@@ -290,7 +290,7 @@ export const bayernGymnasiumPhysik: StateCurriculum = {
             "Zeit-Ort- und Zeit-Geschwindigkeit-Diagramme, gleichförmige und gleichmäßig beschleunigte Bewegung, freier Fall sowie der waagrechte Wurf in Komponenten.",
             "Time–position and time–velocity graphs, uniform and uniformly accelerated motion, free fall and the horizontal projectile described in components.",
           ),
-          simulations: ["bewegungsdiagramme", "freier-fall", "schiefer-wurf"],
+          simulations: ["bewegungsdiagramme", "freier-fall", "schiefer-wurf", "messunsicherheit"],
         },
         {
           code: "4",
@@ -593,6 +593,7 @@ export const bayernGymnasiumPhysik: StateCurriculum = {
             "lorentzkraft",
             "resonanz",
             "doppelspalt",
+            "messunsicherheit",
           ],
         },
       ],
@@ -744,6 +745,7 @@ export const bayernGymnasiumPhysik: StateCurriculum = {
             "Aufbau und Masse der Milchstraße, Dunkle Materie, Entfernung von Galaxien, Hubble-Beziehung und Urknallmodell.",
             "Structure and mass of the Milky Way, dark matter, distances of galaxies, the Hubble relation and the Big Bang model.",
           ),
+          simulations: ['hubble'],
         },
         {
           code: "E1",
@@ -839,7 +841,7 @@ export const bayernGymnasiumPhysik: StateCurriculum = {
             "Pflichtexperimente mit Fehlerbetrachtung, etwa Polarisation, Elektronenbeugung, Gegenfeldmethode zum Photoeffekt, Spektrometerbau und Absorption radioaktiver Strahlung.",
             "Compulsory experiments with uncertainty analysis, e.g. polarisation, electron diffraction, the retarding-field method for the photoelectric effect, building a spectrometer and absorption of radiation.",
           ),
-          simulations: ["elektronenbeugung", "photoeffekt", "linienspektren"],
+          simulations: ["elektronenbeugung", "photoeffekt", "linienspektren", "messunsicherheit"],
         },
       ],
     },

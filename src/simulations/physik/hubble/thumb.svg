@@ -1,0 +1,23 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 320 180">
+  <g fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round">
+    <!-- Heimatgalaxie -->
+    <ellipse cx="44" cy="70" rx="20" ry="9" stroke-width="3" />
+    <circle cx="44" cy="70" r="4" fill="currentColor" stroke="none" />
+    <!-- Galaxien in wachsender Entfernung, Pfeile wachsen mit -->
+    <ellipse cx="112" cy="70" rx="13" ry="6" stroke-width="3" stroke-opacity="0.9" />
+    <path d="M128 70H148" stroke-width="3" />
+    <path d="M142 64L149 70L142 76" stroke-width="3" />
+    <ellipse cx="186" cy="70" rx="10" ry="5" stroke-width="3" stroke-opacity="0.75" />
+    <path d="M199 70H233" stroke-width="3" stroke-opacity="0.85" />
+    <path d="M227 64L234 70L227 76" stroke-width="3" stroke-opacity="0.85" />
+    <ellipse cx="258" cy="70" rx="7" ry="3.5" stroke-width="3" stroke-opacity="0.6" />
+    <path d="M268 70H310" stroke-width="3" stroke-opacity="0.7" />
+    <path d="M304 64L311 70L304 76" stroke-width="3" stroke-opacity="0.7" />
+    <!-- Spektren: Laborlinien und rotverschobene Linien -->
+    <rect x="20" y="118" width="280" height="16" rx="4" stroke-width="2.5" stroke-opacity="0.6" />
+    <rect x="20" y="148" width="280" height="16" rx="4" stroke-width="2.5" stroke-opacity="0.6" />
+    <path d="M70 118V134M120 118V134M200 118V134" stroke-width="4" />
+    <path d="M100 148V164M158 148V164M250 148V164" stroke-width="4" />
+    <path d="M70 134L100 148M120 134L158 148M200 134L250 148" stroke-width="1.6" stroke-opacity="0.55" stroke-dasharray="3 3" />
+  </g>
+</svg>

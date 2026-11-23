@@ -48,6 +48,7 @@ const SJ_6_UNITS: CurriculumUnit[] = [
       'Teilgebiete der Physik kennenlernen, Länge, Zeit, Volumen, Masse und Temperatur als Größen mit Einheiten, Längen und Zeiten messen.',
       'Getting to know the branches of physics, length, time, volume, mass and temperature as quantities with units, measuring lengths and times.',
     ),
+    simulations: ['messunsicherheit'],
   },
   {
     code: '2',
@@ -209,6 +210,7 @@ const SJ_10_UNITS: CurriculumUnit[] = [
       'Experimente selbst planen, durchführen und auswerten, mit Blick auf Messabweichungen und das Verallgemeinern zu Gesetzen.',
       'Planning, carrying out and evaluating experiments independently, with attention to measurement errors and generalising to laws.',
     ),
+    simulations: ['messunsicherheit'],
   },
 ];
 
@@ -331,6 +333,7 @@ const QPHASE_UNITS: CurriculumUnit[] = [
           'Eigene Experimente planen und auswerten, Messunsicherheiten abschätzen.',
           'Planning and evaluating experiments independently, estimating measurement uncertainties.',
         ),
+        simulations: ['messunsicherheit'],
       },
       {
         code: 'gA-4.2',
@@ -484,6 +487,7 @@ const QPHASE_UNITS: CurriculumUnit[] = [
           'Eigene Experimente planen und auswerten, Messunsicherheiten abschätzen.',
           'Planning and evaluating experiments independently, estimating measurement uncertainties.',
         ),
+        simulations: ['messunsicherheit'],
       },
       {
         code: 'eA-4.2',

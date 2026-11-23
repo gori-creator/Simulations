@@ -19,6 +19,29 @@ export const physik: Subject = {
   status: 'active',
   areas: [
     {
+      id: 'messen',
+      slug: L('messen', 'measurement'),
+      title: L('Messen und Auswerten', 'Measurement and analysis'),
+      description: L('Größen ablesen, Messreihen auswerten und Unsicherheit verstehen.', 'Read quantities, analyse measurements and understand uncertainty.'),
+      grades: [5, 13],
+      kmk: ['P-E', 'P-K'],
+      topics: [{
+        id: 'messmethoden',
+        title: L('Messmethoden', 'Measurement methods'),
+        grades: [5, 13],
+        simulations: [{
+          id: 'messunsicherheit',
+          status: 'ready',
+          slug: L('messunsicherheit', 'measurement-uncertainty'),
+          title: L('Messen und Messunsicherheit', 'Measurement and uncertainty'),
+          summary: L('Lies ein Lineal ab, verändere Messwerte und untersuche Mittelwert, Streuung, Fehlerbalken und Ausgleichsgeraden. Wiederholte Versuche zeigen, warum mehr Messungen nicht jeden Fehler beseitigen.', 'Read a ruler, edit measurements and explore means, scatter, error bars and best-fit lines. Repeated experiments show why more readings do not remove every error.'),
+          grades: [5, 13],
+          kmk: ['P-E', 'P-K', 'P-S'],
+          keywords: L(['Messen', 'Einheiten', 'Messunsicherheit', 'Messfehler', 'Mittelwert', 'Standardabweichung', 'Standardfehler', 'Ausgleichsgerade', 'Regression', 'Fehlerbalken', 'Auflösung', 'Praktikum'], ['measurement', 'units', 'uncertainty', 'mean', 'standard deviation', 'standard error', 'regression', 'error bars', 'resolution', 'practical']),
+        }],
+      }],
+    },
+    {
       id: 'mechanik',
       slug: L('mechanik', 'mechanics'),
       title: L('Mechanik', 'Mechanics'),
@@ -735,6 +758,29 @@ export const physik: Subject = {
               keywords: L(
                 ['Radioaktivität', 'radioaktiver Zerfall', 'Halbwertszeit', 'Zerfallsgesetz', 'Zerfallskonstante', 'Aktivität', 'Becquerel', 'Zählrohr', 'Geiger-Müller-Zählrohr', 'Zählrate', 'Alphazerfall', 'Betazerfall', 'Gammastrahlung', 'Mutterkern', 'Tochterkern', 'Zerfallsgleichung', 'Nuklid', 'C-14-Methode', 'Altersbestimmung', 'Zufall', 'Exponentialfunktion'],
                 ['radioactivity', 'radioactive decay', 'half-life', 'decay law', 'decay constant', 'activity', 'becquerel', 'Geiger counter', 'count rate', 'alpha decay', 'beta decay', 'gamma radiation', 'parent nucleus', 'daughter nucleus', 'decay equation', 'nuclide', 'radiocarbon dating', 'chance', 'exponential function'],
+              ),
+            },
+          ],
+        },
+        {
+          id: 'astrophysik',
+          title: L('Astrophysik und Kosmologie', 'Astrophysics and cosmology'),
+          grades: [11, 13],
+          simulations: [
+            {
+              id: 'hubble',
+              status: 'ready',
+              slug: L('expandierendes-universum-hubble', 'expanding-universe-hubble'),
+              title: L('Expandierendes Universum', 'Expanding universe'),
+              summary: L(
+                'Je weiter eine Galaxie entfernt ist, desto schneller flieht sie und desto röter ist ihr Licht. Rückwärts gerechnet führt das zum Urknall vor etwa 14 Milliarden Jahren.',
+                'The farther away a galaxy is, the faster it recedes and the redder its light. Run backwards, this leads to the Big Bang about 14 billion years ago.',
+              ),
+              grades: [11, 13],
+              kmk: ['P-S', 'P-E', 'P-BK-Mathematisieren', 'P-BK-Energie'],
+              keywords: L(
+                ['Hubble', 'Hubble-Konstante', 'Hubble-Gesetz', 'Hubble-Diagramm', 'Rotverschiebung', 'Spektrallinie', 'Fluchtgeschwindigkeit', 'Galaxie', 'Expansion', 'Urknall', 'Weltalter', 'Hubble-Zeit', 'Skalenfaktor', 'Friedmann', 'Dunkle Energie', 'Dunkle Materie', 'Hintergrundstrahlung', 'Kosmologie', 'Standardkerze', 'Supernova', 'Cepheiden', 'Parsec', 'Lichtjahr'],
+                ['Hubble', 'Hubble constant', 'Hubble’s law', 'Hubble diagram', 'redshift', 'spectral line', 'recession velocity', 'galaxy', 'expansion', 'Big Bang', 'age of the universe', 'Hubble time', 'scale factor', 'Friedmann', 'dark energy', 'dark matter', 'background radiation', 'cosmology', 'standard candle', 'supernova', 'Cepheids', 'parsec', 'light year'],
               ),
             },
           ],

@@ -97,6 +97,7 @@ const KS_8_UNITS: CurriculumUnit[] = [
     code: '6',
     title: L('Wahlthema oder Praktikum', 'Elective topic or practical'),
     summary: L('Wahlthema oder Praktikum nach Wahl der Lehrkraft.', 'Elective topic or practical chosen by the teacher.'),
+    simulations: ['messunsicherheit'],
   },
 ];
 
@@ -124,6 +125,7 @@ const KS_9_UNITS: CurriculumUnit[] = [
     code: '3',
     title: L('Wahlthema oder Praktikum', 'Elective topic or practical'),
     summary: L('Vorschläge: Innenwiderstand, spezifischer Widerstand, Transistorschaltungen.', 'Suggestions: internal resistance, resistivity, transistor circuits.'),
+    simulations: ['messunsicherheit'],
   },
 ];
 
@@ -157,7 +159,7 @@ const KS_10_UNITS: CurriculumUnit[] = [
     code: '5',
     title: L('Wahlthema oder Praktikum', 'Elective topic or practical'),
     summary: L('Vorschläge: Astronomie, Transistoren in der Informationstechnik, Energiebedarf von Autos.', 'Suggestions: astronomy, transistors in information technology, energy needs of cars.'),
-    simulations: ['planetenbahnen'],
+    simulations: ['planetenbahnen', 'messunsicherheit'],
   },
 ];
 

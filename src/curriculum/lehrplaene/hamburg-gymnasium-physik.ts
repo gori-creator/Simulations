@@ -54,7 +54,7 @@ const T_2_1: CurriculumUnit = {
     'Geschwindigkeit aus Tempo und Richtung, gleichförmige Bewegung, t-s- und t-v-Diagramme, Zusatzgeschwindigkeit und Kraft, Verformung und Kraftmessung, Trägheit und Wechselwirkung, einfache Maschinen, Energiebilanzen.',
     'Velocity from speed and direction, uniform motion, distance-time and velocity-time graphs, change of velocity and force, deformation and measuring force, inertia and interaction, simple machines, energy balances.',
   ),
-  simulations: ['bewegungsdiagramme', 'hookesches-gesetz', 'hebelgesetz', 'energieerhaltung', 'kraefteaddition', 'schiefe-ebene'],
+  simulations: ['bewegungsdiagramme', 'hookesches-gesetz', 'hebelgesetz', 'energieerhaltung', 'kraefteaddition', 'schiefe-ebene', 'messunsicherheit'],
 };
 
 const T_1_2: CurriculumUnit = {
@@ -94,7 +94,7 @@ const T_2_2: CurriculumUnit = {
     'Kraftstoß und Beschleunigung, gleichmäßig beschleunigte Bewegung und freier Fall, Reibung, Bewegungsdiagramme mit Messwerterfassung, kinetische und potenzielle Energie, Energieerhaltung.',
     'Impulse and acceleration, uniformly accelerated motion and free fall, friction, motion graphs from measured data, kinetic and potential energy, conservation of energy.',
   ),
-  simulations: ['bewegungsdiagramme', 'freier-fall', 'energieerhaltung'],
+  simulations: ['bewegungsdiagramme', 'freier-fall', 'energieerhaltung', 'messunsicherheit'],
 };
 
 /** Jahrgangsstufe 7: Themen für 7/8. */
@@ -218,6 +218,7 @@ const S_UNITS: CurriculumUnit[] = [
       'Himmelsbeobachtung und Instrumente, Raumzeit, Sternentwicklung und schwarze Löcher, Gravitationswellen, Skalen im Universum, Strahlungsbilanzen von Planeten.',
       'Observing the sky and instruments, spacetime, stellar evolution and black holes, gravitational waves, scales in the universe, radiation budgets of planets.',
     ),
+    simulations: ['hubble'],
   },
 ];
 
