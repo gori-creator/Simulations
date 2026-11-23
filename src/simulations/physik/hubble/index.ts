@@ -1,4 +1,4 @@
-import { defineSimulation, drawCard, ease, offscreenCanvas, Plot, roundRect, Surface, TapTarget, Tween, withAlpha, type Rect } from '../../../sim-core';
+import { defineSimulation, drawCard, ease, offscreenCanvas, Plot, prefersReducedMotion, roundRect, Surface, TapTarget, Tween, withAlpha, type Rect } from '../../../sim-core';
 import {
   ageAtZ,
   ageGyr,
@@ -1782,8 +1782,14 @@ export default defineSimulation({
         }
         if (modeChanged) {
           intro.play();
-          if (p.mode === 'raisin' || p.mode === 'spectrum') ctx.clock.play();
-          if (p.mode === 'raisin' && source !== 'init') tRun = 0;
+          // Bei „reduzierter Bewegung“ keine Daueranimation: ein fester, aussagekräftiger Zustand
+          // (Abstände × 1,42). Abspielen startet sie trotzdem auf Wunsch.
+          if (prefersReducedMotion()) {
+            if (p.mode === 'raisin') tRun = hubbleTimeGyr(p.h0) * Math.log(1.42);
+          } else {
+            if (p.mode === 'raisin' || p.mode === 'spectrum') ctx.clock.play();
+            if (p.mode === 'raisin' && source !== 'init') tRun = 0;
+          }
         }
         if (changed.has('home') && source !== 'input') camTw.play();
         homeKeys();

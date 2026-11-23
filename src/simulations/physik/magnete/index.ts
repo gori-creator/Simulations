@@ -1024,7 +1024,7 @@ export default defineSimulation({
         const yArr = byp - BAR_W * plot.scale.y * 0.5 - 22;
         arrowPx(g, bxp, yArr, bxp + dir * s, yArr, COL.orange(), 3.5, 11);
         arrowPx(g, axp, yArr, axp - dir * s, yArr, COL.orange(), 3.5, 11);
-        if (p.val) tag(g, (bxp + axp) / 2, yArr - 22, F < 0 ? ctx.t('attract') : ctx.t('repel'), COL.orange(), r, 13);
+        if (p.val) tag(g, (bxp + axp) / 2, yArr - 22, stateText(), COL.orange(), r, 13);
       } else if (p.other === 'alu') {
         const [bxp, byp] = plot.toPx(bPos, 0);
         tag(g, bxp, byp - BAR_W * plot.scale.y - 18, ctx.t('nothing'), th().muted, r, 13);
@@ -1937,8 +1937,11 @@ export default defineSimulation({
         ctx.requestRender();
       },
       tick(dt) {
-        flow += dt;
-        aurora += dt;
+        // Bei „reduzierter Bewegung“ wandern Feldlinienpfeile und Polarlicht nicht.
+        if (!reduced) {
+          flow += dt;
+          aurora += dt;
+        }
         frameDt = Math.min(0.1, dt);
         stepTable(dt);
         if (p.mode === 'field' || p.mode === 'earth') stepCompass(dt);
