@@ -991,8 +991,8 @@ export const mathematik: Subject = {
             slug: L('einheitskreis', 'unit-circle'),
             title: L('Einheitskreis', 'Unit circle'),
             summary: L(
-              'Sinus, Kosinus und Tangens am Einheitskreis und wie daraus die Sinuskurve entsteht.',
-              'Sine, cosine and tangent on the unit circle, and how the sine curve grows out of it.',
+              'Sinus, Kosinus und Tangens am Einheitskreis und wie daraus die Sinuskurve entsteht – mit Symmetrien, Gleichungen wie sin α = 0,5 und einem Übungsspiel.',
+              'Sine, cosine and tangent on the unit circle, and how the sine curve grows out of it – with symmetries, equations like sin α = 0.5 and a practice game.',
             ),
             grades: [9, 10],
             kmk: ['M-L3', 'M-L4', 'M-K4'],
