@@ -701,8 +701,8 @@ export const mathematik: Subject = {
             slug: L('prisma-und-zylinder', 'prism-and-cylinder'),
             title: L('Prisma und Zylinder: Oberfläche und Volumen', 'Prism and cylinder: surface area and volume'),
             summary: L(
-              'Schicht auf Schicht wächst ein Prisma in die Höhe, und der Mantel eines Zylinders rollt sich zum Rechteck aus.',
-              'Layer by layer a prism grows upwards, and the curved surface of a cylinder unrolls into a rectangle.',
+              'Schicht auf Schicht wächst ein Prisma in die Höhe, und der Mantel eines Zylinders rollt sich zum Rechteck aus. Übungsaufgaben reichen bis zur Getränkedose.',
+              'Layer by layer a prism grows upwards, and the curved surface of a cylinder unrolls into a rectangle. Practice tasks go all the way to a drinks can.',
             ),
             grades: [6, 11],
             kmk: ['M-L2', 'M-L4', 'M-K1', 'M-K4'],
