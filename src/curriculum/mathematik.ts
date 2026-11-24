@@ -499,8 +499,8 @@ export const mathematik: Subject = {
             slug: L('satz-des-thales', 'thales-theorem'),
             title: L('Satz des Thales', 'Thales’s theorem'),
             summary: L(
-              'Ziehe einen Punkt auf dem Halbkreis: Der Winkel dort ist immer ein rechter Winkel.',
-              'Drag a point along the semicircle: the angle there is always a right angle.',
+              'Ziehe einen Punkt auf dem Halbkreis: Der Winkel dort ist immer ein rechter Winkel. Mit Beweis in Schritten, Tangenten, Konstruktion und dem Geodreieck-Trick für die Kreismitte.',
+              'Drag a point along the semicircle: the angle there is always a right angle. With a step-by-step proof, tangents, a construction and the set-square trick for finding a centre.',
             ),
             grades: [7, 7],
             kmk: ['M-L4', 'M-K1', 'M-K4'],
