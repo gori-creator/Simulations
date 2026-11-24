@@ -518,14 +518,14 @@ export const mathematik: Subject = {
             slug: L('satz-des-pythagoras', 'pythagorean-theorem'),
             title: L('Satz des Pythagoras', 'Pythagorean theorem'),
             summary: L(
-              'Quadrate über den Seiten eines rechtwinkligen Dreiecks und ein Puzzle-Beweis zeigen: a² + b² = c².',
-              'Squares on the sides of a right triangle and a puzzle proof show: a² + b² = c².',
+              'Quadrate über den Seiten und ein Puzzle-Beweis zeigen a² + b² = c². Mit der Umkehrung bei veränderlichem Winkel, Leiter und Bildschirm als Anwendung, Tripeln im Gitter und Übungsaufgaben.',
+              'Squares on the sides and a puzzle proof show a² + b² = c², with the converse at an adjustable angle, a ladder and a screen as applications, triples on a grid and practice tasks.',
             ),
             grades: [7, 9],
             kmk: ['M-L4', 'M-K1', 'M-K4'],
             keywords: L(
-              ['Pythagoras', 'Hypotenuse', 'Kathete', 'rechtwinkliges Dreieck', 'Flächenbeweis', 'Quadrat', 'Beweis'],
-              ['Pythagoras', 'hypotenuse', 'leg', 'right triangle', 'area proof', 'square', 'proof'],
+              ['Pythagoras', 'Hypotenuse', 'Kathete', 'rechtwinkliges Dreieck', 'Flächenbeweis', 'Quadrat', 'Beweis', 'Umkehrung', 'pythagoreisches Tripel', 'Abstand', 'Diagonale'],
+              ['Pythagoras', 'hypotenuse', 'leg', 'right triangle', 'area proof', 'square', 'proof', 'converse', 'Pythagorean triple', 'distance', 'diagonal'],
             ),
             thumb: 'pythagoras',
           },

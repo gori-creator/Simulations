@@ -11,7 +11,6 @@ import { describe, expect, it } from 'vitest';
  */
 const NOCH_KURZ = new Set([
   'magnete',
-  'pythagoras',
 ]);
 
 const words = (path: string) => (readFileSync(path, 'utf8').match(/[\p{L}\p{N}_]+/gu) ?? []).length;
