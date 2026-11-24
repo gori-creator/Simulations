@@ -10,14 +10,10 @@ import { describe, expect, it } from 'vitest';
  * kürzer werden: Ist eine Simulation vollständig übersetzt, fliegt sie heraus.
  */
 const NOCH_KURZ = new Set([
-  'energieversorgung',
-  'koordinaten-lage',
-  'linienspektren',
   'magnete',
   'messunsicherheit',
   'pythagoras',
   'vektoren-3d',
-  'zeitdilatation',
 ]);
 
 const words = (path: string) => (readFileSync(path, 'utf8').match(/[\p{L}\p{N}_]+/gu) ?? []).length;
