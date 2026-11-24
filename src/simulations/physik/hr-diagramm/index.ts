@@ -54,6 +54,7 @@ const PARALLAX: Record<string, number> = { proxima: 0.768, barnard: 0.547, siriu
  */
 export default defineSimulation({
   id: 'hr-diagramm',
+  images: { sky: 'sternenhimmel.webp', sun: 'sonne.webp' },
   animated: true,
   dragHint: true,
   layout: { aspect: 1.55, aspectNarrow: 0.62 },
@@ -565,8 +566,38 @@ export default defineSimulation({
       g.fill();
       g.restore();
     }
+    /**
+     * Großer Stern mit Oberfläche: das Sonnenfoto, in der Farbe des Sterns eingefärbt
+     * (je weiter die Temperatur von der Sonne entfernt, desto stärker). Ohne Foto der Leuchtball.
+     */
+    function surfaceStar(g: CanvasRenderingContext2D, x: number, y: number, r: number, T: number, glow = 1): void {
+      glowStar(g, x, y, r, T, glow);
+      const photo = ctx.images.get('sun');
+      if (!photo || r < 14) return;
+      g.save();
+      g.beginPath();
+      g.arc(x, y, r, 0, TAU);
+      g.clip();
+      // Sonnenscheibe im Foto: 127 … 887 px (Durchmesser ≈ 760 px von 1024)
+      const k = (2 * r) / 760;
+      g.drawImage(photo, x - 507 * k, y - 508 * k, 1024 * k, 1024 * k);
+      const tint = clamp(Math.abs(Math.log10(T / T_SUN)) * 4.5, 0, 0.9);
+      if (tint > 0.02) {
+        g.globalCompositeOperation = 'color';
+        g.globalAlpha = tint;
+        g.fillStyle = rgb(T, 1);
+        g.fillRect(x - r, y - r, 2 * r, 2 * r);
+        // heiße Sterne sind auch heller
+        if (T > T_SUN) {
+          g.globalCompositeOperation = 'screen';
+          g.globalAlpha = clamp(Math.log10(T / T_SUN) * 1.6, 0, 0.6);
+          g.fillRect(x - r, y - r, 2 * r, 2 * r);
+        }
+      }
+      g.restore();
+    }
     /** Hintergrund wie ein Nachthimmel (auch im hellen Modus dunkel, damit Sternfarben stimmen). */
-    function sky(g: CanvasRenderingContext2D, r: Rect, seed = 3, n = 80): void {
+    function sky(g: CanvasRenderingContext2D, r: Rect, seed = 3, n = 80, dim = 0.2): void {
       g.save();
       roundRect(g, r.x, r.y, r.w, r.h, 10);
       g.clip();
@@ -575,6 +606,18 @@ export default defineSimulation({
       gr.addColorStop(1, th().dark ? '#0b1120' : '#17213a');
       g.fillStyle = gr;
       g.fillRect(r.x, r.y, r.w, r.h);
+      // Foto des Sternenhimmels (wie „object-fit: cover“), je Fläche ein anderer Ausschnitt
+      const photo = ctx.images.get('sky');
+      if (photo) {
+        const k = Math.max(r.w / photo.width, r.h / photo.height) * 1.15;
+        const dw = photo.width * k;
+        const dh = photo.height * k;
+        const off = rng(seed);
+        g.drawImage(photo, r.x - off() * (dw - r.w), r.y - off() * (dh - r.h), dw, dh);
+        g.fillStyle = `rgba(5,8,16,${dim})`;
+        g.fillRect(r.x, r.y, r.w, r.h);
+        n = Math.round(n / 3);
+      }
       const sr = rng(seed);
       for (let i = 0; i < n; i++) {
         g.fillStyle = `rgba(255,255,255,${0.25 + sr() * 0.5})`;
@@ -593,7 +636,7 @@ export default defineSimulation({
     const GRIDC = 'rgba(200,215,240,0.12)';
     function hrdFrame(g: CanvasRenderingContext2D, small = false): void {
       const r = hrd.rect;
-      sky(g, { x: r.x - 2, y: r.y - 2, w: r.w + 4, h: r.h + 4 }, 9, small ? 40 : 90);
+      sky(g, { x: r.x - 2, y: r.y - 2, w: r.w + 4, h: r.h + 4 }, 9, small ? 40 : 90, 0.62);
       g.save();
       g.strokeStyle = GRIDC;
       for (const T of [40000, 20000, 10000, 6000, 4000, 3000]) {
@@ -790,7 +833,7 @@ export default defineSimulation({
       const pos = [top.x + top.w * 0.28, top.x + top.w * 0.72];
       [a, b].forEach((s, i) => {
         const r = Math.max(1.2, s.R * k * grow);
-        glowStar(g, pos[i]!, cy, r, s.T, 0.8);
+        surfaceStar(g, pos[i]!, cy, r, s.T, 0.8);
         g.save();
         g.font = `700 ${narrow() ? 12 : 13}px ${th().font}`;
         g.fillStyle = LABEL;
@@ -844,7 +887,7 @@ export default defineSimulation({
         spec.point(lp, yp, { color: cols[i]!, radius: 4 });
         if (p.val) spec.text(lp, yp, `${N(lp, 0)} nm`, { color: cols[i]!, size: 11, weight: 'bold', offset: [i === 0 ? 6 : -6, -12], align: i === 0 ? 'left' : 'right' });
       });
-      spec.text(565, 0.93, ctx.t('visible'), { color: th().muted, size: 11, weight: 'bold' });
+      spec.text(565, 0.78, ctx.t('visible'), { color: th().muted, size: 11, weight: 'bold', align: 'center' });
       spec.end();
     }
 
@@ -961,7 +1004,7 @@ export default defineSimulation({
           g.stroke();
         } else glowStar(g, px, py, 3, 1e5, 1.2);
         g.restore();
-      } else glowStar(g, px, py, rPx, cur.T, 1);
+      } else surfaceStar(g, px, py, rPx, cur.T, 1);
       if (p.val) {
         g.save();
         g.font = `600 ${narrow() ? 11 : 12}px ${th().font}`;
@@ -1281,7 +1324,7 @@ export default defineSimulation({
       const cy = box.y + box.h * (side ? 0.42 : 0.45);
       const maxR = Math.min(box.w, box.h) * 0.28;
       const rPx = clamp(maxR * (0.15 + 0.85 * clamp((lg(quiz.R) + 2) / 5, 0, 1)), 3, maxR);
-      glowStar(g, cx, cy, rPx, quiz.T, 1);
+      surfaceStar(g, cx, cy, rPx, quiz.T, 1);
       g.save();
       g.textAlign = 'center';
       g.fillStyle = LABEL;

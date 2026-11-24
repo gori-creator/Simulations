@@ -1,4 +1,4 @@
-# Bilder-Wunschliste (Stand 23.11.2026)
+# Bilder-Wunschliste (Stand 23.11.2026 – alle 17 Bilder eingebaut am 24.11.2026, siehe docs/BILDER.md)
 
 Neue Bilder, die die Simulationen vom 22./23.11. deutlich aufwerten. Alle Simulationen funktionieren **ohne** diese Bilder (gezeichnete Ersatzgrafik); eingebaut werden sie, sobald sie hochgeladen sind.
 

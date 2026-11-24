@@ -68,6 +68,7 @@ const MODELS: { id: string; Om: number; OL: number; de: string; en: string }[] =
  */
 export default defineSimulation({
   id: 'hubble',
+  images: { spiral: 'galaxie-spirale.webp', tilted: 'galaxie-schraeg.webp', elliptic: 'galaxie-elliptisch.webp' },
   animated: true,
   hint: (v: { readonly mode?: unknown }) =>
     v.mode === 'raisin'
@@ -518,6 +519,23 @@ export default defineSimulation({
      */
     function drawGalaxy(g: CanvasRenderingContext2D, x: number, y: number, size: number, dot: Pick<Dot, 'hue' | 'spiral'>, rot: number, alpha = 1, red = 0): void {
       if (size < 0.6 || alpha <= 0.01) return;
+      // Ab mittlerer Größe ein Foto (ohne Rotverschiebung – die zeigt die gezeichnete Galaxie)
+      if (size >= 5 && red < 0.02) {
+        const tilt0 = 0.45 + dot.hue * 0.45;
+        const key = !dot.spiral ? 'elliptic' : tilt0 > 0.72 ? 'spiral' : 'tilted';
+        const img = ctx.images.get(key);
+        if (img) {
+          g.save();
+          g.translate(x, y);
+          g.rotate(rot);
+          g.globalAlpha *= alpha;
+          // Galaxie füllt etwa 85 % des Bildes; gezeichnet reicht sie bis 1,5 · size
+          const d = size * 3.4;
+          g.drawImage(img, -d / 2, -d / 2, d, d);
+          g.restore();
+          return;
+        }
+      }
       g.save();
       g.translate(x, y);
       g.rotate(rot);
