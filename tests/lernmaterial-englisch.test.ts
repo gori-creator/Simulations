@@ -16,10 +16,7 @@ const NOCH_KURZ = new Set([
   'e-funktion',
   'energieversorgung',
   'fourier-reihen',
-  'funktionenscharen',
-  'funktionsplotter',
   'gauss-verfahren',
-  'geraden-ebenen',
   'integrationsregeln',
   'interferenz',
   'konfidenzintervall',
@@ -37,11 +34,9 @@ const NOCH_KURZ = new Set([
   'signifikanztest',
   'skalar-vektorprodukt',
   'stammfunktion-grafisch',
-  'stehende-wellen',
   'uebergangsmatrizen',
   'umkehrfunktion',
   'vektoren-3d',
-  'wellen-ausbreitung',
   'zeitdilatation',
 ]);
 
