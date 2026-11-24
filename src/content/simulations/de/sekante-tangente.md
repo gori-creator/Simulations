@@ -28,6 +28,14 @@ Das Kürzen durch $h$ ist erlaubt, solange $h \neq 0$ ist. Also ist $f'(x_0) = 2
 
 Bei $f(x) = |x|$ und $x_0 = 0$ ist $m_s = \frac{|h|}{h}$. Für jedes $h > 0$ ergibt das $1$, für jedes $h < 0$ ergibt das $-1$. Von rechts und von links kommt also nicht dasselbe heraus. Der Grenzwert existiert nicht, $f$ ist an der Stelle $0$ **nicht differenzierbar**. Am Graphen sieht man einen **Knick**, und es gibt dort keine Tangente.
 
+### Durchschnitts- und Momentangeschwindigkeit
+
+Ein Spielzeugauto rollt eine Rampe hinunter und wird gleichmäßig schneller: Nach $t$ Sekunden hat es den Weg $s(t) = 0{,}1t^2 + 0{,}2t$ (in m) zurückgelegt. Die **Sekantensteigung** $\frac{s(t_0 + h) - s(t_0)}{h}$ ist die **Durchschnittsgeschwindigkeit** zwischen $t_0$ und $t_0 + h$, die **Tangentensteigung** $s'(t_0) = 0{,}2t_0 + 0{,}2$ ist die **Momentangeschwindigkeit** – das, was ein Tacho anzeigen würde.
+
+### Lokal sieht jeder glatte Graph wie eine Gerade aus
+
+Vergrößert man den Graph um den Punkt $P$ immer stärker, wird er immer gerader und fällt schließlich mit der Tangente zusammen. Bei $f(x) = x^2$ und $x_0 = 1$ ist der Abstand zwischen Graph und Tangente genau $(x - 1)^2$: Bei einem zehnmal kleineren Fenster wird der Abstand hundertmal kleiner. An einem Knick wie bei $|x|$ passiert das nie.
+
 ## Ausprobieren
 
 1. Ziehe $Q$ in Richtung $P$ oder drücke **h → 0**. Beobachte den Differenzenquotienten und die Tabelle.
@@ -36,6 +44,9 @@ Bei $f(x) = |x|$ und $x_0 = 0$ ist $m_s = \frac{|h|}{h}$. Für jedes $h > 0$ erg
 4. Blende die Tangente ein und verschiebe $P$. Wo ist die Tangente waagrecht? [Kubische Funktion](?fn=cubic&x0=-1&h=2&tangent=1)
 5. Schalte **Ableitungsgraph f′ entstehen lassen** ein und ziehe $P$ langsam von links nach rechts. Welche Funktion entsteht bei $\sin x$? [Sinus](?fn=sin&x0=0.5&h=1&trace=1)
 6. Wähle $f(x) = |x|$ mit $x_0 = 0$. Vergleiche die Tabelle für positives und für negatives $h$. [Knick bei |x|](?fn=abs&x0=0&h=1)
+7. **Lupe:** Drücke mehrmals „Hineinzoomen“. Ab welcher Vergrößerung kannst du Graph und Tangente nicht mehr unterscheiden? Probiere auch den Knick. [Lupe an der Parabel](?mode=zoom&fn=x2&x0=1&zl=1) · [Lupe am Knick](?mode=zoom&fn=abs&x0=0&zl=3)
+8. **Geschwindigkeit:** Zieh $Q$ an $P$ heran. Was zeigen die beiden Zeiger im Tacho? [Spielzeugauto](?mode=speed&x0=2&h=2&tangent=1)
+9. **Spiel:** Dreh die orange Gerade, bis sie den Graphen in $P$ nur berührt, und lass prüfen. [Tangente anlegen](?mode=fit&q=1&mu=0)
 
 ## Aufgaben
 
@@ -101,7 +112,18 @@ Die Werte streben gegen $f'(0) = 1$. Die Tangente ist $y = x + 1$. [In der Simul
 
 </details>
 
-### Aufgabe 6: Knick bei $|x|$
+### Aufgabe 6: Spielzeugauto
+
+Das Auto legt den Weg $s(t) = 0{,}1t^2 + 0{,}2t$ (in m, $t$ in s) zurück. Berechne die Durchschnittsgeschwindigkeit zwischen $t = 2\,\text{s}$ und $t = 4\,\text{s}$ und die Momentangeschwindigkeit bei $t = 3\,\text{s}$. Was fällt auf? [Aufgabe laden](?mode=speed&x0=2&h=2&tangent=0&_hide=1)
+
+<details>
+<summary>Lösung anzeigen</summary>
+
+$s(4) = 1{,}6 + 0{,}8 = 2{,}4\,\text{m}$, $s(2) = 0{,}4 + 0{,}4 = 0{,}8\,\text{m}$, also $\bar v = \frac{2{,}4 - 0{,}8}{2}\,\frac{\text{m}}{\text{s}} = 0{,}8\,\frac{\text{m}}{\text{s}}$. Mit $s'(t) = 0{,}2t + 0{,}2$ ist $s'(3) = 0{,}8\,\frac{\text{m}}{\text{s}}$ – genau gleich. Bei quadratischen Funktionen ist die Sekantensteigung über $[a;\,b]$ immer gleich der Tangentensteigung in der Mitte. [In der Simulation zeigen](?mode=speed&x0=3&h=0.001&tangent=1)
+
+</details>
+
+### Aufgabe 7: Knick bei $|x|$
 
 Berechne für $f(x) = |x|$ an der Stelle $x_0 = 0$ den Differenzenquotienten für $h = 0{,}1$ und für $h = -0{,}1$. Hat der Graph bei $0$ eine Tangente?
 
@@ -118,6 +140,8 @@ $h = 0{,}1$: $\frac{0{,}1 - 0}{0{,}1} = 1$. $\;h = -0{,}1$: $\frac{0{,}1 - 0}{-0
 - **Tabelle:** Die Annäherungstabelle zeigt die Differenzenquotienten für $h = 1;\ 0{,}1;\ 0{,}01;\ 0{,}001$ mit dem Vorzeichen des eingestellten $h$. Sie eignet sich gut, um den Grenzwertbegriff numerisch vorzubereiten. Lassen Sie die Klasse die Werte zuerst vermuten oder von Hand rechnen.
 - **h = 0:** Stellt man $h = 0$ ein, ist der Differenzenquotient nicht definiert ($\frac{0}{0}$); die Simulation zeigt dann nur die Tangente. Das ist ein guter Anlass, über den Unterschied zwischen „$h = 0$ einsetzen“ und „Grenzwert für $h \to 0$“ zu sprechen.
 - **Beidseitiger Grenzwert:** Vergleichen Sie $h > 0$ und $h < 0$ zuerst bei $x^2$ (gleicher Grenzwert) und dann bei $|x|$ (verschiedene Werte). So wird greifbar, warum Differenzierbarkeit mehr verlangt als „der Graph hat keinen Sprung“.
+- **Lupe:** Die Ansicht „Lupe“ macht die Idee der lokalen Linearität sichtbar: Differenzierbar heißt, im Kleinen wie eine Gerade auszusehen. Der Knick bei $|x|$ ist das Gegenbeispiel.
+- **Spiel „Tangente anlegen“:** Die Aufgaben sind nummeriert. Bewertet wird die Abweichung des Steigungswinkels, so sind steile und flache Stellen gleich fair. Ein gutes Warm-up, bevor die Ableitung berechnet wird.
 - **Häufige Stolpersteine:**
   - „Die Tangente berührt den Graphen nur in einem Punkt“ – bei der kubischen Funktion schneidet die Tangente den Graphen oft noch an einer anderen Stelle.
   - Sekante und Tangente werden verwechselt. In der Simulation ist die Sekante durchgezogen und die Tangente gestrichelt, die Legende zeigt beide Linienarten.

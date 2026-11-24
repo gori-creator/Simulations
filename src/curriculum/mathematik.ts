@@ -1441,8 +1441,8 @@ export const mathematik: Subject = {
             slug: L('sekante-tangente', 'secant-to-tangent'),
             title: L('Von der Sekante zur Tangente', 'From secant to tangent'),
             summary: L(
-              'Lass einen Punkt Q auf P zulaufen: Aus der Sekante wird die Tangente und aus der mittleren Steigung die Ableitung.',
-              'Let a point Q move towards P: the secant becomes the tangent, and the average slope becomes the derivative.',
+              'Lass einen Punkt Q auf P zulaufen: Aus der Sekante wird die Tangente und aus der mittleren Steigung die Ableitung. Mit Lupe, Spielzeugauto samt Tacho und einem Spiel zum Anlegen der Tangente.',
+              'Let a point Q move towards P: the secant becomes the tangent, and the average slope becomes the derivative. With a magnifier, a toy car with speedometer and a game for placing the tangent.',
             ),
             grades: [10, 11],
             kmk: ['M-L3', 'M-K4', 'M-K5'],

@@ -28,6 +28,14 @@ Cancelling $h$ is allowed as long as $h \neq 0$. So $f'(x_0) = 2x_0$, e.g. $f'(1
 
 For $f(x) = |x|$ and $x_0 = 0$ we get $m_s = \frac{|h|}{h}$. For every $h > 0$ this is $1$, for every $h < 0$ it is $-1$. From the right and from the left you get different values. The limit does not exist, and $f$ is **not differentiable** at $0$. The graph has a **kink** there, and there is no tangent.
 
+### Average and instantaneous speed
+
+A toy car rolls down a ramp and speeds up evenly: after $t$ seconds it has travelled $s(t) = 0.1t^2 + 0.2t$ (in m). The **secant slope** $\frac{s(t_0 + h) - s(t_0)}{h}$ is the **average speed** between $t_0$ and $t_0 + h$; the **tangent slope** $s'(t_0) = 0.2t_0 + 0.2$ is the **instantaneous speed** – what a speedometer would show.
+
+### Locally, every smooth graph looks like a straight line
+
+If you magnify the graph around the point $P$ more and more, it gets straighter and finally coincides with the tangent. For $f(x) = x^2$ and $x_0 = 1$ the gap between graph and tangent is exactly $(x - 1)^2$: with a window ten times smaller, the gap becomes a hundred times smaller. At a kink like that of $|x|$ this never happens.
+
 ## Try it
 
 1. Drag $Q$ towards $P$ or press **h → 0**. Watch the difference quotient and the table.
@@ -36,6 +44,9 @@ For $f(x) = |x|$ and $x_0 = 0$ we get $m_s = \frac{|h|}{h}$. For every $h > 0$ t
 4. Show the tangent and move $P$. Where is the tangent horizontal? [Cubic function](?fn=cubic&x0=-1&h=2&tangent=1)
 5. Switch on **Trace the derivative f′** and slowly drag $P$ from left to right. Which function appears for $\sin x$? [Sine](?fn=sin&x0=0.5&h=1&trace=1)
 6. Choose $f(x) = |x|$ with $x_0 = 0$. Compare the table for positive and for negative $h$. [Kink of |x|](?fn=abs&x0=0&h=1)
+7. **Magnifier:** press “Zoom in” several times. From what magnification can you no longer tell graph and tangent apart? Also try the kink. [Magnifier on the parabola](?mode=zoom&fn=x2&x0=1&zl=1) · [Magnifier at the kink](?mode=zoom&fn=abs&x0=0&zl=3)
+8. **Speed:** drag $Q$ towards $P$. What do the two needles on the speedometer show? [Toy car](?mode=speed&x0=2&h=2&tangent=1)
+9. **Game:** turn the orange line until it just touches the graph at $P$, then have it checked. [Place the tangent](?mode=fit&q=1&mu=0)
 
 ## Exercises
 
@@ -101,7 +112,18 @@ The values approach $f'(0) = 1$. The tangent is $y = x + 1$. [Show in the simula
 
 </details>
 
-### Exercise 6: The kink of $|x|$
+### Exercise 6: Toy car
+
+The car travels the distance $s(t) = 0.1t^2 + 0.2t$ (in m, $t$ in s). Calculate the average speed between $t = 2\,\text{s}$ and $t = 4\,\text{s}$ and the instantaneous speed at $t = 3\,\text{s}$. What do you notice? [Load exercise](?mode=speed&x0=2&h=2&tangent=0&_hide=1)
+
+<details>
+<summary>Show solution</summary>
+
+$s(4) = 1.6 + 0.8 = 2.4\,\text{m}$, $s(2) = 0.4 + 0.4 = 0.8\,\text{m}$, so $\bar v = \frac{2.4 - 0.8}{2}\,\frac{\text{m}}{\text{s}} = 0.8\,\frac{\text{m}}{\text{s}}$. With $s'(t) = 0.2t + 0.2$, $s'(3) = 0.8\,\frac{\text{m}}{\text{s}}$ – exactly the same. For quadratic functions the secant slope over $[a;\,b]$ always equals the tangent slope at the midpoint. [Show in the simulation](?mode=speed&x0=3&h=0.001&tangent=1)
+
+</details>
+
+### Exercise 7: The kink of $|x|$
 
 For $f(x) = |x|$ at $x_0 = 0$, compute the difference quotient for $h = 0.1$ and for $h = -0.1$. Does the graph have a tangent at $0$?
 
@@ -118,6 +140,8 @@ $h = 0.1$: $\frac{0.1 - 0}{0.1} = 1$. $\;h = -0.1$: $\frac{0.1 - 0}{-0.1} = -1$.
 - **Table:** The table shows the difference quotients for $h = 1;\ 0.1;\ 0.01;\ 0.001$ with the sign of the chosen $h$. It is a good way to prepare the idea of a limit numerically. Let the class guess or compute the values by hand first.
 - **h = 0:** If you set $h = 0$, the difference quotient is undefined ($\frac{0}{0}$); the simulation then shows only the tangent. This is a good moment to discuss the difference between "plugging in $h = 0$" and "the limit as $h \to 0$".
 - **Two-sided limit:** Compare $h > 0$ and $h < 0$ first for $x^2$ (same limit) and then for $|x|$ (different values). This makes it tangible why differentiability needs more than "the graph has no jump".
+- **Magnifier:** the “Magnifier” view makes local linearity visible: differentiable means looking like a straight line close up. The kink of $|x|$ is the counterexample.
+- **Game “Place the tangent”:** the tasks are numbered. The deviation of the slope angle is assessed, so steep and flat points are equally fair. A good warm-up before the derivative is calculated.
 - **Common pitfalls:**
   - "The tangent touches the graph at only one point" – for the cubic function the tangent often cuts the graph at another point.
   - Secant and tangent get mixed up. In the simulation the secant is a solid line and the tangent is dashed; the legend shows both line styles.
