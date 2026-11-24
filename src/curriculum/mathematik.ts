@@ -1043,8 +1043,8 @@ export const mathematik: Subject = {
             slug: L('exponentielles-wachstum', 'exponential-growth'),
             title: L('Exponentielles Wachstum und Zerfall', 'Exponential growth and decay'),
             summary: L(
-              'Seerosen auf dem Teich, Zinseszins und Zerfall: Exponentielles Wachstum im Vergleich mit linearem Wachstum.',
-              'Water lilies on a pond, compound interest and decay: exponential growth compared with linear growth.',
+              'Seerosen auf dem Teich, Zinseszins und Zerfall: Exponentielles Wachstum im Vergleich mit linearem Wachstum. Eine Exponentialfunktion wird an Messwerte angepasst, und Übungsaufgaben trainieren das Rechnen.',
+              'Water lilies on a pond, compound interest and decay: exponential growth compared with linear growth. An exponential function is fitted to measurements, and practice tasks train the calculations.',
             ),
             grades: [10, 11],
             kmk: ['M-L3', 'M-K3', 'M-K4'],

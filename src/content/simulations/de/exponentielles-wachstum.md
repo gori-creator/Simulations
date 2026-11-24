@@ -20,12 +20,24 @@ $$
 
 Statt $\lg$ darf man jeden Logarithmus nehmen, z. B. auch $\ln$. Die Simulation zeigt den Wert auf zwei Stellen gerundet („≈“). Nur wenn er exakt ist, steht „=“ (z. B. $T_d = 1$ Tag bei $p = 100$).
 
+### Funktion aus Messwerten
+
+Echte Messwerte liegen nie genau auf einer Kurve. Ein Hinweis auf exponentielles Wachstum: Die **Quotienten** aufeinanderfolgender Werte (bei gleichen Zeitabständen) sind ungefähr gleich – nicht die Differenzen. Aus zwei Messpunkten $(t_1 \mid v_1)$ und $(t_2 \mid v_2)$ erhält man eine passende Exponentialfunktion:
+
+$$
+b = \left(\frac{v_2}{v_1}\right)^{\frac{1}{t_2 - t_1}} \qquad a = \frac{v_1}{b^{t_1}}
+$$
+
+Nimmt man den ersten und den letzten Messpunkt, wirken sich kleine Messfehler am wenigsten aus.
+
 ## Ausprobieren
 
 1. Starte die Seerosen mit „Abspielen“. Der Teich ist nach 10 Tagen voll. Wann war er halb voll?
 2. Vergleiche beim Zinseszins mit dem linearen Wachstum (einfache Zinsen). [5 % Zinsen](?scenario=zinsen&a=1000&p=5&span=40&linear=1)
 3. Beobachte beim radioaktiven Zerfall die einzelnen Kerne. Zerfallen sie gleichmäßig? [Iod-131](?scenario=zerfall&a=1000&p=-8&span=40) Mit $p = -8$ ergibt sich $T_{1/2} \approx 8{,}31$ Tage – nahe an den echten gut 8 Tagen.
 4. Schalte die logarithmische y-Achse ein. Was wird aus dem Graphen? [Logarithmisch](?scenario=zinsen&a=1000&p=5&span=60&log=1)
+5. **Messwerte anpassen:** Stell $a$ und $p$ so ein, dass der Graph durch die Messpunkte geht. Unter dem Bild steht, wie gut die Funktion passt. Mit „Aus zwei Punkten berechnen“ rechnet die Simulation mit dem ersten und letzten Punkt. [Bakterien](?scenario=daten&ds=bakterien&a=100&p=10) · [Tee](?scenario=daten&ds=tee&a=100&p=10) · [Medikament](?scenario=daten&ds=medikament&a=100&p=10)
+6. **Üben:** Funktionswert, prozentuale Änderung oder Verdopplungs- bzw. Halbwertszeit ausrechnen, eintragen und prüfen lassen. [Üben](?scenario=ueben&q=1)
 
 ## Aufgaben
 
@@ -73,11 +85,35 @@ Exakt: $\frac{\ln 2}{\ln 1{,}02} \approx 35{,}0$, $\frac{\ln 2}{\ln 1{,}05} \app
 
 </details>
 
+### Aufgabe 5: Medikament im Blut
+
+Nach der Einnahme sind $400\,\text{mg}$ Wirkstoff im Blut, nach $10$ Stunden noch $79\,\text{mg}$. Bestimme eine Exponentialfunktion, die dazu passt. Wie viel Prozent werden pro Stunde abgebaut, und wie groß ist die Halbwertszeit? [Messwerte ansehen](?scenario=daten&ds=medikament&a=100&p=10)
+
+<details>
+<summary>Lösung anzeigen</summary>
+
+$b = \left(\frac{79}{400}\right)^{\frac{1}{10}} \approx 0{,}850$, also $f(t) = 400 \cdot 0{,}85^t$. Pro Stunde werden etwa $15\,\%$ abgebaut. Halbwertszeit: $T_{1/2} = \frac{\lg 0{,}5}{\lg 0{,}85} \approx 4{,}27$ Stunden. [In der Simulation zeigen](?scenario=daten&ds=medikament&a=400&p=-15)
+
+</details>
+
+### Aufgabe 6: Linear oder exponentiell?
+
+Beim abkühlenden Tee wurden alle 5 Minuten gemessen: $70$; $57{,}5$; $46{,}2$; $38{,}3$ (Grad über Zimmertemperatur). Prüfe mit Differenzen und Quotienten, welches Modell besser passt.
+
+<details>
+<summary>Lösung anzeigen</summary>
+
+Differenzen: $-12{,}5$; $-11{,}3$; $-7{,}9$ – nicht gleich. Quotienten: $0{,}82$; $0{,}80$; $0{,}83$ – ungefähr gleich. Exponentielle Abnahme passt besser, etwa $18\,\%$ pro 5 Minuten. [Messwerte ansehen](?scenario=daten&ds=tee&a=70&p=-4)
+
+</details>
+
 ## Ideen für den Unterricht
 
 - **Einsatz:** Etwa Klasse 10 (Exponentialfunktionen, exponentielles Wachstum, Logarithmus).
 - **Zerfall:** Jeder der 400 Kerne zerfällt zu einem zufälligen Zeitpunkt; im Mittel folgt die Anzahl der Exponentialfunktion. So wird sichtbar, dass Zerfall ein Zufallsprozess ist.
 - **Logarithmische Achse:** Exponentielle Funktionen erscheinen als Geraden – eine gute Vorbereitung auf den Logarithmus.
+- **Modellieren:** Die Messreihen sind erfundene Beispieldaten mit kleinen Schwankungen. Gut geeignet, um das Anpassen per Augenmaß mit der Rechnung aus zwei Punkten zu vergleichen.
+- **Üben:** Die Aufgaben sind nummeriert. Gleiche Nummer bedeutet gleiche Aufgabe. Ungerade Nummern fragen einen Funktionswert, gerade abwechselnd die prozentuale Änderung und die Verdopplungs- bzw. Halbwertszeit (dafür braucht man den Logarithmus).
 - **Häufige Stolpersteine:**
   - Exponentielles Wachstum wird wie lineares extrapoliert (Seerosen-Rätsel).
   - „Nach zwei Halbwertszeiten ist alles zerfallen.“ Tatsächlich ist dann noch ein Viertel übrig.
