@@ -71,6 +71,10 @@ Ich habe alle 218 Bilder angesehen (198 eingebaute und 20 im Eingang) und dabei 
 
 Die Seite selbst lädt **keine** Schriften, Skripte oder Bilder von fremden Servern; die Grundschrift ist die Systemschrift des Geräts.
 
+## Nachtrag 24.11.2026: Physik Runde 4 (17 Bilder)
+
+17 neue Bilder für Magnete, Hubble, HR-Diagramm und Messunsicherheit, **selbst mit KI erzeugt** (ChatGPT, OpenAI). Prompts wörtlich in `docs/BILDER-WUNSCHLISTE.md`, Abschnitt „Runde 4“; Einbau in `docs/BILDER.md`. Alle 17 einzeln angesehen: keine Personen, keine Schrift, keine Logos oder Marken, keine Münzen, keine erkennbaren Werke anderer. Die Galaxien und die Sonne sind frei erzeugte Darstellungen, keine Kopien bestimmter Teleskopaufnahmen.
+
 ## Regeln für neue Bilder
 
 - **Nur selbst erzeugte Bilder** oder Bilder mit einer Lizenz, die die freie Nutzung erlaubt. Die Quelle bzw. Lizenz wird beim Bild in `docs/BILDER.md` eingetragen.

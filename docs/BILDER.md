@@ -1076,7 +1076,7 @@ Prompts, Dateinamen und Prüfliste: `docs/ZAHLENFABRIK-BILDER.md` (14 Bilder, al
 
 ## Physik Runde 3: Magnete, Hubble, HR-Diagramm, Messunsicherheit (eingebaut 24.11.2026)
 
-17 Bilder, erzeugt mit ChatGPT; Prompts wörtlich in `docs/BILDER-WUNSCHLISTE.md` (Nr. 1–17). Die beiden Münzen im Magnet-Spiel bleiben gezeichnet (keine echten Münzen als Foto). Rotverschobene Galaxien bleiben gezeichnet, damit die Färbung sichtbar ist.
+17 Bilder, erzeugt mit ChatGPT; Prompts wörtlich in `docs/BILDER-WUNSCHLISTE.md`, Abschnitt „Runde 4“ (Nr. 1–17). Die beiden Münzen im Magnet-Spiel bleiben gezeichnet (keine echten Münzen als Foto). Rotverschobene Galaxien bleiben gezeichnet, damit die Färbung sichtbar ist.
 
 | Simulation | Datei | Größe | Verwendung | Ersatzgrafik |
 | --- | --- | --- | --- | --- |
