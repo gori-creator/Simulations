@@ -26,6 +26,8 @@ The green funnel shows the range $p \pm 1.96 \cdot \sqrt{\dfrac{p(1-p)}{n}}$. Af
 3. Compare with the coin: does the curve become "calm" faster? [Coin](?exp=coin)
 4. Estimate the drawing pin's probability without showing it first. [Drawing pin](?exp=tack&showP=0)
 5. Switch off the logarithmic axis. What can you see better, what worse? [Linear axis](?logScale=0)
+6. **20 runs:** as in a class, 20 people throw at the same time. At first the curves are far apart; as n grows they move together. How many stay inside the funnel? [Coin](?mode=many&exp=coin) · [Die](?mode=many&exp=die)
+7. **Practice:** how often do you expect an outcome? Roughly how large is the probability for the drawing pin? [Practice](?mode=quiz&q=1)
 
 ## Exercises
 
@@ -73,10 +75,23 @@ The deviation $|h_n - p|$ typically keeps getting smaller. The deviation of the 
 
 </details>
 
+### Exercise 5: Expectation and reality
+
+A die is rolled $600$ times. How often do you expect a six? Does the six come up exactly that often? In what range does the number lie in about 95 % of all runs?
+
+<details>
+<summary>Show solution</summary>
+
+Expected: $n \cdot p = 600 \cdot \frac{1}{6} = 100$. Usually it is not exactly $100$. The funnel for the relative frequency has half-width $1.96 \cdot \sqrt{\frac{\frac{1}{6} \cdot \frac{5}{6}}{600}} \approx 0.030$. For the number this means about $100 \pm 600 \cdot 0.030 = 100 \pm 18$, so roughly between $82$ and $118$. [20 runs](?mode=many&exp=die)
+
+</details>
+
 ## Ideas for the classroom
 
 - **Use:** About grades 6 to 8 (Laplace experiments: relative frequency and the empirical law of large numbers). The drawing pin is the classic example of a probability that can only be determined by experiment.
 - **Images:** Die, coin, drawing pin and table are shown as photos; if an image is missing, the simulation draws a replacement graphic.
+- **Whole class:** the part “20 runs” shows what happens when every person in the class throws their own run. Good for the question why single results scatter a lot but the average does not.
+- **Practice:** odd tasks ask for the expected number $n \cdot p$, even ones for estimating a probability from a run (its curve is drawn).
 - **Common stumbling blocks:**
   - Gambler's fallacy ("now the six is due").
   - "600 throws give exactly 100 sixes."

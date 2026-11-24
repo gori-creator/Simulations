@@ -1226,8 +1226,8 @@ export const mathematik: Subject = {
             slug: L('gesetz-der-grossen-zahlen', 'law-of-large-numbers'),
             title: L('Gesetz der großen Zahlen', 'Law of large numbers'),
             summary: L(
-              'Wirf eine Münze, einen Würfel oder einen Reißnagel tausendmal: Je öfter du wirfst, desto näher kommt die relative Häufigkeit der Wahrscheinlichkeit.',
-              'Toss a coin, a die or a drawing pin a thousand times: the more often you throw, the closer the relative frequency gets to the probability.',
+              'Wirf eine Münze, einen Würfel oder einen Reißnagel tausendmal: Je öfter du wirfst, desto näher kommt die relative Häufigkeit der Wahrscheinlichkeit. 20 Versuchsreihen zeigen, wie eine ganze Klasse wirft, und Übungsaufgaben trainieren Erwarten und Schätzen.',
+              'Toss a coin, a die or a drawing pin a thousand times: the more often you throw, the closer the relative frequency gets to the probability. 20 runs show a whole class throwing, and practice tasks train expecting and estimating.',
             ),
             grades: [6, 13],
             kmk: ['M-L5', 'M-K3', 'M-K4'],

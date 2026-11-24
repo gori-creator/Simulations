@@ -13,10 +13,13 @@ import {
   withAlpha,
   type Rect,
 } from '../../../sim-core';
-import { drawOutcome, funnelHalfWidth, probabilities, type ExperimentId } from './model';
+import { checkLaw, drawOutcome, funnelHalfWidth, insideFunnel, lawTask, probabilities, type ExperimentId, type LawTask } from './model';
 
 const L = (de: string, en: string) => ({ de, en });
 const MAX_HISTORY = 200_000;
+/** Anzahl der gleichzeitigen Versuchsreihen („ganze Klasse“). */
+const RUNS = 20;
+const MAX_RUN_HISTORY = 20_000;
 /** Platz für die Achsenbeschriftungen im Diagramm (Pixel). */
 const CHART_PADDING = { left: 46, right: 18, top: 16, bottom: 24 };
 /**
@@ -64,6 +67,8 @@ function layout(w: number, h: number): { obj: Rect; bars: Rect; chart: Rect } {
  * Gesetz der großen Zahlen: Münze, Würfel oder Reißnagel werden oft geworfen.
  * Die relative Häufigkeit eines Ereignisses nähert sich der Wahrscheinlichkeit
  * – der Trichter zeigt, wie eng sie nach n Würfen typischerweise liegt.
+ * Dazu: 20 Versuchsreihen gleichzeitig (wie eine ganze Klasse) und
+ * Übungsaufgaben zur erwarteten Anzahl und zum Schätzen einer Wahrscheinlichkeit.
  */
 export default defineSimulation({
   id: 'gesetz-grosse-zahlen',
@@ -75,6 +80,19 @@ export default defineSimulation({
   ],
   params: [
     {
+      key: 'mode',
+      type: 'choice',
+      label: L('Thema', 'Topic'),
+      options: [
+        { value: 'one', label: L('Eine Versuchsreihe', 'One run') },
+        { value: 'many', label: L('20 Versuchsreihen (ganze Klasse)', '20 runs (whole class)') },
+        { value: 'quiz', label: L('Üben', 'Practice') },
+      ],
+      default: 'one',
+    },
+    { key: 'q', type: 'number', label: L('Aufgabe Nr.', 'Task no.'), min: 1, max: 999, step: 1, default: 1, visibleIf: (v) => v.mode === 'quiz' },
+    { key: 'ans', type: 'text', label: L('Deine Antwort', 'Your answer'), default: '', maxLength: 16, placeholder: L('z. B. 100 oder 0,63', 'e.g. 100 or 0.63'), visibleIf: (v) => v.mode === 'quiz' },
+    {
       key: 'exp',
       type: 'choice',
       label: L('Zufallsexperiment', 'Random experiment'),
@@ -84,8 +102,9 @@ export default defineSimulation({
         { value: 'tack', label: L('Reißnagel', 'Drawing pin') },
       ],
       default: 'die',
+      visibleIf: (v) => v.mode !== 'quiz',
     },
-    { key: 'face', type: 'number', label: L('Beobachtete Augenzahl', 'Observed number'), min: 1, max: 6, step: 1, default: 6, visibleIf: (v) => v.exp === 'die' },
+    { key: 'face', type: 'number', label: L('Beobachtete Augenzahl', 'Observed number'), min: 1, max: 6, step: 1, default: 6, visibleIf: (v) => v.exp === 'die' && v.mode !== 'quiz' },
     {
       key: 'pTack',
       type: 'number',
@@ -99,7 +118,7 @@ export default defineSimulation({
       step: 0.05,
       default: 0.65,
       // Nur sichtbar, wenn p eingezeichnet wird – sonst verriete der Regler den Wert, der geschätzt werden soll
-      visibleIf: (v) => v.exp === 'tack' && v.showP === true,
+      visibleIf: (v) => v.exp === 'tack' && v.showP === true && v.mode !== 'quiz',
     },
     { key: 'showP', type: 'boolean', group: 'view', label: L('Wahrscheinlichkeit p einzeichnen', 'Show probability p'), default: true },
     { key: 'funnel', type: 'boolean', group: 'view', label: L('Trichter (95 % der Versuchsreihen)', 'Funnel (95 % of runs)'), default: true, visibleIf: (v) => v.showP === true },
@@ -107,11 +126,13 @@ export default defineSimulation({
     { key: 'speed', type: 'number', group: 'anim', label: L('Würfe pro Sekunde', 'Throws per second'), min: 1, max: 500, step: 1, default: 25 },
   ],
   actions: [
-    { id: 'one', label: L('1-mal werfen', 'Throw once'), primary: true },
-    { id: 'ten', label: L('10-mal', '10 times') },
-    { id: 'hundred', label: L('100-mal', '100 times') },
-    { id: 'thousand', label: L('1000-mal', '1000 times') },
-    { id: 'reset', label: L('Neu beginnen', 'Start over') },
+    { id: 'one', label: L('1-mal werfen', 'Throw once'), primary: true, visibleIf: (v) => v.mode !== 'quiz' },
+    { id: 'ten', label: L('10-mal', '10 times'), visibleIf: (v) => v.mode !== 'quiz' },
+    { id: 'hundred', label: L('100-mal', '100 times'), visibleIf: (v) => v.mode !== 'quiz' },
+    { id: 'thousand', label: L('1000-mal', '1000 times'), visibleIf: (v) => v.mode !== 'quiz' },
+    { id: 'reset', label: L('Neu beginnen', 'Start over'), visibleIf: (v) => v.mode !== 'quiz' },
+    { id: 'check', label: L('Prüfen', 'Check'), primary: true, visibleIf: (v) => v.mode === 'quiz' },
+    { id: 'newq', label: L('Neue Aufgabe', 'New task'), visibleIf: (v) => v.mode === 'quiz' },
   ],
   images: {
     die: 'wuerfel.webp',
@@ -123,6 +144,9 @@ export default defineSimulation({
     tackSide: 'reissnagel-seitenlage.webp',
   },
   readouts: [
+    { key: 'task', label: L('Aufgabe', 'Task') },
+    { key: 'verdict', label: L('Rückmeldung', 'Feedback') },
+    { key: 'spread', label: L('Relative Häufigkeiten der 20 Reihen', 'Relative frequencies of the 20 runs') },
     { key: 'n', label: L('Anzahl der Würfe', 'Number of throws') },
     { key: 'k', label: L('Absolute Häufigkeit', 'Absolute frequency') },
     { key: 'h', label: L('Relative Häufigkeit', 'Relative frequency') },
@@ -135,6 +159,8 @@ export default defineSimulation({
     { id: 'coin', label: L('Münze: Zahl', 'Coin: tails'), values: { exp: 'coin' } },
     { id: 'tack', label: L('Reißnagel (p unbekannt)', 'Drawing pin (p unknown)'), values: { exp: 'tack', showP: false } },
     { id: 'linear', label: L('Lineare Achse', 'Linear axis'), values: { logScale: false } },
+    { id: 'many', label: L('20 Versuchsreihen', '20 runs'), values: { mode: 'many', exp: 'coin' } },
+    { id: 'quiz', label: L('Üben', 'Practice'), values: { mode: 'quiz', q: 1, ans: '' } },
   ],
   strings: {
     de: {
@@ -151,6 +177,19 @@ export default defineSimulation({
       // Zeilenumbruch nur bei schmaler Fläche, sonst Leerzeichen
       start: 'Werfen,\num zu beginnen',
       ghost: 'Beispielverlauf – deine Würfe ersetzen ihn',
+      runs: '20 Versuchsreihen',
+      inFunnel: '{k} von 20 im Trichter',
+      spreadText: 'kleinste {lo}, größte {hi} (Unterschied {d})',
+      strip: 'Relative Häufigkeit jeder Reihe',
+      qExpCoin: 'Aufgabe {q}: Eine Münze wird {n}-mal geworfen. Wie oft erwartest du „Zahl“?',
+      qExpDie: 'Aufgabe {q}: Ein Würfel wird {n}-mal geworfen. Wie oft erwartest du die Augenzahl {f}?',
+      qEst: 'Aufgabe {q}: Ein Reißnagel wurde {n}-mal geworfen und landete {k}-mal mit der Spitze nach oben. Schätze die Wahrscheinlichkeit dafür (als Dezimalzahl oder in %).',
+      okExp: 'Richtig! Erwartet: n · p = {v}. Tatsächlich schwankt die Anzahl um diesen Wert.',
+      okEst: 'Richtig! h = {k} : {n} ≈ {v}. Die Simulation nutzte p = {p}.',
+      noExp: 'Noch nicht. Tipp: erwartete Anzahl = n · p.',
+      noEst: 'Noch nicht. Tipp: Schätzwert = relative Häufigkeit h = k : n.',
+      emptyMsg: 'Trag dein Ergebnis unter „Deine Antwort“ ein und tippe auf „Prüfen“.',
+      wait: 'Deine Antwort fehlt noch.',
     },
     en: {
       canvas: 'Random experiment with a chart of the relative frequency against the number of throws',
@@ -165,6 +204,19 @@ export default defineSimulation({
       chartY: 'h',
       start: 'Throw\nto start',
       ghost: 'Example run – your throws replace it',
+      runs: '20 runs',
+      inFunnel: '{k} of 20 inside the funnel',
+      spreadText: 'smallest {lo}, largest {hi} (difference {d})',
+      strip: 'Relative frequency of each run',
+      qExpCoin: 'Task {q}: A coin is tossed {n} times. How often do you expect “tails”?',
+      qExpDie: 'Task {q}: A die is rolled {n} times. How often do you expect a {f}?',
+      qEst: 'Task {q}: A drawing pin was thrown {n} times and landed point up {k} times. Estimate the probability of this (as a decimal or in %).',
+      okExp: 'Correct! Expected: n · p = {v}. In reality the number varies around this value.',
+      okEst: 'Correct! h = {k} : {n} ≈ {v}. The simulation used p = {p}.',
+      noExp: 'Not yet. Tip: expected number = n · p.',
+      noEst: 'Not yet. Tip: estimate = relative frequency h = k : n.',
+      emptyMsg: 'Enter your result under “Your answer” and tap “Check”.',
+      wait: 'Your answer is still missing.',
     },
   },
 
@@ -185,6 +237,7 @@ export default defineSimulation({
     });
     const p = ctx.params;
     const fmt = ctx.fmt;
+    const tr = (key: string, vars: Record<string, string | number>) => ctx.t(key).replace(/\{(\w+)\}/g, (_, k: string) => String(vars[k] ?? ''));
     const anim = new Tween(650, ease.outCubic);
     let animKind: 'single' | 'bulk' = 'single';
 
@@ -195,6 +248,13 @@ export default defineSimulation({
     let last = -1;
     let carry = 0;
     let xMax = 2;
+    // 20 Versuchsreihen
+    let runK: number[] = [];
+    let runHist: number[][] = [];
+    // Üben
+    let task: LawTask = lawTask(1, seededRandom(1));
+    let taskState: { ok: boolean; got: number | null } | null = null;
+    const mode = () => p.mode as 'one' | 'many' | 'quiz';
 
     const experiment = () => p.exp as ExperimentId;
     const probs = () => probabilities(experiment(), p.pTack);
@@ -212,10 +272,19 @@ export default defineSimulation({
       history = [];
       last = -1;
       carry = 0;
+      runK = Array.from({ length: RUNS }, () => 0);
+      runHist = Array.from({ length: RUNS }, () => []);
       fitRange(true);
     }
 
     function fitRange(force = false): void {
+      if (mode() === 'quiz') {
+        const nq = task.n;
+        xMax = p.logScale ? Math.ceil(Math.log10(nq) + 0.01) : niceCeil(nq * 1.05);
+        plot.setRangePadded([0, xMax], [0, 1], CHART_PADDING);
+        plot.setAxes({ x: p.logScale ? { label: 'n', minStep: 1, format: (v) => fmt.num(10 ** v, 0) } : { label: 'n' } });
+        return;
+      }
       const target = p.logScale ? Math.max(2, Math.ceil(Math.log10(Math.max(n, 1)) + 0.01)) : Math.max(20, niceCeil(n * 1.1));
       if (!force && target <= xMax) return;
       xMax = target;
@@ -232,6 +301,18 @@ export default defineSimulation({
     }
 
     function throwMany(count: number): void {
+      if (mode() === 'many') {
+        const pv = eventProb();
+        for (let i = 0; i < count; i++) {
+          n++;
+          for (let r = 0; r < RUNS; r++) {
+            if (Math.random() < pv) runK[r]!++;
+            if (runHist[r]!.length < MAX_RUN_HISTORY) runHist[r]!.push(runK[r]! / n);
+          }
+        }
+        fitRange();
+        return;
+      }
       const pr = probs();
       const ev = eventIndex();
       for (let i = 0; i < count; i++) {
@@ -251,7 +332,44 @@ export default defineSimulation({
       return Math.abs(scaled - Math.round(scaled)) < 1e-6 ? '=' : '≈';
     }
 
+    function taskText(): string {
+      if (task.kind === 'estimate') return tr('qEst', { q: p.q, n: fmt.num(task.n, 0), k: fmt.num(task.k, 0) });
+      return task.exp === 'coin' ? tr('qExpCoin', { q: p.q, n: fmt.num(task.n, 0) }) : tr('qExpDie', { q: p.q, n: fmt.num(task.n, 0), f: task.face });
+    }
+
+    function feedback(): { text: string; color: string } | null {
+      if (!taskState) return null;
+      const theme = ctx.theme;
+      if (taskState.got === null) return { text: ctx.t('wait'), color: theme.muted };
+      if (taskState.ok)
+        return task.kind === 'expected'
+          ? { text: tr('okExp', { v: fmt.num(task.answer, 0) }), color: theme.series[2]! }
+          : { text: tr('okEst', { k: fmt.num(task.k, 0), n: fmt.num(task.n, 0), v: fmt.num(task.answer, 3), p: fmt.num(task.p, 2) }), color: theme.series[2]! };
+      return { text: ctx.t(task.kind === 'expected' ? 'noExp' : 'noEst'), color: theme.series[1]! };
+    }
+
     function updateReadouts(): void {
+      for (const key of ['task', 'verdict', 'spread']) ctx.readout(key, null);
+      if (mode() === 'quiz') {
+        for (const key of ['n', 'k', 'h', 'p', 'diff', 'absDiff']) ctx.readout(key, null);
+        ctx.readout('task', taskText());
+        const fb = feedback();
+        ctx.readout('verdict', fb ? fb.text : ctx.t('emptyMsg'));
+        return;
+      }
+      if (mode() === 'many') {
+        for (const key of ['k', 'h', 'diff', 'absDiff']) ctx.readout(key, null);
+        ctx.readout('n', `n = ${fmt.num(n, 0)}`);
+        const pv0 = eventProb();
+        ctx.readout('p', p.showP ? `p = ${fmt.num(pv0, 3)}` : ctx.t('unknown'));
+        if (n) {
+          const hs = runK.map((kk) => kk / n);
+          const lo = Math.min(...hs);
+          const hi = Math.max(...hs);
+          ctx.readout('spread', `${tr('spreadText', { lo: fmt.num(lo, 3), hi: fmt.num(hi, 3), d: fmt.num(hi - lo, 3) })}${p.showP ? ` · ${tr('inFunnel', { k: insideFunnel(hs, pv0, n) })}` : ''}`);
+        }
+        return;
+      }
       const pv = eventProb();
       const h = n ? k / n : NaN;
       ctx.readout('n', `n = ${fmt.num(n, 0)}`);
@@ -567,6 +685,137 @@ export default defineSimulation({
       g.stroke();
     }
 
+    function wrapText(value: string, maxW: number, font: string): string[] {
+      const g = surface.g;
+      g.font = font;
+      const lines: string[] = [];
+      let line = '';
+      for (const w of value.split(' ')) {
+        const next = line ? `${line} ${w}` : w;
+        if (g.measureText(next).width > maxW && line) {
+          lines.push(line);
+          line = w;
+        } else line = next;
+      }
+      if (line) lines.push(line);
+      return lines;
+    }
+
+    /** Linke bzw. obere Fläche bei 20 Reihen: Zähler „im Trichter“ und Punktstreifen der relativen Häufigkeiten. */
+    function drawManyPanel(obj: Rect, bars: Rect): void {
+      const g = surface.g;
+      const theme = ctx.theme;
+      const pv = eventProb();
+      const hs = n ? runK.map((kk) => kk / n) : [];
+      const narrow = surface.width < 700;
+      text(g, narrow ? eventName() : `${ctx.t('runs')}: ${eventName()}`, obj.x + obj.w / 2, obj.y + 24, { font: `700 ${narrow ? 13 : 14}px ${theme.font}`, color: theme.text });
+      text(g, `n = ${fmt.num(n, 0)}`, obj.x + obj.w / 2, obj.y + obj.h * 0.45, { font: `800 ${Math.min(34, obj.w * 0.14)}px ${theme.font}`, color: theme.series[0]! });
+      if (n && p.showP) text(g, tr('inFunnel', { k: insideFunnel(hs, pv, n) }), obj.x + obj.w / 2, obj.y + obj.h * 0.68, { font: `600 13px ${theme.font}`, color: theme.series[2]! });
+      // Punktstreifen 0 … 1
+      const x0 = bars.x + 20;
+      const x1 = bars.x + bars.w - 20;
+      const y = bars.y + bars.h * 0.62;
+      const X = (v: number) => x0 + (x1 - x0) * v;
+      if (!narrow) text(g, ctx.t('strip'), bars.x + bars.w / 2, bars.y + 18, { font: `700 12px ${theme.font}`, color: theme.muted });
+      if (p.showP && n && p.funnel) {
+        const w = funnelHalfWidth(pv, n);
+        g.fillStyle = withAlpha(theme.series[2]!, 0.15);
+        g.fillRect(X(Math.max(0, pv - w)), y - 40, X(Math.min(1, pv + w)) - X(Math.max(0, pv - w)), 50);
+      }
+      g.strokeStyle = theme.axis;
+      g.lineWidth = 1.5;
+      g.beginPath();
+      g.moveTo(x0, y + 10);
+      g.lineTo(x1, y + 10);
+      g.stroke();
+      for (const t of [0, 0.5, 1]) text(g, fmt.num(t, 1), X(t), y + 24, { font: `500 11px ${theme.font}`, color: theme.muted });
+      if (p.showP) {
+        g.strokeStyle = theme.series[2]!;
+        g.setLineDash([4, 3]);
+        g.beginPath();
+        g.moveTo(X(pv), y - 44);
+        g.lineTo(X(pv), y + 10);
+        g.stroke();
+        g.setLineDash([]);
+      }
+      // gleiche Werte übereinander stapeln
+      const stack = new Map<number, number>();
+      for (const h of hs) {
+        const key = Math.round(X(h) / 6);
+        const level = stack.get(key) ?? 0;
+        stack.set(key, level + 1);
+        g.fillStyle = theme.series[0]!;
+        g.beginPath();
+        g.arc(X(h), y + 4 - level * 7, 3.5, 0, Math.PI * 2);
+        g.fill();
+      }
+    }
+
+    function drawQuizCard(r: Rect): void {
+      const g = surface.g;
+      const theme = ctx.theme;
+      const fb = feedback();
+      let size = 16;
+      const measure = () => {
+        const a = wrapText(taskText(), r.w - 32, `600 ${size}px ${theme.font}`);
+        const b = fb ? wrapText(fb.text, r.w - 32, `700 ${size}px ${theme.font}`) : [];
+        return { a, b, h: (a.length + b.length) * size * 1.3 + (fb ? 12 : 0) };
+      };
+      let m = measure();
+      while (m.h > r.h - 24 && size > 11) {
+        size--;
+        m = measure();
+      }
+      let y = r.y + Math.max(12, (r.h - m.h) / 2);
+      g.textAlign = 'left';
+      g.textBaseline = 'top';
+      g.font = `600 ${size}px ${theme.font}`;
+      g.fillStyle = theme.text;
+      for (const l of m.a) {
+        g.fillText(l, r.x + 16, y);
+        y += size * 1.3;
+      }
+      if (fb) {
+        y += 12;
+        g.font = `700 ${size}px ${theme.font}`;
+        g.fillStyle = fb.color;
+        for (const l of m.b) {
+          g.fillText(l, r.x + 16, y);
+          y += size * 1.3;
+        }
+      }
+    }
+
+    function drawQuizChart(): void {
+      const theme = ctx.theme;
+      plot.begin();
+      plot.grid({ minor: false });
+      plot.axes();
+      const solved = taskState?.ok === true;
+      const showP = task.kind === 'expected' || solved;
+      if (showP) {
+        plot.hline(task.p, { color: theme.series[2], width: 2, dash: [7, 6] });
+        plot.text(plot.bounds.xMax, task.p, `p = ${fmt.num(task.p, 3)}`, { color: theme.series[2], align: 'right', offset: [-8, -8], weight: '600', size: 13 });
+      }
+      if (task.history) {
+        const pts: [number, number][] = [];
+        const hist = task.history;
+        const steps = 400;
+        for (let i = 0; i <= steps; i++) {
+          const x = (Math.log10(hist.length) * i) / steps;
+          const idx = Math.min(hist.length, Math.max(1, Math.round(p.logScale ? 10 ** x : (hist.length * i) / steps)));
+          pts.push([toX(idx), hist[idx - 1]!]);
+        }
+        plot.polyline(pts, { color: theme.series[0], width: 2.5 });
+        plot.point(toX(hist.length), task.answer, { color: theme.series[0], radius: 6 });
+        if (solved) plot.text(toX(hist.length), task.answer, `h ≈ ${fmt.num(task.answer, 3)}`, { color: theme.series[0], align: 'right', offset: [-10, -14], weight: 'bold', size: 13, halo: true });
+      } else {
+        plot.vline(toX(task.n), { color: theme.series[4], width: 1.5, dash: [5, 4] });
+        plot.text(toX(task.n), 0, `n = ${fmt.num(task.n, 0)}`, { color: theme.series[4], align: 'right', offset: [-6, -10], weight: 'bold', size: 13 });
+      }
+      plot.end();
+    }
+
     function drawChart(): void {
       const theme = ctx.theme;
       const pv = eventProb();
@@ -592,7 +841,22 @@ export default defineSimulation({
         plot.hline(pv, { color: theme.series[2], width: 2, dash: [7, 6] });
         plot.text(plot.bounds.xMax, pv, `p = ${fmt.num(pv, 3)}`, { color: theme.series[2], align: 'right', offset: [-8, -8], weight: '600', size: 13 });
       }
-      if (n > 0) {
+      if (mode() === 'many' && n > 0) {
+        const steps = Math.max(2, Math.ceil(plot.px(xTo) - plot.px(xFrom)) / 2);
+        runHist.forEach((hist, r) => {
+          const pts: [number, number][] = [];
+          let prev = 0;
+          for (let i = 0; i <= steps; i++) {
+            const x = xFrom + ((xTo - xFrom) * i) / steps;
+            const idx = Math.min(hist.length, Math.max(1, Math.round(nAt(x))));
+            if (idx === prev) continue;
+            prev = idx;
+            pts.push([toX(idx), hist[idx - 1]!]);
+          }
+          if (n > hist.length) pts.push([toX(n), runK[r]! / n]);
+          plot.polyline(pts, { color: withAlpha(theme.series[0]!, 0.45), width: 1.4 });
+        });
+      } else if (n > 0) {
         const pts: [number, number][] = [];
         const pxFrom = plot.px(xFrom);
         const pxTo = plot.px(xTo);
@@ -628,13 +892,31 @@ export default defineSimulation({
 
     return {
       update(changed, source) {
-        if ((changed.has('exp') || changed.has('face') || changed.has('pTack')) && source !== 'init') reset();
+        if (changed.has('q') || source === 'init' || source === 'replace') {
+          task = lawTask(p.q, seededRandom(p.q * 7919 + 83));
+          taskState = null;
+          if (mode() === 'quiz') fitRange(true);
+        }
+        if (changed.has('ans') && taskState && !taskState.ok) taskState = null;
+        if (changed.has('mode') && source !== 'init') reset();
         if (changed.has('logScale')) fitRange(true);
         if (!counts.length) reset();
         updateReadouts();
       },
 
       action(id) {
+        if (id === 'check') {
+          taskState = checkLaw(task, p.ans);
+          updateReadouts();
+          const fb = feedback();
+          if (fb) ctx.announce(fb.text);
+          ctx.requestRender();
+          return;
+        }
+        if (id === 'newq') {
+          ctx.set({ q: p.q >= 999 ? 1 : p.q + 1, ans: '' });
+          return;
+        }
         if (id === 'reset') {
           ctx.clock.pause();
           reset();
@@ -648,7 +930,8 @@ export default defineSimulation({
       },
 
       tick(dt) {
-        carry += dt * p.speed;
+        if (mode() === 'quiz') return;
+        carry += dt * (mode() === 'many' ? Math.min(p.speed, 100) : p.speed);
         const m = Math.min(5000, Math.floor(carry));
         carry -= m;
         if (m > 0) {
@@ -669,8 +952,17 @@ export default defineSimulation({
       render() {
         const { obj, bars } = layout(surface.width, surface.height);
         surface.begin();
-        drawObject(obj);
-        drawBars(bars);
+        if (mode() === 'quiz') {
+          const left: Rect = surface.width >= 700 ? { x: obj.x, y: obj.y, w: obj.w, h: obj.h + bars.h } : { x: 0, y: 0, w: surface.width, h: obj.h };
+          drawQuizCard(left);
+          drawQuizChart();
+          return;
+        }
+        if (mode() === 'many') drawManyPanel(obj, bars);
+        else {
+          drawObject(obj);
+          drawBars(bars);
+        }
         drawChart();
         if (anim.running) ctx.requestRender();
       },
