@@ -29,7 +29,9 @@ describe('Zahlenfabrik: Löser für Tipps', () => {
       const s = solveChain(l, kitFor(l), Math.min(3, l.maxMachines ?? 3));
       expect(s.length, l.id).toBeGreaterThan(0);
     }
-  });
+    // Rechnet alle Ketten-Level durch (einzeln etwa 4 s); unter Last reichten die
+    // üblichen 5 s nicht immer – daher mehr Zeit, geprüft wird dasselbe.
+  }, 30_000);
 });
 
 describe('Zahlenfabrik: Tages- und Zufallsrätsel', () => {
