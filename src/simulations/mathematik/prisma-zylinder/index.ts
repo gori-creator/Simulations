@@ -1,5 +1,5 @@
-import { defineSimulation, ease, mesh3d, mixColor, roundRect, Surface, Tween, vec3, View3D, type Mesh3D, type Vec3 } from '../../../sim-core';
-import { circleBase, polygonBase, regularPolygon, rollCircle, rollPolygon, slices, solid, triangleBase, type BaseShape, type Pt } from './model';
+import { defineSimulation, ease, mesh3d, mixColor, roundRect, seededRandom, Surface, Tween, vec3, View3D, type Mesh3D, type Vec3 } from '../../../sim-core';
+import { checkSolid, circleBase, polygonBase, regularPolygon, rollCircle, rollPolygon, slices, solid, solidTask, triangleBase, type BaseShape, type Pt, type SolidTask } from './model';
 
 const L = (de: string, en: string) => ({ de, en });
 /** Abschnitte des Reglers „Abrollen“: bis 80 % rollt der Körper, danach klappen Grund- und Deckfläche herunter. */
@@ -11,6 +11,7 @@ const clamp01 = (t: number) => Math.max(0, Math.min(1, t));
  * Prisma und Zylinder: Volumen V = G · h durch Stapeln von Schichten,
  * Oberfläche durch Abrollen (jede Seitenfläche hinterlässt ihren Abdruck, der
  * Mantel ist ein Rechteck u × h). Der Zylinder als Grenzfall des n-Eck-Prismas.
+ * Dazu Übungsaufgaben (Prisma, Zylinder, Getränkedose).
  */
 export default defineSimulation({
   id: 'prisma-zylinder',
@@ -27,9 +28,12 @@ export default defineSimulation({
       options: [
         { value: 'volumen', label: L('Volumen: Schichten', 'Volume: layers') },
         { value: 'oberflaeche', label: L('Oberfläche: abrollen', 'Surface: roll out') },
+        { value: 'quiz', label: L('Üben', 'Practice') },
       ],
       default: 'volumen',
     },
+    { key: 'q', type: 'number', label: L('Aufgabe Nr.', 'Task no.'), min: 1, max: 999, step: 1, default: 1, visibleIf: (v) => v.mode === 'quiz' },
+    { key: 'ans', type: 'text', label: L('Deine Antwort', 'Your answer'), default: '', maxLength: 16, placeholder: L('z. B. 62,8', 'e.g. 62.8'), visibleIf: (v) => v.mode === 'quiz' },
     {
       key: 'base',
       type: 'choice',
@@ -40,6 +44,7 @@ export default defineSimulation({
         { value: 'kreis', label: L('Kreis (Zylinder)', 'Circle (cylinder)') },
       ],
       default: 'neck',
+      visibleIf: (v) => v.mode !== 'quiz',
     },
     {
       key: 'n',
@@ -50,7 +55,7 @@ export default defineSimulation({
       max: 40,
       step: 1,
       default: 6,
-      visibleIf: (v) => v.base === 'neck',
+      visibleIf: (v) => v.base === 'neck' && v.mode !== 'quiz',
     },
     {
       key: 'r',
@@ -66,11 +71,11 @@ export default defineSimulation({
       step: 0.5,
       default: 2,
       unit: 'cm',
-      visibleIf: (v) => v.base !== 'dreieck',
+      visibleIf: (v) => v.base !== 'dreieck' && v.mode !== 'quiz',
     },
-    { key: 'g', type: 'number', group: 'size', label: L('Grundseite g', 'Base side g'), min: 1, max: 8, step: 0.5, default: 4, unit: 'cm', visibleIf: (v) => v.base === 'dreieck' },
-    { key: 'hg', type: 'number', group: 'size', label: L('Dreieckshöhe h_g', 'Triangle height h_g'), min: 1, max: 6, step: 0.5, default: 3, unit: 'cm', visibleIf: (v) => v.base === 'dreieck' },
-    { key: 'h', type: 'number', group: 'size', label: L('Körperhöhe h', 'Height h of the solid'), min: 1, max: 8, step: 0.5, default: 4, unit: 'cm' },
+    { key: 'g', type: 'number', group: 'size', label: L('Grundseite g', 'Base side g'), min: 1, max: 8, step: 0.5, default: 4, unit: 'cm', visibleIf: (v) => v.base === 'dreieck' && v.mode !== 'quiz' },
+    { key: 'hg', type: 'number', group: 'size', label: L('Dreieckshöhe h_g', 'Triangle height h_g'), min: 1, max: 6, step: 0.5, default: 3, unit: 'cm', visibleIf: (v) => v.base === 'dreieck' && v.mode !== 'quiz' },
+    { key: 'h', type: 'number', group: 'size', label: L('Körperhöhe h', 'Height h of the solid'), min: 1, max: 8, step: 0.5, default: 4, unit: 'cm', visibleIf: (v) => v.mode !== 'quiz' },
     { key: 'roll', type: 'number', label: L('Abrollen', 'Rolling out'), min: 0, max: 100, step: 1, default: 0, unit: '%', visibleIf: (v) => v.mode === 'oberflaeche' },
     {
       key: 'ghost',
@@ -80,13 +85,21 @@ export default defineSimulation({
       default: false,
       visibleIf: (v) => v.base === 'neck' && v.mode === 'volumen',
     },
-    { key: 'calc', type: 'boolean', group: 'view', label: L('Rechnung im Bild', 'Calculation in the picture'), default: true },
+    { key: 'calc', type: 'boolean', group: 'view', label: L('Rechnung im Bild', 'Calculation in the picture'), default: true, visibleIf: (v) => v.mode !== 'quiz' },
   ],
+  hint: (v) => {
+    if (v.mode === 'quiz') return L('Tipp: Rechne mit Taschenrechner, trag das Ergebnis unter „Deine Antwort“ ein und tippe auf „Prüfen“.', 'Tip: Work it out with a calculator, enter the result under “Your answer” and tap “Check”.');
+    return null;
+  },
   actions: [
     { id: 'stack', label: L('Schichten stapeln', 'Stack layers'), primary: true, visibleIf: (v) => v.mode === 'volumen' },
     { id: 'roll', label: L('Abrollen', 'Roll out'), primary: true, visibleIf: (v) => v.mode === 'oberflaeche' },
+    { id: 'check', label: L('Prüfen', 'Check'), primary: true, visibleIf: (v) => v.mode === 'quiz' },
+    { id: 'newq', label: L('Neue Aufgabe', 'New task'), visibleIf: (v) => v.mode === 'quiz' },
   ],
   readouts: [
+    { key: 'task', label: L('Aufgabe', 'Task') },
+    { key: 'verdict', label: L('Rückmeldung', 'Feedback') },
     { key: 'G', label: L('Grundfläche', 'Base area'), spoiler: true },
     { key: 'u', label: L('Umfang der Grundfläche', 'Perimeter of the base'), spoiler: true },
     { key: 'V', label: L('Volumen', 'Volume'), spoiler: true },
@@ -105,6 +118,18 @@ export default defineSimulation({
   strings: {
     de: {
       canvas: 'Prisma oder Zylinder in 3D: aus Schichten gestapelt oder auf dem Boden abgerollt; die Ansicht lässt sich drehen',
+      qPrismV: 'Aufgabe {q}: Ein Prisma hat als Grundfläche ein Dreieck mit g = {g} cm und h_g = {hg} cm. Es ist {h} cm hoch. Berechne das Volumen in cm³.',
+      qCylV: 'Aufgabe {q}: Ein Zylinder hat den Radius {r} cm und die Höhe {h} cm. Berechne das Volumen in cm³ (eine Nachkommastelle).',
+      qCylO: 'Aufgabe {q}: Ein Zylinder hat den Radius {r} cm und die Höhe {h} cm. Berechne die Oberfläche in cm² (eine Nachkommastelle).',
+      qCan: 'Aufgabe {q}: In eine Dose mit dem Radius {r} cm sollen {v} ml passen. Wie hoch muss sie innen sein (in cm, eine Nachkommastelle)?',
+      hPrismV: 'V = G · h mit G = ½ · g · h_g.',
+      hCylV: 'V = π · r² · h',
+      hCylO: 'O = 2 · π · r² + 2 · π · r · h (zwei Kreise und der Mantel).',
+      hCan: '1 ml = 1 cm³; h = V : (π · r²).',
+      okMsg: 'Richtig! {calc}',
+      noMsg: 'Noch nicht. Tipp: {hint}',
+      emptyMsg: 'Trag dein Ergebnis unter „Deine Antwort“ ein und tippe auf „Prüfen“.',
+      wait: 'Deine Antwort fehlt noch.',
       layers1: '1 Schicht',
       layersN: '{n} Schichten',
       baseArea: 'Grundfläche G',
@@ -126,6 +151,18 @@ export default defineSimulation({
     },
     en: {
       canvas: 'Prism or cylinder in 3D: stacked from layers or rolled out on the floor; the view can be rotated',
+      qPrismV: 'Task {q}: A prism has a triangular base with g = {g} cm and h_g = {hg} cm. It is {h} cm high. Calculate its volume in cm³.',
+      qCylV: 'Task {q}: A cylinder has radius {r} cm and height {h} cm. Calculate its volume in cm³ (one decimal place).',
+      qCylO: 'Task {q}: A cylinder has radius {r} cm and height {h} cm. Calculate its surface area in cm² (one decimal place).',
+      qCan: 'Task {q}: A can with radius {r} cm is to hold {v} ml. How high must it be inside (in cm, one decimal place)?',
+      hPrismV: 'V = B · h with B = ½ · g · h_g.',
+      hCylV: 'V = π · r² · h',
+      hCylO: 'S = 2 · π · r² + 2 · π · r · h (two circles and the curved surface).',
+      hCan: '1 ml = 1 cm³; h = V : (π · r²).',
+      okMsg: 'Correct! {calc}',
+      noMsg: 'Not yet. Tip: {hint}',
+      emptyMsg: 'Enter your result under “Your answer” and tap “Check”.',
+      wait: 'Your answer is still missing.',
       layers1: '1 layer',
       layersN: '{n} layers',
       baseArea: 'Base area G',
@@ -159,6 +196,16 @@ export default defineSimulation({
     const VIEWS = { volumen: { azimuth: 30, elevation: 22 }, oberflaeche: { azimuth: 22, elevation: 38 } } as const;
     const view = new View3D(surface, { ...VIEWS.volumen, elevationLimits: [-20, 88] });
 
+    // Üben: Maße der Aufgabe
+    let task: SolidTask = solidTask(1, seededRandom(1));
+    let taskState: { ok: boolean; got: number | null } | null = null;
+    const quiz = () => p.mode === 'quiz';
+    const BASE = () => (quiz() ? task.base : p.base);
+    const GG = () => (quiz() ? task.g : p.g);
+    const HG = () => (quiz() ? task.hg : p.hg);
+    const RAD = () => (quiz() ? task.r : p.r);
+    const HEIGHT = () => (quiz() ? task.h : p.h);
+    const N = () => p.n;
     let base: BaseShape = polygonBase(6, 2);
     /** Schichten, die gerade sichtbar sind (beim Stapeln wachsend). */
     let stackAnim: { tween: Tween } | null = null;
@@ -168,9 +215,9 @@ export default defineSimulation({
     let lastTime = performance.now();
 
     function rebuild(): void {
-      base = p.base === 'dreieck' ? triangleBase(p.g, p.hg) : p.base === 'kreis' ? circleBase(p.r) : polygonBase(p.n, p.r);
+      base = BASE() === 'dreieck' ? triangleBase(GG(), HG()) : BASE() === 'kreis' ? circleBase(RAD()) : polygonBase(N(), RAD());
       // Dreieck mit der Spitze zur Kamera drehen, damit zwei Seitenflächen sichtbar sind (Seite 0 bleibt Seite 0)
-      if (p.base === 'dreieck') base = { ...base, points: base.points.map(([x, y]) => [-x, -y] as Pt) };
+      if (BASE() === 'dreieck') base = { ...base, points: base.points.map(([x, y]) => [-x, -y] as Pt) };
     }
 
     /** Querschnitt zum Abrollen (u entlang des Bodens, w nach oben), Seite 0 unten. */
@@ -180,31 +227,113 @@ export default defineSimulation({
 
     /* ---------- Ergebnisse ---------- */
 
+    function taskText(): string {
+      const t = task;
+      const vars = { q: p.q, g: fmt.num(t.g, 1), hg: fmt.num(t.hg, 1), h: fmt.num(t.h, 1), r: fmt.num(t.r, 1), v: t.volume };
+      return tr(t.kind === 'prismV' ? 'qPrismV' : t.kind === 'cylV' ? 'qCylV' : t.kind === 'cylO' ? 'qCylO' : 'qCan', vars);
+    }
+
+    function calcText(): string {
+      const t = task;
+      if (t.kind === 'prismV') return `V = ½ · ${fmt.num(t.g, 1)} · ${fmt.num(t.hg, 1)} · ${fmt.num(t.h, 1)} = ${fmt.num(t.answer, 2)} cm³`;
+      if (t.kind === 'cylV') return `V = π · ${fmt.num(t.r, 1)}² · ${fmt.num(t.h, 1)} ≈ ${fmt.num(t.answer, 1)} cm³`;
+      if (t.kind === 'cylO') return `${ctx.lang === 'de' ? 'O' : 'S'} = 2π · ${fmt.num(t.r, 1)}² + 2π · ${fmt.num(t.r, 1)} · ${fmt.num(t.h, 1)} ≈ ${fmt.num(t.answer, 1)} cm²`;
+      return `h = ${t.volume} : (π · ${fmt.num(t.r, 1)}²) ≈ ${fmt.num(t.answer, 1)} cm`;
+    }
+
+    function feedback(): { text: string; color: string } | null {
+      if (!taskState) return null;
+      if (taskState.got === null) return { text: ctx.t('wait'), color: ctx.theme.muted };
+      if (taskState.ok) return { text: tr('okMsg', { calc: calcText() }), color: ctx.theme.series[2]! };
+      const hint = task.kind === 'prismV' ? 'hPrismV' : task.kind === 'cylV' ? 'hCylV' : task.kind === 'cylO' ? 'hCylO' : 'hCan';
+      return { text: tr('noMsg', { hint: ctx.t(hint) }), color: ctx.theme.series[1]! };
+    }
+
+    function wrapText(value: string, maxW: number, font: string): string[] {
+      const g = surface.g;
+      g.font = font;
+      const lines: string[] = [];
+      let line = '';
+      for (const w of value.split(' ')) {
+        const next = line ? `${line} ${w}` : w;
+        if (g.measureText(next).width > maxW && line) {
+          lines.push(line);
+          line = w;
+        } else line = next;
+      }
+      if (line) lines.push(line);
+      return lines;
+    }
+
+    function drawTaskCard(narrow: boolean): void {
+      const th = ctx.theme;
+      const g = surface.g;
+      const boxW = narrow ? surface.width - 80 : Math.min(380, surface.width * 0.4);
+      const size = narrow ? 13 : 15;
+      const fb = feedback();
+      const lines = wrapText(taskText(), boxW - 28, `600 ${size}px ${th.font}`);
+      const fbLines = fb ? wrapText(fb.text, boxW - 28, `700 ${size}px ${th.font}`) : [];
+      const lineH = size * 1.35;
+      const boxH = 20 + (lines.length + fbLines.length) * lineH + (fb ? 8 : 0);
+      g.save();
+      g.fillStyle = th.dark ? 'rgba(15,20,30,0.84)' : 'rgba(255,255,255,0.92)';
+      roundRect(g, 10, 10, boxW, boxH, 12);
+      g.fill();
+      g.textAlign = 'left';
+      g.textBaseline = 'top';
+      let y = 20;
+      g.font = `600 ${size}px ${th.font}`;
+      g.fillStyle = th.text;
+      for (const l of lines) {
+        g.fillText(l, 24, y);
+        y += lineH;
+      }
+      if (fb) {
+        y += 8;
+        g.font = `700 ${size}px ${th.font}`;
+        g.fillStyle = fb.color;
+        for (const l of fbLines) {
+          g.fillText(l, 24, y);
+          y += lineH;
+        }
+      }
+      g.restore();
+    }
+
     function updateReadouts(): void {
+      ctx.readout('task', null);
+      ctx.readout('verdict', null);
+      if (quiz()) {
+        for (const k of ['G', 'u', 'V', 'O', 'cmp']) ctx.readout(k, null);
+        ctx.readout('task', taskText());
+        const fb = feedback();
+        ctx.readout('verdict', fb ? fb.text : ctx.t('emptyMsg'));
+        return;
+      }
       const v = (x: string) => `<var>${x}</var>`;
-      const s = solid(base, p.h);
+      const s = solid(base, HEIGHT());
       let gHtml = '';
       let uHtml = '';
-      if (p.base === 'dreieck') {
-        gHtml = `${v('G')} = ½ · ${v('g')} · ${v('h')}<sub>g</sub> = ½ · ${cm(p.g)} · ${cm(p.hg)} = <strong>${cm2(base.area)}</strong>`;
+      if (BASE() === 'dreieck') {
+        gHtml = `${v('G')} = ½ · ${v('g')} · ${v('h')}<sub>g</sub> = ½ · ${cm(GG())} · ${cm(HG())} = <strong>${cm2(base.area)}</strong>`;
         // Schenkellänge ist gerundet, daher schon vor der Summe „≈“
-        uHtml = `${v('u')} ≈ ${cm(p.g)} + 2 · ${cm(base.sides[1]!)} ≈ <strong>${cm(base.perimeter)}</strong>`;
-      } else if (p.base === 'neck') {
-        const q = regularPolygon(p.n, p.r);
-        gHtml = `${v('G')} = ${p.n} · ½ · ${v('s')} · ${v('ρ')} ≈ ${p.n} · ½ · ${cm(q.side)} · ${cm(q.apothem)} ≈ <strong>${cm2(base.area)}</strong>`;
-        uHtml = `${v('u')} = ${p.n} · ${v('s')} ≈ ${p.n} · ${cm(q.side)} ≈ <strong>${cm(base.perimeter)}</strong>`;
+        uHtml = `${v('u')} ≈ ${cm(GG())} + 2 · ${cm(base.sides[1]!)} ≈ <strong>${cm(base.perimeter)}</strong>`;
+      } else if (BASE() === 'neck') {
+        const q = regularPolygon(N(), RAD());
+        gHtml = `${v('G')} = ${N()} · ½ · ${v('s')} · ${v('ρ')} ≈ ${N()} · ½ · ${cm(q.side)} · ${cm(q.apothem)} ≈ <strong>${cm2(base.area)}</strong>`;
+        uHtml = `${v('u')} = ${N()} · ${v('s')} ≈ ${N()} · ${cm(q.side)} ≈ <strong>${cm(base.perimeter)}</strong>`;
       } else {
-        gHtml = `${v('G')} = π · ${v('r')}² = π · (${cm(p.r)})² ≈ <strong>${cm2(base.area)}</strong>`;
+        gHtml = `${v('G')} = π · ${v('r')}² = π · (${cm(RAD())})² ≈ <strong>${cm2(base.area)}</strong>`;
         uHtml = `${v('u')} = 2π · ${v('r')} ≈ <strong>${cm(base.perimeter)}</strong>`;
       }
       ctx.readout('G', { html: gHtml });
       ctx.readout('u', { html: uHtml });
-      ctx.readout('V', { html: `${v('V')} = ${v('G')} · ${v('h')} ≈ ${cm2(base.area)} · ${cm(p.h)} ≈ <strong>${cm3(s.volume)}</strong>` });
+      ctx.readout('V', { html: `${v('V')} = ${v('G')} · ${v('h')} ≈ ${cm2(base.area)} · ${cm(HEIGHT())} ≈ <strong>${cm3(s.volume)}</strong>` });
       ctx.readout('O', {
-        html: `${v('O')} = 2 · ${v('G')} + ${v('u')} · ${v('h')} ≈ 2 · ${cm2(base.area)} + ${cm(base.perimeter)} · ${cm(p.h)} ≈ <strong>${cm2(s.surface)}</strong>`,
+        html: `${v('O')} = 2 · ${v('G')} + ${v('u')} · ${v('h')} ≈ 2 · ${cm2(base.area)} + ${cm(base.perimeter)} · ${cm(HEIGHT())} ≈ <strong>${cm2(s.surface)}</strong>`,
       });
-      if (p.base === 'neck') {
-        const cyl = solid(circleBase(p.r), p.h);
+      if (BASE() === 'neck') {
+        const cyl = solid(circleBase(RAD()), HEIGHT());
         ctx.readout('cmp', {
           html: `${v('V')}<sub>${ctx.lang === 'de' ? 'Zyl' : 'cyl'}</sub> = π${v('r')}²${v('h')} ≈ ${cm3(cyl.volume)} · ${tr('percent', { p: fmt.num((100 * s.volume) / cyl.volume, 1) })}`,
         });
@@ -241,7 +370,7 @@ export default defineSimulation({
       }
       if (stackAnim?.tween.running) animating = true;
 
-      const goal = p.mode === 'volumen' ? volumeFrame() : surfaceFrame();
+      const goal = p.mode !== 'oberflaeche' ? volumeFrame() : surfaceFrame();
       if (!frame) frame = goal;
       const k = 1 - Math.exp(-dt / 0.2);
       frame = { target: vec3.lerp(frame.target, goal.target, k), radius: frame.radius + (goal.radius - frame.radius) * k };
@@ -251,10 +380,11 @@ export default defineSimulation({
       view.setScene({ target: frame.target, radius: frame.radius, anchor: [ax, narrow ? 0.6 : 0.53] });
 
       view.begin();
-      if (p.mode === 'volumen') drawVolume();
+      if (p.mode !== 'oberflaeche') drawVolume();
       else drawSurface();
       view.end();
-      if (p.calc) drawCard(narrow);
+      if (quiz()) drawTaskCard(narrow);
+      else if (p.calc) drawCard(narrow);
       if (animating || settling) ctx.requestRender();
     }
 
@@ -263,15 +393,15 @@ export default defineSimulation({
     }
 
     function volumeFrame(): { target: Vec3; radius: number } {
-      const R = Math.max(baseRadius(), p.ghost && p.base === 'neck' ? p.r : 0);
-      return { target: [0, -0.35 * R, p.h * 0.45], radius: Math.hypot(R * 1.15, p.h / 2) * 1.12 + 0.4 };
+      const R = Math.max(baseRadius(), p.ghost && BASE() === 'neck' ? RAD() : 0);
+      return { target: [0, -0.35 * R, HEIGHT() * 0.45], radius: Math.hypot(R * 1.15, HEIGHT() / 2) * 1.12 + 0.4 };
     }
 
     function surfaceFrame(): { target: Vec3; radius: number } {
       const P = base.perimeter;
       const R = baseRadius();
       const narrow = surface.width < 560;
-      return { target: [0, 0.12 * R, 0.3 * R], radius: 0.5 * Math.hypot(P + 2 * R, p.h + 4 * R) * (narrow ? 0.74 : 0.66) + 0.4 };
+      return { target: [0, 0.12 * R, 0.3 * R], radius: 0.5 * Math.hypot(P + 2 * R, HEIGHT() + 4 * R) * (narrow ? 0.74 : 0.66) + 0.4 };
     }
 
     /* ---------- Volumen: Schichten ---------- */
@@ -282,7 +412,7 @@ export default defineSimulation({
 
     function drawVolume(): void {
       const th = ctx.theme;
-      const parts = slices(p.h);
+      const parts = slices(HEIGHT());
       const R = baseRadius();
       // Bodengitter und Schatten
       const G = Math.ceil(R + 2);
@@ -293,7 +423,7 @@ export default defineSimulation({
       );
       // Schichten (beim Stapeln fallen sie nacheinander herunter)
       const t = stackAnim ? (performance.now() - (stackStart ?? 0)) / 1000 : Infinity;
-      const smoothEdges = p.base === 'kreis';
+      const smoothEdges = BASE() === 'kreis';
       parts.forEach(([z0, z1], i) => {
         let dz = 0;
         let alpha = 1;
@@ -313,17 +443,17 @@ export default defineSimulation({
           edgeAngle: smoothEdges ? 20 : 3,
           gloss: smoothEdges ? 0.3 : 0.16,
           face: (f) =>
-            f === 1 && top && !stackAnim && p.calc
+            f === 1 && top && !stackAnim && p.calc && !quiz()
               ? { label: { text: `G ≈ ${cm2(base.area, 2)}`, size: surface.width < 560 ? 11 : 13 } }
               : undefined,
         });
       });
       // verdeckte Kanten des ganzen Körpers
       // (bei vielen Ecken nur Unruhe – dann weglassen)
-      if (!stackAnim && base.points.length <= 16) view.mesh(prismMesh(0, p.h), { edges: false, hiddenEdges: true, edgeColor: edgeOf(tint(th.series[0]!)), edgeAngle: smoothEdges ? 20 : 3, face: () => null });
+      if (!stackAnim && base.points.length <= 16) view.mesh(prismMesh(0, HEIGHT()), { edges: false, hiddenEdges: true, edgeColor: edgeOf(tint(th.series[0]!)), edgeAngle: smoothEdges ? 20 : 3, face: () => null });
       // Vergleichszylinder
-      if (p.ghost && p.base === 'neck') {
-        const cyl = mesh3d.cylinder(p.r, p.h, 72);
+      if (p.ghost && BASE() === 'neck') {
+        const cyl = mesh3d.cylinder(RAD(), HEIGHT(), 72);
         view.mesh(cyl, { color: th.series[4], alpha: 0.13, flat: true, edgeColor: th.series[4], edgeWidth: 1.6, edgeAngle: 20, cull: false });
       }
       drawHeight(parts.length);
@@ -347,10 +477,10 @@ export default defineSimulation({
       const out = vec3.normalize([best[0], best[1], 0]);
       const off = 0.45;
       const a: Vec3 = [best[0] + out[0] * off, best[1] + out[1] * off, 0];
-      const b: Vec3 = [a[0], a[1], p.h];
+      const b: Vec3 = [a[0], a[1], HEIGHT()];
       view.segment(a, b, { color: th.muted, width: 1.6, layer: 'front' });
       for (let i = 0; i <= layers; i++) {
-        const z = Math.min(p.h, i);
+        const z = Math.min(HEIGHT(), i);
         const q: Vec3 = [a[0], a[1], z];
         view.custom(
           q,
@@ -366,7 +496,7 @@ export default defineSimulation({
           'front',
         );
       }
-      view.label([a[0], a[1], p.h / 2], `h = ${cm(p.h, 1)}`, { color: th.text, size: 13, weight: '700', align: 'left', baseline: 'middle', offset: [10, 0] });
+      view.label([a[0], a[1], HEIGHT() / 2], quiz() && task.kind === 'can' && !taskState?.ok ? 'h = ?' : `h = ${cm(HEIGHT(), 1)}`, { color: th.text, size: 13, weight: '700', align: 'left', baseline: 'middle', offset: [10, 0] });
     }
 
     /* ---------- Oberfläche: Abrollen ---------- */
@@ -374,10 +504,10 @@ export default defineSimulation({
     function drawSurface(): void {
       const th = ctx.theme;
       const s = rollShown;
-      const H = p.h / 2;
+      const H = HEIGHT() / 2;
       const P = base.perimeter;
       const R = baseRadius();
-      const cylinder = p.base === 'kreis';
+      const cylinder = BASE() === 'kreis';
       const theta = 2 * Math.PI * smooth(clamp01(s / ROLL_END));
       const fade = clamp01((s - ROLL_END) / 0.06);
       const fold = smooth(clamp01((s - ROLL_END - 0.03) / (1 - ROLL_END - 0.03)));
@@ -396,7 +526,7 @@ export default defineSimulation({
       let pose: Pt[];
       let faces = 0;
       if (cylinder) {
-        const c = rollCircle(p.r, theta);
+        const c = rollCircle(RAD(), theta);
         printed = c.printed;
         pose = base.points.map(([x1, x2]) => {
           // Kreis-Querschnitt um den Mittelpunkt gedreht (im Uhrzeigersinn)
@@ -425,7 +555,7 @@ export default defineSimulation({
       if (cylinder) {
         if (printed > 1e-6) {
           // Abdruck der markierten Startstreifen (zwei der 72 Mantelstreifen ab der Mitte des ersten)
-          const seam = Math.min(printed, (3 * Math.PI * p.r) / base.points.length);
+          const seam = Math.min(printed, (3 * Math.PI * RAD()) / base.points.length);
           printRect(0, seam, startColor);
           printRect(seam, printed, mantle);
         }
@@ -438,7 +568,7 @@ export default defineSimulation({
       }
       const complete = printed >= P - 1e-6;
       if (complete && fold > 0.98 && p.calc) {
-        view.label(toWorld(P / 2, 0, 0), `M ≈ ${cm2(P * p.h, 2)}`, { color: th.text, size: 13, weight: '700', align: 'center', baseline: 'middle', background: th.dark ? 'rgba(15,20,30,0.78)' : 'rgba(255,255,255,0.85)' });
+        view.label(toWorld(P / 2, 0, 0), `M ≈ ${cm2(P * HEIGHT(), 2)}`, { color: th.text, size: 13, weight: '700', align: 'center', baseline: 'middle', background: th.dark ? 'rgba(15,20,30,0.78)' : 'rgba(255,255,255,0.85)' });
       }
 
       // rollender Körper (blendet am Ende aus)
@@ -464,7 +594,7 @@ export default defineSimulation({
         // Querschnitt so legen, dass seine Seite j bei u = at auf dem Boden liegt
         let flat: Pt[];
         if (cylinder) {
-          flat = crossSection().map(([u, w]) => [u + at, w + p.r] as Pt);
+          flat = crossSection().map(([u, w]) => [u + at, w + RAD()] as Pt);
         } else {
           const cs = crossSection();
           const n = cs.length;
@@ -502,7 +632,7 @@ export default defineSimulation({
       }
       const ha = toWorld(0, 0, -H);
       const hb = toWorld(0, 0, H);
-      view.label(vec3.lerp(ha, hb, 0.5), `h = ${cm(p.h, 1)}`, { color: th.text, size: 13, weight: '700', align: 'right', baseline: 'middle', offset: [-12, 0] });
+      view.label(vec3.lerp(ha, hb, 0.5), `h = ${cm(HEIGHT(), 1)}`, { color: th.text, size: 13, weight: '700', align: 'right', baseline: 'middle', offset: [-12, 0] });
     }
 
     /* ---------- Rechnung im Bild ---------- */
@@ -510,28 +640,28 @@ export default defineSimulation({
     function drawCard(narrow: boolean): void {
       const th = ctx.theme;
       const g = surface.g;
-      const sld = solid(base, p.h);
+      const sld = solid(base, HEIGHT());
       const lines: { text: string; color?: string; bold?: boolean }[] = [];
       let head = '';
-      if (p.mode === 'volumen') {
-        const parts = slices(p.h);
+      if (p.mode !== 'oberflaeche') {
+        const parts = slices(HEIGHT());
         const t = stackAnim && stackStart !== null ? (performance.now() - stackStart) / 1000 : Infinity;
         const shown = Math.min(parts.length, Math.max(0, Math.floor((t - 0.55) / 0.42) + 1));
         const count = stackAnim ? shown : parts.length;
-        const layersText = fmt.num(Math.min(count, p.h), 1);
+        const layersText = fmt.num(Math.min(count, HEIGHT()), 1);
         head = count === 1 ? ctx.t('layers1') : tr('layersN', { n: layersText });
         lines.push({ text: `${ctx.t('baseArea')} ≈ ${cm2(base.area)}`, color: th.series[0]! });
         if (count >= 1) lines.push({ text: `${ctx.t('oneLayer')} ≈ ${cm3(base.area)}`, color: th.series[5]! });
-        if (count >= parts.length) lines.push({ text: `${tr('allLayers', { n: fmt.num(p.h, 1) })} ≈ ${cm3(sld.volume)}`, bold: true });
-        if (p.ghost && p.base === 'neck') lines.push({ text: `${ctx.t('cylinder')} ≈ ${cm3(Math.PI * p.r * p.r * p.h)}`, color: th.series[4]! });
+        if (count >= parts.length) lines.push({ text: `${tr('allLayers', { n: fmt.num(HEIGHT(), 1) })} ≈ ${cm3(sld.volume)}`, bold: true });
+        if (p.ghost && BASE() === 'neck') lines.push({ text: `${ctx.t('cylinder')} ≈ ${cm3(Math.PI * RAD() * RAD() * HEIGHT())}`, color: th.series[4]! });
       } else {
         const theta = 2 * Math.PI * smooth(clamp01(rollShown / ROLL_END));
-        const printed = p.base === 'kreis' ? rollCircle(p.r, theta).printed : rollPolygon(crossSection(), theta).printed;
+        const printed = BASE() === 'kreis' ? rollCircle(RAD(), theta).printed : rollPolygon(crossSection(), theta).printed;
         const complete = printed >= base.perimeter - 1e-6;
         const folded = rollShown >= 0.999;
         head = folded ? ctx.t('net') : `${ctx.t('rolled')}: ${cm(rollShown > 0 ? printed : 0, 1)}`;
         // Schmale Bühne: Erklärung der Formelzeichen weglassen (steht in den Ergebnissen)
-        if (complete) lines.push({ text: `${ctx.t(narrow ? 'mantleShort' : 'mantle')} ≈ ${cm(base.perimeter)} · ${cm(p.h, 1)} ≈ ${cm2(sld.mantle)}`, color: th.series[0]! });
+        if (complete) lines.push({ text: `${ctx.t(narrow ? 'mantleShort' : 'mantle')} ≈ ${cm(base.perimeter)} · ${cm(HEIGHT(), 1)} ≈ ${cm2(sld.mantle)}`, color: th.series[0]! });
         if (folded) lines.push({ text: `${ctx.t('bases')} ≈ ${cm2(2 * base.area)}`, color: th.series[3]! });
         if (folded) lines.push({ text: `${ctx.t(narrow ? 'surfaceShort' : 'surface')} ≈ ${cm2(sld.surface)}`, bold: true });
       }
@@ -577,13 +707,18 @@ export default defineSimulation({
 
     return {
       update(changed, source) {
-        if (['base', 'n', 'r', 'g', 'hg'].some((k) => changed.has(k))) rebuild();
+        if (changed.has('q') || source === 'init' || source === 'replace') {
+          task = solidTask(p.q, seededRandom(p.q * 7919 + 101));
+          taskState = null;
+        }
+        if (changed.has('ans') && taskState && !taskState.ok) taskState = null;
+        if (['base', 'n', 'r', 'g', 'hg', 'q', 'mode'].some((k) => changed.has(k)) || source === 'init' || source === 'replace') rebuild();
         if (changed.has('roll') && source !== 'sim') {
           rollAnim = null;
           rollShown = p.roll / 100;
         }
         if (changed.has('mode') || source === 'init' || source === 'replace') {
-          const v = VIEWS[p.mode as keyof typeof VIEWS];
+          const v = VIEWS[p.mode === 'oberflaeche' ? 'oberflaeche' : 'volumen'];
           view.setInitialView(v);
           if (source === 'input' || source === 'replace') view.animateTo(v, 700);
           else if (source === 'init') view.setCamera(v);
@@ -595,8 +730,20 @@ export default defineSimulation({
       },
 
       action(id) {
+        if (id === 'check') {
+          taskState = checkSolid(task, p.ans);
+          updateReadouts();
+          const fb = feedback();
+          if (fb) ctx.announce(fb.text);
+          ctx.requestRender();
+          return;
+        }
+        if (id === 'newq') {
+          ctx.set({ q: p.q >= 999 ? 1 : p.q + 1, ans: '' });
+          return;
+        }
         if (id === 'stack') {
-          stackAnim = { tween: new Tween(slices(p.h).length * 420 + 600, ease.linear).play() };
+          stackAnim = { tween: new Tween(slices(HEIGHT()).length * 420 + 600, ease.linear).play() };
           stackStart = performance.now();
           if (!stackAnim.tween.running) stackAnim = null;
         } else if (id === 'roll') {

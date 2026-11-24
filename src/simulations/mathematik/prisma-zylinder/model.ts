@@ -150,3 +150,53 @@ export function rollCircle(r: number, theta: number): { center: Pt; angle: numbe
   const t = Math.max(0, Math.min(2 * Math.PI, theta));
   return { center: [r * t, r], angle: t, printed: r * t };
 }
+
+// ───────────────────────── Üben ─────────────────────────
+
+export interface SolidTask {
+  /** Volumen Dreiecksprisma, Volumen Zylinder, Oberfläche Zylinder, Höhe einer Dose aus dem Volumen */
+  kind: 'prismV' | 'cylV' | 'cylO' | 'can';
+  base: 'dreieck' | 'kreis';
+  g: number;
+  hg: number;
+  r: number;
+  h: number;
+  /** nur „can“: Volumen in ml */
+  volume: number;
+  answer: number;
+}
+
+/** Reproduzierbare Aufgabe Nr. q; die Arten wechseln reihum. */
+export function solidTask(q: number, rand: () => number): SolidTask {
+  const kinds: SolidTask['kind'][] = ['prismV', 'cylV', 'cylO', 'can'];
+  const kind = kinds[(q - 1) % 4]!;
+  const pick = <T>(xs: readonly T[]) => xs[Math.floor(rand() * xs.length)]!;
+  if (kind === 'prismV') {
+    const g = pick([3, 4, 5, 6] as const);
+    const hg = pick([2, 3, 4] as const);
+    const h = pick([3, 4, 5, 6, 7, 8] as const);
+    return { kind, base: 'dreieck', g, hg, r: 2, h, volume: 0, answer: ((g * hg) / 2) * h };
+  }
+  if (kind === 'can') {
+    const volume = pick([250, 330, 500] as const);
+    const r = pick([2.5, 3, 3.5] as const);
+    const h = volume / (Math.PI * r * r);
+    return { kind, base: 'kreis', g: 4, hg: 3, r, h, volume, answer: h };
+  }
+  const r = pick([1, 1.5, 2, 2.5, 3] as const);
+  const h = pick([2, 3, 4, 5, 6, 8] as const);
+  const answer = kind === 'cylV' ? Math.PI * r * r * h : 2 * Math.PI * r * r + 2 * Math.PI * r * h;
+  return { kind, base: 'kreis', g: 4, hg: 3, r, h, volume: 0, answer };
+}
+
+/** Erste Zahl in der Eingabe (Komma oder Punkt), sonst null. */
+export function parseNumber(text: string): number | null {
+  const m = text.replace(/\s/g, '').match(/\d+(?:[.,]\d+)?/);
+  return m ? Number(m[0].replace(',', '.')) : null;
+}
+
+/** Richtig bei höchstens 0,5 % bzw. 0,051 Abweichung (π ≈ 3,14 und Runden auf eine Stelle sind erlaubt). */
+export function checkSolid(task: SolidTask, text: string): { ok: boolean; got: number | null } {
+  const got = parseNumber(text);
+  return { ok: got !== null && Math.abs(got - task.answer) <= Math.max(0.051, 0.005 * task.answer), got };
+}

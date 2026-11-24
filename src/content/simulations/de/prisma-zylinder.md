@@ -27,6 +27,7 @@ $$
 3. Wähle **Oberfläche: abrollen** und drücke **Abrollen**. Die farbige Startfläche zeigt, wann eine volle Umdrehung erreicht ist. [Sechseckprisma abrollen](?mode=oberflaeche&roll=45)
 4. Erhöhe die Eckenzahl $n$ und schalte den Vergleichszylinder ein. [Fast ein Zylinder](?n=24&ghost=1)
 5. Rolle einen Zylinder ab: Die Länge des Rechtecks ist der Kreisumfang. [Zylindernetz](?mode=oberflaeche&base=kreis&r=1.5&h=4&roll=100)
+6. **Üben:** Volumen eines Dreiecksprismas, Volumen und Oberfläche eines Zylinders und die Höhe einer Getränkedose aus ihrem Volumen. Trag dein Ergebnis ein und lass es prüfen. [Üben](?mode=quiz&q=1)
 
 ## Aufgaben
 
@@ -93,10 +94,22 @@ Bei $n = 6$ sind es etwa $82{,}7\,\%$, bei $n = 12$ etwa $95{,}5\,\%$. Ab $n = 2
 
 </details>
 
+### Aufgabe 7: Die Getränkedose
+
+Eine Getränkedose hat innen den Radius $3{,}3\,\text{cm}$ und soll $330\,\text{ml}$ fassen. Wie hoch muss sie innen sein? Wie viel Blech braucht man für die Dose (ohne Falz)?
+
+<details>
+<summary>Lösung anzeigen</summary>
+
+$330\,\text{ml} = 330\,\text{cm}^3$. $h = \frac{V}{\pi r^2} = \frac{330}{\pi \cdot 3{,}3^2} \approx \frac{330}{34{,}21} \approx 9{,}6\,\text{cm}$. Blech: $O = 2\pi r^2 + 2\pi r h \approx 68{,}4 + 200{,}0 \approx 268\,\text{cm}^2$. [Üben](?mode=quiz&q=4)
+
+</details>
+
 ## Ideen für den Unterricht
 
 - **Einsatz:** Etwa Klasse 8/9 (Kreis und Zylinder): Prismen und Zylinder mit Netz, Oberfläche und Volumen. Sinnvoll im Anschluss an die Kreisberechnung (siehe Simulation zur Kreiszahl π).
 - **Zwei Zugänge:** „Schichten stapeln“ begründet $V = G \cdot h$ (anschlussfähig an das Würfelzählen beim Quader), „Abrollen“ begründet $M = u \cdot h$. Die Rechnung im Bild lässt sich unter **Anzeige → Rechnung im Bild** ausschalten (in Links: `calc=0`).
+- **Üben:** Die Aufgaben sind nummeriert, gleiche Nummer bedeutet gleiche Aufgabe. Die Arten wechseln reihum: Dreiecksprisma, Zylindervolumen, Zylinderoberfläche, Dosenhöhe. Gerechnet werden darf mit $\pi \approx 3{,}14$.
 - **Häufige Stolpersteine:**
   - Mantel und Volumen werden verwechselt ($u \cdot h$ statt $G \cdot h$) – auch bei den Einheiten $\text{cm}^2$ und $\text{cm}^3$.
   - Beim Zylinder wird mit dem Durchmesser statt mit dem Radius gerechnet.

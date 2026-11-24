@@ -29,6 +29,7 @@ Here $M$ is the lateral surface area and $O$ the total surface area.
 3. Choose **Surface: roll out** and press **Roll out**. The coloured starting face shows when a full turn is reached. [Roll a hexagonal prism](?mode=oberflaeche&roll=45)
 4. Increase the number of vertices $n$ and switch on the cylinder for comparison. [Almost a cylinder](?n=24&ghost=1)
 5. Roll out a cylinder: the length of the rectangle is the circumference of the circle. [Net of a cylinder](?mode=oberflaeche&base=kreis&r=1.5&h=4&roll=100)
+6. **Practice:** the volume of a triangular prism, the volume and surface area of a cylinder and the height of a drinks can from its volume. Enter your result and have it checked. [Practice](?mode=quiz&q=1)
 
 ## Exercises
 
@@ -95,10 +96,22 @@ At $n = 6$ it is about $82.7\%$, at $n = 12$ about $95.5\%$. From $n = 26$ verti
 
 </details>
 
+### Exercise 7: The drinks can
+
+A drinks can has an inner radius of $3.3\,\text{cm}$ and is to hold $330\,\text{ml}$. How high must it be inside? How much sheet metal is needed for the can (without seams)?
+
+<details>
+<summary>Show solution</summary>
+
+$330\,\text{ml} = 330\,\text{cm}^3$. $h = \frac{V}{\pi r^2} = \frac{330}{\pi \cdot 3.3^2} \approx \frac{330}{34.21} \approx 9.6\,\text{cm}$. Sheet metal: $S = 2\pi r^2 + 2\pi r h \approx 68.4 + 200.0 \approx 268\,\text{cm}^2$. [Practice](?mode=quiz&q=4)
+
+</details>
+
 ## Ideas for the classroom
 
 - **Use:** around grade 8/9 (circle and cylinder): prisms and cylinders with net, surface area and volume. Best after calculating with circles (see the simulation on the number π).
 - **Two approaches:** “Stack layers” justifies $V = G \cdot h$ (building on counting cubes in a cuboid), “Roll out” justifies $M = u \cdot h$. The calculation in the picture can be switched off under **Display → Calculation in the picture** (in links: `calc=0`).
+- **Practice:** the tasks are numbered; the same number means the same task. The types take turns: triangular prism, cylinder volume, cylinder surface area, can height. Calculating with $\pi \approx 3.14$ is fine.
 - **Common pitfalls:**
   - Lateral surface and volume are confused ($u \cdot h$ instead of $G \cdot h$) – also in the units $\text{cm}^2$ and $\text{cm}^3$.
   - For the cylinder, the diameter is used instead of the radius.
