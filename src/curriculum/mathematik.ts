@@ -751,8 +751,8 @@ export const mathematik: Subject = {
             slug: L('quader-volumen', 'volume-of-cuboids'),
             title: L('Volumen von Quadern mit Einheitswürfeln', 'Volume of cuboids with unit cubes'),
             summary: L(
-              'Erst eine Reihe Würfel, dann eine Schicht, dann der ganze Quader. Länge mal Breite mal Höhe ergibt sich beim Füllen von selbst.',
-              'First a row of cubes, then a layer, then the whole cuboid. Length times width times height follows naturally from filling it.',
+              'Erst eine Reihe Würfel, dann eine Schicht, dann der ganze Quader. Länge mal Breite mal Höhe ergibt sich beim Füllen von selbst. Das aufgeklappte Netz zeigt die Oberfläche, und Übungsaufgaben fragen Volumen, Oberfläche und Liter ab.',
+              'First a row of cubes, then a layer, then the whole cuboid. Length times width times height follows naturally from filling it. The unfolded net shows the surface area, and practice tasks ask for volume, surface area and litres.',
             ),
             grades: [5, 6],
             kmk: ['M-L2', 'M-L4', 'M-K1', 'M-K4'],

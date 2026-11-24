@@ -26,6 +26,14 @@ $$
 
 Für Flüssigkeiten verwendet man **Liter**: $1\,\text{l} = 1\,\text{dm}^3$ und $1\,\text{ml} = 1\,\text{cm}^3$.
 
+**Oberfläche:** Ein Quader hat sechs rechteckige Flächen, je zwei sind gleich groß: oben und unten ($a \cdot b$), vorn und hinten ($a \cdot c$), links und rechts ($b \cdot c$). Klappt man ihn auf, entsteht ein **Netz**. Die Oberfläche ist die Summe aller sechs Flächen:
+
+$$
+O = 2 \cdot (a \cdot b + a \cdot c + b \cdot c)
+$$
+
+Die Oberfläche misst man in Flächeneinheiten ($\text{cm}^2$), das Volumen in Raumeinheiten ($\text{cm}^3$).
+
 ## Ausprobieren
 
 1. Drücke **Füllen** und zähle mit: Erst kommt eine Reihe Würfel für Würfel, dann ganze Reihen, dann ganze Schichten.
@@ -33,6 +41,8 @@ Für Flüssigkeiten verwendet man **Liter**: $1\,\text{l} = 1\,\text{dm}^3$ und 
 3. Verdopple die Höhe $c$. Was passiert mit dem Volumen? Verdopple dann auch die Länge $a$.
 4. Ein Liter: Fülle einen Würfel mit $10\,\text{cm}$ Kantenlänge. [1 Liter = 1000 cm³](?a=10&b=10&c=10&fill=voll)
 5. Vergleiche einen flachen und einen hohen Quader. [Nur eine Schicht](?a=8&b=5&c=1&fill=voll) · [Hoher Turm](?a=2&b=2&c=9&fill=voll)
+6. **Oberfläche und Netz:** Die drei Flächenpaare sind farbig, daneben liegt das aufgeklappte Netz. Ziehe an den Ecken: Welche Flächen ändern sich, wenn nur die Höhe wächst? [Oberfläche](?mode=surface)
+7. **Üben:** Volumen, Oberfläche, fehlende Höhe oder Liter berechnen und prüfen lassen. [Üben](?mode=quiz&q=1)
 
 ## Aufgaben
 
@@ -91,10 +101,23 @@ Gib in der jeweils anderen Einheit an: (a) $3\,\text{dm}^3$ in $\text{cm}^3$, (b
 
 </details>
 
+### Aufgabe 6: Geschenkpapier
+
+Ein Geschenkkarton ist $30\,\text{cm}$ lang, $20\,\text{cm}$ breit und $10\,\text{cm}$ hoch. Wie viel Papier braucht man mindestens zum Einpacken (ohne Überlappung)? Wie groß ist das Volumen?
+
+<details>
+<summary>Lösung anzeigen</summary>
+
+$O = 2 \cdot (30 \cdot 20 + 30 \cdot 10 + 20 \cdot 10) = 2 \cdot (600 + 300 + 200) = 2200\,\text{cm}^2$. $V = 30 \cdot 20 \cdot 10 = 6000\,\text{cm}^3 = 6$ Liter. [Oberfläche ansehen](?mode=surface&a=3&b=2&c=1&unit=dm)
+
+</details>
+
 ## Ideen für den Unterricht
 
 - **Einsatz:** Etwa Klasse 5/6 (Volumen): Volumen des Quaders über Einheitswürfel, Volumeneinheiten einschließlich Liter.
 - **Didaktischer Kern:** Die Formel $V = a \cdot b \cdot c$ entsteht aus dem strukturierten Zählen (Reihe → Schicht → Schichten). Die Zählhilfe lässt sich ausschalten (`count=0`), damit Schülerinnen und Schüler die Struktur selbst beschreiben.
+- **Oberfläche:** Ein Netz aus Papier schneiden und falten lassen, dann mit dem Netz in der Simulation vergleichen. Auch andere Netze (es gibt 11 Würfelnetze) sind möglich.
+- **Üben:** Die Aufgaben sind nummeriert, gleiche Nummer bedeutet gleiche Aufgabe. Die Arten wechseln reihum: Volumen, Oberfläche, fehlende Höhe, Liter.
 - **Häufige Stolpersteine:**
   - Volumen und Oberfläche werden verwechselt („außen zählen“ statt „innen füllen“).
   - Die Umrechnungszahl 1000 wird mit 100 (Flächeneinheiten) oder 10 (Längeneinheiten) verwechselt. Der Würfel mit $10\,\text{cm}$ Kante zeigt anschaulich, warum $1\,\text{dm}^3 = 1000\,\text{cm}^3$ ist.

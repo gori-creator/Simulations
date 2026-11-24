@@ -1,5 +1,20 @@
-import { defineSimulation, ease, mesh3d, mixColor, prefersReducedMotion, roundRect, Surface, vec3, View3D, type Vec3 } from '../../../sim-core';
-import { convertVolume, cubeCell, fillPlan, planDuration, stageCount, stageOf, volume, type DropItem, type Stage, type UnitId } from './model';
+import { defineSimulation, ease, mesh3d, mixColor, prefersReducedMotion, roundRect, seededRandom, Surface, vec3, View3D, type Vec3 } from '../../../sim-core';
+import {
+  checkCuboid,
+  convertVolume,
+  cubeCell,
+  cuboidTask,
+  fillPlan,
+  planDuration,
+  stageCount,
+  stageOf,
+  surfaceArea,
+  volume,
+  type CuboidTask,
+  type DropItem,
+  type Stage,
+  type UnitId,
+} from './model';
 
 const L = (de: string, en: string) => ({ de, en });
 const MAX = 10;
@@ -50,14 +65,26 @@ function cubeFace(p: Vec3, n: Vec3): Vec3[] {
 export default defineSimulation({
   id: 'quader-volumen',
   dragHint: true,
-  hint: { de: 'Tipp: Dreh den Quader mit einem Finger, um ihn von allen Seiten zu sehen.', en: 'Tip: Rotate the cuboid with one finger to see it from all sides.' },
   layout: { aspect: 1.6, aspectNarrow: 0.82 },
   images: { wood: 'holz.webp' },
   groups: [{ id: 'view', label: L('Anzeige', 'Display') }],
   params: [
-    { key: 'a', type: 'number', label: L('Länge a', 'Length a'), min: 1, max: MAX, step: 1, default: 5 },
-    { key: 'b', type: 'number', label: L('Breite b', 'Width b'), min: 1, max: MAX, step: 1, default: 3 },
-    { key: 'c', type: 'number', label: L('Höhe c', 'Height c'), min: 1, max: MAX, step: 1, default: 4 },
+    {
+      key: 'mode',
+      type: 'choice',
+      label: L('Thema', 'Topic'),
+      options: [
+        { value: 'fill', label: L('Volumen: mit Würfeln füllen', 'Volume: filling with cubes') },
+        { value: 'surface', label: L('Oberfläche und Netz', 'Surface area and net') },
+        { value: 'quiz', label: L('Üben', 'Practice') },
+      ],
+      default: 'fill',
+    },
+    { key: 'q', type: 'number', label: L('Aufgabe Nr.', 'Task no.'), min: 1, max: 999, step: 1, default: 1, visibleIf: (v) => v.mode === 'quiz' },
+    { key: 'ans', type: 'text', label: L('Deine Antwort', 'Your answer'), default: '', maxLength: 16, placeholder: L('z. B. 60', 'e.g. 60'), visibleIf: (v) => v.mode === 'quiz' },
+    { key: 'a', type: 'number', label: L('Länge a', 'Length a'), min: 1, max: MAX, step: 1, default: 5, visibleIf: (v) => v.mode !== 'quiz' },
+    { key: 'b', type: 'number', label: L('Breite b', 'Width b'), min: 1, max: MAX, step: 1, default: 3, visibleIf: (v) => v.mode !== 'quiz' },
+    { key: 'c', type: 'number', label: L('Höhe c', 'Height c'), min: 1, max: MAX, step: 1, default: 4, visibleIf: (v) => v.mode !== 'quiz' },
     {
       key: 'unit',
       type: 'choice',
@@ -68,6 +95,7 @@ export default defineSimulation({
         { value: 'm', label: L('m', 'm') },
       ],
       default: 'cm',
+      visibleIf: (v) => v.mode !== 'quiz',
     },
     {
       key: 'fill',
@@ -80,12 +108,24 @@ export default defineSimulation({
         { value: 'voll', label: L('voll', 'full') },
       ],
       default: 'schicht',
+      visibleIf: (v) => v.mode === 'fill',
     },
     { key: 'count', type: 'boolean', group: 'view', label: L('Zählhilfe', 'Counting aid'), default: true },
     { key: 'dims', type: 'boolean', group: 'view', label: L('Kantenlängen', 'Edge lengths'), default: true },
   ],
-  actions: [{ id: 'fill', label: L('Füllen', 'Fill'), primary: true }],
+  hint: (v) => {
+    if (v.mode === 'quiz') return L('Tipp: Rechne mit Stift und Papier, trag das Ergebnis unter „Deine Antwort“ ein und tippe auf „Prüfen“.', 'Tip: Work it out with pen and paper, enter the result under “Your answer” and tap “Check”.');
+    return L('Tipp: Dreh den Quader mit einem Finger, um ihn von allen Seiten zu sehen.', 'Tip: Rotate the cuboid with one finger to see it from all sides.');
+  },
+  actions: [
+    { id: 'fill', label: L('Füllen', 'Fill'), primary: true, visibleIf: (v) => v.mode === 'fill' },
+    { id: 'check', label: L('Prüfen', 'Check'), primary: true, visibleIf: (v) => v.mode === 'quiz' },
+    { id: 'newq', label: L('Neue Aufgabe', 'New task'), visibleIf: (v) => v.mode === 'quiz' },
+  ],
   readouts: [
+    { key: 'task', label: L('Aufgabe', 'Task') },
+    { key: 'verdict', label: L('Rückmeldung', 'Feedback') },
+    { key: 'surface', label: L('Oberfläche', 'Surface area'), spoiler: true },
     { key: 'count', label: L('Eingefüllt', 'Filled in'), spoiler: true },
     { key: 'volume', label: L('Volumen', 'Volume'), spoiler: true },
     { key: 'units', label: L('In anderen Einheiten', 'In other units'), spoiler: true },
@@ -98,6 +138,8 @@ export default defineSimulation({
     { id: 'tower', label: L('Hoher Turm', 'Tall tower'), values: { a: 2, b: 2, c: 9, fill: 'reihe' } },
     { id: 'litre', label: L('1 Liter = 1000 cm³', '1 litre = 1000 cm³'), values: { a: 10, b: 10, c: 10, fill: 'voll' } },
     { id: 'tank', label: L('Aquarium in dm', 'Fish tank in dm'), values: { a: 6, b: 3, c: 4, unit: 'dm', fill: 'leer' } },
+    { id: 'surface', label: L('Oberfläche und Netz', 'Surface area and net'), values: { mode: 'surface' } },
+    { id: 'quiz', label: L('Üben', 'Practice'), values: { mode: 'quiz', q: 1, ans: '' } },
   ],
   strings: {
     de: {
@@ -120,6 +162,23 @@ export default defineSimulation({
       stage_voll: 'voll',
       litre: 'Liter',
       litre1: 'Liter',
+      net: 'Netz des Quaders',
+      faceAB: 'oben/unten',
+      faceAC: 'vorn/hinten',
+      faceBC: 'links/rechts',
+      surfText: 'O = 2 · ({ab} + {ac} + {bc}) = {o} {u}²',
+      qV: 'Aufgabe {q}: Ein Quader ist {a} {u} lang, {b} {u} breit und {c} {u} hoch. Berechne das Volumen in {u}³.',
+      qO: 'Aufgabe {q}: Ein Quader ist {a} {u} lang, {b} {u} breit und {c} {u} hoch. Berechne die Oberfläche in {u}².',
+      qEdge: 'Aufgabe {q}: Ein Quader hat das Volumen {v} {u}³. Er ist {a} {u} lang und {b} {u} breit. Wie hoch ist er (in {u})?',
+      qLitre: 'Aufgabe {q}: Ein Becken ist {a} {u} lang, {b} {u} breit und {c} {u} tief. Wie viele Liter passen hinein?',
+      okMsg: 'Richtig! {calc}',
+      hV: 'V = a · b · c',
+      hO: 'O = 2 · (a · b + a · c + b · c) – sechs Flächen, je zwei gleich groß.',
+      hEdge: 'c = V : (a · b)',
+      hLitre: '1 dm³ = 1 Liter, 1 m³ = 1000 Liter.',
+      noMsg: 'Noch nicht. Tipp: {hint}',
+      emptyMsg: 'Trag dein Ergebnis unter „Deine Antwort“ ein und tippe auf „Prüfen“.',
+      wait: 'Deine Antwort fehlt noch.',
     },
     en: {
       canvas: 'Glass cuboid being filled with unit cubes; the view can be rotated',
@@ -141,6 +200,23 @@ export default defineSimulation({
       stage_voll: 'full',
       litre: 'litres',
       litre1: 'litre',
+      net: 'Net of the cuboid',
+      faceAB: 'top/bottom',
+      faceAC: 'front/back',
+      faceBC: 'left/right',
+      surfText: 'S = 2 · ({ab} + {ac} + {bc}) = {o} {u}²',
+      qV: 'Task {q}: A cuboid is {a} {u} long, {b} {u} wide and {c} {u} high. Calculate its volume in {u}³.',
+      qO: 'Task {q}: A cuboid is {a} {u} long, {b} {u} wide and {c} {u} high. Calculate its surface area in {u}².',
+      qEdge: 'Task {q}: A cuboid has a volume of {v} {u}³. It is {a} {u} long and {b} {u} wide. How high is it (in {u})?',
+      qLitre: 'Task {q}: A tank is {a} {u} long, {b} {u} wide and {c} {u} deep. How many litres does it hold?',
+      okMsg: 'Correct! {calc}',
+      hV: 'V = a · b · c',
+      hO: 'S = 2 · (a · b + a · c + b · c) – six faces, two of each size.',
+      hEdge: 'c = V : (a · b)',
+      hLitre: '1 dm³ = 1 litre, 1 m³ = 1000 litres.',
+      noMsg: 'Not yet. Tip: {hint}',
+      emptyMsg: 'Enter your result under “Your answer” and tap “Check”.',
+      wait: 'Your answer is still missing.',
     },
   },
 
@@ -155,24 +231,32 @@ export default defineSimulation({
       return Math.abs(v) >= 10000 && Number.isInteger(v) ? s.replace(/\B(?=(\d{3})+(?!\d))/g, ' ') : s;
     };
 
+    // Üben: Maße der Aufgabe
+    let task: CuboidTask = cuboidTask(1, seededRandom(1));
+    let taskState: { ok: boolean; got: number | null } | null = null;
+    const quiz = () => p.mode === 'quiz';
+    const solved = () => taskState?.ok === true;
+    const A = () => (quiz() ? task.a : p.a);
+    const B = () => (quiz() ? task.b : p.b);
+    const C = () => (quiz() ? task.c : p.c);
     const view: View3D = new View3D(surface, { azimuth: 32, elevation: 28, elevationLimits: [-10, 85] });
 
     /** Fertig eingefüllte Würfel (ohne laufende Animation). */
-    let count = stageCount(p.fill as Stage, p.a, p.b, p.c);
+    let count = stageCount(p.fill as Stage, A(), B(), C());
     let anim: { items: DropItem[]; start: number; from: number; to: number; duration: number } | null = null;
     let lastHandle = -Infinity;
     // weich nachgeführter Bildausschnitt
     let frame: { target: Vec3; radius: number } | null = null;
     let lastTime = performance.now();
 
-    const total = () => volume(p.a, p.b, p.c);
-    const unit = () => p.unit as UnitId;
+    const total = () => volume(A(), B(), C());
+    const unit = () => (quiz() ? task.unit : (p.unit as UnitId));
 
     /* ---------- Griffe: Kanten direkt ziehen ---------- */
-    const editable = () => !ctx.locked;
+    const editable = () => !ctx.locked && !quiz();
     const grab = () => (lastHandle = performance.now());
     view.addHandle({
-      get: () => [p.b, p.a, 0],
+      get: () => [B(), A(), 0],
       set: (q) => {
         grab();
         ctx.set({ a: Math.max(1, Math.min(MAX, Math.round(q[1]))) });
@@ -182,7 +266,7 @@ export default defineSimulation({
       color: () => ctx.theme.series[3]!,
     });
     view.addHandle({
-      get: () => [p.b, 0, 0],
+      get: () => [B(), 0, 0],
       set: (q) => {
         grab();
         ctx.set({ b: Math.max(1, Math.min(MAX, Math.round(q[0]))) });
@@ -192,7 +276,7 @@ export default defineSimulation({
       color: () => ctx.theme.series[3]!,
     });
     view.addHandle({
-      get: () => [p.b, p.a, p.c],
+      get: () => [B(), A(), C()],
       set: (q) => {
         grab();
         ctx.set({ c: Math.max(1, Math.min(MAX, Math.round(q[2]))) });
@@ -213,7 +297,7 @@ export default defineSimulation({
         return;
       }
       if (to > from) {
-        const items = fillPlan(p.a, p.b, p.c, from, to);
+        const items = fillPlan(A(), B(), C(), from, to);
         anim = { items, start: performance.now(), from, to, duration: planDuration(items) };
       } else {
         // Würfel heben sich ab und verschwinden
@@ -238,8 +322,8 @@ export default defineSimulation({
      * Animation nur nach oben (sonst spränge die Auswahl zurück).
      */
     function syncStage(): void {
-      const stage = stageOf(currentCount(), p.a, p.b, p.c);
-      const upward = stage && stageCount(stage, p.a, p.b, p.c) > stageCount(p.fill as Stage, p.a, p.b, p.c);
+      const stage = stageOf(currentCount(), A(), B(), C());
+      const upward = stage && stageCount(stage, A(), B(), C()) > stageCount(p.fill as Stage, A(), B(), C());
       if (stage && stage !== p.fill && (!anim || upward)) ctx.set({ fill: stage });
       ctx.setAction('fill', { label: ctx.t(currentCount() >= total() && !anim ? 'refill' : 'fill') });
     }
@@ -247,14 +331,27 @@ export default defineSimulation({
     /* ---------- Ergebnisse ---------- */
 
     function updateReadouts(): void {
+      for (const k of ['task', 'verdict', 'surface']) ctx.readout(k, null);
+      if (quiz()) {
+        for (const k of ['count', 'volume', 'units']) ctx.readout(k, null);
+        ctx.readout('task', taskText());
+        const fb = feedback();
+        ctx.readout('verdict', fb ? fb.text : ctx.t('emptyMsg'));
+        return;
+      }
+      if (p.mode === 'surface') {
+        const a = A(), b = B(), c = C();
+        ctx.readout('surface', tr('surfText', { ab: a * b, ac: a * c, bc: b * c, o: big(surfaceArea(a, b, c)), u: unit() }));
+        ctx.readout('count', null);
+      }
       const u = unit();
       const n = currentCount();
-      const stage = stageOf(n, p.a, p.b, p.c);
+      const stage = stageOf(n, A(), B(), C());
       ctx.readout('count', `${tr(n === 1 ? 'countText1' : 'countText', { n })}${stage ? ` (${ctx.t(`stage_${stage}`)})` : ''}`);
       const v = (x: string) => `<var>${x}</var>`;
       const V = total();
       ctx.readout('volume', {
-        html: `${v('V')} = ${v('a')} · ${v('b')} · ${v('c')} = ${p.a}&nbsp;${u} · ${p.b}&nbsp;${u} · ${p.c}&nbsp;${u} = <strong>${big(V)}&nbsp;${u}³</strong>`,
+        html: `${v('V')} = ${v('a')} · ${v('b')} · ${v('c')} = ${A()}&nbsp;${u} · ${B()}&nbsp;${u} · ${C()}&nbsp;${u} = <strong>${big(V)}&nbsp;${u}³</strong>`,
       });
       const c = convertVolume(V, u);
       // Einzahl nur bei genau 1 (EN „1 litre“, aber „0.5 litres“)
@@ -282,9 +379,9 @@ export default defineSimulation({
 
     function cubeColor(k: number): string {
       const s = ctx.theme.series;
-      const ab = p.a * p.b;
+      const ab = A() * B();
       let color: string;
-      if (k < p.a) color = s[3]!;
+      if (k < A()) color = s[3]!;
       else if (k < ab) color = s[0]!;
       else color = Math.floor(k / ab) % 2 === 1 ? s[5]! : s[0]!;
       return ctx.theme.dark ? color : mixColor(color, '#ffffff', 0.18);
@@ -294,7 +391,7 @@ export default defineSimulation({
       const now = performance.now();
       const dt = Math.min(0.1, (now - lastTime) / 1000);
       lastTime = now;
-      const { a, b, c } = p;
+      const a = A(), b = B(), c = C();
       const theme = ctx.theme;
       const u = unit();
       const narrow = surface.width < 560;
@@ -327,7 +424,9 @@ export default defineSimulation({
         moving = vec3.distance(next.target, goal.target) > 0.01 || Math.abs(next.radius - goal.radius) > 0.01;
         frame = moving ? next : goal;
       }
-      view.setScene({ target: frame.target, radius: frame.radius, anchor: [narrow ? 0.5 : 0.56, narrow ? 0.6 : 0.54] });
+      const surfaceMode = p.mode === 'surface';
+      const anchor: [number, number] = surfaceMode ? (narrow ? [0.5, 0.36] : [0.32, 0.56]) : quiz() ? (narrow ? [0.5, 0.6] : [0.62, 0.56]) : [narrow ? 0.5 : 0.56, narrow ? 0.6 : 0.54];
+      view.setScene({ target: frame.target, radius: frame.radius * (surfaceMode && narrow ? 1.25 : surfaceMode ? 1.1 : 1), anchor });
 
       view.begin();
       const cam = view.camera.position;
@@ -362,21 +461,24 @@ export default defineSimulation({
         drawWallGrid(pts, n);
       }
 
-      // Würfel
-      drawCubes(t);
+      // Würfel (nur beim Füllen)
+      if (p.mode === 'fill') drawCubes(t);
 
-      for (const pts of frontWalls) view.face(pts, { color: glass, alpha: 0.1, flat: true, layer: 'front' });
+      if (surfaceMode) drawColoredFaces(frontWalls);
+      else for (const pts of frontWalls) view.face(pts, { color: glass, alpha: 0.1, flat: true, layer: 'front' });
       drawBoxEdges(glassEdge);
-      if (p.dims) drawDimensions(u);
-      drawUnitCube(u);
+      if (p.dims || quiz()) drawDimensions(u);
+      if (p.mode === 'fill') drawUnitCube(u);
       view.end();
-      if (p.count) drawCard(u, narrow);
+      if (surfaceMode) drawNet(u, narrow);
+      else if (quiz()) drawTaskCard(narrow);
+      else if (p.count) drawCard(u, narrow);
       if (anim || moving) ctx.requestRender();
     }
 
     /** Einheitenraster auf einer (hinteren) Glaswand bzw. dem Boden. */
     function drawWallGrid(pts: Vec3[], n: Vec3): void {
-      const { a, b, c } = p;
+      const a = A(), b = B(), c = C();
       const color = mixColor(ctx.theme.series[0]!, ctx.theme.bg, 0.45);
       const lines: [Vec3, Vec3][] = [];
       const x = pts[0]![0];
@@ -397,7 +499,7 @@ export default defineSimulation({
 
     function drawBoxEdges(color: string): void {
       // alle zwölf Kanten des Glaskastens: hintere dünn (hinter den Würfeln), vordere kräftig
-      const { a, b, c } = p;
+      const a = A(), b = B(), c = C();
       const cam = view.camera.position;
       const box = mesh3d.box([0, 0, 0], [b, a, c]);
       const center: Vec3 = [b / 2, a / 2, c / 2];
@@ -423,7 +525,7 @@ export default defineSimulation({
     }
 
     function drawCubes(t: number): void {
-      const { a, b, c } = p;
+      const a = A(), b = B(), c = C();
       const n = a * b * c;
       const cam = view.camera.position;
       // Gruppe je Würfel: 0 = fest, i + 1 = fällt mit Abschnitt i, −1 = nicht da
@@ -471,7 +573,7 @@ export default defineSimulation({
 
     /** Kantenlängen mit Teilstrichen an den drei sichtbaren Kanten. */
     function drawDimensions(u: string): void {
-      const { a, b, c } = p;
+      const a = A(), b = B(), c = C();
       const th = ctx.theme;
       const center = view.toPx([b / 2, a / 2, c / 2]);
       const edge = (from: Vec3, to: Vec3, steps: number, text: string) => {
@@ -508,13 +610,13 @@ export default defineSimulation({
       edge([b, 0, 0], [b, a, 0], a, `a = ${a} ${u}`);
       edge([b, a, 0], [0, a, 0], b, `b = ${b} ${u}`);
       // Höhe an der hinteren rechten Kante (rechter Umriss), damit die Zahl neben dem Quader steht
-      edge([0, a, 0], [0, a, c], c, `c = ${c} ${u}`);
+      edge([0, a, 0], [0, a, c], c, quiz() && task.kind === 'edge' && !solved() ? `c = ? ${u}` : `c = ${c} ${u}`);
     }
 
     /** Einheitswürfel zum Vergleich links neben dem Quader. */
     function drawUnitCube(u: string): void {
       const th = ctx.theme;
-      const x1 = p.b - 1;
+      const x1 = B() - 1;
       const x2 = -2.3;
       const cube = mesh3d.box([x1, x2, 0], [x1 + 1, x2 + 1, 1]);
       const color = th.dark ? th.series[3]! : mixColor(th.series[3]!, '#ffffff', 0.18);
@@ -523,11 +625,161 @@ export default defineSimulation({
       view.label([x1 + 1, x2 + 0.5, 0], `1 ${u}`, { color: th.muted, size: 11, weight: '600', align: 'center', baseline: 'top', offset: [0, 8] });
     }
 
+    /** Farbe der Flächenpaare: oben/unten, vorn/hinten, links/rechts. */
+    function pairColor(n: Vec3): string {
+      const th = ctx.theme;
+      if (Math.abs(n[2]) > 0.5) return th.series[0]!;
+      if (Math.abs(n[0]) > 0.5) return th.series[3]!;
+      return th.series[5]!;
+    }
+
+    function drawColoredFaces(front: Vec3[][]): void {
+      const th = ctx.theme;
+      const a = A(), b = B(), c = C();
+      for (const pts of front) {
+        const n = vec3.normal(pts);
+        view.face(pts, { color: pairColor(n), alpha: th.dark ? 0.7 : 0.6, flat: true, layer: 'front' });
+        const area = Math.abs(n[2]) > 0.5 ? a * b : Math.abs(n[0]) > 0.5 ? a * c : b * c;
+        view.label(vec3.centroid(pts), `${area} ${unit()}²`, { color: th.text, size: 13, weight: '800', align: 'center', baseline: 'middle' });
+      }
+    }
+
+    /** Aufgeklapptes Netz: Kreuzform mit allen sechs Flächen. */
+    function drawNet(u: string, narrow: boolean): void {
+      const th = ctx.theme;
+      const g = surface.g;
+      const a = A(), b = B(), c = C();
+      const W = surface.width;
+      const H = surface.height;
+      // rechts bzw. unten, frei von den Zoom-Knöpfen (oben rechts) und dem Hinweis „Zum Drehen ziehen“ (unten links)
+      const box = narrow ? { x: 10, y: H * 0.6, w: W - 20, h: H * 0.4 - 40 } : { x: W * 0.56, y: 14, w: W * 0.44 - 72, h: H - 28 };
+      g.save();
+      g.fillStyle = th.dark ? 'rgba(15,20,30,0.84)' : 'rgba(255,255,255,0.9)';
+      roundRect(g, box.x, box.y, box.w, box.h, 12);
+      g.fill();
+      g.textAlign = 'center';
+      g.textBaseline = 'alphabetic';
+      g.fillStyle = th.text;
+      g.font = `700 13px ${th.font}`;
+      g.fillText(ctx.t('net'), box.x + box.w / 2, box.y + 20);
+      // Netz: Reihe [b×c][a×c][b×c][a×c], darüber und darunter a×b über der zweiten Fläche
+      const netW = 2 * a + 2 * b;
+      const netH = c + 2 * b;
+      const textH = 44;
+      const s = Math.min((box.w - 24) / netW, (box.h - 34 - textH) / netH);
+      const x0 = box.x + (box.w - netW * s) / 2;
+      const y0 = box.y + 30 + (box.h - 34 - textH - netH * s) / 2;
+      const rect = (x: number, y: number, w: number, h: number, color: string, label: string) => {
+        g.fillStyle = mixColor(color, th.bg, 0.45);
+        g.fillRect(x0 + x * s, y0 + y * s, w * s, h * s);
+        g.strokeStyle = color;
+        g.lineWidth = 1.5;
+        g.strokeRect(x0 + x * s, y0 + y * s, w * s, h * s);
+        if (w * s > 22 && h * s > 14) {
+          g.fillStyle = th.text;
+          g.font = `700 ${Math.max(9, Math.min(12, s * 0.9))}px ${th.font}`;
+          g.textBaseline = 'middle';
+          g.fillText(label, x0 + (x + w / 2) * s, y0 + (y + h / 2) * s);
+        }
+      };
+      const cA = th.series[0]!;
+      const cF = th.series[3]!;
+      const cS = th.series[5]!;
+      rect(0, b, b, c, cS, `${b * c}`);
+      rect(b, b, a, c, cF, `${a * c}`);
+      rect(b + a, b, b, c, cS, `${b * c}`);
+      rect(2 * b + a, b, a, c, cF, `${a * c}`);
+      rect(b, 0, a, b, cA, `${a * b}`);
+      rect(b, b + c, a, b, cA, `${a * b}`);
+      g.textBaseline = 'alphabetic';
+      g.fillStyle = th.text;
+      g.font = `800 ${narrow ? 12 : 14}px ${th.font}`;
+      g.fillText(tr('surfText', { ab: a * b, ac: a * c, bc: b * c, o: big(surfaceArea(a, b, c)), u }), box.x + box.w / 2, box.y + box.h - 22);
+      g.font = `600 11px ${th.font}`;
+      g.fillStyle = th.muted;
+      g.fillText(`${ctx.t('faceAB')}: ${a}·${b} · ${ctx.t('faceAC')}: ${a}·${c} · ${ctx.t('faceBC')}: ${b}·${c}`, box.x + box.w / 2, box.y + box.h - 6);
+      g.restore();
+    }
+
+    function taskText(): string {
+      const t = task;
+      const vars = { q: p.q, a: t.a, b: t.b, c: t.c, u: t.unit, v: big(volume(t.a, t.b, t.c)) };
+      return tr(t.kind === 'V' ? 'qV' : t.kind === 'O' ? 'qO' : t.kind === 'edge' ? 'qEdge' : 'qLitre', vars);
+    }
+
+    function calcText(): string {
+      const t = task;
+      const u = t.unit;
+      if (t.kind === 'V') return `V = ${t.a} · ${t.b} · ${t.c} = ${big(t.answer)} ${u}³`;
+      if (t.kind === 'O') return `${ctx.lang === 'de' ? 'O' : 'S'} = 2 · (${t.a * t.b} + ${t.a * t.c} + ${t.b * t.c}) = ${big(t.answer)} ${u}²`;
+      if (t.kind === 'edge') return `c = ${big(volume(t.a, t.b, t.c))} : (${t.a} · ${t.b}) = ${t.c} ${u}`;
+      return `V = ${big(volume(t.a, t.b, t.c))} ${u}³ = ${big(t.answer)} ${ctx.t(t.answer === 1 ? 'litre1' : 'litre')}`;
+    }
+
+    function feedback(): { text: string; color: string } | null {
+      if (!taskState) return null;
+      if (taskState.got === null) return { text: ctx.t('wait'), color: ctx.theme.muted };
+      if (taskState.ok) return { text: tr('okMsg', { calc: calcText() }), color: ctx.theme.series[2]! };
+      const hint = task.kind === 'V' ? 'hV' : task.kind === 'O' ? 'hO' : task.kind === 'edge' ? 'hEdge' : 'hLitre';
+      return { text: tr('noMsg', { hint: ctx.t(hint) }), color: ctx.theme.series[1]! };
+    }
+
+    function wrapText(value: string, maxW: number, font: string): string[] {
+      const g = surface.g;
+      g.font = font;
+      const lines: string[] = [];
+      let line = '';
+      for (const w of value.split(' ')) {
+        const next = line ? `${line} ${w}` : w;
+        if (g.measureText(next).width > maxW && line) {
+          lines.push(line);
+          line = w;
+        } else line = next;
+      }
+      if (line) lines.push(line);
+      return lines;
+    }
+
+    function drawTaskCard(narrow: boolean): void {
+      const th = ctx.theme;
+      const g = surface.g;
+      const boxW = narrow ? surface.width - 80 : Math.min(360, surface.width * 0.38);
+      const size = narrow ? 13 : 15;
+      const fb = feedback();
+      const lines = wrapText(taskText(), boxW - 28, `600 ${size}px ${th.font}`);
+      const fbLines = fb ? wrapText(fb.text, boxW - 28, `700 ${size}px ${th.font}`) : [];
+      const lineH = size * 1.35;
+      const boxH = 20 + (lines.length + fbLines.length) * lineH + (fb ? 8 : 0);
+      g.save();
+      g.fillStyle = th.dark ? 'rgba(15,20,30,0.84)' : 'rgba(255,255,255,0.92)';
+      roundRect(g, 10, 10, boxW, boxH, 12);
+      g.fill();
+      g.textAlign = 'left';
+      g.textBaseline = 'top';
+      let y = 20;
+      g.font = `600 ${size}px ${th.font}`;
+      g.fillStyle = th.text;
+      for (const l of lines) {
+        g.fillText(l, 24, y);
+        y += lineH;
+      }
+      if (fb) {
+        y += 8;
+        g.font = `700 ${size}px ${th.font}`;
+        g.fillStyle = fb.color;
+        for (const l of fbLines) {
+          g.fillText(l, 24, y);
+          y += lineH;
+        }
+      }
+      g.restore();
+    }
+
     /** Zählhilfe: Reihe → Schicht → alle Schichten → Volumen. */
     function drawCard(u: string, narrow: boolean): void {
       const th = ctx.theme;
       const g = surface.g;
-      const { a, b, c } = p;
+      const a = A(), b = B(), c = C();
       const n = currentCount();
       const ab = a * b;
       const abc = ab * c;
@@ -585,9 +837,14 @@ export default defineSimulation({
 
     return {
       update(changed, source) {
+        if (changed.has('q') || source === 'init' || source === 'replace') {
+          task = cuboidTask(p.q, seededRandom(p.q * 7919 + 97));
+          taskState = null;
+        }
+        if (changed.has('ans') && taskState && !taskState.ok) taskState = null;
         const size = changed.has('a') || changed.has('b') || changed.has('c');
         if (changed.has('fill') && source !== 'sim') {
-          const target = stageCount(p.fill as Stage, p.a, p.b, p.c);
+          const target = stageCount(p.fill as Stage, A(), B(), C());
           if (source === 'input') animateTo(target);
           else {
             anim = null;
@@ -596,13 +853,25 @@ export default defineSimulation({
         } else if (size) {
           // neue Maße: Füllstand bleibt (z. B. „1 Schicht“), Würfel passen sich an
           anim = null;
-          count = stageCount(p.fill as Stage, p.a, p.b, p.c);
+          count = stageCount(p.fill as Stage, A(), B(), C());
         }
         syncStage();
         updateReadouts();
       },
 
       action(id) {
+        if (id === 'check') {
+          taskState = checkCuboid(task, p.ans);
+          updateReadouts();
+          const fb = feedback();
+          if (fb) ctx.announce(fb.text);
+          ctx.requestRender();
+          return;
+        }
+        if (id === 'newq') {
+          ctx.set({ q: p.q >= 999 ? 1 : p.q + 1, ans: '' });
+          return;
+        }
         if (id !== 'fill') return;
         const from = currentCount() >= total() ? 0 : currentCount();
         if (from === 0) ctx.set({ fill: 'leer' });
