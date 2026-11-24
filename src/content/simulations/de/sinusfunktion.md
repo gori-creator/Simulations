@@ -30,6 +30,9 @@ Der **Kosinus** ist ein verschobener Sinus: $\cos(x) = \sin\!\left(x + \frac{\pi
 3. Verschiebe den Graphen mit $c$ oder ziehe den Punkt $(c \mid d)$ auf der Mittellinie, an dem die Periode beginnt. [c = π/4](?cPi=3)
 4. Ziehe den Hochpunkt (Amplitude) und den hohlen Punkt am Ende der Periode direkt im Koordinatensystem.
 5. Zeige, dass der Kosinus ein verschobener Sinus ist. [Sinus um π/2 nach links](?cPi=-6) – vergleiche mit [der Kosinusfunktion](?base=cos).
+6. **Schritt für Schritt:** Baue $f(x) = 2 \cdot \sin(2(x - \frac{\pi}{4})) + 1$ aus $\sin x$ auf. Drücke mehrmals „Nächster Schritt“. Was ändert jeder Schritt am Graphen? [Schritt für Schritt](?mode=build&step=0&a=2&b=2&cPi=3&d=1)
+7. Vertausche in Gedanken die Reihenfolge: Was passiert, wenn man zuerst verschiebt und dann mit $b$ staucht? Vergleiche mit der Simulation.
+8. **Spiel: Kurve treffen.** Lies Mittellinie, Amplitude, Periode und Verschiebung an der orangen Kurve ab und stelle die Regler so ein, dass deine Kurve genau darauf liegt. [Spiel starten](?mode=match&q=1)
 
 ## Aufgaben
 
@@ -77,9 +80,26 @@ $$f(t) \approx 3{,}8 \cdot \sin\big(0{,}52\,(t - 2{,}7)\big) + 0{,}2$$
 
 </details>
 
+### Aufgabe 4: Reihenfolge der Schritte
+
+$f(x) = 2 \cdot \sin\left(2\left(x - \frac{\pi}{4}\right)\right) + 1$ entsteht aus $\sin x$. Gib die vier Schritte in der richtigen Reihenfolge an und bestimme den ersten Hochpunkt rechts von $x = 0$. [Aufgabe laden](?mode=build&step=0&a=2&b=2&cPi=3&d=1&info=0&_hide=1)
+
+<details>
+<summary>Lösung anzeigen</summary>
+
+1. Streckung in y-Richtung mit dem Faktor 2 (Amplitude 2),
+2. Streckung in x-Richtung: Periode $\frac{2\pi}{2} = \pi$,
+3. Verschiebung um $\frac{\pi}{4}$ nach rechts,
+4. Verschiebung um 1 nach oben.
+
+Der Hochpunkt von $2\sin(2x)$ liegt bei $x = \frac{\pi}{4}$, nach der Verschiebung also bei $x = \frac{\pi}{2}$ mit $y = 2 + 1 = 3$: $H\left(\frac{\pi}{2} \mid 3\right)$. [Schritte zeigen](?mode=build&step=4&a=2&b=2&cPi=3&d=1)
+
+</details>
+
 ## Ideen für den Unterricht
 
 - **Reihenfolge:** Zuerst die „vertikalen“ Parameter $a$ und $d$, dann $c$, zuletzt $b$ – die Wirkung von $b$ ist für viele am wenigsten intuitiv.
+- **Spiel als Einstieg oder Wiederholung:** Im Spiel „Kurve treffen“ sind die Kurven nummeriert; gleiche Nummer heißt gleiche Kurve. Die ersten beiden Kurven brauchen nur $a$ und $d$. Jede Lösung in anderer Schreibweise zählt auch, zum Beispiel $-\sin x$ statt $\sin(x - \pi)$.
 - **Häufige Stolpersteine:**
   - „Größeres $b$ – längere Periode“: Tatsächlich wird die Periode kürzer.
   - Das Vorzeichen von $c$ wird wie bei Parabeln falsch gedeutet.
