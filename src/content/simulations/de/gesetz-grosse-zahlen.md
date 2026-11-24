@@ -26,6 +26,8 @@ Der grüne Trichter zeigt den Bereich $p \pm 1{,}96 \cdot \sqrt{\dfrac{p(1-p)}{n
 3. Vergleiche mit der Münze: Ist die Kurve schneller „ruhig“? [Münze](?exp=coin)
 4. Schätze die Wahrscheinlichkeit beim Reißnagel, ohne sie vorher anzuzeigen. [Reißnagel](?exp=tack&showP=0)
 5. Schalte die logarithmische Achse aus. Was siehst du dann besser, was schlechter? [Lineare Achse](?logScale=0)
+6. **20 Versuchsreihen:** Wie in einer Klasse werfen 20 Personen gleichzeitig. Am Anfang liegen die Kurven weit auseinander, mit wachsendem n rücken sie zusammen. Wie viele bleiben im Trichter? [Münze](?mode=many&exp=coin) · [Würfel](?mode=many&exp=die)
+7. **Üben:** Wie oft erwartest du ein Ergebnis? Wie groß ist die Wahrscheinlichkeit beim Reißnagel ungefähr? [Üben](?mode=quiz&q=1)
 
 ## Aufgaben
 
@@ -73,10 +75,23 @@ Die Abweichung $|h_n - p|$ wird typischerweise immer kleiner. Die Abweichung der
 
 </details>
 
+### Aufgabe 5: Erwartung und Wirklichkeit
+
+Ein Würfel wird $600$-mal geworfen. Wie oft erwartest du eine Sechs? Fällt die Sechs genau so oft? In welchem Bereich liegt die Anzahl ungefähr in 95 % aller Versuchsreihen?
+
+<details>
+<summary>Lösung anzeigen</summary>
+
+Erwartet: $n \cdot p = 600 \cdot \frac{1}{6} = 100$. Meist ist es nicht genau $100$. Der Trichter für die relative Häufigkeit hat die halbe Breite $1{,}96 \cdot \sqrt{\frac{\frac{1}{6} \cdot \frac{5}{6}}{600}} \approx 0{,}030$. Für die Anzahl heißt das etwa $100 \pm 600 \cdot 0{,}030 = 100 \pm 18$, also zwischen etwa $82$ und $118$. [20 Versuchsreihen](?mode=many&exp=die)
+
+</details>
+
 ## Ideen für den Unterricht
 
 - **Einsatz:** Etwa Klasse 6 bis 8 (Laplace-Experimente: relative Häufigkeit und empirisches Gesetz der großen Zahlen). Der Reißnagel ist das klassische Beispiel für eine Wahrscheinlichkeit, die man nur experimentell bestimmen kann.
 - **Bilder:** Würfel, Münze, Reißnagel und Tisch werden als Fotos gezeigt; fehlt ein Bild, zeichnet die Simulation eine Ersatzgrafik.
+- **Ganze Klasse:** Der Teil „20 Versuchsreihen“ zeigt, was passiert, wenn jede Person in der Klasse eine eigene Reihe wirft. Gut für die Frage, warum einzelne Ergebnisse stark streuen, der Durchschnitt aber nicht.
+- **Üben:** Ungerade Aufgaben fragen die erwartete Anzahl $n \cdot p$, gerade das Schätzen einer Wahrscheinlichkeit aus einer Versuchsreihe (der Verlauf ist dazu eingezeichnet).
 - **Häufige Stolpersteine:**
   - Spielerfehlschluss („jetzt ist die Sechs dran“).
   - „Bei 600 Würfen kommen genau 100 Sechsen.“
