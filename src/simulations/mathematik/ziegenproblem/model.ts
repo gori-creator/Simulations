@@ -55,3 +55,12 @@ export function playRoundUninformed(
   const valid = openedDoors(doors, chosen, remaining).every((d) => d !== car);
   return { valid, stayWins: chosen === car, switchWins: remaining === car };
 }
+
+/**
+ * Theoretische Gewinnchancen, wenn die Moderation nicht weiß, wo das Auto steht,
+ * und nur gültige Spiele (Auto nicht versehentlich gezeigt) zählen: Gültig ist
+ * ein Spiel mit Wahrscheinlichkeit 2/n; dann gewinnen Bleiben und Wechseln je zur Hälfte.
+ */
+export function winProbabilitiesUninformed(doors: number): { stay: number; switch: number; valid: number } {
+  return { stay: 0.5, switch: 0.5, valid: 2 / doors };
+}

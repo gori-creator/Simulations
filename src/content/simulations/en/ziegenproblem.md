@@ -33,6 +33,8 @@ Under **Results** you see how often you won, for example “Switch: won 7 of 10 
 2. Try ten doors: after your pick only two doors stay closed. Would you switch? [10 doors](?doors=10)
 3. Let 1000 games run in the mode **Simulate many games**. Where do the shares of wins settle? [Simulation](?mode=simulate)
 4. Think first: which shares of wins do you expect with four doors? Then check with the simulation. [Simulate 4 doors](?mode=simulate&doors=4)
+5. Choose **Tree diagram: why?** and switch between “Switch” and “Stay”. Which path leads to the car each time? [Tree diagram](?mode=tree) · [10 doors](?mode=tree&doors=10)
+6. Set the simulation so that the host **does not know** where the car is. Games in which she shows the car by accident do not count. What changes? [Host guesses](?mode=simulate&host=guess)
 
 ## Exercises
 
@@ -48,7 +50,7 @@ First stage: the first pick is the car with $\frac{1}{3}$ and a goat with $\frac
 - First pick car ($\frac{1}{3}$): switching surely leads to a goat.
 - First pick goat ($\frac{2}{3}$): the host must reveal the other goat. Switching surely leads to the car.
 
-So $P(\text{win when switching}) = \frac{2}{3} \cdot 1 = \frac{2}{3}$.
+So $P(\text{win when switching}) = \frac{2}{3} \cdot 1 = \frac{2}{3}$. [Show the tree diagram](?mode=tree)
 
 </details>
 
@@ -87,7 +89,7 @@ No, now it really is $\frac{1}{2}$ to $\frac{1}{2}$. There are six equally likel
 - first pick goat, the other goat opened (2 cases): switching wins,
 - first pick goat, the car opened (2 cases): these are ruled out because a goat was shown.
 
-Of the 4 remaining cases switching wins in 2. So the host's knowledge makes the difference. The simulation always plays by the original rules. You can act out this variant with three playing cards.
+Of the 4 remaining cases switching wins in 2. So the host's knowledge makes the difference. In the simulation you can play this variant with “opens at random”; invalid games are counted but not scored. [Host guesses](?mode=simulate&host=guess) With three playing cards it also works without a computer.
 
 </details>
 
@@ -119,6 +121,8 @@ Stay: $\frac{1}{4} = 25\,\%$. Switch: with $\frac{3}{4}$ the first pick was wron
 - **Play mode:** The doors can be tapped directly, also on an interactive whiteboard. Each group can play ten games with “Stay” and ten with “Switch”. Then collect the results of the whole class.
 - **Simulation mode:** Thousands of games run in seconds. This is a good moment to talk about the difference between relative frequency and probability (exercise 5).
 - **To grasp the idea:** With ten doors the result becomes obvious for many students (exercise 3).
+- **Tree diagram:** the part “Tree diagram: why?” shows the two paths and highlights which one leads to the car for each strategy. Good for consolidating after playing.
+- **Comparing rules:** in the simulation the host can also open at random. Then staying and switching each win half the time – only her knowledge makes the difference.
 - **Common stumbling blocks:**
   - “Two doors left, so 50 : 50.” The host does not choose at random.
   - The importance of the rules is overlooked (exercises 4 and 6).
