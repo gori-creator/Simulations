@@ -258,7 +258,7 @@ const WELLEN: CurriculumUnit = {
       code: 'W.1',
       title: L('Mechanische und elektromagnetische Schwingungen', 'Mechanical and electromagnetic oscillations'),
       summary: L('Kenngrößen, Schwingungsgleichung und lineares Kraftgesetz, gedämpfte und erzwungene Schwingungen mit Resonanz, energetischer Vergleich.', 'Parameters, the equation of oscillation and the linear force law, damped and forced oscillations with resonance, energy comparison.'),
-      simulations: ['fadenpendel', 'federpendel', 'resonanz'],
+      simulations: ['fadenpendel', 'federpendel', 'resonanz', 'schwingkreis'],
     },
     {
       code: 'W.2',

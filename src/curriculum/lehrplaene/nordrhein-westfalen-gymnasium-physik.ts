@@ -660,7 +660,7 @@ const Q_UNITS: CurriculumUnit[] = [
           'Federpendel, Fadenpendel, gedämpfte und erzwungene Schwingungen und Resonanz, Schwingkreis und Hertz’scher Dipol.',
           'Spring and simple pendulum, damped and forced oscillations and resonance, the LC circuit and the Hertzian dipole.',
         ),
-        simulations: ['federpendel', 'fadenpendel', 'resonanz'],
+        simulations: ['federpendel', 'fadenpendel', 'resonanz', 'schwingkreis'],
       },
     ],
   },

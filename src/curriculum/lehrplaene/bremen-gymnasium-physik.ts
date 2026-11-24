@@ -131,6 +131,7 @@ const QP_UNITS: CurriculumUnit[] = [
     code: '4',
     title: L('Elektromagnetische Schwingungen', 'Electromagnetic oscillations'),
     summary: L('Harmonische elektromagnetische Schwingungen, Schwingkreis, Ausbreitung und Spektrum elektromagnetischer Wellen.', 'Harmonic electromagnetic oscillations, the oscillating circuit, propagation and spectrum of electromagnetic waves.'),
+    simulations: ['schwingkreis'],
   },
   {
     code: '5',
