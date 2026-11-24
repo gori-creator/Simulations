@@ -79,6 +79,11 @@ export interface ChoiceParam<K extends string = string, V extends string = strin
   type: 'choice';
   options: readonly ChoiceOption<V>[];
   default: V;
+  /**
+   * Darstellung: Knopfreihe oder Ausklappmenü. Ohne Angabe automatisch
+   * (`choiceDisplay`): Menü bei vielen oder langen Einträgen, sonst Knöpfe.
+   */
+  display?: 'buttons' | 'menu';
 }
 
 /**
