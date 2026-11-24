@@ -9,9 +9,7 @@ import { describe, expect, it } from 'vitest';
  * Die Liste unten sind die bekannten Lücken (Stand 24.11.2026). Sie darf nur
  * kürzer werden: Ist eine Simulation vollständig übersetzt, fliegt sie heraus.
  */
-const NOCH_KURZ = new Set([
-  'magnete',
-]);
+const NOCH_KURZ = new Set<string>([]);
 
 const words = (path: string) => (readFileSync(path, 'utf8').match(/[\p{L}\p{N}_]+/gu) ?? []).length;
 
