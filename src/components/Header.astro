@@ -1,5 +1,5 @@
 ---
-import { SUBJECTS } from '../curriculum';
+import { readySimulations, SUBJECTS } from '../curriculum';
 import { COURSES, COURSES_PUBLIC } from '../kurse';
 import { GAMES, GAMES_PUBLIC } from '../spiele';
 import { LANG_META, LANGS, type Lang } from '../i18n/config';
@@ -19,6 +19,10 @@ interface Props {
 }
 
 const { lang, alternates, section, motionToggle = false } = Astro.props;
+// Fächer stehen gesammelt in einem Ausklappmenü, damit die Kopfleiste kurz bleibt
+const SUBJECT_ICONS: Record<string, 'function' | 'atom' | 'flask'> = { mathematik: 'function', physik: 'atom', chemie: 'flask' };
+const ready = readySimulations();
+const subjectActive = SUBJECTS.some((s) => s.id === section);
 ---
 
 <header class="site-header">
@@ -29,17 +33,43 @@ const { lang, alternates, section, motionToggle = false } = Astro.props;
     </a>
 
     <nav class="site-nav" id="site-nav" aria-label={t(lang, 'nav.main')}>
-      {
-        SUBJECTS.map((subject) => (
-          <a
-            class:list={['site-nav__link', { 'is-active': section === subject.id }]}
-            href={href(lang, { kind: 'subject', subject: subject.id })}
-          >
-            {subject.title[lang]}
-            {subject.status === 'planned' && <span class="site-nav__soon">{' '}{t(lang, 'nav.soon')}</span>}
-          </a>
-        ))
-      }
+      <div class="nav-menu" data-nav-menu>
+        <button
+          class:list={['site-nav__link', 'nav-menu__toggle', { 'is-active': subjectActive }]}
+          type="button"
+          aria-expanded="false"
+          aria-controls="nav-subjects"
+          data-nav-menu-toggle
+        >
+          {t(lang, 'nav.subjects')}
+          <Icon name="chevron-down" class="nav-menu__chevron" />
+        </button>
+        <div class="nav-menu__panel" id="nav-subjects" data-nav-menu-panel>
+          {
+            SUBJECTS.map((subject) => {
+              const count = ready.filter((s) => s.subject === subject.id).length;
+              return (
+                <a
+                  class:list={['nav-menu__item', { 'is-active': section === subject.id }]}
+                  href={href(lang, { kind: 'subject', subject: subject.id })}
+                  aria-current={section === subject.id ? 'page' : undefined}
+                >
+                  <span class="nav-menu__icon">
+                    <Icon name={SUBJECT_ICONS[subject.id] ?? 'function'} />
+                  </span>
+                  <span class="nav-menu__text">
+                    <span class="nav-menu__title">
+                      {subject.title[lang]}
+                      {subject.status === 'planned' && <span class="site-nav__soon">{' '}{t(lang, 'nav.soon')}</span>}
+                    </span>
+                    {count > 0 && <span class="nav-menu__meta">{t(lang, 'nav.subjectCount', { n: count })}</span>}
+                  </span>
+                </a>
+              );
+            })
+          }
+        </div>
+      </div>
       {
         COURSES_PUBLIC &&
           COURSES.map((course) => (
@@ -185,6 +215,27 @@ const { lang, alternates, section, motionToggle = false } = Astro.props;
       localStorage.setItem('theme', next);
     } catch {
       /* z. B. privater Modus – dann eben nicht merken */
+    }
+  });
+
+  // Ausklappmenü „Fächer“: per Klick öffnen, Klick daneben oder Esc schließt
+  const navMenu = document.querySelector<HTMLElement>('[data-nav-menu]');
+  const navMenuToggle = navMenu?.querySelector<HTMLButtonElement>('[data-nav-menu-toggle]');
+  function setNavMenu(open: boolean): void {
+    navMenu?.classList.toggle('is-open', open);
+    navMenuToggle?.setAttribute('aria-expanded', String(open));
+  }
+  navMenuToggle?.addEventListener('click', (event) => {
+    event.stopPropagation();
+    setNavMenu(!navMenu?.classList.contains('is-open'));
+  });
+  document.addEventListener('click', (event) => {
+    if (navMenu && !navMenu.contains(event.target as Node)) setNavMenu(false);
+  });
+  document.addEventListener('keydown', (event) => {
+    if (event.key === 'Escape' && navMenu?.classList.contains('is-open')) {
+      setNavMenu(false);
+      navMenuToggle?.focus();
     }
   });
 

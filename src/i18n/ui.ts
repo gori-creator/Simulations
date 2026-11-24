@@ -19,6 +19,8 @@ const de = {
   'home.gamePlay': 'Jetzt spielen',
   'nav.breadcrumb': 'Brotkrumen-Navigation',
   'nav.soon': 'bald',
+  'nav.subjects': 'Fächer',
+  'nav.subjectCount': '{n} Simulationen',
 
   'lang.label': 'Sprache',
   'theme.toggle': 'Hell/Dunkel umschalten',
@@ -362,6 +364,8 @@ const en: Record<UiKey, string> = {
   'home.gamePlay': 'Play now',
   'nav.breadcrumb': 'Breadcrumb',
   'nav.soon': 'soon',
+  'nav.subjects': 'Subjects',
+  'nav.subjectCount': '{n} simulations',
 
   'lang.label': 'Language',
   'theme.toggle': 'Toggle light/dark mode',

@@ -530,6 +530,8 @@ em .hat::after {
 }
 
 .brand {
+  /* Logo und Name nie zusammendrücken */
+  flex: none;
   display: inline-flex;
   align-items: center;
   gap: 10px;
@@ -643,6 +645,97 @@ em .hat::after {
 .site-nav__link.is-active {
   color: var(--brand);
   background: var(--brand-soft);
+}
+
+/* Ausklappmenü „Fächer“ in der Kopfleiste */
+.nav-menu {
+  position: relative;
+}
+
+.nav-menu__toggle {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  border: 0;
+  background: none;
+  font: inherit;
+  cursor: pointer;
+}
+
+.nav-menu__chevron {
+  width: 16px;
+  height: 16px;
+  transition: transform 0.2s;
+}
+
+.nav-menu.is-open .nav-menu__chevron {
+  transform: rotate(180deg);
+}
+
+.nav-menu__panel {
+  position: absolute;
+  top: calc(100% + 8px);
+  left: 0;
+  z-index: 60;
+  display: none;
+  min-width: 260px;
+  padding: 6px;
+  border: 1px solid var(--border);
+  border-radius: var(--radius-md, 12px);
+  background: var(--surface);
+  box-shadow: var(--shadow-lg);
+}
+
+.nav-menu.is-open .nav-menu__panel {
+  display: grid;
+  gap: 2px;
+}
+
+.nav-menu__item {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 10px 12px;
+  border-radius: var(--radius-sm);
+  color: var(--text);
+  text-decoration: none;
+}
+
+.nav-menu__item:hover,
+.nav-menu__item:focus-visible {
+  background: var(--surface-2);
+  color: var(--text);
+}
+
+.nav-menu__item.is-active {
+  background: var(--brand-soft);
+  color: var(--brand);
+}
+
+.nav-menu__icon {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  flex: none;
+  width: 36px;
+  height: 36px;
+  border-radius: 10px;
+  background: var(--brand-soft);
+  color: var(--brand);
+}
+
+.nav-menu__text {
+  display: grid;
+}
+
+.nav-menu__title {
+  font-weight: 650;
+  white-space: nowrap;
+}
+
+.nav-menu__meta {
+  font-size: 0.8rem;
+  color: var(--muted);
 }
 
 .site-nav__soon {
@@ -948,6 +1041,23 @@ em .hat::after {
 
   .site-nav.is-open {
     display: flex;
+  }
+
+  /* Im Burger-Menü stehen die Fächer direkt untereinander, ohne Ausklappknopf */
+  .nav-menu__toggle {
+    display: none;
+  }
+
+  .nav-menu__panel {
+    position: static;
+    display: grid;
+    min-width: 0;
+    padding: 0 0 6px;
+    border: 0;
+    border-bottom: 1px solid var(--border);
+    border-radius: 0;
+    background: none;
+    box-shadow: none;
   }
 
   .site-nav__link {
