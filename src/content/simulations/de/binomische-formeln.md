@@ -14,12 +14,25 @@ Man kann sie als **Flächen** sehen: Ein Quadrat mit der Seitenlänge $a + b$ be
 
 Die Formeln gelten für alle Zahlen – die Flächen sind nur eine Veranschaulichung für positive Längen (bei der 2. und 3. Formel mit $a > b$).
 
+### Quadratische Ergänzung
+
+Die erste und zweite Formel lassen sich auch **rückwärts** nutzen. Bei $x^2 + 6x$ fehlt zum vollständigen Quadrat $(x + 3)^2 = x^2 + 6x + 9$ nur noch das Eckquadrat $3^2 = 9$. Man ergänzt es und zieht es gleich wieder ab:
+
+$$
+x^2 + 6x + 5 = x^2 + 6x + 9 - 9 + 5 = (x + 3)^2 - 4
+$$
+
+So erhält man die **Scheitelpunktform** einer Parabel, hier mit dem Scheitel $S(-3 \mid -4)$. Allgemein: $x^2 + px + q = \left(x + \frac{p}{2}\right)^2 - \left(\frac{p}{2}\right)^2 + q$.
+
 ## Ausprobieren
 
 1. Drücke **Zerlegen** und beobachte, in welche Teile das große Quadrat zerfällt. Wie viele Rechtecke $a \cdot b$ gibt es?
 2. Wähle die zweite Formel. Warum muss man $b^2$ wieder **addieren**, obwohl doch etwas abgezogen wird? [2. Formel](?formula=2&a=6&b=2)
 3. Wähle die dritte Formel und lass den Streifen umlegen. Welches Rechteck entsteht? [3. Formel](?formula=3&a=6&b=2)
 4. Verändere $a$ und $b$ und prüfe die Rechnung mit Zahlen unter **Ergebnisse**.
+5. **Kopfrechnen:** Wie rechnet man $49^2$ oder $52 \cdot 48$ ohne Taschenrechner? Die Skizze zeigt die Teilflächen. [49²](?mode=mental&mk=sq&n=49) · [72²](?mode=mental&mk=sq&n=72) · [52 · 48](?mode=mental&mk=prod&r=50&dd=2)
+6. **Quadratische Ergänzung:** Drücke „Ergänzen“. Ein Streifen wandert nach oben, und es fehlt nur noch ein Eckquadrat. Wie groß ist es? [x² + 6x + 5](?mode=complete&pc=6&qc=5) · [x² − 4x + 1](?mode=complete&pc=-4&qc=1)
+7. **Üben:** Welcher Term passt? Die falschen Antworten sind typische Fehler – nach dem Antippen steht dabei, welcher. [Üben](?mode=quiz&q=1)
 
 ## Aufgaben
 
@@ -73,10 +86,29 @@ Schreibe als Produkt: $x^2 + 10x + 25$, $49 - y^2$ und $9a^2 - 12ab + 4b^2$.
 
 </details>
 
+### Aufgabe 5: Scheitelpunktform
+
+Bringe $f(x) = x^2 + 8x - 3$ mit quadratischer Ergänzung in die Scheitelpunktform und gib den Scheitel an. [Aufgabe laden](?mode=complete&pc=8&qc=-3&numbers=0&_hide=1)
+
+<details>
+<summary>Lösung anzeigen</summary>
+
+Die Hälfte von $8$ ist $4$, und $4^2 = 16$:
+
+$$
+x^2 + 8x - 3 = x^2 + 8x + 16 - 16 - 3 = (x + 4)^2 - 19
+$$
+
+Scheitel $S(-4 \mid -19)$. [In der Simulation zeigen](?mode=complete&pc=8&qc=-3)
+
+</details>
+
 ## Ideen für den Unterricht
 
 - **Einsatz:** Etwa Klasse 7/8 (Terme mit Klammern, binomische Formeln). Das Flächenmodell eignet sich als Einstieg und als Begründung, warum der Mischterm $2ab$ entsteht.
 - **Animation:** Der Knopf unter der Zeichenfläche zerlegt die Figur bzw. setzt sie wieder zusammen. Bei der dritten Formel wird ein Streifen gedreht und umgelegt – eine anschauliche Begründung für $a^2 - b^2$.
+- **Kopfrechnen als Einstieg:** „Wer rechnet $49^2$ schneller – mit Taschenrechner oder im Kopf?“ Die Ansicht „Kopfrechnen mit Formeln“ zeigt danach, warum der Trick funktioniert.
+- **Üben:** Die Aufgaben sind nummeriert, gleiche Nummer heißt gleiche Aufgabe. Ungerade Nummern verlangen Ausmultiplizieren, gerade Faktorisieren. Jede falsche Antwort steht für einen typischen Fehler, etwa einen vergessenen Mischterm oder ein falsches Vorzeichen.
 - **Häufige Stolpersteine:**
   - $(a + b)^2 = a^2 + b^2$ („Quadrat wird auf die Summanden verteilt“).
   - Bei $(a - b)^2$ wird $+b^2$ als Fehler empfunden. Die Simulation zeigt, dass $b^2$ beim Abziehen der beiden Streifen doppelt abgezogen wird.
