@@ -22,11 +22,7 @@ Eine **Ortslinie** ist die Menge aller Punkte mit einer bestimmten Eigenschaft. 
 
 **Tangente und Spiegelung:** Die Tangente in $P$ bildet mit beiden Brennstrahlen $PF_1$ und $PF_2$ gleich große Winkel. Ein Lichtstrahl aus $F_1$ wird an einer spiegelnden Ellipse deshalb immer nach $F_2$ gelenkt (Flüstergewölbe). Bei der Parabel wird Licht, das parallel zur Achse einfällt, in den Brennpunkt gespiegelt. Bei der Hyperbel scheint das gespiegelte Licht aus $F_2$ aus $F_1$ zu kommen.
 
-**Leitkreis:** Zeichnet man um $F_1$ einen Kreis mit Radius $2a$ und wählt darauf einen Punkt $Q$, dann schneidet die Mittelsenkrechte von $Q$ und $F_2$ die Gerade $F_1Q$ in einem Kurvenpunkt $P$. Wegen $\lvert PF_2
-vert = \lvert PQ
-vert$ gilt $\lvert PF_1
-vert + \lvert PF_2
-vert = 2a$. Liegt $F_2$ außerhalb des Kreises, entsteht eine Hyperbel.
+**Leitkreis:** Zeichnet man um $F_1$ einen Kreis mit Radius $2a$ und wählt darauf einen Punkt $Q$, dann schneidet die Mittelsenkrechte von $Q$ und $F_2$ die Gerade $F_1Q$ in einem Kurvenpunkt $P$. Wegen $\lvert PF_2\rvert = \lvert PQ\rvert$ gilt $\lvert PF_1\rvert + \lvert PF_2\rvert = 2a$. Liegt $F_2$ außerhalb des Kreises, entsteht eine Hyperbel.
 
 **Kegelschnitte:** Schneidet man einen Doppelkegel mit einer Ebene, entsteht je nach Neigung ein Kreis, eine Ellipse, eine Parabel (Ebene parallel zu einer Mantellinie) oder eine Hyperbel (Ebene schneidet beide Kegelhälften).
 

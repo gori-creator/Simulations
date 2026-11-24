@@ -22,7 +22,6 @@ const NOCH_KURZ = new Set([
   'geraden-ebenen',
   'integrationsregeln',
   'interferenz',
-  'kegelschnitte',
   'konfidenzintervall',
   'koordinaten-lage',
   'kugeln',
