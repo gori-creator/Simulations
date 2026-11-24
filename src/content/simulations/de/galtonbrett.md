@@ -29,6 +29,7 @@ Bei vielen Reihen nähert sich die Form der Verteilung einer **Glockenkurve** (N
 2. Blende das Pascal'sche Dreieck ein. Warum landen in der Mitte mehr Kugeln? [Pascal'sches Dreieck](?n=6&pascal=1&binomial=1)
 3. Stelle $p = 0{,}7$ ein. Wohin verschiebt sich die Verteilung? [Schief](?p=0.7&binomial=1)
 4. Wirf mit 16 Reihen **1000 sofort** und vergleiche mit der Glockenkurve. Hier ist $\sigma = 2$, die Laplace-Bedingung ist also nicht erfüllt. Für $p = 0{,}5$ passt die Kurve trotzdem schon gut. [16 Reihen](?n=16&normal=1&binomial=1&rate=40)
+5. **Üben:** Wie viele Wege führen in ein Fach, und wie wahrscheinlich landet eine Kugel dort? Rechne, trag dein Ergebnis ein und lass es prüfen. Nach der richtigen Antwort erscheint das Pascal'sche Dreieck. [Üben](?mode=quiz&q=1)
 
 ## Aufgaben
 
@@ -80,12 +81,24 @@ Für $p = 0{,}5$ ist jeder Weg gleich wahrscheinlich, und es gibt zu Fach $k$ ge
 
 </details>
 
+### Aufgabe 5: Ein Fach am Rand
+
+Bei $n = 6$ Reihen und $p = 0{,}5$: Wie viele Wege führen in Fach $0$, wie viele in Fach $3$? Wie oft landet von $1000$ Kugeln ungefähr eine in Fach $0$?
+
+<details>
+<summary>Lösung anzeigen</summary>
+
+In Fach $0$ führt nur $1$ Weg (immer links), in Fach $3$ führen $\binom{6}{3} = 20$ Wege. $P(X = 0) = 0{,}5^6 = \frac{1}{64} \approx 1{,}6\,\%$, also landen von $1000$ Kugeln etwa $16$ in Fach $0$. [Üben](?mode=quiz&q=1)
+
+</details>
+
 ## Ideen für den Unterricht
 
 - **Einsatz:** Oberstufe (Bernoulli-Ketten, Binomialverteilung); qualitativ auch früher bei mehrstufigen Zufallsexperimenten. Die Glockenkurve leitet zur Normalverteilung über.
 - **Darstellung:** Solange es passt, werden die Kugeln einzeln gestapelt; bei vielen Kugeln werden die Fächer als Säulen dargestellt. Die waagerechten Striche (in der Legende „B(n; p)“) zeigen die erwartete Anzahl $N \cdot P(X = k)$ bei $N$ Kugeln.
 - **Gruppen vergleichen:** Lassen Sie mehrere Gruppen je 100 Kugeln werfen. Jede Gruppe erhält eine etwas andere Verteilung – zusammengelegt kommen die Häufigkeiten der Binomialverteilung immer näher.
 - **Bilder:** Holzbrett und Kugeln werden gezeichnet; optional können Fotos ergänzt werden (siehe `docs/BILDER.md`).
+- **Üben:** Die Aufgaben sind nummeriert, gleiche Nummer bedeutet gleiche Aufgabe. Ungerade Nummern fragen die Anzahl der Wege (ab Klasse 7/8 mit dem Pascal'schen Dreieck), gerade die Wahrscheinlichkeit in Prozent (Bernoulli-Formel, Oberstufe). Nebenbei kann man Kugeln fallen lassen und die Antwort mit dem Versuch vergleichen.
 - **Häufige Stolpersteine:**
   - „Die Kugel wird zur Mitte gelenkt.“ – Es gibt nur mehr Wege dorthin.
   - Fachnummer und Weg werden verwechselt: Viele verschiedene Wege führen ins gleiche Fach.

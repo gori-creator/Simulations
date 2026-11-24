@@ -1,5 +1,5 @@
-import { defineSimulation, drawImageFit, prefersReducedMotion, roundRect, softShadow, Surface, text, Tween, ease, withAlpha, type Rect } from '../../../sim-core';
-import { binomialCoefficient, binomialMean, binomialPmf, binomialSd, dropBalls, randomPath, roundedRelation, statsFromCounts } from './model';
+import { defineSimulation, drawImageFit, prefersReducedMotion, roundRect, seededRandom, softShadow, Surface, text, Tween, ease, withAlpha, type Rect } from '../../../sim-core';
+import { binomialCoefficient, binomialMean, binomialPmf, binomialSd, checkGalton, dropBalls, galtonTask, randomPath, roundedRelation, statsFromCounts, type GaltonTask } from './model';
 
 const L = (de: string, en: string) => ({ de, en });
 /** Sekunden pro Reihe (Fallzeit von Nagel zu Nagel). */
@@ -33,7 +33,8 @@ interface Geometry {
 /**
  * Galtonbrett: Kugeln prallen an n Nagelreihen jeweils mit Wahrscheinlichkeit p
  * nach rechts ab. Die Anzahl k der Rechts-Abpraller bestimmt das Fach – so
- * entsteht die Binomialverteilung B(n; p).
+ * entsteht die Binomialverteilung B(n; p). Dazu Übungsaufgaben: Anzahl der
+ * Wege zu einem Fach und Wahrscheinlichkeit für ein Fach.
  */
 export default defineSimulation({
   id: 'galtonbrett',
@@ -44,8 +45,20 @@ export default defineSimulation({
     { id: 'anim', label: L('Automatisch', 'Automatic') },
   ],
   params: [
-    { key: 'n', type: 'number', label: L('Anzahl der Nagelreihen n', 'Number of rows n'), min: 1, max: 16, step: 1, default: 8 },
-    { key: 'p', type: 'number', label: L('Wahrscheinlichkeit für „rechts“ p', 'Probability of “right” p'), min: 0.05, max: 0.95, step: 0.05, default: 0.5 },
+    {
+      key: 'mode',
+      type: 'choice',
+      label: L('Thema', 'Topic'),
+      options: [
+        { value: 'board', label: L('Kugeln fallen lassen', 'Dropping balls') },
+        { value: 'quiz', label: L('Üben: Wege und Wahrscheinlichkeiten', 'Practice: paths and probabilities') },
+      ],
+      default: 'board',
+    },
+    { key: 'q', type: 'number', label: L('Aufgabe Nr.', 'Task no.'), min: 1, max: 999, step: 1, default: 1, visibleIf: (v) => v.mode === 'quiz' },
+    { key: 'ans', type: 'text', label: L('Deine Antwort', 'Your answer'), default: '', maxLength: 16, placeholder: L('z. B. 6 oder 37,5', 'e.g. 6 or 37.5'), visibleIf: (v) => v.mode === 'quiz' },
+    { key: 'n', type: 'number', label: L('Anzahl der Nagelreihen n', 'Number of rows n'), min: 1, max: 16, step: 1, default: 8, visibleIf: (v) => v.mode !== 'quiz' },
+    { key: 'p', type: 'number', label: L('Wahrscheinlichkeit für „rechts“ p', 'Probability of “right” p'), min: 0.05, max: 0.95, step: 0.05, default: 0.5, visibleIf: (v) => v.mode !== 'quiz' },
     { key: 'binomial', type: 'boolean', group: 'theory', label: L('Erwartete Anzahl je Fach (Binomialverteilung)', 'Expected count per bin (binomial distribution)'), default: false },
     { key: 'normal', type: 'boolean', group: 'theory', label: L('Glockenkurve (Normalverteilung)', 'Bell curve (normal distribution)'), default: false },
     { key: 'pascal', type: 'boolean', group: 'theory', label: L('Anzahl der Wege an den Nägeln (Pascal’sches Dreieck)', 'Number of paths at the pegs (Pascal’s triangle)'), default: false },
@@ -58,12 +71,16 @@ export default defineSimulation({
     { id: 'hundred', label: L('100 Kugeln', '100 balls') },
     { id: 'instant', label: L('1000 sofort', '1000 instantly') },
     { id: 'reset', label: L('Leeren', 'Empty') },
+    { id: 'check', label: L('Prüfen', 'Check'), primary: true, visibleIf: (v) => v.mode === 'quiz' },
+    { id: 'newq', label: L('Neue Aufgabe', 'New task'), visibleIf: (v) => v.mode === 'quiz' },
   ],
   images: {
     board: 'holzbrett.webp',
     ball: 'stahlkugel.webp',
   },
   readouts: [
+    { key: 'task', label: L('Aufgabe', 'Task') },
+    { key: 'verdict', label: L('Rückmeldung', 'Feedback') },
     { key: 'count', label: L('Anzahl der Kugeln', 'Number of balls') },
     { key: 'last', label: L('Letzte Kugel', 'Last ball') },
     { key: 'stats', label: L('Mittelwert und Standardabweichung (Versuch)', 'Mean and standard deviation (experiment)') },
@@ -86,6 +103,16 @@ export default defineSimulation({
       theory: 'μ = n · p = {mu}, σ = √(n · p · (1 − p)) {sigma}',
       binomial: 'B({n}; {p})',
       bin: 'k',
+      qPaths: 'Aufgabe {q}: Wie viele Wege führen bei {n} Reihen in Fach {k}?',
+      qProb: 'Aufgabe {q}: n = {n}, p = {p}. Mit welcher Wahrscheinlichkeit landet eine Kugel in Fach {k}? (in %, eine Nachkommastelle)',
+      okPaths: 'Richtig! Es gibt {v} Wege – das steht im Pascal’schen Dreieck.',
+      okPaths1: 'Richtig! Es gibt nur 1 Weg: immer in dieselbe Richtung.',
+      okProb: 'Richtig! P(X = {k}) = {c} · {p}^{k} · {q1}^{nk} ≈ {v} %',
+      noPaths: 'Noch nicht. Tipp: An jedem Nagel addieren sich die Wege der beiden Nägel darüber.',
+      noProb: 'Noch nicht. Tipp: P(X = k) = (Anzahl der Wege) · pᵏ · (1 − p)ⁿ⁻ᵏ, dann mal 100.',
+      emptyMsg: 'Trag dein Ergebnis unter „Deine Antwort“ ein und tippe auf „Prüfen“.',
+      wait: 'Deine Antwort fehlt noch.',
+      target: 'Fach {k}?',
     },
     en: {
       canvas: 'Galton board with rows of pegs, falling balls and numbered collecting bins; optionally with the number of paths at the pegs, the expected count per bin (horizontal marks) and the bell curve',
@@ -97,6 +124,16 @@ export default defineSimulation({
       theory: 'μ = n · p = {mu}, σ = √(n · p · (1 − p)) {sigma}',
       binomial: 'B({n}; {p})',
       bin: 'k',
+      qPaths: 'Task {q}: With {n} rows, how many paths lead into bin {k}?',
+      qProb: 'Task {q}: n = {n}, p = {p}. What is the probability that a ball lands in bin {k}? (in %, one decimal place)',
+      okPaths: 'Correct! There are {v} paths – you can find them in Pascal’s triangle.',
+      okPaths1: 'Correct! There is only 1 path: always the same way.',
+      okProb: 'Correct! P(X = {k}) = {c} · {p}^{k} · {q1}^{nk} ≈ {v} %',
+      noPaths: 'Not yet. Tip: at each peg, add the paths of the two pegs above it.',
+      noProb: 'Not yet. Tip: P(X = k) = (number of paths) · pᵏ · (1 − p)ⁿ⁻ᵏ, then times 100.',
+      emptyMsg: 'Enter your result under “Your answer” and tap “Check”.',
+      wait: 'Your answer is still missing.',
+      target: 'bin {k}?',
     },
   },
 
@@ -107,6 +144,13 @@ export default defineSimulation({
     const tr = (key: string, vars: Record<string, string | number>) =>
       ctx.t(key).replace(/\{(\w+)\}/g, (_, k: string) => String(vars[k] ?? ''));
 
+    let task: GaltonTask = galtonTask(1, seededRandom(1));
+    let taskState: { ok: boolean; got: number | null } | null = null;
+    const quiz = () => p.mode === 'quiz';
+    const solved = () => taskState?.ok === true;
+    // Beim Üben gelten n und p der Aufgabe
+    const N = () => (quiz() ? task.n : p.n);
+    const Pp = () => (quiz() ? task.p : p.p);
     let counts: number[] = [];
     let flying: Ball[] = [];
     let queued = 0;
@@ -121,7 +165,7 @@ export default defineSimulation({
     const pulse: { bin: number; t: number }[] = [];
 
     function reset(): void {
-      counts = Array.from({ length: p.n + 1 }, () => 0);
+      counts = Array.from({ length: N() + 1 }, () => 0);
       growFrom = counts.slice();
       flying = [];
       queued = 0;
@@ -137,13 +181,13 @@ export default defineSimulation({
       // Reduzierte Bewegung: Kugeln landen ohne Flug sofort im Fach.
       if (prefersReducedMotion()) {
         for (let i = 0; i < count; i++) {
-          const path = randomPath(p.n, p.p, Math.random);
+          const path = randomPath(N(), Pp(), Math.random);
           land({ path, t: 0, bin: path.reduce((s, v) => s + v, 0), hue: 0 });
         }
         return;
       }
       for (let i = 0; i < count && flying.length < MAX_FLYING; i++) {
-        const path = randomPath(p.n, p.p, Math.random);
+        const path = randomPath(N(), Pp(), Math.random);
         flying.push({ path, t: -i * 0.06, bin: path.reduce((s, v) => s + v, 0), hue: (hueSeed++ * 47) % 360 });
       }
     }
@@ -165,7 +209,98 @@ export default defineSimulation({
       return `${r.exact ? '=' : '≈'} ${r.exact ? fmt.num(value, 2) : fmt.fixed(value, 2)}`;
     };
 
+    function taskText(): string {
+      const pText = fmt.num(task.p, 1);
+      return task.kind === 'paths' ? tr('qPaths', { q: p.q, n: task.n, k: task.k }) : tr('qProb', { q: p.q, n: task.n, p: pText, k: task.k });
+    }
+
+    function feedback(): { text: string; color: string } | null {
+      if (!taskState) return null;
+      if (taskState.got === null) return { text: ctx.t('wait'), color: ctx.theme.muted };
+      if (taskState.ok) {
+        if (task.kind === 'paths') return { text: tr(task.answer === 1 ? 'okPaths1' : 'okPaths', { v: task.answer }), color: ctx.theme.series[2]! };
+        const sup = (x: number) => String(x).replace(/\d/g, (d) => '⁰¹²³⁴⁵⁶⁷⁸⁹'[Number(d)]!);
+        const text0 = tr('okProb', { k: task.k, c: binomialCoefficient(task.n, task.k), p: fmt.num(task.p, 1), q1: fmt.num(1 - task.p, 1), v: fmt.num(task.answer, 1), nk: task.n - task.k })
+          .replace(`^${task.k}`, sup(task.k))
+          .replace(`^${task.n - task.k}`, sup(task.n - task.k));
+        return { text: text0, color: ctx.theme.series[2]! };
+      }
+      return { text: ctx.t(task.kind === 'paths' ? 'noPaths' : 'noProb'), color: ctx.theme.series[1]! };
+    }
+
+    function newTask(): void {
+      task = galtonTask(p.q, seededRandom(p.q * 7919 + 67));
+      taskState = null;
+    }
+
+    function wrapText(value: string, maxW: number, font: string): string[] {
+      const g = surface.g;
+      g.font = font;
+      const lines: string[] = [];
+      let line = '';
+      for (const w of value.split(' ')) {
+        const next = line ? `${line} ${w}` : w;
+        if (g.measureText(next).width > maxW && line) {
+          lines.push(line);
+          line = w;
+        } else line = next;
+      }
+      if (line) lines.push(line);
+      return lines;
+    }
+
+    /** Aufgabenkarte oben auf dem Brett und Markierung des gefragten Fachs. */
+    function drawQuiz(geo: Geometry): void {
+      const g = surface.g;
+      const theme = ctx.theme;
+      // gefragtes Fach
+      const x = binX(geo, task.k);
+      g.save();
+      g.strokeStyle = theme.series[3]!;
+      g.lineWidth = 3;
+      g.setLineDash([6, 4]);
+      roundRect(g, x - geo.dx / 2 + 2, geo.bins.y + 2, geo.dx - 4, geo.bins.h - 4, 6);
+      g.stroke();
+      g.restore();
+      const label = solved() ? (task.kind === 'paths' ? String(task.answer) : `${fmt.num(task.answer, 1)} %`) : '?';
+      const fs = Math.max(12, Math.min(20, geo.dx * 0.45));
+      g.font = `800 ${fs}px ${theme.font}`;
+      const tw = g.measureText(label).width + 12;
+      g.fillStyle = withAlpha(theme.bg, 0.92);
+      roundRect(g, x - tw / 2, geo.bins.y + geo.bins.h * 0.35 - fs * 0.7, tw, fs * 1.4, 6);
+      g.fill();
+      text(g, label, x, geo.bins.y + geo.bins.h * 0.35, { font: `800 ${fs}px ${theme.font}`, color: theme.series[3]! });
+      // Karte
+      const card: Rect = { x: geo.board.x + 8, y: geo.board.y + 6, w: geo.board.w - 16, h: 0 };
+      const fb = feedback();
+      const size = surface.width < 520 ? 12 : 14;
+      const lines = wrapText(taskText(), card.w - 20, `600 ${size}px ${theme.font}`);
+      const fbLines = fb ? wrapText(fb.text, card.w - 20, `700 ${size}px ${theme.font}`) : [];
+      card.h = (lines.length + fbLines.length) * size * 1.3 + 12;
+      g.fillStyle = withAlpha(theme.bg, 0.94);
+      roundRect(g, card.x, card.y, card.w, card.h, 8);
+      g.fill();
+      g.textAlign = 'left';
+      g.textBaseline = 'top';
+      let y = card.y + 6;
+      g.font = `600 ${size}px ${theme.font}`;
+      g.fillStyle = theme.text;
+      for (const l of lines) {
+        g.fillText(l, card.x + 10, y);
+        y += size * 1.3;
+      }
+      g.font = `700 ${size}px ${theme.font}`;
+      g.fillStyle = fb?.color ?? theme.text;
+      for (const l of fbLines) {
+        g.fillText(l, card.x + 10, y);
+        y += size * 1.3;
+      }
+    }
+
     function updateReadouts(): void {
+      ctx.readout('task', quiz() ? taskText() : null);
+      const fb = feedback();
+      ctx.readout('verdict', quiz() ? (fb ? fb.text : ctx.t('emptyMsg')) : null);
       const stats = statsFromCounts(counts);
       ctx.readout('count', fmt.num(stats.total, 0));
       if (lastPath) {
@@ -173,7 +308,7 @@ export default defineSimulation({
         ctx.readout('last', tr('pathText', { path, k: lastBin }));
       } else ctx.readout('last', ctx.t('none'));
       ctx.readout('stats', stats.total ? tr('stats', { mean: rel(stats.mean), sd: rel(stats.sd) }) : '–');
-      ctx.readout('theory', tr('theory', { mu: fmt.num(binomialMean(p.n, p.p), 2), sigma: rel(binomialSd(p.n, p.p)) }));
+      ctx.readout('theory', tr('theory', { mu: fmt.num(binomialMean(N(), Pp()), 2), sigma: rel(binomialSd(N(), Pp())) }));
     }
 
     /* ---------- Geometrie ---------- */
@@ -182,12 +317,14 @@ export default defineSimulation({
       const h = surface.height;
       const wide = w >= 640;
       const board: Rect = wide ? { x: w * 0.06, y: 10, w: w * 0.88, h: h - 20 } : { x: 6, y: 6, w: w - 12, h: h - 12 };
-      const n = p.n;
+      const n = N();
       const binsH = board.h * 0.36;
-      const pegArea = board.h - binsH - 56;
+      // beim Üben Platz für die Aufgabenkarte oben lassen
+      const extra = p.mode === 'quiz' ? (w < 520 ? 66 : 44) : 0;
+      const pegArea = board.h - binsH - 56 - extra;
       const dx = Math.min((board.w - 24) / (n + 1.6), 64);
       const dy = Math.min(dx * 0.9, pegArea / Math.max(n, 1));
-      const top = board.y + 52;
+      const top = board.y + 52 + extra;
       const bottomPegs = top + (n - 1) * dy;
       const binsTop = bottomPegs + Math.max(18, dy * 0.6);
       const bins: Rect = { x: board.x + 10, y: binsTop, w: board.w - 20, h: board.y + board.h - 10 - binsTop };
@@ -198,7 +335,7 @@ export default defineSimulation({
 
     const pegX = (geo: Geometry, row: number, j: number) => geo.cx + (j - row / 2) * geo.dx;
     const pegY = (geo: Geometry, row: number) => geo.top + row * geo.dy;
-    const binX = (geo: Geometry, k: number) => geo.cx + (k - p.n / 2) * geo.dx;
+    const binX = (geo: Geometry, k: number) => geo.cx + (k - N() / 2) * geo.dx;
 
     interface BinScale {
       /** Höhe pro Kugel in Pixeln (gemittelt über eine Reihe). */
@@ -213,7 +350,7 @@ export default defineSimulation({
     function binScale(geo: Geometry): BinScale {
       const total = counts.reduce((s, c) => s + c, 0);
       const maxCount = Math.max(1, ...counts);
-      const expectedMax = p.binomial || p.normal ? total * Math.max(...counts.map((_, k) => binomialPmf(p.n, k, p.p))) : 0;
+      const expectedMax = p.binomial || p.normal ? total * Math.max(...counts.map((_, k) => binomialPmf(N(), k, Pp()))) : 0;
       const perRow = Math.max(1, Math.floor((geo.dx * 0.86) / (2 * geo.ballR)));
       const rowH = geo.ballR * 2 * 0.9;
       const avail = geo.bins.h * 0.88;
@@ -236,7 +373,7 @@ export default defineSimulation({
 
     /** Position einer Kugel auf dem Weg durch die Nagelreihen (oder `null`, wenn sie im Fall ins Fach ist). */
     function ballPosition(geo: Geometry, ball: Ball): [number, number] | null {
-      const n = p.n;
+      const n = N();
       const lift = geo.pegR + geo.ballR + 1;
       const t = ball.t / ROW_TIME;
       if (t < 0) return null;
@@ -344,8 +481,8 @@ export default defineSimulation({
 
     function drawPegs(geo: Geometry): void {
       const g = surface.g;
-      const n = p.n;
-      const showPascal = p.pascal && geo.dx >= 24;
+      const n = N();
+      const showPascal = (p.pascal || (quiz() && solved())) && geo.dx >= 24;
       for (let row = 0; row < n; row++) {
         for (let j = 0; j <= row; j++) {
           const x = pegX(geo, row, j);
@@ -377,7 +514,7 @@ export default defineSimulation({
     }
 
     function drawPath(geo: Geometry): void {
-      if (!p.path || !lastPath || lastPath.length !== p.n) return;
+      if (!p.path || !lastPath || lastPath.length !== N()) return;
       const g = surface.g;
       const color = ctx.theme.series[0]!;
       g.save();
@@ -389,7 +526,7 @@ export default defineSimulation({
       g.beginPath();
       let j = 0;
       g.moveTo(geo.cx, geo.top - 30);
-      for (let row = 0; row < p.n; row++) {
+      for (let row = 0; row < N(); row++) {
         g.lineTo(pegX(geo, row, j), pegY(geo, row) - geo.pegR - 2);
         j += lastPath[row]!;
       }
@@ -401,7 +538,7 @@ export default defineSimulation({
     function drawBins(geo: Geometry, now: number): void {
       const g = surface.g;
       const theme = ctx.theme;
-      const n = p.n;
+      const n = N();
       const { bins } = geo;
       const bottom = bins.y + bins.h;
       const scale = binScale(geo);
@@ -459,7 +596,7 @@ export default defineSimulation({
         g.strokeStyle = theme.series[1]!;
         g.lineWidth = 3;
         for (let k = 0; k <= n; k++) {
-          const e = total * binomialPmf(n, k, p.p);
+          const e = total * binomialPmf(n, k, Pp());
           const y = bottom - e * unit;
           const x = binX(geo, k);
           g.beginPath();
@@ -469,8 +606,8 @@ export default defineSimulation({
         }
       }
       if (total > 0 && p.normal && n >= 2) {
-        const mu = binomialMean(n, p.p);
-        const sigma = binomialSd(n, p.p);
+        const mu = binomialMean(n, Pp());
+        const sigma = binomialSd(n, Pp());
         g.strokeStyle = theme.series[2]!;
         g.lineWidth = 2.5;
         g.beginPath();
@@ -500,7 +637,7 @@ export default defineSimulation({
         if (c > 0 && geo.dx >= 26) {
           const shown = grow.running ? Math.round((growFrom[k] ?? 0) + (c - (growFrom[k] ?? 0)) * growT) : c;
           // über Säule und Erwartungsstrich, damit sich beide nicht überdecken
-          const mark = p.binomial ? total * binomialPmf(n, k, p.p) : 0;
+          const mark = p.binomial ? total * binomialPmf(n, k, Pp()) : 0;
           const stackH = balls && !grow.running ? Math.ceil(shown / scale.perRow) * scale.rowH + geo.ballR * 0.2 : shown * unit;
           const y = Math.max(bins.y + labelSize + 22, bottom - Math.max(stackH, mark * unit) - 10);
           text(g, fmt.num(shown, 0), binX(geo, k), y, { font: `600 ${Math.max(9, labelSize - 2)}px ${theme.font}`, color: labelColor });
@@ -508,7 +645,7 @@ export default defineSimulation({
       }
       // Legende
       const items: [string, string][] = [];
-      if (p.binomial) items.push([tr('binomial', { n, p: fmt.num(p.p, 2) }), theme.series[1]!]);
+      if (p.binomial) items.push([tr('binomial', { n, p: fmt.num(Pp(), 2) }), theme.series[1]!]);
       if (p.normal && n >= 2) items.push(['N(μ; σ²)', theme.series[2]!]);
       items.forEach(([label, color], i) => {
         const x = geo.board.x + 18;
@@ -549,9 +686,9 @@ export default defineSimulation({
       const keep: Ball[] = [];
       for (const ball of flying) {
         ball.t += dt;
-        if (ball.t / ROW_TIME - 1 >= p.n) {
+        if (ball.t / ROW_TIME - 1 >= N()) {
           if (ball.fallY === undefined) {
-            ball.fallY = pegY(geo, Math.max(0, p.n - 1)) + geo.dy * 0.9 - geo.pegR - geo.ballR - 1;
+            ball.fallY = pegY(geo, Math.max(0, N() - 1)) + geo.dy * 0.9 - geo.pegR - geo.ballR - 1;
             ball.fallStart = ball.fallY;
             ball.fallV = geo.dy / ROW_TIME;
           }
@@ -572,12 +709,26 @@ export default defineSimulation({
 
     return {
       update(changed, source) {
-        if ((changed.has('n') || changed.has('p')) && source !== 'init') reset();
-        if (counts.length !== p.n + 1) reset();
+        if (changed.has('q') || source === 'init' || source === 'replace') newTask();
+        if (changed.has('ans') && taskState && !taskState.ok) taskState = null;
+        if ((changed.has('n') || changed.has('p') || changed.has('q') || changed.has('mode')) && source !== 'init') reset();
+        if (counts.length !== N() + 1) reset();
         updateReadouts();
       },
 
       action(id) {
+        if (id === 'check') {
+          taskState = checkGalton(task, p.ans);
+          updateReadouts();
+          const fb = feedback();
+          if (fb) ctx.announce(fb.text);
+          ctx.requestRender();
+          return;
+        }
+        if (id === 'newq') {
+          ctx.set({ q: p.q >= 999 ? 1 : p.q + 1, ans: '' });
+          return;
+        }
         switch (id) {
           case 'one':
             launch(1);
@@ -591,7 +742,7 @@ export default defineSimulation({
             break;
           case 'instant': {
             growFrom = counts.slice();
-            const drop = dropBalls(p.n, p.p, 1000, Math.random);
+            const drop = dropBalls(N(), Pp(), 1000, Math.random);
             drop.counts.forEach((c, k) => (counts[k] = (counts[k] ?? 0) + c));
             lastPath = drop.lastPath;
             lastBin = drop.lastBin;
@@ -636,6 +787,7 @@ export default defineSimulation({
         drawPegs(geo);
         drawBins(geo, now);
         drawFlying(geo);
+        if (quiz()) drawQuiz(geo);
         if (flying.length || queued > 0 || grow.running || pulse.some((q) => now - q.t < 400)) ctx.requestRender();
       },
 
