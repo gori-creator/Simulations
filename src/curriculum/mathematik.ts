@@ -769,8 +769,8 @@ export const mathematik: Subject = {
             slug: L('kreiszahl-pi', 'number-pi'),
             title: L('Kreisumfang, Kreisfläche und die Zahl π', 'Circumference, area of a circle and the number π'),
             summary: L(
-              'Ein Rad rollt einmal ab und kommt etwas mehr als dreimal so weit wie sein Durchmesser. Zerschnitten wird der Kreis zum Rechteck, und die Flächenformel ergibt sich.',
-              'A wheel rolls once and travels a bit more than three times its diameter. Cut into pieces, the circle becomes a rectangle and the area formula follows.',
+              'Ein Rad rollt einmal ab und kommt etwas mehr als dreimal so weit wie sein Durchmesser. Zerschnitten wird der Kreis zum Rechteck, und die Flächenformel ergibt sich. Mit dem Maßband werden Alltagsgegenstände vermessen, und Übungsaufgaben fragen Umfang, Fläche, Durchmesser und Radius ab.',
+              'A wheel rolls once and travels a bit more than three times its diameter. Cut into pieces, the circle becomes a rectangle and the area formula follows. Everyday objects are measured with a tape measure, and practice tasks ask for circumference, area, diameter and radius.',
             ),
             grades: [7, 10],
             kmk: ['M-L2', 'M-L4', 'M-K1'],
