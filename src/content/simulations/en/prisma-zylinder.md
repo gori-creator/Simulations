@@ -4,54 +4,104 @@ description: Interactive 3D simulation of prisms and cylinders – volume V = G 
 
 ## What is it about?
 
-A (right) **prism** has two equal, parallel bases and rectangles as its lateral faces; a **cylinder** has a circle as its base.
+A (right) **prism** has two congruent, parallel faces: the **base** and the **top**. The side faces are rectangles. For a **cylinder** the base is a circle. Together the side faces are called the **lateral surface**.
 
-- **Volume:** cut the solid into layers $1\,\text{cm}$ thick. Each layer has volume $G \cdot 1\,\text{cm}$; a solid $4\,\text{cm}$ high consists of 4 layers: $V = G \cdot h$ (cylinder: $V = \pi r^2 h$).
-- **Surface area:** roll the solid once along the floor. The prints of the lateral faces form a rectangle of length $u$ (perimeter of the base) and width $h$. Lateral area: $M = u \cdot h$; surface area: $O = 2 \cdot G + M$, where $G$ is the base area (cylinder: $O = 2\pi r^2 + 2\pi r h$).
-- **Limit:** a regular $n$-gon gets closer and closer to a circle as $n$ grows – the prism turns into a cylinder.
+**Volume.** Imagine the solid cut into layers $1\,\text{cm}$ thick. Each layer has the volume $G \cdot 1\,\text{cm}$. If the solid is $h = 4\,\text{cm}$ tall, there are 4 such layers; at $h = 4.5\,\text{cm}$, four and a half. So
+
+$$
+V = G \cdot h \qquad \text{cylinder: } V = \pi r^2 \cdot h
+$$
+
+**Surface area.** If you roll the solid once along the floor, every side face leaves its print. Together the prints form a rectangle: its length is the **perimeter** $u$ of the base, its width the height $h$. With the base and the top you get the net:
+
+$$
+M = u \cdot h, \qquad O = 2 \cdot G + M \qquad \text{cylinder: } O = 2\pi r^2 + 2\pi r \cdot h
+$$
+
+Here $M$ is the lateral surface area and $O$ the total surface area.
+
+**The cylinder as a limit.** A regular $n$-gon with circumradius $r$ consists of $n$ isosceles triangles. The more vertices it has, the more it resembles the circle: $G$ approaches $\pi r^2$ and $u$ approaches $2\pi r$. The prism becomes more and more like a cylinder.
 
 ## Try it
 
-1. Press **Stack layers** and watch the calculation in the picture.
-2. Choose **Surface: roll out** and press **Roll out**. [Roll a hexagonal prism](?mode=oberflaeche&roll=45)
-3. Increase $n$ and turn on the comparison cylinder. [Almost a cylinder](?n=24&ghost=1)
+1. Press **Stack layers** and watch the calculation in the picture: how does the volume depend on the number of layers?
+2. Double the height $h$ of the solid. What happens to $V$? Then double the radius $r$ – why does the volume now become four times as large?
+3. Choose **Surface: roll out** and press **Roll out**. The coloured starting face shows when a full turn is reached. [Roll a hexagonal prism](?mode=oberflaeche&roll=45)
+4. Increase the number of vertices $n$ and switch on the cylinder for comparison. [Almost a cylinder](?n=24&ghost=1)
+5. Roll out a cylinder: the length of the rectangle is the circumference of the circle. [Net of a cylinder](?mode=oberflaeche&base=kreis&r=1.5&h=4&roll=100)
 
-## Tasks
+## Exercises
 
-### Task 1: Cylinder
+### Exercise 1: Triangular prism
 
-Find the volume and surface area of a cylinder with $r = 2\,\text{cm}$ and $h = 4\,\text{cm}$. [Load task](?base=kreis&r=2&h=4&calc=0&_hide=1)
+The base of a prism is an isosceles triangle with base side $g = 4\,\text{cm}$ and height $h_g = 3\,\text{cm}$; the legs are about $3.6\,\text{cm}$ long. The prism is $h = 5\,\text{cm}$ tall. Calculate the volume and the surface area. [Load exercise](?base=dreieck&g=4&hg=3&h=5&calc=0&_hide=1)
 
 <details>
 <summary>Show solution</summary>
 
-$V = 16\pi\,\text{cm}^3 \approx 50.27\,\text{cm}^3$, $O = 24\pi\,\text{cm}^2 \approx 75.40\,\text{cm}^2$.
+$G = \tfrac{1}{2} \cdot 4\,\text{cm} \cdot 3\,\text{cm} = 6\,\text{cm}^2$, so $V = G \cdot h = 6\,\text{cm}^2 \cdot 5\,\text{cm} = 30\,\text{cm}^3$.
+
+$u \approx 4\,\text{cm} + 2 \cdot 3.6\,\text{cm} \approx 11.2\,\text{cm}$, $M = u \cdot h \approx 56\,\text{cm}^2$ and $O = 2 \cdot G + M \approx 12\,\text{cm}^2 + 56\,\text{cm}^2 = 68\,\text{cm}^2$.
 
 </details>
 
-### Task 2: Hexagonal prism
+### Exercise 2: Cylinder
 
-In a regular hexagon each side is as long as the radius of the circumcircle. Find the lateral surface of a hexagonal prism with $r = 2\,\text{cm}$ and $h = 4\,\text{cm}$. [Load task](?mode=oberflaeche&calc=0&_hide=1)
+A cylinder has radius $r = 2\,\text{cm}$ and height $h = 4\,\text{cm}$. Calculate the volume and the surface area. [Load exercise](?base=kreis&r=2&h=4&calc=0&_hide=1)
 
 <details>
 <summary>Show solution</summary>
 
-$u = 6 \cdot 2\,\text{cm} = 12\,\text{cm}$, $M = u \cdot h = 48\,\text{cm}^2$.
+$V = \pi \cdot (2\,\text{cm})^2 \cdot 4\,\text{cm} = 16\pi\,\text{cm}^3 \approx 50.27\,\text{cm}^3$
+
+$O = 2 \cdot \pi \cdot (2\,\text{cm})^2 + 2\pi \cdot 2\,\text{cm} \cdot 4\,\text{cm} = 8\pi\,\text{cm}^2 + 16\pi\,\text{cm}^2 = 24\pi\,\text{cm}^2 \approx 75.40\,\text{cm}^2$
 
 </details>
 
-### Task 3: Almost a cylinder
+### Exercise 3: The hexagon
 
-What is the smallest number of vertices $n$ for which the prism has more than $99\,\%$ of the cylinder’s volume? Try it in the simulation. [Load task](?n=6&ghost=1&_hide=1)
+In a regular hexagon each side is exactly as long as the circumradius. Explain why. Use this to calculate the lateral surface of a hexagonal prism with $r = 2\,\text{cm}$ and $h = 4\,\text{cm}$. [Load exercise](?mode=oberflaeche&calc=0&_hide=1)
 
 <details>
 <summary>Show solution</summary>
 
-From $n = 26$ on (for $n = 6$ it is only about $82.7\,\%$). [n = 26](?n=26&ghost=1)
+The hexagon consists of six triangles with an angle of $360^\circ : 6 = 60^\circ$ at the apex. Two sides of each triangle are circumradii. So the triangle is isosceles, and its base angles are equal: $(180^\circ - 60^\circ) : 2 = 60^\circ$. It is equilateral, so the side of the hexagon is as long as the radius.
+
+$u = 6 \cdot 2\,\text{cm} = 12\,\text{cm}$, $M = u \cdot h = 12\,\text{cm} \cdot 4\,\text{cm} = 48\,\text{cm}^2$. [Show rolling out](?mode=oberflaeche&roll=100)
+
+</details>
+
+### Exercise 4: A drinks can
+
+A can has a diameter of $7\,\text{cm}$ and a height of $11\,\text{cm}$. How much paper do you need (without overlap) for the label that covers the lateral surface? Does half a litre fit inside?
+
+<details>
+<summary>Show solution</summary>
+
+$M = 2\pi r \cdot h = \pi \cdot 7\,\text{cm} \cdot 11\,\text{cm} \approx 241.9\,\text{cm}^2$.
+
+$V = \pi \cdot (3.5\,\text{cm})^2 \cdot 11\,\text{cm} \approx 423.3\,\text{cm}^3 \approx 0.42\,\text{l}$ – half a litre ($500\,\text{cm}^3$) does not fit.
+
+</details>
+
+### Exercise 5: When is the prism almost a cylinder?
+
+A prism with a regular $n$-gon and a cylinder have the same radius and the same height. From which number of vertices does the prism have more than $99\%$ of the cylinder’s volume? Try it with the simulation. [Load exercise](?n=6&ghost=1&_hide=1)
+
+<details>
+<summary>Show solution</summary>
+
+At $n = 6$ it is about $82.7\%$, at $n = 12$ about $95.5\%$. From $n = 26$ vertices it is more than $99\%$ (at $n = 25$ only $98.95\%$). [n = 26](?n=26&ghost=1)
 
 </details>
 
 ## Ideas for the classroom
 
-- “Stack layers” justifies $V = G \cdot h$, “Roll out” justifies $M = u \cdot h$. The calculation in the picture can be switched off with `calc=0`.
-- **Common stumbling blocks:** confusing $u \cdot h$ with $G \cdot h$ (and cm² with cm³), using the diameter instead of the radius, counting only one base, expecting the volume to double when the radius doubles.
+- **Use:** around grade 8/9 (circle and cylinder): prisms and cylinders with net, surface area and volume. Best after calculating with circles (see the simulation on the number π).
+- **Two approaches:** “Stack layers” justifies $V = G \cdot h$ (building on counting cubes in a cuboid), “Roll out” justifies $M = u \cdot h$. The calculation in the picture can be switched off under **Display → Calculation in the picture** (in links: `calc=0`).
+- **Common pitfalls:**
+  - Lateral surface and volume are confused ($u \cdot h$ instead of $G \cdot h$) – also in the units $\text{cm}^2$ and $\text{cm}^3$.
+  - For the cylinder, the diameter is used instead of the radius.
+  - For the surface area, only one base is counted.
+  - Students expect the volume to double when the radius doubles. In fact it becomes four times as large.
+- **About the display:** when rolling, the prism tips over one edge at a time; the cylinder rolls without slipping, so that its print after one full turn is exactly $2\pi r$ long. The triangle is isosceles; the length of the legs is calculated and shown rounded.
