@@ -21,6 +21,8 @@ If the numerator is greater than the denominator, you need more than one whole: 
 
 A fraction can also refer to a **quantity**. $\frac{3}{4}$ of €80 means: split €80 into 4 equal parts ($80 : 4 = 20$) and take 3 of them ($3 \cdot 20 = 60$). So $\frac{3}{4}$ of €80 is exactly €60.
 
+**Comparing fractions:** with the same denominator, compare the numerators: $\frac{5}{8} > \frac{3}{8}$. With the same numerator: the bigger the denominator, the smaller the pieces, so $\frac{3}{5} > \frac{3}{7}$. Otherwise, give the fractions a **common denominator**: expand both to the same denominator (easiest is the **lowest common denominator**, the least common multiple of the denominators) and then compare the numerators.
+
 ## Try it
 
 1. Tap the pizza slices to select them. Which fraction do you get?
@@ -28,6 +30,8 @@ A fraction can also refer to a **quantity**. $\frac{3}{4}$ of €80 means: split
 3. Choose the sheet cake and set $\frac{1}{3}$. What does the decimal look like? [One third](?z=1&n=3&shape=kuchen)
 4. Set $\frac{7}{4}$. How many pizzas do you need? [Seven quarters](?z=7&n=4)
 5. Compare with the line segment. [Line segment](?z=5&n=6&shape=strecke)
+6. **Comparing fractions:** which strip has the longer coloured part? Switch on “Use a common denominator” and compare the numerators. [3/4 or 2/3](?mode=compare&z=3&n=4&z2=2&n2=3) · [3/5 or 3/7](?mode=compare&z=3&n=5&z2=3&n2=7)
+7. **Practice:** read off which fraction is coloured, or colour in a fraction yourself by tapping pieces. [Practice](?mode=quiz&q=1)
 
 ## Exercises
 
@@ -60,7 +64,7 @@ Which is more: $\frac{2}{3}$ or $\frac{3}{4}$ of a pizza? Explain using a common
 <details>
 <summary>Show solution</summary>
 
-$\frac{2}{3} = \frac{8}{12}$ and $\frac{3}{4} = \frac{9}{12}$. So $\frac{3}{4}$ is more – by $\frac{1}{12}$ of a pizza.
+$\frac{2}{3} = \frac{8}{12}$ and $\frac{3}{4} = \frac{9}{12}$. So $\frac{3}{4}$ is more – by $\frac{1}{12}$ of a pizza. [Show in the simulation](?mode=compare&z=3&n=4&z2=2&n2=3&common=1)
 
 </details>
 
@@ -101,10 +105,22 @@ $\frac{0}{4} = 0$: no piece taken. [0/4](?z=0&n=4) $\frac{4}{4} = 1$: all pieces
 
 </details>
 
+### Exercise 7: Comparing without calculating
+
+Put these in order of size without looking for a common denominator: $\frac{3}{7}$, $\frac{3}{5}$, $\frac{3}{4}$. Explain why.
+
+<details>
+<summary>Show solution</summary>
+
+$\frac{3}{7} < \frac{3}{5} < \frac{3}{4}$. All of them have 3 pieces; the bigger the denominator, the smaller each piece. [Show two of them](?mode=compare&z=3&n=7&z2=3&n2=5)
+
+</details>
+
 ## Ideas for the classroom
 
 - **Use:** About grade 6 (fractions and parts of a whole, expanding and reducing, decimals).
 - **Operation:** Pieces can be tapped directly – good on an interactive whiteboard. The selected pieces are pulled out.
+- **Practice:** the tasks are numbered; the same number means the same task. Odd numbers: read off the fraction (reduced or expanded both count). Even numbers: colour in a fraction, from task 4 on with more pieces than the denominator says – so students have to expand.
 - **Common stumbling blocks:**
   - The parts must be **equal** in size – otherwise it is not a fraction of the whole.
   - "$\frac{6}{8}$ is more than $\frac{3}{4}$ because the numbers are bigger." – Expanding shows that it is the same amount.

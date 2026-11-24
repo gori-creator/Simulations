@@ -21,6 +21,8 @@ Ist der Zähler größer als der Nenner, braucht man mehr als ein Ganzes: $\frac
 
 Ein Bruchteil kann sich auch auf eine **Größe** beziehen. $\frac{3}{4}$ von $80$ € heißt: $80$ € in 4 gleiche Teile teilen ($80 : 4 = 20$) und 3 davon nehmen ($3 \cdot 20 = 60$). Also sind $\frac{3}{4}$ von $80$ € genau $60$ €.
 
+**Brüche vergleichen:** Bei gleichem Nenner vergleicht man die Zähler: $\frac{5}{8} > \frac{3}{8}$. Bei gleichem Zähler gilt: Je größer der Nenner, desto kleiner die Stücke, also $\frac{3}{5} > \frac{3}{7}$. Sonst macht man die Brüche **gleichnamig**: Man erweitert beide auf einen gemeinsamen Nenner (am einfachsten den **Hauptnenner**, das kleinste gemeinsame Vielfache der Nenner) und vergleicht dann die Zähler.
+
 ## Ausprobieren
 
 1. Tippe auf die Pizzastücke, um auszuwählen. Welcher Bruch entsteht?
@@ -28,6 +30,8 @@ Ein Bruchteil kann sich auch auf eine **Größe** beziehen. $\frac{3}{4}$ von $8
 3. Wähle den Blechkuchen und stelle $\frac{1}{3}$ ein. Wie sieht die Dezimalzahl aus? [Ein Drittel](?z=1&n=3&shape=kuchen)
 4. Stelle $\frac{7}{4}$ ein. Wie viele Pizzen braucht man? [Sieben Viertel](?z=7&n=4)
 5. Vergleiche die Darstellung auf der Strecke. [Strecke](?z=5&n=6&shape=strecke)
+6. **Brüche vergleichen:** Welcher Streifen ist länger gefärbt? Schalte „Gleichnamig machen“ ein und vergleiche die Zähler. [3/4 oder 2/3](?mode=compare&z=3&n=4&z2=2&n2=3) · [3/5 oder 3/7](?mode=compare&z=3&n=5&z2=3&n2=7)
+7. **Üben:** Lies ab, welcher Bruchteil gefärbt ist, oder färbe selbst einen Bruch ein, indem du Stücke antippst. [Üben](?mode=quiz&q=1)
 
 ## Aufgaben
 
@@ -60,7 +64,7 @@ Was ist mehr: $\frac{2}{3}$ oder $\frac{3}{4}$ einer Pizza? Begründe mit einem 
 <details>
 <summary>Lösung anzeigen</summary>
 
-$\frac{2}{3} = \frac{8}{12}$ und $\frac{3}{4} = \frac{9}{12}$. Also ist $\frac{3}{4}$ mehr – um $\frac{1}{12}$ Pizza.
+$\frac{2}{3} = \frac{8}{12}$ und $\frac{3}{4} = \frac{9}{12}$. Also ist $\frac{3}{4}$ mehr – um $\frac{1}{12}$ Pizza. [In der Simulation zeigen](?mode=compare&z=3&n=4&z2=2&n2=3&common=1)
 
 </details>
 
@@ -101,10 +105,22 @@ $\frac{0}{4} = 0$: kein Stück genommen. [0/4](?z=0&n=4) $\frac{4}{4} = 1$: alle
 
 </details>
 
+### Aufgabe 7: Ohne Rechnen vergleichen
+
+Ordne der Größe nach, ohne einen gemeinsamen Nenner zu suchen: $\frac{3}{7}$, $\frac{3}{5}$, $\frac{3}{4}$. Begründe.
+
+<details>
+<summary>Lösung anzeigen</summary>
+
+$\frac{3}{7} < \frac{3}{5} < \frac{3}{4}$. Alle haben 3 Stücke; je größer der Nenner, desto kleiner ist jedes Stück. [Zwei davon zeigen](?mode=compare&z=3&n=7&z2=3&n2=5)
+
+</details>
+
 ## Ideen für den Unterricht
 
 - **Einsatz:** Etwa Klasse 6 (Brüche und Bruchteile, Erweitern und Kürzen, Dezimalbrüche).
 - **Bedienung:** Stücke können direkt angetippt werden – gut am Smartboard. Die ausgewählten Stücke werden herausgezogen.
+- **Üben:** Die Aufgaben sind nummeriert, gleiche Nummer bedeutet gleiche Aufgabe. Ungerade Nummern: Bruch ablesen (gekürzt oder erweitert zählt beides). Gerade Nummern: Bruch einfärben, ab Aufgabe 4 mit mehr Stücken, als der Nenner angibt – so muss man erweitern.
 - **Häufige Stolpersteine:**
   - Teile müssen **gleich groß** sein – sonst ist es kein Bruchteil.
   - „$\frac{6}{8}$ ist mehr als $\frac{3}{4}$, weil die Zahlen größer sind.“ – Das Erweitern zeigt, dass es dieselbe Menge ist.
