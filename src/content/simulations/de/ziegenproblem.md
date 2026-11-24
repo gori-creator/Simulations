@@ -29,6 +29,8 @@ Unter **Ergebnisse** steht, wie oft du gewonnen hast, zum Beispiel „Wechseln: 
 2. Probiere es mit zehn Türen: Nach deiner Wahl bleiben nur zwei Türen geschlossen. Würdest du wechseln? [10 Türen](?doors=10)
 3. Lass im Modus **Viele Spiele simulieren** 1000 Spiele laufen. Wo pendeln sich die Gewinnanteile ein? [Simulation](?mode=simulate)
 4. Überlege zuerst: Welche Gewinnanteile erwartest du bei vier Türen? Prüfe dann mit der Simulation. [4 Türen simulieren](?mode=simulate&doors=4)
+5. Wähle **Baumdiagramm: Warum?** und schalte zwischen „Wechseln“ und „Bleiben“ um. Welcher Weg führt jeweils zum Auto? [Baumdiagramm](?mode=tree) · [10 Türen](?mode=tree&doors=10)
+6. Stell in der Simulation ein, dass die Moderation **nicht weiß**, wo das Auto steht. Spiele, in denen sie aus Versehen das Auto zeigt, zählen nicht. Was ändert sich? [Moderation rät](?mode=simulate&host=guess)
 
 ## Aufgaben
 
@@ -44,7 +46,7 @@ Erste Stufe: Die erste Wahl ist mit $\frac{1}{3}$ das Auto, mit $\frac{2}{3}$ ei
 - Erste Wahl Auto ($\frac{1}{3}$): Wechseln führt sicher zu einer Ziege.
 - Erste Wahl Ziege ($\frac{2}{3}$): Die Moderatorin muss die andere Ziege zeigen. Wechseln führt sicher zum Auto.
 
-Also $P(\text{Gewinn beim Wechseln}) = \frac{2}{3} \cdot 1 = \frac{2}{3}$.
+Also $P(\text{Gewinn beim Wechseln}) = \frac{2}{3} \cdot 1 = \frac{2}{3}$. [Baumdiagramm zeigen](?mode=tree)
 
 </details>
 
@@ -83,7 +85,7 @@ Nein, jetzt ist es tatsächlich $\frac{1}{2}$ zu $\frac{1}{2}$. Es gibt sechs gl
 - erste Wahl Ziege, die andere Ziege geöffnet (2 Fälle): Wechseln gewinnt,
 - erste Wahl Ziege, das Auto geöffnet (2 Fälle): Diese scheiden aus, weil eine Ziege gezeigt wurde.
 
-Von den 4 verbleibenden Fällen gewinnt Wechseln in 2. Das Wissen der Moderatorin macht also den Unterschied. Die Simulation spielt immer nach den ursprünglichen Regeln. Diese Variante kannst du mit drei Spielkarten nachspielen.
+Von den 4 verbleibenden Fällen gewinnt Wechseln in 2. Das Wissen der Moderatorin macht also den Unterschied. In der Simulation lässt sich diese Variante mit „Die Moderation öffnet zufällig“ nachspielen; ungültige Spiele werden mitgezählt, aber nicht gewertet. [Moderation rät](?mode=simulate&host=guess) Mit drei Spielkarten geht es auch ohne Computer.
 
 </details>
 
@@ -115,6 +117,8 @@ Bleiben: $\frac{1}{4} = 25\,\%$. Wechseln: Mit $\frac{3}{4}$ war die erste Wahl 
 - **Spielmodus:** Die Türen lassen sich direkt antippen, auch am Smartboard. Jede Gruppe kann zehn Spiele mit „Bleiben“ und zehn mit „Wechseln“ machen. Sammeln Sie danach die Ergebnisse der ganzen Klasse.
 - **Simulationsmodus:** Tausende Spiele laufen in Sekunden. Hier lässt sich gut über den Unterschied zwischen relativer Häufigkeit und Wahrscheinlichkeit sprechen (Aufgabe 5).
 - **Zum Begreifen:** Mit zehn Türen wird das Ergebnis für viele sofort einleuchtend (Aufgabe 3).
+- **Baumdiagramm:** Der Teil „Baumdiagramm: Warum?“ zeigt die beiden Wege und hebt hervor, welcher je nach Strategie zum Auto führt. Gut zum Sichern nach dem Spielen.
+- **Spielregeln vergleichen:** In der Simulation kann die Moderation auch zufällig öffnen. Dann gewinnen Bleiben und Wechseln je zur Hälfte – nur ihr Wissen macht den Unterschied.
 - **Häufige Stolpersteine:**
   - „Zwei Türen übrig, also 50 : 50.“ Die Moderatorin wählt nicht zufällig.
   - Die Bedeutung der Spielregeln wird übersehen (Aufgabe 4 und 6).

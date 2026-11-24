@@ -12,7 +12,7 @@ import {
   withAlpha,
   type Rect,
 } from '../../../sim-core';
-import { openedDoors, playRound, relationSign, remainingDoor, winProbabilities } from './model';
+import { openedDoors, playRound, playRoundUninformed, relationSign, remainingDoor, winProbabilities, winProbabilitiesUninformed } from './model';
 
 const L = (de: string, en: string) => ({ de, en });
 const OPEN_MS = 650;
@@ -38,8 +38,31 @@ export default defineSimulation({
       options: [
         { value: 'play', label: L('Selbst spielen', 'Play yourself') },
         { value: 'simulate', label: L('Viele Spiele simulieren', 'Simulate many games') },
+        { value: 'tree', label: L('Baumdiagramm: Warum?', 'Tree diagram: why?') },
       ],
       default: 'play',
+    },
+    {
+      key: 'host',
+      type: 'choice',
+      label: L('Die Moderation …', 'The host …'),
+      options: [
+        { value: 'knows', label: L('weiß, wo das Auto ist', 'knows where the car is') },
+        { value: 'guess', label: L('öffnet zufällig (weiß es nicht)', 'opens at random (does not know)') },
+      ],
+      default: 'knows',
+      visibleIf: (v) => v.mode === 'simulate',
+    },
+    {
+      key: 'strat',
+      type: 'choice',
+      label: L('Strategie', 'Strategy'),
+      options: [
+        { value: 'switch', label: L('Wechseln', 'Switch') },
+        { value: 'stay', label: L('Bleiben', 'Stay') },
+      ],
+      default: 'switch',
+      visibleIf: (v) => v.mode === 'tree',
     },
     { key: 'doors', type: 'number', label: L('Anzahl der Türen', 'Number of doors'), min: 3, max: 10, step: 1, default: 3 },
     { key: 'speed', type: 'number', label: L('Spiele pro Sekunde', 'Games per second'), min: 1, max: 500, step: 1, default: 60, visibleIf: (v) => v.mode === 'simulate' },
@@ -94,6 +117,17 @@ export default defineSimulation({
       switch: 'Wechseln',
       rate: 'Gewinnanteil',
       theory: 'Bleiben: 1/{n} {stay}, Wechseln: {m}/{n} {switch}',
+      theoryGuess: 'Moderation rät: unter den gültigen Spielen je 1/2 = 50 % (gültig sind etwa 2/{n} aller Spiele)',
+      invalid: '{k} ungültig (Auto gezeigt)',
+      tStart: 'Start',
+      tCar: 'Auto gewählt',
+      tGoat: 'Ziege gewählt',
+      tHostCar: 'öffnet {k} Ziegentür(en)',
+      tHostGoat: 'öffnet die anderen Ziegentüren',
+      tWin: 'Auto!',
+      tLose: 'Ziege',
+      tSum: '{s}: P(Auto) = {p}',
+      tNote: 'Die Moderation öffnet immer nur Ziegentüren. Wer zuerst eine Ziege gewählt hat, landet beim Wechseln sicher beim Auto.',
       goat: 'Ziege',
       car: 'Auto',
     },
@@ -121,6 +155,17 @@ export default defineSimulation({
       switch: 'Switch',
       rate: 'Share of wins',
       theory: 'Stay: 1/{n} {stay}, switch: {m}/{n} {switch}',
+      theoryGuess: 'Host guesses: among valid games 1/2 = 50 % each (about 2/{n} of all games are valid)',
+      invalid: '{k} invalid (car shown)',
+      tStart: 'Start',
+      tCar: 'car chosen',
+      tGoat: 'goat chosen',
+      tHostCar: 'opens {k} goat door(s)',
+      tHostGoat: 'opens the other goat doors',
+      tWin: 'Car!',
+      tLose: 'Goat',
+      tSum: '{s}: P(car) = {p}',
+      tNote: 'The host only ever opens goat doors. If you first picked a goat, switching surely takes you to the car.',
       goat: 'Goat',
       car: 'Car',
     },
@@ -162,6 +207,7 @@ export default defineSimulation({
 
     /* ---------- Simulation ---------- */
     let games = 0;
+    let invalid = 0;
     let stayWins = 0;
     let switchWins = 0;
     let stayHistory: number[] = [];
@@ -207,7 +253,16 @@ export default defineSimulation({
 
     function runGames(count: number): void {
       for (let i = 0; i < count; i++) {
-        const r = playRound(p.doors, Math.random);
+        let r: { stayWins: boolean; switchWins: boolean };
+        if (p.host === 'guess') {
+          // Moderation weiß nichts: Zeigt sie das Auto, ist das Spiel ungültig und zählt nicht
+          const u = playRoundUninformed(p.doors, Math.random);
+          if (!u.valid) {
+            invalid++;
+            continue;
+          }
+          r = u;
+        } else r = playRound(p.doors, Math.random);
         games++;
         if (r.stayWins) stayWins++;
         if (r.switchWins) switchWins++;
@@ -226,6 +281,7 @@ export default defineSimulation({
 
     function clearSimulation(): void {
       games = 0;
+      invalid = 0;
       stayWins = 0;
       switchWins = 0;
       stayHistory = [];
@@ -258,10 +314,15 @@ export default defineSimulation({
         'sim',
         games === 0
           ? ctx.t('none')
-          : `${tr('games', { n: fmt.num(games, 0) })}: ${ctx.t('stay')} ${fmt.fixed((stayWins / games) * 100, 1)} %, ${ctx.t('switch')} ${fmt.fixed((switchWins / games) * 100, 1)} %`,
+          : `${tr('games', { n: fmt.num(games, 0) })}: ${ctx.t('stay')} ${fmt.fixed((stayWins / games) * 100, 1)} %, ${ctx.t('switch')} ${fmt.fixed((switchWins / games) * 100, 1)} %${invalid ? ` · ${tr('invalid', { k: fmt.num(invalid, 0) })}` : ''}`,
       );
       const th = winProbabilities(p.doors);
-      ctx.readout('theory', tr('theory', { n: p.doors, m: p.doors - 1, stay: probText(th.stay), switch: probText(th.switch) }));
+      ctx.readout(
+        'theory',
+        p.mode === 'simulate' && p.host === 'guess'
+          ? tr('theoryGuess', { n: p.doors })
+          : tr('theory', { n: p.doors, m: p.doors - 1, stay: probText(th.stay), switch: probText(th.switch) }),
+      );
     }
 
     /* ---------- Geometrie der Türen ---------- */
@@ -633,7 +694,7 @@ export default defineSimulation({
       const h = surface.height;
       const wide = isWide(w, h);
       const bars: Rect = wide ? { x: 16, y: 16, w: w * 0.4 - 24, h: h - 32 } : { x: 16, y: 12, w: w - 32, h: h * 0.42 };
-      const th = winProbabilities(p.doors);
+      const th = p.host === 'guess' ? winProbabilitiesUninformed(p.doors) : winProbabilities(p.doors);
       const values = [games ? stayWins / games : 0, games ? switchWins / games : 0];
       const labels = [ctx.t('stay'), ctx.t('switch')];
       const colorsBar = [theme.series[1]!, theme.series[0]!];
@@ -690,9 +751,10 @@ export default defineSimulation({
       // Beschriftung der Linien (nicht nur über die Farbe unterscheidbar)
       const rx = plot.rect.x + plot.rect.w - 6;
       const m = p.doors - 1;
-      plot.textPx(rx, plot.py(th.switch), `${ctx.t('switch')}: ${m}/${p.doors}`, { color: theme.series[0], weight: 'bold', size: 13, align: 'right', offset: [0, -8] });
+      const guess = p.host === 'guess';
+      plot.textPx(rx, plot.py(th.switch), guess ? `${ctx.t('stay')} = ${ctx.t('switch')}: 1/2` : `${ctx.t('switch')}: ${m}/${p.doors}`, { color: theme.series[0], weight: 'bold', size: 13, align: 'right', offset: [0, -8] });
       const below = th.stay > 0.2;
-      plot.textPx(rx, plot.py(th.stay), `${ctx.t('stay')}: 1/${p.doors}`, {
+      if (!guess) plot.textPx(rx, plot.py(th.stay), `${ctx.t('stay')}: 1/${p.doors}`, {
         color: theme.series[1],
         weight: 'bold',
         size: 13,
@@ -710,11 +772,128 @@ export default defineSimulation({
       }
     }
 
+    /** Baumdiagramm: erste Wahl → Moderation → Ergebnis mit der gewählten Strategie. */
+    function drawTree(): void {
+      const g = surface.g;
+      const theme = ctx.theme;
+      const w = surface.width;
+      const h = surface.height;
+      const n = p.doors;
+      const sw = p.strat !== 'stay';
+      const narrow = w < 560;
+      const fs = narrow ? 11 : 14;
+      // Positionen: breit von links nach rechts, schmal von oben nach unten
+      const top = narrow ? 70 : 0;
+      const P = narrow
+        ? {
+            start: [w / 2, top + h * 0.06] as const,
+            car: [w * 0.27, top + h * 0.22] as const,
+            goat: [w * 0.73, top + h * 0.22] as const,
+            hostCar: [w * 0.27, top + h * 0.4] as const,
+            hostGoat: [w * 0.73, top + h * 0.4] as const,
+            endCar: [w * 0.27, top + h * 0.56] as const,
+            endGoat: [w * 0.73, top + h * 0.56] as const,
+          }
+        : {
+            start: [w * 0.07, (h * 0.3 + h * 0.68) / 2] as const,
+            car: [w * 0.3, h * 0.3] as const,
+            goat: [w * 0.3, h * 0.68] as const,
+            hostCar: [w * 0.6, h * 0.3] as const,
+            hostGoat: [w * 0.6, h * 0.68] as const,
+            endCar: [w * 0.88, h * 0.3] as const,
+            endGoat: [w * 0.88, h * 0.68] as const,
+          };
+      const maxW = narrow ? w * 0.42 : w * 0.22;
+      const wrapLabel = (label: string, font: string): string[] => {
+        g.font = font;
+        if (g.measureText(label).width <= maxW - 16) return [label];
+        const words = label.split(' ');
+        let a = '';
+        let i = 0;
+        while (i < words.length && g.measureText(`${a} ${words[i]}`.trim()).width <= maxW - 16) a = `${a} ${words[i++]}`.trim();
+        return [a || words[0]!, words.slice(a ? i : 1).join(' ')];
+      };
+      const node = (pos: readonly [number, number], label: string, color: string, strong = false) => {
+        const [cx, cy] = pos;
+        const font = `${strong ? 800 : 700} ${fs}px ${theme.font}`;
+        const lines = wrapLabel(label, font);
+        g.font = font;
+        const tw = Math.max(...lines.map((l) => g.measureText(l).width)) + 16;
+        const th2 = lines.length * fs * 1.3 + fs * 0.7;
+        // erst deckend hinterlegen, damit die Linien nicht durch die Kästchen laufen
+        g.fillStyle = theme.bg;
+        roundRect(g, cx - tw / 2, cy - th2 / 2, tw, th2, 8);
+        g.fill();
+        g.fillStyle = withAlpha(color, strong ? 0.28 : 0.14);
+        g.fill();
+        g.strokeStyle = color;
+        g.lineWidth = strong ? 2.5 : 1.5;
+        g.stroke();
+        lines.forEach((l, i) => text(g, l, cx, cy + (i - (lines.length - 1) / 2) * fs * 1.3, { font, color: theme.text }));
+      };
+      const edge = (a: readonly [number, number], b: readonly [number, number], label: string, on: boolean) => {
+        g.strokeStyle = on ? theme.series[0]! : withAlpha(theme.muted, 0.6);
+        g.lineWidth = on ? 4 : 1.8;
+        g.beginPath();
+        g.moveTo(a[0], a[1]);
+        g.lineTo(b[0], b[1]);
+        g.stroke();
+        if (!label) return;
+        const mx = (a[0] + b[0]) / 2;
+        const my = (a[1] + b[1]) / 2;
+        g.font = `800 ${fs + 1}px ${theme.font}`;
+        const tw = g.measureText(label).width + 10;
+        g.fillStyle = theme.bg;
+        roundRect(g, mx - tw / 2, my - fs * 0.75, tw, fs * 1.5, 6);
+        g.fill();
+        text(g, label, mx, my, { font: `800 ${fs + 1}px ${theme.font}`, color: on ? theme.series[0]! : theme.muted });
+      };
+      const win = theme.series[2]!;
+      const lose = theme.series[1]!;
+      // Wege: erste Wahl Auto bzw. Ziege
+      const carWins = !sw;
+      const goatWins = sw;
+      edge(P.start, P.car, `1/${n}`, carWins);
+      edge(P.start, P.goat, `${n - 1}/${n}`, goatWins);
+      edge(P.car, P.hostCar, '1', carWins);
+      edge(P.goat, P.hostGoat, '1', goatWins);
+      edge(P.hostCar, P.endCar, '', carWins);
+      edge(P.hostGoat, P.endGoat, '', goatWins);
+      node(P.start, ctx.t('tStart'), theme.muted);
+      node(P.car, ctx.t('tCar'), theme.series[3]!);
+      node(P.goat, ctx.t('tGoat'), theme.series[3]!);
+      node(P.hostCar, tr('tHostCar', { k: n - 1 }), theme.muted);
+      node(P.hostGoat, ctx.t('tHostGoat'), theme.muted);
+      node(P.endCar, ctx.t(carWins ? 'tWin' : 'tLose'), carWins ? win : lose, carWins);
+      node(P.endGoat, ctx.t(goatWins ? 'tWin' : 'tLose'), goatWins ? win : lose, goatWins);
+      const x = [0, 0, 0, P.endCar[0]];
+      const yTop = P.endCar[1] - (narrow ? -fs * 4.2 : 0);
+      // Strategie als Spaltenüberschrift
+      if (!narrow) text(g, ctx.t(sw ? 'switch' : 'stay'), x[3]!, yTop - fs * 2.6, { font: `800 ${fs + 2}px ${theme.font}`, color: theme.series[0]! });
+      const pv = sw ? `${n - 1}/${n} ${probText((n - 1) / n)}` : `1/${n} ${probText(1 / n)}`;
+      text(g, tr('tSum', { s: ctx.t(sw ? 'switch' : 'stay'), p: pv }), w / 2, narrow ? top + h * 0.7 : h * 0.86, { font: `800 ${fs + 3}px ${theme.font}`, color: theme.text });
+      // Erklärung oben, bei Bedarf umbrochen
+      g.font = `500 ${fs}px ${theme.font}`;
+      const words = ctx.t('tNote').split(' ');
+      const lines: string[] = [];
+      let line = '';
+      for (const word of words) {
+        const next = line ? `${line} ${word}` : word;
+        if (g.measureText(next).width > w - 40 && line) {
+          lines.push(line);
+          line = word;
+        } else line = next;
+      }
+      if (line) lines.push(line);
+      lines.forEach((l, i) => text(g, l, w / 2, 20 + i * (fs + 5), { font: `500 ${fs}px ${theme.font}`, color: theme.muted }));
+    }
+
     clearSimulation();
     newGame();
 
     return {
       update(changed, source) {
+        if (changed.has('host') && source !== 'init') clearSimulation();
         if (changed.has('doors') || (changed.has('mode') && source !== 'init')) {
           newGame();
           if (changed.has('doors') && source !== 'init') clearSimulation();
@@ -765,6 +944,10 @@ export default defineSimulation({
         const now = performance.now();
         surface.begin();
         updateKeyTargets();
+        if (p.mode === 'tree') {
+          drawTree();
+          return;
+        }
         if (p.mode === 'simulate') {
           if (auto) {
             carry += ((now - lastFrame) / 1000) * p.speed;

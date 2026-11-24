@@ -1292,8 +1292,8 @@ export const mathematik: Subject = {
             slug: L('ziegenproblem', 'monty-hall-problem'),
             title: L('Ziegenproblem', 'Monty Hall problem'),
             summary: L(
-              'Spiele selbst oder simuliere tausende Spiele: Lohnt es sich, die Tür zu wechseln?',
-              'Play yourself or simulate thousands of games: is it worth switching doors?',
+              'Spiele selbst oder simuliere tausende Spiele: Lohnt es sich, die Tür zu wechseln? Ein Baumdiagramm erklärt, warum, und eine ahnungslose Moderation zeigt, wie wichtig die Spielregeln sind.',
+              'Play yourself or simulate thousands of games: is it worth switching doors? A tree diagram explains why, and a clueless host shows how much the rules matter.',
             ),
             grades: [10, 12],
             kmk: ['M-L5', 'M-K2', 'M-K3'],
