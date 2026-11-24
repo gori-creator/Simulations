@@ -672,6 +672,22 @@ export const physik: Subject = {
                 ['capacitor', 'capacitance', 'charging', 'discharging', 'RC circuit', 'time constant', 'half-life', 'exponential function', 'tangent', 'charging current', 'energy in a capacitor', 'resistor'],
               ),
             },
+            {
+              id: 'wechselstrom',
+              status: 'ready',
+              slug: L('wechselstromkreise-zeigerdiagramm', 'ac-circuits-phasors'),
+              title: L('Wechselstromkreise und Zeigerdiagramm', 'AC circuits and phasors'),
+              summary: L(
+                'Spule und Kondensator bremsen Wechselstrom auf ihre eigene Art. Drehende Zeiger zeigen, warum Strom und Spannung dann nicht mehr im Takt sind und wie viel Leistung wirklich ankommt.',
+                'Coils and capacitors hold back alternating current in their own way. Rotating phasors show why current and voltage fall out of step and how much power really arrives.',
+              ),
+              grades: [11, 13],
+              kmk: ['P-S', 'P-E', 'P-BK-Energie', 'P-BK-Mathematisieren'],
+              keywords: L(
+                ['Wechselstrom', 'Wechselspannung', 'Effektivwert', 'Scheitelwert', 'Zeigerdiagramm', 'induktiver Widerstand', 'kapazitiver Widerstand', 'Blindwiderstand', 'Scheinwiderstand', 'Impedanz', 'Phasenverschiebung', 'Wirkleistung', 'Blindleistung', 'Scheinleistung', 'Reihenschwingkreis', 'Resonanzfrequenz', 'RLC'],
+                ['alternating current', 'AC voltage', 'rms value', 'peak value', 'phasor diagram', 'inductive reactance', 'capacitive reactance', 'reactance', 'impedance', 'phase shift', 'real power', 'reactive power', 'apparent power', 'series RLC circuit', 'resonance frequency', 'RLC'],
+              ),
+            },
           ],
         },
         {

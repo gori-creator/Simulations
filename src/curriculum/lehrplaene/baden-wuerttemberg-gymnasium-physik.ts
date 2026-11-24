@@ -688,7 +688,7 @@ export const badenWuerttembergGymnasiumPhysik: StateCurriculum = {
                 "Induktionsgesetz erläutern und anwenden, Selbstinduktion beim Ein- und Ausschalten, Induktivität und Energie einer Spule sowie Wirbelströme in der Technik.",
                 "Explaining and applying Faraday’s law, self-induction when switching on and off, inductance and energy of a coil, and eddy currents in technology.",
               ),
-              simulations: ["induktion"],
+              simulations: ["induktion", 'wechselstrom'],
             },
           ],
         },

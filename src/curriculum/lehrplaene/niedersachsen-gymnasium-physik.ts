@@ -264,7 +264,7 @@ const Q_UNITS: CurriculumUnit[] = [
           'Flussdichte mit der Hallsonde messen, Feld einer Spule, Induktionsspannung und Induktionsgesetz, Wechselspannung; nur eA: Selbstinduktion und Energie des Magnetfelds.',
           'Measuring flux density with a Hall probe, the field of a coil, induced voltage and the law of induction, alternating voltage; higher level only: self-induction and magnetic field energy.',
         ),
-        simulations: ['induktion'],
+        simulations: ['induktion', 'wechselstrom'],
       },
     ],
   },

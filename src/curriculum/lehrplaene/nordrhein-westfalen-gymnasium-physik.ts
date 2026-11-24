@@ -632,7 +632,7 @@ const Q_UNITS: CurriculumUnit[] = [
           'Magnetischer Fluss, Induktionsgesetz, Lenz’sche Regel, Selbstinduktion und Induktivität.',
           'Magnetic flux, the law of induction, Lenz’s law, self-induction and inductance.',
         ),
-        simulations: ['induktion'],
+        simulations: ['induktion', 'wechselstrom'],
       },
     ],
   },

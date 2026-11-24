@@ -402,7 +402,7 @@ const J11: CurriculumUnit[] = [
     code: 'LK-8',
     title: L('Elektromagnetische Felder (Leistungskurs)', 'Electromagnetic fields (advanced course)'),
     summary: L('Induktionsgesetz, Transformator, Lenz’sches Gesetz, Selbstinduktion und Energie des Magnetfelds.', 'The law of induction, transformers, Lenz’s law, self-induction and magnetic field energy.'),
-    simulations: ['induktion'],
+    simulations: ['induktion', 'wechselstrom'],
   },
   {
     code: 'LK-W1',

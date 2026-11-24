@@ -189,7 +189,7 @@ const Q12_UNITS: CurriculumUnit[] = [
       'Magnetischer Fluss und Induktionsgesetz, Lenzsche Regel, Selbstinduktion und technische Anwendungen; im LK auch in differenzieller Form.',
       'Magnetic flux and the law of induction, Lenz’s law, self-induction and technical applications; in the LK also in differential form.',
     ),
-    simulations: ['induktion'],
+    simulations: ['induktion', 'wechselstrom'],
   },
   {
     code: '3.2.4',

@@ -213,7 +213,7 @@ const HP_12_UNITS: CurriculumUnit[] = [
     code: '2',
     title: L('Elektromagnetische Induktion', 'Electromagnetic induction'),
     summary: L('Induktionsgesetz; LK: Selbstinduktion und Energie des magnetischen Feldes.', 'The law of induction; LK: self-induction and the energy of the magnetic field.'),
-    simulations: ['induktion'],
+    simulations: ['induktion', 'wechselstrom'],
   },
   {
     code: '3.1',

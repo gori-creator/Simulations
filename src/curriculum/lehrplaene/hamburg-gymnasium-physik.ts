@@ -155,7 +155,7 @@ const S_UNITS: CurriculumUnit[] = [
       'Magnetischer Fluss und Induktionsgesetz, Lenzsche Regel, technische Anwendungen; eA: differenzielle Form, Induktivität und Selbstinduktion.',
       'Magnetic flux and the law of induction, Lenz’s law, technical applications; eA: differential form, inductance and self-induction.',
     ),
-    simulations: ['induktion'],
+    simulations: ['induktion', 'wechselstrom'],
   },
   {
     code: '2.1',

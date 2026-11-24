@@ -241,7 +241,7 @@ const FELDER: CurriculumUnit = {
         'Magnetischer Fluss und Induktionsgesetz, Induktivität und Selbstinduktion, Ein- und Ausschaltvorgänge, technische Anwendungen und Schwingkreise.',
         'Magnetic flux and the law of induction, inductance and self-induction, switching on and off, technical applications and LC circuits.',
       ),
-      simulations: ['induktion'],
+      simulations: ['induktion', 'wechselstrom'],
     },
   ],
 };

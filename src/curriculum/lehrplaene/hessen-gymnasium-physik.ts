@@ -2055,7 +2055,7 @@ export const hessenGymnasiumPhysik: StateCurriculum = {
               code: 'Q2.2.4',
               title: L('Beispiel für eine technische Anwendung der Induktion', 'Example of a technical application of induction'),
               summary: L('Z. B. Generator oder Transformator erklären.', 'Explaining e.g. a generator or transformer.'),
-              simulations: ['induktion'],
+              simulations: ['induktion', 'wechselstrom'],
             },
             {
               code: 'Q2.2.5',
