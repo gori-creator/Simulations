@@ -1058,6 +1058,11 @@ export class Plot implements PointerTarget {
     this.controlsEl = el;
   }
 
+  /** Zoom-Schaltflächen ein- oder ausblenden (z. B. in Teilen einer Simulation ohne Zoom). */
+  setControlsVisible(visible: boolean): void {
+    if (this.controlsEl) this.controlsEl.style.display = visible ? '' : 'none';
+  }
+
   private positionControls(): void {
     if (!this.controlsEl) return;
     const r = this.r;

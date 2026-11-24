@@ -1574,8 +1574,8 @@ export const mathematik: Subject = {
             slug: L('ober-und-untersummen', 'riemann-sums'),
             title: L('Integral als Flächenbilanz (Rechtecksummen)', 'The integral as signed area (rectangle sums)'),
             summary: L(
-              'Fülle die Fläche unter einem Graphen mit Rechtecken. Je mehr Rechtecke, desto genauer wird der Wert des Integrals.',
-              'Fill the area under a graph with rectangles. The more rectangles, the more precisely you get the value of the integral.',
+              'Fülle die Fläche unter einem Graphen mit Rechtecken. Je mehr Rechtecke, desto genauer wird der Wert des Integrals. Ein Becken zeigt, wie aus der Zuflussrate die Wassermenge wird, und Übungsaufgaben trainieren das Rechnen von Hand.',
+              'Fill the area under a graph with rectangles. The more rectangles, the more precisely you get the value of the integral. A tank shows how the inflow rate turns into an amount of water, and practice tasks train the calculation by hand.',
             ),
             grades: [11, 13],
             kmk: ['M-L2', 'M-L3', 'M-K4'],

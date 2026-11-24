@@ -127,3 +127,95 @@ export function strips(f: (x: number) => number, a: number, b: number, n: number
 export function sumOf(list: readonly Strip[]): number {
   return list.reduce((s, r) => s + ((r.h0 + r.h1) / 2) * (r.x1 - r.x0), 0);
 }
+
+// ───────────────────────── Zufluss und Wassermenge ─────────────────────────
+
+export type ProfileId = 'const' | 'linear' | 'wave' | 'outflow';
+
+export interface Profile {
+  /** Zuflussrate r(t) in Litern pro Minute (negativ: Abfluss) */
+  rate: (t: number) => number;
+  /** Stammfunktion von r mit R(0) = 0 */
+  R: (t: number) => number;
+  /** Wassermenge zu Beginn in Litern */
+  v0: number;
+  /** Rate als Text (deutsches Zahlformat) */
+  term: string;
+}
+
+export const PROFILES: Record<ProfileId, Profile> = {
+  // Wasserhahn gleichmäßig offen
+  const: { rate: () => 3, R: (t) => 3 * t, v0: 0, term: '3' },
+  // Hahn wird langsam aufgedreht
+  linear: { rate: (t) => 0.6 * t, R: (t) => 0.3 * t * t, v0: 0, term: '0,6t' },
+  // schwankender Zufluss (z. B. Pumpe)
+  wave: { rate: (t) => 3 + 2 * Math.sin(0.8 * t), R: (t) => 3 * t + 2.5 * (1 - Math.cos(0.8 * t)), v0: 0, term: '3 + 2 · sin(0,8t)' },
+  // Zufluss wird schwächer, ab t = 4 fließt Wasser ab
+  outflow: { rate: (t) => 4 - t, R: (t) => 4 * t - 0.5 * t * t, v0: 20, term: '4 − t' },
+};
+
+/** Wassermenge im Becken nach t Minuten: V(t) = V₀ + ∫₀ᵗ r(s) ds. */
+export function volume(profile: Profile, t: number): number {
+  return profile.v0 + profile.R(t);
+}
+
+// ───────────────────────── Üben: Summe von Hand ─────────────────────────
+
+export type TaskKind = 'lower' | 'upper' | 'left' | 'right' | 'mid';
+
+export interface SumTask {
+  fn: 'x2' | 'sqrt';
+  a: number;
+  b: number;
+  n: number;
+  kind: TaskKind;
+  /** Streifenbreite Δx */
+  width: number;
+  /** Höhen der Rechtecke */
+  heights: number[];
+  answer: number;
+}
+
+const TASK_SETUPS: readonly { fn: 'x2' | 'sqrt'; a: number; b: number; ns: readonly number[] }[] = [
+  { fn: 'x2', a: 0, b: 2, ns: [2, 4] },
+  { fn: 'x2', a: 0, b: 3, ns: [3] },
+  { fn: 'x2', a: 1, b: 3, ns: [2, 4] },
+  { fn: 'sqrt', a: 0, b: 4, ns: [2, 4] },
+  { fn: 'sqrt', a: 0, b: 9, ns: [3] },
+];
+
+/**
+ * Reproduzierbare Aufgabe Nr. q: eine Rechtecksumme von Hand ausrechnen.
+ * Die ersten beiden Aufgaben fragen Links- bzw. Rechtssumme, danach auch
+ * Unter-, Ober- und Mittelsumme. Alle Funktionen steigen auf dem Intervall.
+ */
+export function sumTask(q: number, rand: () => number): SumTask {
+  const setup = TASK_SETUPS[Math.floor(rand() * TASK_SETUPS.length)]!;
+  const n = setup.ns[Math.floor(rand() * setup.ns.length)]!;
+  const pool: readonly TaskKind[] = q <= 2 ? (['left', 'right'] as const) : (['lower', 'upper', 'left', 'right', 'mid'] as const);
+  const kind = q <= 2 ? pool[q - 1]! : pool[Math.floor(rand() * pool.length)]!;
+  const def = FUNCTIONS[setup.fn];
+  const list = strips(def.f, setup.a, setup.b, n, kind, def.critical);
+  return {
+    fn: setup.fn,
+    a: setup.a,
+    b: setup.b,
+    n,
+    kind,
+    width: (setup.b - setup.a) / n,
+    heights: list.map((s) => s.h0),
+    answer: sumOf(list),
+  };
+}
+
+/** Erste Zahl in der Eingabe (Komma oder Punkt), sonst null. */
+export function parseNumber(text: string): number | null {
+  const m = text.replace(/\s/g, '').match(/-?\d+(?:[.,]\d+)?/);
+  return m ? Number(m[0].replace(',', '.')) : null;
+}
+
+/** Richtig bei höchstens 0,01 bzw. 0,5 % Abweichung (Runden auf zwei Stellen ist erlaubt). */
+export function checkSum(task: SumTask, text: string): { ok: boolean; got: number | null } {
+  const got = parseNumber(text);
+  return { ok: got !== null && Math.abs(got - task.answer) <= Math.max(0.0101, 0.005 * Math.abs(task.answer)), got };
+}

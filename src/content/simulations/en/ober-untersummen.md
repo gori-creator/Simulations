@@ -15,12 +15,24 @@ $$
 
 Other approximations: left, right and midpoint sums (height at the left edge, the right edge or in the middle) and the **trapezoidal sum**.
 
+### From inflow to amount of water
+
+If $r$ litres per minute flow into a tank, then in a short time $\Delta t$ about $r \cdot \Delta t$ litres are added – a narrow rectangle under the graph of the **inflow rate** $r(t)$. All rectangles together give the amount that has flowed in, and in the limit this is an integral:
+
+$$
+V(t) = V_0 + \int_0^t r(s)\,\mathrm{d}s
+$$
+
+If $r(t)$ is negative, water flows out: the area below the t-axis counts as negative, and the water in the tank decreases. Where $r$ changes sign, the tank is at its fullest. This is how you reconstruct an **amount** from a rate of change.
+
 ## Try it
 
 1. Press **Double n** several times and watch the lower and upper sums move together.
 2. Drag the limits $a$ and $b$ along the x-axis.
 3. Choose $\sin x$ from $0$ to $2\pi$. Why is the sum almost zero? [Signed area](?fn=sin&a=0&b=6.3&kind=mid&n=12)
 4. Compare the midpoint sum and the trapezoidal sum. Which one is more accurate for the same $n$? [Trapezoidal sum](?fn=sqrt&a=0&b=9&kind=trapez&n=6)
+5. **Inflow and amount of water:** press **Play** and watch the tank grow with the area under the graph. What happens when the graph goes below the t-axis? [Filling a tank](?mode=fill&prof=const&t=0&n=10) · [Inflow and outflow](?mode=fill&prof=outflow&t=0&n=10)
+6. **Practice:** work out a rectangle sum by hand, enter your result and have it checked. After the correct answer the rectangles appear with their heights. [Practice](?mode=quiz&q=1)
 
 ## Exercises
 
@@ -61,11 +73,42 @@ $F(3) - F(-2) = (10.125 - 9) - (2 - 4) = 3.125$. Parts of the graph lie below th
 
 </details>
 
+### Exercise 4: Inflow and outflow
+
+A tank holds $20$ litres. Water flows in at $r(t) = 4 - t$ litres per minute ($t$ in minutes). When is the tank at its fullest? How much water is in it then, and how much after $10$ minutes? [Load exercise](?mode=fill&prof=outflow&t=0&n=10&_hide=1)
+
+<details>
+<summary>Show solution</summary>
+
+Up to $t = 4$, $r(t) > 0$; after that water flows out. So the tank is fullest at $t = 4$:
+
+$$V(4) = 20 + \int_0^4 (4 - t)\,\mathrm{d}t = 20 + \left[4t - \tfrac{1}{2}t^2\right]_0^4 = 20 + 8 = 28\ \text{litres}$$
+
+$$V(10) = 20 + \left(40 - 50\right) = 10\ \text{litres}$$
+
+[Show in the simulation](?mode=fill&prof=outflow&t=4&n=10)
+
+</details>
+
+### Exercise 5: Estimating with rectangles
+
+The tap is opened slowly: $r(t) = 0.6t$ litres per minute. Estimate the amount of water after $10$ minutes with $5$ rectangles (height at the left edge each time) and compare with the exact value. Why is the estimate too small?
+
+<details>
+<summary>Show solution</summary>
+
+$\Delta t = 2$; heights $0,\ 1.2,\ 2.4,\ 3.6,\ 4.8$. Estimate: $2 \cdot 12 = 24$ litres. Exact: $\int_0^{10} 0.6t\,\mathrm{d}t = 0.3 \cdot 100 = 30$ litres. Because $r$ increases, the left sum is a lower sum – every rectangle stays below the graph. [Show in the simulation](?mode=fill&prof=linear&t=10&n=5)
+
+</details>
+
 ## Ideas for the classroom
 
 - **Use:** upper secondary (area and definite integral, often at the higher level); also for introducing the idea of an integral in general.
 - **Animation:** when you double or halve $n$, the new rectangles grow out of the old ones. The table shows the sums for $n = 4$ to $128$.
 - **About the calculation:** the minimum and maximum of each strip are found exactly: the simulation compares the function values at the edges of the strip and at the points with $f'(x) = 0$ inside it.
+- **Reconstruction:** the part “Inflow and amount of water” links rectangle sums with the context “rate of change → amount”. A good way in before the fundamental theorem.
+- **Practice:** the tasks are numbered. The same number means the same task – so the whole class can work on the same one. The first two ask for the left and right sum, after that also lower, upper and midpoint sums.
 - **Common stumbling blocks:**
   - Treating the integral and the area as the same, even when the graph goes below the x-axis.
   - “Lower sum = left sum” only holds for increasing functions.
+  - When calculating by hand, the strip width $\Delta x$ is forgotten, or $n + 1$ heights are added.
