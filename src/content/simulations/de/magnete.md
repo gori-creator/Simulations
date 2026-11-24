@@ -31,11 +31,12 @@ Daraus entsteht das **Feldlinienbild**: Die Feldlinien treten am **Nordpol aus**
 3. Ersetze den rechten Magneten durch ein Stück Eisen. Wird es auch vom Südpol angezogen, wenn du den linken Magneten in Gedanken umdrehst? [Eisen](?mode=poles&other=iron&bx=5)
 4. Probiere ein Stück Aluminium. [Aluminium](?mode=poles&other=alu&bx=2)
 5. Ziehe den Kompass einmal um den Stabmagneten herum. Wie oft dreht sich die Nadel dabei ganz herum? [Stabmagnet](?mode=field&arr=single&rot=0&lines=1&filings=0&needles=0&cx=-6&cy=3)
-6. Streue Eisenfeilspäne zwischen zwei Nordpole. Wo liegen kaum Späne in einer Richtung? [Zwei Nordpole](?mode=field&arr=repel&lines=0&filings=1&needles=0&cx=0&cy=3)
-7. Streiche den Nagel mit dem Magneten. Wie viele Büroklammern hält er? Hämmere ihn dann. [Nagel](?mode=domains&pieces=1)
-8. Zerbrich den magnetischen Nagel in drei Teile. Wo sind die Pole? [Zerbrochen](?mode=domains&pieces=3)
-9. Ziehe den Kompass auf der Erde vom Äquator zum Nordpol. Wie neigt sich die Nadel? [Erde](?mode=earth&lat=0&tilt=10&lines=1)
-10. Spiel: Welche Gegenstände zieht der Magnet an? [Spiel](?mode=sort&round=1)
+6. Streue Eisenfeilspäne um den Stabmagneten. Die gezeichneten Späne gehen in ein Foto echter Späne über. Wo liegen sie am dichtesten? [Echte Späne](?mode=field&arr=single&rot=0&lines=0&filings=1&photo=1&needles=0&cx=-6&cy=3)
+7. Streue Eisenfeilspäne zwischen zwei Nordpole. Wo liegen kaum Späne in einer Richtung? [Zwei Nordpole](?mode=field&arr=repel&lines=0&filings=1&needles=0&cx=0&cy=3)
+8. Streiche den Nagel mit dem Magneten. Wie viele Büroklammern hält er? Hämmere ihn dann. [Nagel](?mode=domains&pieces=1)
+9. Zerbrich den magnetischen Nagel in drei Teile. Wo sind die Pole? [Zerbrochen](?mode=domains&pieces=3)
+10. Ziehe den Kompass auf der Erde vom Äquator zum Nordpol. Wie neigt sich die Nadel? [Erde](?mode=earth&lat=0&tilt=10&lines=1)
+11. Spiel: Welche Gegenstände zieht der Magnet an? [Spiel](?mode=sort&round=1)
 
 ## Aufgaben
 
