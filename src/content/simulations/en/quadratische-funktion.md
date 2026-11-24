@@ -36,6 +36,10 @@ $$
 x_{1,2} = \frac{-b \pm \sqrt{b^2 - 4ac}}{2a}
 $$
 
+### Parabola and line
+
+Where does the parabola $f(x) = ax^2 + bx + c$ meet the line $y = mx + n$? Setting them equal gives the quadratic equation $ax^2 + (b - m)x + (c - n) = 0$. Its discriminant decides: positive – two points of intersection (**secant**), zero – one point of contact (**tangent**), negative – no common point (the line **misses** the parabola). Example: $x^2 = x + 2$ leads to $x^2 - x - 2 = 0$ with $x_1 = -1$, $x_2 = 2$.
+
 ## Explore
 
 1. Change only $a$ – also to negative values. Compare with the dashed standard parabola. [a = 2](?a=2) [a = −0.5](?a=-0.5)
@@ -43,6 +47,9 @@ $$
 3. Drag the vertex $S$ up and down. When are there two zeros, one zero or none?
 4. Switch on the **stretch triangle**: from the vertex you go 1 to the right and $a$ up. Drag the hollow point to the right of the vertex up or down – this changes $a$. [Load example](?a=1.5&d=-1&e=-2&step=1)
 5. Switch to **standard form** at the top. The parabola stays the same – only the representation changes.
+6. **Parabola and line:** drag the two points of the line. Set up a tangent: when is there exactly one common point? [Secant](?mode=line&a=1&d=0&e=0&m=1&n=2) · [Tangent](?mode=line&a=1&d=0&e=0&m=2&n=-1)
+7. **Throwing a ball:** tap “Throw” and then change the highest point $(d, e)$ and $a$. How far does the ball fly? [Throw](?mode=throw&a=-0.1&d=6&e=5)
+8. **Game:** read off the vertex and the stretch factor of the orange parabola and copy it. [Match the parabola](?mode=match&q=1&a=1&d=0&e=0)
 
 ## Exercises
 
@@ -91,18 +98,31 @@ Decide without calculating the zeros how many zeros the functions have:
 
 ### Exercise 4: Throwing a ball (modelling)
 
-The path of a ball is described by $h(x) = -0.2\,(x - 5)^2 + 6$ ($x$: distance in m, $h$: height in m). How high does the ball fly at most, and how far does it fly? Tip: zoom out to check.
+The path of a ball is described by $h(x) = -0.2\,(x - 5)^2 + 6$ ($x$: distance in m, $h$: height in m). How high does the ball fly at most, and how far does it fly? The view “Throwing a ball” is good for checking.
 
 <details>
 <summary>Show solution</summary>
 
-The vertex $S(5, 6)$ is the highest point: a height of 6 m after 5 m. Landing: $0.2\,(x-5)^2 = 6 \Rightarrow (x-5)^2 = 30 \Rightarrow x = 5 + \sqrt{30} \approx 10.5$ m. [Show in simulation](?a=-0.2&d=5&e=6)
+The vertex $S(5, 6)$ is the highest point: a height of 6 m after 5 m. Landing: $0.2\,(x-5)^2 = 6 \Rightarrow (x-5)^2 = 30 \Rightarrow x = 5 + \sqrt{30} \approx 10.5$ m. [Show in simulation](?mode=throw&a=-0.2&d=5&e=6)
+
+</details>
+
+### Exercise 5: A line through the parabola
+
+Calculate the points of intersection of the parabola $f(x) = x^2$ with the line $y = x + 2$. For which $n$ is $y = 2x + n$ a tangent? [Load exercise](?mode=line&a=1&d=0&e=0&m=1&n=2&zeros=0&_hide=1)
+
+<details>
+<summary>Show solution</summary>
+
+$x^2 = x + 2 \iff x^2 - x - 2 = 0 \iff (x + 1)(x - 2) = 0$: $S_1(-1, 1)$, $S_2(2, 4)$. Tangent: $x^2 - 2x - n = 0$ needs the discriminant $4 + 4n = 0$, so $n = -1$; point of contact $(1, 1)$. [Show the tangent](?mode=line&a=1&d=0&e=0&m=2&n=-1)
 
 </details>
 
 ## Ideas for the classroom
 
 - **Use:** introducing the vertex form (grade 9), linking the different forms, preparing the quadratic formula.
+- **Throwing a ball as a starter:** first let the ball be thrown, then ask: what do $d$, $e$ and the sign of $a$ mean? The highest point and the landing point appear in the picture when **Zeros** is switched on.
+- **Game “Match the parabola”:** the parabolas are numbered; the same number means the same parabola. Good practice for reading the stretch factor via “1 to the right, $a$ up”.
 - **Common stumbling blocks:**
   - The sign of $d$ is misread: $(x + 2)^2$ shifts to the **left**.
   - "Stretched" is confused with "wider". The dashed comparison with the standard parabola helps.
