@@ -2,7 +2,8 @@
 /**
  * Startseite: Karussell „Entdecken“ zwischen der Achterbahn und dem Unterrichts-Abschnitt.
  * Alle fertigen Simulationen als Karten auf einem gebogenen Rad (CSS-3D), die
- * mit ausdrucksstarkem Bild (src/lib/home/featured.ts) zuerst; Steuerung in
+ * eindrucksvollsten (src/lib/home/showcase.ts) zuerst, danach die mit ausdrucksstarkem
+ * Bild (src/lib/home/featured.ts); Steuerung in
  * src/lib/home/carousel.ts.
  *
  * Grundform ohne Skript, auf schmalen Bildschirmen und bei reduzierter Bewegung:
@@ -13,6 +14,7 @@ import { getSubject, readySimulations } from '../../curriculum';
 import type { Lang } from '../../i18n/config';
 import { formatGrades, t } from '../../i18n/utils';
 import { CAROUSEL_IDS } from '../../lib/home/featured';
+import { byShowcase, showcaseRank } from '../../lib/home/showcase';
 import { href } from '../../lib/routes';
 import { hasShot } from '../../lib/sim-shots';
 import SimShot from '../SimShot.astro';
@@ -40,7 +42,10 @@ const mixSubjects = (list: Sim[]): Sim[] => {
 };
 const chosen = new Set<string>(CAROUSEL_IDS);
 const ready = readySimulations();
-const sims = [...mixSubjects(ready.filter((s) => chosen.has(s.id))), ...mixSubjects(ready.filter((s) => !chosen.has(s.id)))];
+// Ganz vorn die eindrucksvollsten (lib/home/showcase.ts) in ihrer Reihenfolge
+const top = byShowcase(ready.filter((s) => showcaseRank(s.id) < Infinity));
+const rest = ready.filter((s) => showcaseRank(s.id) === Infinity);
+const sims = [...top, ...mixSubjects(rest.filter((s) => chosen.has(s.id))), ...mixSubjects(rest.filter((s) => !chosen.has(s.id)))];
 const metaOf = (sim: (typeof sims)[number]) =>
   `${getSubject(sim.subject).title[lang]} · ${formatGrades(lang, sim.grades, sim.uni)}`;
 const first = sims[0]!;
