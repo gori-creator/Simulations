@@ -26,6 +26,14 @@ $$
 
 For liquids we use **litres**: $1\,\text{l} = 1\,\text{dm}^3$ and $1\,\text{ml} = 1\,\text{cm}^3$.
 
+**Surface area:** a cuboid has six rectangular faces, two of each size: top and bottom ($a \cdot b$), front and back ($a \cdot c$), left and right ($b \cdot c$). Unfolding it gives a **net**. The surface area is the sum of all six faces:
+
+$$
+S = 2 \cdot (a \cdot b + a \cdot c + b \cdot c)
+$$
+
+Surface area is measured in units of area ($\text{cm}^2$), volume in units of volume ($\text{cm}^3$).
+
 ## Try it
 
 1. Press **Fill** and count along: first one row cube by cube, then whole rows, then whole layers.
@@ -33,6 +41,8 @@ For liquids we use **litres**: $1\,\text{l} = 1\,\text{dm}^3$ and $1\,\text{ml} 
 3. Double the height $c$. What happens to the volume? Then double the length $a$ as well.
 4. One litre: fill a cube with edge length $10\,\text{cm}$. [1 litre = 1000 cm³](?a=10&b=10&c=10&fill=voll)
 5. Compare a flat and a tall cuboid. [Just one layer](?a=8&b=5&c=1&fill=voll) · [Tall tower](?a=2&b=2&c=9&fill=voll)
+6. **Surface area and net:** the three pairs of faces are coloured, and the unfolded net is shown next to them. Drag the corners: which faces change when only the height grows? [Surface area](?mode=surface)
+7. **Practice:** calculate volume, surface area, a missing height or litres and have it checked. [Practice](?mode=quiz&q=1)
 
 ## Tasks
 
@@ -91,10 +101,23 @@ Give in the other unit: (a) $3\,\text{dm}^3$ in $\text{cm}^3$, (b) $2500\,\text{
 
 </details>
 
+### Task 6: Wrapping paper
+
+A gift box is $30\,\text{cm}$ long, $20\,\text{cm}$ wide and $10\,\text{cm}$ high. At least how much paper do you need to wrap it (without overlap)? What is its volume?
+
+<details>
+<summary>Show solution</summary>
+
+$S = 2 \cdot (30 \cdot 20 + 30 \cdot 10 + 20 \cdot 10) = 2 \cdot (600 + 300 + 200) = 2200\,\text{cm}^2$. $V = 30 \cdot 20 \cdot 10 = 6000\,\text{cm}^3 = 6$ litres. [See the surface area](?mode=surface&a=3&b=2&c=1&unit=dm)
+
+</details>
+
 ## Ideas for the classroom
 
 - **Use:** About grade 5/6 (volume): volume of cuboids via unit cubes, units of volume including litres.
 - **Didactic core:** The formula $V = a \cdot b \cdot c$ grows out of structured counting (row → layer → layers). You can switch off the counting aid (`count=0`) so that students describe the structure themselves.
+- **Surface area:** have students cut out and fold a paper net, then compare it with the net in the simulation. Other nets are possible too (a cube has 11 different nets).
+- **Practice:** the tasks are numbered; the same number means the same task. The types take turns: volume, surface area, missing height, litres.
 - **Common stumbling blocks:**
   - Volume and surface area are confused ("counting outside" instead of "filling inside").
   - The conversion factor 1000 is mixed up with 100 (units of area) or 10 (units of length). The cube with $10\,\text{cm}$ edges shows clearly why $1\,\text{dm}^3 = 1000\,\text{cm}^3$.

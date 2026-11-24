@@ -93,3 +93,53 @@ export function convertVolume(v: number, unit: UnitId): { cm3: number; dm3: numb
   const dm3 = unit === 'cm' ? v / 1000 : unit === 'dm' ? v : v * 1000;
   return { cm3: dm3 * 1000, dm3, m3: dm3 / 1000, l: dm3, ml: dm3 * 1000 };
 }
+
+/** Oberfläche des Quaders: O = 2 · (a · b + a · c + b · c). */
+export function surfaceArea(a: number, b: number, c: number): number {
+  return 2 * (a * b + a * c + b * c);
+}
+
+// ───────────────────────── Üben ─────────────────────────
+
+export interface CuboidTask {
+  /** Volumen, Oberfläche, fehlende Höhe aus dem Volumen oder Volumen in Litern */
+  kind: 'V' | 'O' | 'edge' | 'litre';
+  a: number;
+  b: number;
+  c: number;
+  unit: UnitId;
+  answer: number;
+}
+
+/** Reproduzierbare Aufgabe Nr. q; die Art wechselt reihum: V, O, Höhe, Liter. */
+export function cuboidTask(q: number, rand: () => number): CuboidTask {
+  const kinds: CuboidTask['kind'][] = ['V', 'O', 'edge', 'litre'];
+  const kind = kinds[(q - 1) % 4]!;
+  const dim = (max: number) => 1 + Math.floor(rand() * max);
+  if (kind === 'litre') {
+    const unit: UnitId = rand() < 0.6 ? 'dm' : 'm';
+    const max = unit === 'm' ? 3 : 8;
+    const a = dim(max);
+    const b = dim(max);
+    const c = dim(max);
+    return { kind, a, b, c, unit, answer: convertVolume(volume(a, b, c), unit).l };
+  }
+  const unit: UnitId = (['cm', 'dm', 'm'] as const)[Math.floor(rand() * 3)]!;
+  const a = 2 + Math.floor(rand() * 7);
+  const b = 2 + Math.floor(rand() * 5);
+  const c = 2 + Math.floor(rand() * 6);
+  const answer = kind === 'V' ? volume(a, b, c) : kind === 'O' ? surfaceArea(a, b, c) : c;
+  return { kind, a, b, c, unit, answer };
+}
+
+/** Erste Zahl in der Eingabe (Punkte und Leerzeichen als Tausendertrennung erlaubt, Komma als Dezimalzeichen). */
+export function parseAmount(text: string): number | null {
+  const t = text.replace(/\s/g, '').replace(/(\d)\.(?=\d{3}(?:\D|$))/g, '$1');
+  const m = t.match(/\d+(?:[.,]\d+)?/);
+  return m ? Number(m[0].replace(',', '.')) : null;
+}
+
+export function checkCuboid(task: CuboidTask, text: string): { ok: boolean; got: number | null } {
+  const got = parseAmount(text);
+  return { ok: got !== null && Math.abs(got - task.answer) < 0.01, got };
+}
