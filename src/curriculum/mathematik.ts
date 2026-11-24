@@ -1275,8 +1275,8 @@ export const mathematik: Subject = {
             slug: L('monte-carlo-pi', 'monte-carlo-pi'),
             title: L('Monte-Carlo-Methode: π mit Zufall bestimmen', 'Monte Carlo method: estimating π by chance'),
             summary: L(
-              'Zufällige Punkte fallen auf ein Quadrat mit einem Kreis darin. Aus dem Anteil im Kreis lässt sich π schätzen.',
-              'Random points fall on a square with a circle inside. From the share inside the circle you can estimate π.',
+              'Zufällige Punkte fallen auf ein Quadrat mit einem Kreis darin. Aus dem Anteil im Kreis lässt sich π schätzen. Auch fallende Nadeln (Buffon) verraten π, und die Fläche unter einer Parabel lässt sich genauso schätzen.',
+              'Random points fall on a square with a circle inside. From the share inside the circle you can estimate π. Falling needles (Buffon) also reveal π, and the area under a parabola can be estimated the same way.',
             ),
             grades: [8, 10],
             kmk: ['M-L5', 'M-L2', 'M-K3'],
