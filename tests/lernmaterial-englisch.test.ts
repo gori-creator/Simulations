@@ -10,17 +10,12 @@ import { describe, expect, it } from 'vitest';
  * kürzer werden: Ist eine Simulation vollständig übersetzt, fliegt sie heraus.
  */
 const NOCH_KURZ = new Set([
-  'binomialverteilung',
   'energieversorgung',
-  'fourier-reihen',
-  'gauss-verfahren',
   'koordinaten-lage',
-  'lage-abstaende',
   'linienspektren',
   'magnete',
   'messunsicherheit',
   'pythagoras',
-  'signifikanztest',
   'vektoren-3d',
   'zeitdilatation',
 ]);
