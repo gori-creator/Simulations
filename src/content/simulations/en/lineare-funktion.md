@@ -27,6 +27,10 @@ A **vertical** line is not the graph of a function, because one $x$-value belong
 2. Change only $m$ and watch the slope triangle. What happens for $m = 0$? [Load example](?m=0&b=2)
 3. Drag the highlighted points directly in the coordinate system: the point on the y-axis and the tip of the slope triangle.
 4. Turn on the second line $g$. When do two lines not intersect? [Parallel lines](?m=0.5&b=1&second=1&m2=0.5&b2=-2)
+5. **Line through two points:** drag $P$ and $Q$. The simulation works out $\Delta x$, $\Delta y$, $m = \Delta y \div \Delta x$ and $c$. What happens if $P$ and $Q$ lie exactly above each other? [Two points](?mode=points&px1=-2&py1=-1&px2=4&py2=2)
+6. **Table of values:** when $x$ goes up by 1, $y$ always changes by $m$. Try a decreasing line. [Table](?mode=table&m=1.5&b=-2)
+7. **Everyday situations:** taxi, candle, water tank and two phone plans. Where are $m$ and $c$? From when on is plan B cheaper? [Taxi](?mode=context&cx=taxi&cs=6) · [Candle](?mode=context&cx=candle&cs=4) · [Phone plans](?mode=context&cx=tariff&cs=100)
+8. **Practice “hit the line”:** read off the equation of a dashed line or draw a line for a given equation. [Read](?mode=quiz&qt=read&qn=1&m=1&b=0) · [Draw](?mode=quiz&qt=draw&qn=1&m=1&b=0)
 
 ## Exercises
 
@@ -52,7 +56,7 @@ Find the equation of the line through $A(-2, -1)$ and $B(2, 5)$. Then set it up 
 
 $$m = \frac{5 - (-1)}{2 - (-2)} = \frac{6}{4} = 1.5$$
 
-Substituting $A$: $-1 = 1.5 \cdot (-2) + c$, so $c = 2$ and $f(x) = 1.5x + 2$. [Show in simulation](?m=1.5&b=2)
+Substituting $A$: $-1 = 1.5 \cdot (-2) + c$, so $c = 2$ and $f(x) = 1.5x + 2$. [Show in simulation](?m=1.5&b=2) · [With two points](?mode=points&px1=-2&py1=-1&px2=2&py2=5)
 
 </details>
 

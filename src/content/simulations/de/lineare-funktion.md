@@ -27,6 +27,10 @@ Eine **senkrechte** Gerade ist kein Graph einer Funktion, denn zu einem $x$-Wert
 2. Verändere nur $m$. Beobachte das Steigungsdreieck. Was passiert bei $m = 0$? [Beispiel laden](?m=0&b=2)
 3. Ziehe die markierten Punkte direkt im Koordinatensystem: den Punkt auf der y-Achse und die Spitze des Steigungsdreiecks.
 4. Schalte die zweite Gerade $g$ ein. Wann schneiden sich zwei Geraden nicht? [Parallele Geraden](?m=0.5&b=1&second=1&m2=0.5&b2=-2)
+5. **Gerade durch zwei Punkte:** Zieh $P$ und $Q$. Die Simulation rechnet $\Delta x$, $\Delta y$, $m = \Delta y : \Delta x$ und $t$ vor. Was passiert, wenn $P$ und $Q$ genau übereinander liegen? [Zwei Punkte](?mode=points&px1=-2&py1=-1&px2=4&py2=2)
+6. **Wertetabelle:** Geht $x$ um 1 weiter, ändert sich $y$ immer um $m$. Probiere eine fallende Gerade. [Tabelle](?mode=table&m=1.5&b=-2)
+7. **Aus dem Alltag:** Taxi, Kerze, Wassertank und zwei Handytarife. Wo steckt $m$, wo $t$? Ab wann ist Tarif B günstiger? [Taxi](?mode=context&cx=taxi&cs=6) · [Kerze](?mode=context&cx=candle&cs=4) · [Handytarife](?mode=context&cx=tariff&cs=100)
+8. **Übung „Gerade treffen“:** Lies die Gleichung einer gestrichelten Geraden ab oder zeichne eine Gerade zu einer Gleichung. [Ablesen](?mode=quiz&qt=read&qn=1&m=1&b=0) · [Zeichnen](?mode=quiz&qt=draw&qn=1&m=1&b=0)
 
 ## Aufgaben
 
@@ -52,7 +56,7 @@ Bestimme die Gleichung der Geraden durch $A(-2 \mid -1)$ und $B(2 \mid 5)$. Stel
 
 $$m = \frac{5 - (-1)}{2 - (-2)} = \frac{6}{4} = 1{,}5$$
 
-Einsetzen von $A$: $-1 = 1{,}5 \cdot (-2) + t$, also $t = 2$. Damit ist $f(x) = 1{,}5x + 2$. [In der Simulation zeigen](?m=1.5&b=2)
+Einsetzen von $A$: $-1 = 1{,}5 \cdot (-2) + t$, also $t = 2$. Damit ist $f(x) = 1{,}5x + 2$. [In der Simulation zeigen](?m=1.5&b=2) · [Mit zwei Punkten](?mode=points&px1=-2&py1=-1&px2=2&py2=5)
 
 </details>
 

@@ -869,8 +869,8 @@ export const mathematik: Subject = {
             slug: L('lineare-funktion', 'linear-function'),
             title: L('Lineare Funktion', 'Linear function'),
             summary: L(
-              'Verändere Steigung und y-Achsenabschnitt einer Geraden und lies Steigungsdreieck und Nullstelle ab.',
-              'Change the slope and the y-intercept of a line and read off the slope triangle and the zero.',
+              'Verändere Steigung und y-Achsenabschnitt einer Geraden, bestimme sie aus zwei Punkten oder einer Wertetabelle und übe mit Taxi, Kerze und Handytarifen.',
+              'Change the slope and the y-intercept of a line, find it from two points or a table of values and practise with taxis, candles and phone plans.',
             ),
             grades: [7, 9],
             kmk: ['M-L3', 'M-K4', 'M-K5'],
