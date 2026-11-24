@@ -268,8 +268,8 @@ export const mathematik: Subject = {
             slug: L('binomische-formeln', 'binomial-formulas'),
             title: L('Binomische Formeln am Quadrat', 'Binomial formulas with squares'),
             summary: L(
-              'Die drei binomischen Formeln als Flächen: Ein Quadrat zerfällt in kleinere Quadrate und Rechtecke.',
-              'The three binomial formulas as areas: a square splits into smaller squares and rectangles.',
+              'Die drei binomischen Formeln als Flächen: Ein Quadrat zerfällt in kleinere Quadrate und Rechtecke. Mit Kopfrechentricks, quadratischer Ergänzung und einem Übungsspiel zu typischen Fehlern.',
+              'The three binomial formulas as areas: a square splits into smaller squares and rectangles. With mental arithmetic tricks, completing the square and a practice game on typical mistakes.',
             ),
             grades: [7, 9],
             kmk: ['M-L3', 'M-K1', 'M-K4'],
