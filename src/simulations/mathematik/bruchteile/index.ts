@@ -1,5 +1,5 @@
-import { defineSimulation, ease, roundRect, Surface, TapTarget, text, Tween, withAlpha, type Rect } from '../../../sim-core';
-import { decimalExpansion, mixed, reduce } from './model';
+import { defineSimulation, ease, roundRect, seededRandom, Surface, TapTarget, text, Tween, withAlpha, type Rect } from '../../../sim-core';
+import { checkRead, commonDenominator, compareFractions, decimalExpansion, fractionTask, mixed, reduce, selectedCount, type FractionTask } from './model';
 
 const L = (de: string, en: string) => ({ de, en });
 const MAX_WHOLES = 3;
@@ -7,12 +7,25 @@ const MAX_WHOLES = 3;
 /**
  * Bruchteile darstellen: Pizza, Blechkuchen oder Strecke werden in n gleich
  * große Teile geschnitten, z davon ausgewählt. Erweitern = feiner schneiden.
+ * Dazu: zwei Brüche als Streifen vergleichen (auch gleichnamig gemacht) und
+ * Übungsaufgaben (Bruch ablesen, Bruch durch Antippen einfärben).
  */
 export default defineSimulation({
   id: 'bruchteile',
   layout: { aspect: 1.75, aspectNarrow: 0.8 },
   groups: [{ id: 'view', label: L('Anzeige', 'Display') }],
   params: [
+    {
+      key: 'mode',
+      type: 'choice',
+      label: L('Thema', 'Topic'),
+      options: [
+        { value: 'show', label: L('Bruch darstellen', 'Showing a fraction') },
+        { value: 'compare', label: L('Brüche vergleichen', 'Comparing fractions') },
+        { value: 'quiz', label: L('Üben', 'Practice') },
+      ],
+      default: 'show',
+    },
     {
       key: 'shape',
       type: 'choice',
@@ -23,9 +36,16 @@ export default defineSimulation({
         { value: 'strecke', label: L('Strecke', 'Line segment') },
       ],
       default: 'pizza',
+      visibleIf: (v) => v.mode === 'show',
     },
-    { key: 'z', type: 'number', label: L('Zähler z (genommene Teile)', 'Numerator z (pieces taken)'), min: 0, max: 36, step: 1, default: 3 },
-    { key: 'n', type: 'number', label: L('Nenner n (Teile pro Ganzes)', 'Denominator n (pieces per whole)'), min: 1, max: 12, step: 1, default: 4 },
+    { key: 'z', type: 'number', label: L('Zähler z (genommene Teile)', 'Numerator z (pieces taken)'), min: 0, max: 36, step: 1, default: 3, visibleIf: (v) => v.mode !== 'quiz' },
+    { key: 'n', type: 'number', label: L('Nenner n (Teile pro Ganzes)', 'Denominator n (pieces per whole)'), min: 1, max: 12, step: 1, default: 4, visibleIf: (v) => v.mode !== 'quiz' },
+    { key: 'z2', type: 'number', label: L('Zweiter Bruch: Zähler', 'Second fraction: numerator'), min: 0, max: 12, step: 1, default: 2, visibleIf: (v) => v.mode === 'compare' },
+    { key: 'n2', type: 'number', label: L('Zweiter Bruch: Nenner', 'Second fraction: denominator'), min: 1, max: 12, step: 1, default: 3, visibleIf: (v) => v.mode === 'compare' },
+    { key: 'common', type: 'boolean', label: L('Gleichnamig machen', 'Use a common denominator'), default: false, visibleIf: (v) => v.mode === 'compare' },
+    { key: 'q', type: 'number', label: L('Aufgabe Nr.', 'Task no.'), min: 1, max: 999, step: 1, default: 1, visibleIf: (v) => v.mode === 'quiz' },
+    { key: 'ans', type: 'text', label: L('Deine Antwort (z. B. 3/4)', 'Your answer (e.g. 3/4)'), default: '', maxLength: 12, placeholder: L('3/4', '3/4'), visibleIf: (v) => v.mode === 'quiz' && Number(v.q) % 2 === 1 },
+    { key: 'sel', type: 'number', label: L('Gefärbte Stücke', 'Coloured pieces'), min: 0, max: 4095, step: 1, default: 0, visibleIf: () => false },
     {
       key: 'k',
       type: 'number',
@@ -35,11 +55,27 @@ export default defineSimulation({
       max: 5,
       step: 1,
       default: 1,
+      visibleIf: (v) => v.mode === 'show',
     },
     { key: 'decimal', type: 'boolean', group: 'view', label: L('Dezimalzahl und Prozent', 'Decimal and percentage'), default: true },
   ],
+  hint: (v) => {
+    if (v.mode === 'compare') return L('Tipp: „Gleichnamig machen“ schneidet beide Streifen in gleich große Stücke.', 'Tip: “Use a common denominator” cuts both strips into pieces of the same size.');
+    if (v.mode === 'quiz')
+      return v.q % 2 === 1
+        ? L('Tipp: Trag den Bruch als „Zähler/Nenner“ ein und tippe auf „Prüfen“.', 'Tip: Enter the fraction as “numerator/denominator” and tap “Check”.')
+        : L('Tipp: Tippe Stücke an, um sie zu färben, dann auf „Prüfen“.', 'Tip: Tap pieces to colour them, then tap “Check”.');
+    return null;
+  },
+  actions: [
+    { id: 'check', label: L('Prüfen', 'Check'), primary: true, visibleIf: (v) => v.mode === 'quiz' },
+    { id: 'newq', label: L('Neue Aufgabe', 'New task'), visibleIf: (v) => v.mode === 'quiz' },
+  ],
   images: { pizza: 'pizza.webp', cake: 'blechkuchen.webp' },
   readouts: [
+    { key: 'task', label: L('Aufgabe', 'Task') },
+    { key: 'verdict', label: L('Rückmeldung', 'Feedback') },
+    { key: 'cmp', label: L('Vergleich', 'Comparison'), spoiler: true },
     { key: 'fraction', label: L('Bruch', 'Fraction') },
     { key: 'reduced', label: L('Vollständig gekürzt', 'Fully reduced'), spoiler: true },
     { key: 'decimal', label: L('Dezimalzahl', 'Decimal'), spoiler: true },
@@ -51,6 +87,8 @@ export default defineSimulation({
     { id: 'third', label: L('Ein Drittel (periodisch)', 'One third (recurring)'), values: { z: 1, n: 3, shape: 'kuchen' } },
     { id: 'improper', label: L('Mehr als ein Ganzes: 7/4', 'More than a whole: 7/4'), values: { z: 7, n: 4 } },
     { id: 'line', label: L('Auf der Strecke: 5/6', 'On the line: 5/6'), values: { z: 5, n: 6, shape: 'strecke' } },
+    { id: 'compare', label: L('3/4 oder 2/3?', '3/4 or 2/3?'), values: { mode: 'compare', z: 3, n: 4, z2: 2, n2: 3 } },
+    { id: 'quiz', label: L('Üben', 'Practice'), values: { mode: 'quiz', q: 1, ans: '', sel: 0 } },
   ],
   strings: {
     de: {
@@ -63,6 +101,23 @@ export default defineSimulation({
       wholeOnlyOne: '1 Ganzes',
       period: 'Periode',
       more: 'weitere Ganze sind nicht gezeichnet',
+      bigger: 'ist größer als',
+      smaller: 'ist kleiner als',
+      equal: 'ist genauso groß wie',
+      commonNote: 'Hauptnenner {n}: Beide Streifen in {n} gleich große Stücke geschnitten',
+      sameHint: 'Gleicher Nenner: Vergleiche die Zähler. Gleicher Zähler: Der kleinere Nenner gibt größere Stücke.',
+      qRead: 'Aufgabe {q}: Welcher Bruchteil ist gefärbt?',
+      qColor: 'Aufgabe {q}: Färbe {z}/{n} ein.',
+      colored: 'gefärbt: {k} von {p} Stücken',
+      okRead: 'Richtig! {z}/{p} = {rz}/{rn}',
+      okColor: 'Richtig! {k} von {p} Stücken = {z}/{n}',
+      okReadSimple: 'Richtig! {z} von {p} Stücken = {z}/{p}',
+      noColor1: 'Noch nicht: {k} von {p} gefärbt. Tipp: Jedes Stück ist 1/{n}.',
+      noRead: 'Noch nicht. Zähle alle Stücke (Nenner) und die gefärbten (Zähler).',
+      noColor: 'Noch nicht: {k} von {p} gefärbt. Tipp: {p} Stücke sind {n} Gruppen zu je {m} Stücke.',
+      emptyRead: 'Trag den Bruch unter „Deine Antwort“ ein, z. B. 3/4.',
+      emptyColor: 'Tippe Stücke an, um sie zu färben.',
+      waitFrac: 'Bitte als Bruch eintragen, z. B. 3/4.',
     },
     en: {
       canvas: 'A whole (pizza, sheet cake or line segment) cut into n equal parts; the z parts taken are highlighted',
@@ -74,6 +129,23 @@ export default defineSimulation({
       wholeOnlyOne: '1 whole',
       period: 'recurring',
       more: 'further wholes are not drawn',
+      bigger: 'is greater than',
+      smaller: 'is less than',
+      equal: 'is equal to',
+      commonNote: 'Common denominator {n}: both strips cut into {n} equal pieces',
+      sameHint: 'Same denominator: compare the numerators. Same numerator: the smaller denominator gives bigger pieces.',
+      qRead: 'Task {q}: What fraction is coloured?',
+      qColor: 'Task {q}: Colour in {z}/{n}.',
+      colored: 'coloured: {k} of {p} pieces',
+      okRead: 'Correct! {z}/{p} = {rz}/{rn}',
+      okColor: 'Correct! {k} of {p} pieces = {z}/{n}',
+      okReadSimple: 'Correct! {z} of {p} pieces = {z}/{p}',
+      noColor1: 'Not yet: {k} of {p} coloured. Tip: each piece is 1/{n}.',
+      noRead: 'Not yet. Count all pieces (denominator) and the coloured ones (numerator).',
+      noColor: 'Not yet: {k} of {p} coloured. Tip: {p} pieces are {n} groups of {m} pieces.',
+      emptyRead: 'Enter the fraction under “Your answer”, e.g. 3/4.',
+      emptyColor: 'Tap pieces to colour them.',
+      waitFrac: 'Please enter a fraction, e.g. 3/4.',
     },
   },
 
@@ -144,6 +216,7 @@ export default defineSimulation({
 
     new TapTarget(surface, {
       hit: (px, py) => {
+        if (p.mode !== 'show') return null;
         const i = pieceAt(px, py);
         return i === null ? null : String(i);
       },
@@ -155,6 +228,262 @@ export default defineSimulation({
       },
     });
 
+    /* ---------- Vergleichen und Üben ---------- */
+    let task: FractionTask = fractionTask(1, seededRandom(1));
+    let taskState: { ok: boolean; empty: boolean } | null = null;
+    const pop = new Tween(500, ease.outBack);
+
+    /** Streifen Nr. row (0, 1) im Vergleich. */
+    function stripRect(row: number): Rect {
+      const { visual } = regions();
+      const w = visual.w - 60;
+      const h = Math.min(70, visual.h * 0.2);
+      const gap = Math.min(70, visual.h * 0.18);
+      const top = visual.y + (visual.h - 2 * h - gap) / 2 - 6;
+      return { x: visual.x + 30, y: top + row * (h + gap), w, h };
+    }
+
+    /** Geometrie der Übungsfigur: Streifen oder Kreis. */
+    function quizGeom(): { strip: Rect; cx: number; cy: number; r: number } {
+      const { visual } = regions();
+      const r = Math.min(visual.w, visual.h) * 0.36;
+      const sw = visual.w - 60;
+      const sh = Math.min(90, visual.h * 0.28);
+      return { strip: { x: visual.x + 30, y: visual.y + (visual.h - sh) / 2 - 8, w: sw, h: sh }, cx: visual.x + visual.w / 2, cy: visual.y + visual.h / 2 - 8, r };
+    }
+
+    function quizPieceAt(px: number, py: number): number | null {
+      const gm = quizGeom();
+      const n = task.pieces;
+      if (task.shape === 'strip') {
+        const r = gm.strip;
+        if (px < r.x || px > r.x + r.w || py < r.y || py > r.y + r.h) return null;
+        return Math.min(n - 1, Math.floor(((px - r.x) / r.w) * n));
+      }
+      const d = Math.hypot(px - gm.cx, py - gm.cy);
+      if (d > gm.r) return null;
+      let a = Math.atan2(py - gm.cy, px - gm.cx) + Math.PI / 2;
+      if (a < 0) a += Math.PI * 2;
+      return Math.min(n - 1, Math.floor((a / (Math.PI * 2)) * n));
+    }
+
+    new TapTarget(surface, {
+      hit: (px, py) => {
+        if (p.mode !== 'quiz' || task.kind !== 'color' || taskState?.ok) return null;
+        const i = quizPieceAt(px, py);
+        return i === null ? null : `q${i}`;
+      },
+      onTap: (id) => {
+        if (ctx.locked) return;
+        const i = Number(id.slice(1));
+        taskState = null;
+        ctx.set({ sel: p.sel ^ (1 << i) });
+      },
+    });
+
+    function newTask(): void {
+      task = fractionTask(p.q, seededRandom(p.q * 7919 + 53));
+      taskState = null;
+    }
+
+    /** Ist Stück i gefärbt? Ablesen: die ersten `count` Stücke; einfärben: Auswahl (nach Lösung die richtige Anzahl). */
+    function quizColored(i: number): boolean {
+      if (task.kind === 'read') return i < task.count;
+      return (p.sel & (1 << i)) !== 0;
+    }
+
+    function feedback(): { text: string; color: string } | null {
+      if (!taskState) return null;
+      const t = ctx.theme;
+      if (task.kind === 'read') {
+        if (taskState.empty) return { text: ctx.t('waitFrac'), color: t.muted };
+        if (taskState.ok) return { text: task.target.n === task.pieces ? tr('okReadSimple', { z: task.count, p: task.pieces }) : tr('okRead', { z: task.count, p: task.pieces, rz: task.target.z, rn: task.target.n }), color: t.series[2]! };
+        return { text: ctx.t('noRead'), color: t.series[1]! };
+      }
+      const k = selectedCount(p.sel, task.pieces);
+      if (taskState.ok) return { text: tr('okColor', { k, p: task.pieces, z: task.target.z, n: task.target.n }), color: t.series[2]! };
+      const m = task.pieces / task.target.n;
+      return { text: tr(m === 1 ? 'noColor1' : 'noColor', { k, p: task.pieces, n: task.target.n, m }), color: t.series[1]! };
+    }
+
+    function taskText(): string {
+      return task.kind === 'read' ? tr('qRead', { q: p.q }) : tr('qColor', { q: p.q, z: task.target.z, n: task.target.n });
+    }
+
+    function drawStrip(r: Rect, pieces: number, colored: (i: number) => boolean, color: string, fine = 0): void {
+      const g = surface.g;
+      const theme = ctx.theme;
+      const pw = r.w / pieces;
+      for (let i = 0; i < pieces; i++) {
+        roundRect(g, r.x + i * pw + 1.5, r.y, pw - 3, r.h, 6);
+        g.fillStyle = colored(i) ? withAlpha(color, 0.75) : withAlpha(theme.muted, 0.12);
+        g.fill();
+        g.strokeStyle = colored(i) ? color : withAlpha(theme.muted, 0.6);
+        g.lineWidth = 2;
+        g.stroke();
+      }
+      // feinere Schnitte (gleichnamig gemacht) gestrichelt
+      if (fine > pieces) {
+        g.save();
+        g.setLineDash([4, 4]);
+        g.strokeStyle = withAlpha(theme.text, 0.55);
+        g.lineWidth = 1.2;
+        for (let j = 1; j < fine; j++) {
+          if ((j * pieces) % fine === 0) continue;
+          const x = r.x + (j * r.w) / fine;
+          g.beginPath();
+          g.moveTo(x, r.y + 3);
+          g.lineTo(x, r.y + r.h - 3);
+          g.stroke();
+        }
+        g.restore();
+      }
+    }
+
+    function drawCompare(): void {
+      const g = surface.g;
+      const theme = ctx.theme;
+      const c = commonDenominator(p.z, p.n, p.z2, p.n2);
+      const rows: [number, number, string][] = [
+        [p.z, p.n, theme.series[3]!],
+        [p.z2, p.n2, theme.series[0]!],
+      ];
+      rows.forEach(([z, n, color], row) => {
+        const r = stripRect(row);
+        drawStrip(r, n, (i) => i < z, color, p.common ? c.n : 0);
+        const label = p.common ? `${z}/${n} = ${(z * c.n) / n}/${c.n}` : `${z}/${n}`;
+        text(g, label, r.x, r.y - 14, { font: `700 15px ${theme.font}`, color, align: 'left' });
+        // Ende des gefärbten Teils als Marke, damit man die Längen vergleichen kann
+        const xe = r.x + (r.w * Math.min(z, n)) / n;
+        g.strokeStyle = color;
+        g.lineWidth = 2;
+        g.setLineDash([5, 4]);
+        g.beginPath();
+        g.moveTo(xe, stripRect(0).y - 4);
+        g.lineTo(xe, stripRect(1).y + stripRect(1).h + 4);
+        g.stroke();
+        g.setLineDash([]);
+      });
+      if (p.common) {
+        const { visual } = regions();
+        text(g, tr('commonNote', { n: c.n }), visual.x + visual.w / 2, visual.y + visual.h - 16, { font: `500 12px ${theme.font}`, color: theme.muted });
+      }
+    }
+
+    function drawComparePanel(r: Rect): void {
+      const g = surface.g;
+      const theme = ctx.theme;
+      const cmp = compareFractions(p.z, p.n, p.z2, p.n2);
+      const c = commonDenominator(p.z, p.n, p.z2, p.n2);
+      const cx = r.x + r.w / 2;
+      const cy = r.y + r.h * 0.38;
+      const size = Math.min(46, r.w * 0.16, r.h * 0.22);
+      const frac = (x: number, top: string, bottom: string, color: string) => {
+        text(g, top, x, cy - size * 0.62, { font: `800 ${size}px ${theme.font}`, color });
+        text(g, bottom, x, cy + size * 0.66, { font: `800 ${size}px ${theme.font}`, color });
+        g.fillStyle = color;
+        g.fillRect(x - size * 0.6, cy - size * 0.06, size * 1.2, Math.max(3, size * 0.07));
+      };
+      const z1 = p.common ? c.z1 : p.z;
+      const n1 = p.common ? c.n : p.n;
+      const z2 = p.common ? c.z2 : p.z2;
+      const n2 = p.common ? c.n : p.n2;
+      frac(cx - size * 1.6, String(z1), String(n1), theme.series[3]!);
+      text(g, cmp > 0 ? '>' : cmp < 0 ? '<' : '=', cx, cy, { font: `800 ${size}px ${theme.font}`, color: theme.text });
+      frac(cx + size * 1.6, String(z2), String(n2), theme.series[0]!);
+      const sentence = `${p.z}/${p.n} ${ctx.t(cmp > 0 ? 'bigger' : cmp < 0 ? 'smaller' : 'equal')} ${p.z2}/${p.n2}`;
+      text(g, sentence, cx, cy + size * 1.7, { font: `600 14px ${theme.font}`, color: theme.text });
+    }
+
+    function wrapText(value: string, maxW: number, font: string): string[] {
+      const g = surface.g;
+      g.font = font;
+      const lines: string[] = [];
+      let line = '';
+      for (const w of value.split(' ')) {
+        const next = line ? `${line} ${w}` : w;
+        if (g.measureText(next).width > maxW && line) {
+          lines.push(line);
+          line = w;
+        } else line = next;
+      }
+      if (line) lines.push(line);
+      return lines;
+    }
+
+    function drawQuiz(): void {
+      const g = surface.g;
+      const theme = ctx.theme;
+      const gm = quizGeom();
+      const n = task.pieces;
+      const color = theme.series[3]!;
+      const grow = taskState?.ok && pop.running ? 1 + 0.06 * Math.sin(Math.PI * Math.min(1, pop.value)) : 1;
+      if (task.shape === 'strip') {
+        const r = gm.strip;
+        const w = r.w * grow;
+        drawStrip({ x: r.x - (w - r.w) / 2, y: r.y, w, h: r.h }, n, quizColored, color);
+      } else {
+        const rad = gm.r * grow;
+        for (let i = 0; i < n; i++) {
+          const a0 = -Math.PI / 2 + (i * Math.PI * 2) / n;
+          const a1 = a0 + (Math.PI * 2) / n;
+          g.beginPath();
+          g.moveTo(gm.cx, gm.cy);
+          g.arc(gm.cx, gm.cy, rad, a0, a1);
+          g.closePath();
+          g.fillStyle = quizColored(i) ? withAlpha(color, 0.75) : withAlpha(theme.muted, 0.12);
+          g.fill();
+          g.strokeStyle = theme.bg;
+          g.lineWidth = 3;
+          g.stroke();
+        }
+        g.beginPath();
+        g.arc(gm.cx, gm.cy, rad, 0, Math.PI * 2);
+        g.strokeStyle = withAlpha(theme.muted, 0.8);
+        g.lineWidth = 2;
+        g.stroke();
+      }
+      if (task.kind === 'color') {
+        const { visual } = regions();
+        text(g, tr('colored', { k: selectedCount(p.sel, n), p: n }), visual.x + visual.w / 2, visual.y + visual.h - 16, { font: `600 13px ${theme.font}`, color: theme.muted });
+      }
+    }
+
+    function drawQuizPanel(r: Rect): void {
+      const g = surface.g;
+      const theme = ctx.theme;
+      const fb = feedback();
+      let size = 18;
+      const measure = () => {
+        const a = wrapText(taskText(), r.w - 32, `700 ${size}px ${theme.font}`);
+        const b = fb ? wrapText(fb.text, r.w - 32, `600 ${Math.round(size * 0.8)}px ${theme.font}`) : [];
+        return { a, b, h: a.length * size * 1.3 + b.length * size * 1.05 + (fb ? 12 : 0) };
+      };
+      let m = measure();
+      while (m.h > r.h - 24 && size > 11) {
+        size--;
+        m = measure();
+      }
+      let y = r.y + Math.max(12, (r.h - m.h) / 2);
+      g.textAlign = 'center';
+      g.textBaseline = 'top';
+      g.font = `700 ${size}px ${theme.font}`;
+      g.fillStyle = theme.text;
+      for (const l of m.a) {
+        g.fillText(l, r.x + r.w / 2, y);
+        y += size * 1.3;
+      }
+      if (fb) {
+        y += 12;
+        g.font = `600 ${Math.round(size * 0.8)}px ${theme.font}`;
+        g.fillStyle = fb.color;
+        for (const l of m.b) {
+          g.fillText(l, r.x + r.w / 2, y);
+          y += size * 1.05;
+        }
+      }
+    }
+
     function lineGeometry(): { x0: number; y: number; unit: number; count: number } {
       const { visual } = regions();
       const count = Math.max(1, Math.min(MAX_WHOLES, Math.ceil(p.z / p.n)));
@@ -164,6 +493,23 @@ export default defineSimulation({
     }
 
     function updateReadouts(): void {
+      for (const k of ['task', 'verdict', 'cmp']) ctx.readout(k, null);
+      if (p.mode === 'quiz') {
+        for (const k of ['fraction', 'reduced', 'decimal', 'percent']) ctx.readout(k, null);
+        ctx.readout('task', taskText());
+        const fb = feedback();
+        ctx.readout('verdict', fb ? fb.text : ctx.t(task.kind === 'read' ? 'emptyRead' : 'emptyColor'));
+        return;
+      }
+      if (p.mode === 'compare') {
+        for (const k of ['reduced', 'decimal', 'percent']) ctx.readout(k, null);
+        const c = commonDenominator(p.z, p.n, p.z2, p.n2);
+        const cmp = compareFractions(p.z, p.n, p.z2, p.n2);
+        const sign = cmp > 0 ? '>' : cmp < 0 ? '<' : '=';
+        ctx.readout('fraction', { html: `${frac(p.z, p.n)} und ${frac(p.z2, p.n2)}`.replace(' und ', ctx.lang === 'de' ? ' und ' : ' and ') });
+        ctx.readout('cmp', { html: `${frac(p.z, p.n)} = ${frac(c.z1, c.n)} ${sign} ${frac(c.z2, c.n)} = ${frac(p.z2, p.n2)}` });
+        return;
+      }
       const z = p.z;
       const n = p.n;
       const k = p.k;
@@ -509,12 +855,51 @@ export default defineSimulation({
 
     return {
       update(changed, source) {
+        if (changed.has('q') || source === 'init' || source === 'replace') newTask();
+        if (changed.has('ans') && taskState && !taskState.ok) taskState = null;
+        if (source === 'input' && p.mode === 'compare' && p.z > p.n) ctx.set({ z: p.n });
+        if (source === 'input' && p.mode === 'compare' && p.z2 > p.n2) ctx.set({ z2: p.n2 });
         if (source === 'input' && p.z > MAX_WHOLES * p.n) ctx.set({ z: MAX_WHOLES * p.n });
         if (changed.has('n') || changed.has('k') || changed.has('shape')) cut.play();
         updateReadouts();
       },
 
+      action(id) {
+        if (id === 'newq') {
+          ctx.set({ q: p.q >= 999 ? 1 : p.q + 1, ans: '', sel: 0 });
+          return;
+        }
+        if (task.kind === 'read') {
+          const r = checkRead(task, p.ans);
+          taskState = { ok: r.ok, empty: r.got === null };
+        } else {
+          taskState = { ok: selectedCount(p.sel, task.pieces) === task.count, empty: false };
+        }
+        pop.play();
+        updateReadouts();
+        const fb = feedback();
+        if (fb) ctx.announce(fb.text);
+        ctx.requestRender();
+      },
+
       render() {
+        if (p.mode !== 'show') {
+          const { visual, panel } = regions();
+          surface.begin();
+          const g = surface.g;
+          g.fillStyle = ctx.theme.dark ? 'rgba(255,255,255,0.025)' : 'rgba(16,24,40,0.025)';
+          roundRect(g, visual.x + 6, visual.y + 6, visual.w - 12, visual.h - 12, 14);
+          g.fill();
+          if (p.mode === 'compare') {
+            drawCompare();
+            drawComparePanel(panel);
+          } else {
+            drawQuiz();
+            drawQuizPanel(panel);
+          }
+          if (pop.running) ctx.requestRender();
+          return;
+        }
         const moving = syncLift();
         const cutT = cut.value;
         const { visual, panel } = regions();

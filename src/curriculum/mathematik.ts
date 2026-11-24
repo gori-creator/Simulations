@@ -103,8 +103,8 @@ export const mathematik: Subject = {
             slug: L('bruchteile', 'fractions'),
             title: L('Bruchteile darstellen', 'Representing fractions'),
             summary: L(
-              'Pizza, Kuchen oder Strecke: Erst gerecht teilen, dann einige Stücke färben. Genau das bedeutet ein Bruch.',
-              'Pizza, cake or a line: share it out fairly first, then colour some pieces. That is exactly what a fraction means.',
+              'Pizza, Kuchen oder Strecke: Erst gerecht teilen, dann einige Stücke färben. Genau das bedeutet ein Bruch. Zwei Brüche lassen sich als Streifen vergleichen, und beim Üben liest man Brüche ab oder färbt sie selbst ein.',
+              'Pizza, cake or a line: share it out fairly first, then colour some pieces. That is exactly what a fraction means. Two fractions can be compared as strips, and in practice mode you read off fractions or colour them in yourself.',
             ),
             grades: [5, 6],
             kmk: ['M-L1', 'M-K4', 'M-K5'],
