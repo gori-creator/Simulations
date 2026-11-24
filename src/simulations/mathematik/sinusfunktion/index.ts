@@ -1,5 +1,5 @@
-import { defineSimulation, formatPiFraction, Plot, Surface, term } from '../../../sim-core';
-import { DEFAULT_VIEW, evaluate, firstPeakOffset, fitView, period, PI_TWELFTH, range, type SineParams } from './model';
+import { defineSimulation, ease, formatPiFraction, Plot, roundRect, seededRandom, softShadow, Surface, term, Tween } from '../../../sim-core';
+import { DEFAULT_VIEW, evaluate, firstPeakOffset, fitView, maxDifference, period, PI_TWELFTH, range, stageParams, targetCurve, type SineParams, type TargetCurve } from './model';
 
 const L = (de: string, en: string) => ({ de, en });
 
@@ -18,9 +18,21 @@ const shown = (v: Record<string, unknown>) => v.info !== false;
 export default defineSimulation({
   id: 'sinusfunktion',
   dragHint: true,
-  hint: { de: 'Tipp: Zieh den Hochpunkt, den Beginn oder das Ende der Periode.', en: 'Tip: Drag the maximum, the start or the end of the period.' },
   groups: [{ id: 'view', label: L('Anzeige', 'Display') }],
   params: [
+    {
+      key: 'mode',
+      type: 'choice',
+      label: L('Ansicht', 'View'),
+      options: [
+        { value: 'free', label: L('Frei einstellen', 'Free adjustment') },
+        { value: 'build', label: L('Schritt für Schritt aufbauen', 'Build up step by step') },
+        { value: 'match', label: L('Spiel: Kurve treffen', 'Game: match the curve') },
+      ],
+      default: 'free',
+    },
+    { key: 'step', type: 'number', label: L('Schritt', 'Step'), min: 0, max: 4, step: 1, default: 4, visibleIf: (v) => v.mode === 'build' },
+    { key: 'q', type: 'number', label: L('Kurve Nr.', 'Curve no.'), min: 1, max: 999, step: 1, default: 1, visibleIf: (v) => v.mode === 'match' },
     {
       key: 'base',
       type: 'choice',
@@ -106,6 +118,16 @@ export default defineSimulation({
       default: true,
     },
   ],
+  hint: (v) => {
+    if (v.mode === 'build') return L('Tipp: „Nächster Schritt“ zeigt nacheinander, was a, b, c und d mit dem Graphen machen.', 'Tip: “Next step” shows one after the other what a, b, c and d do to the graph.');
+    if (v.mode === 'match') return L('Tipp: Lies Mittellinie, Amplitude, Periode und Verschiebung an der orangen Kurve ab und stell die Regler ein – oder zieh die Punkte.', 'Tip: Read the midline, amplitude, period and shift off the orange curve and set the sliders – or drag the points.');
+    return L('Tipp: Zieh den Hochpunkt, den Beginn oder das Ende der Periode.', 'Tip: Drag the maximum, the start or the end of the period.');
+  },
+  actions: [
+    { id: 'next', label: L('Nächster Schritt', 'Next step'), primary: true, visibleIf: (v) => v.mode === 'build' },
+    { id: 'newc', label: L('Neue Kurve', 'New curve'), primary: true, visibleIf: (v) => v.mode === 'match' },
+    { id: 'reveal', label: L('Lösung zeigen', 'Show solution'), visibleIf: (v) => v.mode === 'match' },
+  ],
   resultsParam: 'info',
   readouts: [
     { key: 'f', label: L('Funktionsgleichung', 'Equation'), spoiler: true },
@@ -113,6 +135,8 @@ export default defineSimulation({
     { key: 'period', label: L('Periode', 'Period'), spoiler: true },
     { key: 'shift', label: L('Verschiebung', 'Shift'), spoiler: true },
     { key: 'range', label: L('Wertemenge', 'Range'), spoiler: true },
+    { key: 'stage', label: L('Schritt', 'Step') },
+    { key: 'game', label: L('Spiel', 'Game') },
   ],
   presets: [
     { id: 'base', label: L('Sinusfunktion', 'Sine function'), values: {} },
@@ -121,6 +145,8 @@ export default defineSimulation({
     { id: 'shift', label: L('Verschoben', 'Shifted'), values: { cPi: 6, d: 1 } },
     { id: 'cos', label: L('Kosinus = verschobener Sinus', 'Cosine = shifted sine'), values: { cPi: -6 } },
     { id: 'model', label: L('Modell: Tageslänge', 'Model: day length'), values: { piAxis: false, a: 3.8, b: 0.52, c: 2.7, d: 0.2, compare: false } },
+    { id: 'build', label: L('Schritt für Schritt: 2 · sin(2(x − π/4)) + 1', 'Step by step: 2 · sin(2(x − π/4)) + 1'), values: { mode: 'build', step: 0, a: 2, b: 2, cPi: 3, d: 1 } },
+    { id: 'match', label: L('Spiel: Kurve treffen', 'Game: match the curve'), values: { mode: 'match', q: 1 } },
   ],
   strings: {
     de: {
@@ -136,6 +162,17 @@ export default defineSimulation({
       by: 'um',
       xShift: 'in x-Richtung',
       yShift: 'in y-Richtung',
+      st0: 'Schritt 0: die Grundfunktion',
+      st1: 'Schritt 1: Streckung in y-Richtung mit dem Faktor a = {a}',
+      st1neg: ' und Spiegelung an der x-Achse',
+      st2: 'Schritt 2: Streckung in x-Richtung – die Periode wird 2π / {b} = {p}',
+      st3: 'Schritt 3: Verschiebung in x-Richtung um {c} {dir}',
+      st4: 'Schritt 4: Verschiebung in y-Richtung um {d} {dir}',
+      stNone: ' – hier ändert sich nichts',
+      matchTask: 'Kurve {q}: Stell die Regler so ein, dass deine blaue Kurve auf der orangen liegt.',
+      matchClose: 'Noch {e} daneben (größte Abweichung).',
+      matchOk: 'Getroffen! Die Kurven liegen aufeinander.',
+      matchSol: 'Lösung: {f}',
     },
     en: {
       canvas:
@@ -150,6 +187,17 @@ export default defineSimulation({
       by: 'by',
       xShift: 'horizontally',
       yShift: 'vertically',
+      st0: 'Step 0: the base function',
+      st1: 'Step 1: vertical stretch by the factor a = {a}',
+      st1neg: ' and reflection in the x-axis',
+      st2: 'Step 2: horizontal stretch – the period becomes 2π / {b} = {p}',
+      st3: 'Step 3: horizontal shift by {c} {dir}',
+      st4: 'Step 4: vertical shift by {d} {dir}',
+      stNone: ' – nothing changes here',
+      matchTask: 'Curve {q}: set the sliders so that your blue curve lies on the orange one.',
+      matchClose: 'Still {e} off (largest difference).',
+      matchOk: 'Got it! The curves lie on top of each other.',
+      matchSol: 'Solution: {f}',
     },
   },
 
@@ -158,7 +206,14 @@ export default defineSimulation({
     const plot = new Plot(surface, { x: DEFAULT_VIEW.x, y: DEFAULT_VIEW.y, xAxis: { pi: true } });
     const p = ctx.params;
     const fmt = ctx.fmt;
-    const editable = () => !ctx.locked && p.info;
+    const editable = () => !ctx.locked && p.info && p.mode !== 'build';
+    const tr = (key: string, vars: Record<string, string | number>) => ctx.t(key).replace(/\{(\w+)\}/g, (_, k: string) => String(vars[k] ?? ''));
+    const stageTween = new Tween(1100, ease.inOutCubic);
+    const pop = new Tween(600, ease.outBack);
+    let target: TargetCurve = targetCurve(1, seededRandom(1));
+    let solved = false;
+    let revealed = false;
+    const targetParams = (): SineParams => ({ base: 'sin', a: target.a, b: target.b, c: target.cPi * PI_TWELFTH, d: target.d });
     const colorF = () => ctx.theme.series[0]!;
     const colorShift = () => ctx.theme.series[1]!;
     const colorAmp = () => ctx.theme.series[2]!;
@@ -196,17 +251,87 @@ export default defineSimulation({
       color: colorPeriod,
     });
 
-    function formula(): string {
-      const c = shift();
-      const inner = c === 0 ? term.x : term.shifted(c, fmt, term.x, shiftText(c));
-      const b = Math.round(p.b * 100) / 100;
+    function formulaFor(sp: SineParams, piShift = p.piAxis): string {
+      const c = Math.round(sp.c * 1e9) / 1e9;
+      const cText = (value: number) => (piShift ? (formatPiFraction(Math.abs(value)) ?? fmt.num(Math.abs(value))) : fmt.num(Math.abs(value)));
+      const inner = c === 0 ? term.x : term.shifted(c, fmt, term.x, cText(c));
+      const b = Math.round(sp.b * 100) / 100;
       const arg = b === 1 ? inner : `${fmt.num(b)}${c === 0 ? inner : `(${inner})`}`;
-      const body = `${p.base}(${arg})`;
-      return term.fnDef('f', term.sum([{ coef: p.a, body, dot: true }, { coef: p.d, body: '' }], fmt));
+      const body = `${sp.base}(${arg})`;
+      return term.fnDef('f', term.sum([{ coef: Math.round(sp.a * 100) / 100, body, dot: true }, { coef: Math.round(sp.d * 100) / 100, body: '' }], fmt));
+    }
+    const formula = () => formulaFor(params());
+
+    function stageText(k: number): string {
+      const sp = params();
+      if (k <= 0) return ctx.t('st0');
+      if (k === 1) return tr('st1', { a: fmt.num(sp.a) }) + (sp.a < 0 ? ctx.t('st1neg') : '') + (sp.a === 1 ? ctx.t('stNone') : '');
+      if (k === 2) {
+        const per = period(sp.b);
+        const perText = p.piAxis ? (formatPiFraction(per) ?? fmt.num(per)) : fmt.num(per);
+        return tr('st2', { b: fmt.num(sp.b), p: perText }) + (sp.b === 1 ? ctx.t('stNone') : '');
+      }
+      if (k === 3) return sp.c === 0 ? `${tr('st3', { c: '0', dir: '' }).trim()}${ctx.t('stNone')}` : tr('st3', { c: shiftText(sp.c), dir: ctx.t(sp.c > 0 ? 'right' : 'left') });
+      return sp.d === 0 ? `${tr('st4', { d: '0', dir: '' }).trim()}${ctx.t('stNone')}` : tr('st4', { d: fmt.num(Math.abs(sp.d)), dir: ctx.t(sp.d > 0 ? 'up' : 'down') });
+    }
+
+    function matchError(): number {
+      return maxDifference(params(), targetParams());
+    }
+
+    /** Karte oben links im Bild. */
+    function card(lines: { text: string; color?: string; bold?: boolean }[]): void {
+      const g = surface.g;
+      const maxW = Math.min(520, surface.width - 84); // rechts Platz für die Zoom-Knöpfe
+      const size = surface.width < 520 ? 13 : 15;
+      const wrapped: { text: string; color?: string; bold?: boolean }[] = [];
+      for (const l of lines) {
+        g.font = `${l.bold ? '600' : 'normal'} ${size}px ${ctx.theme.font}`;
+        let line = '';
+        for (const w of l.text.split(' ')) {
+          const next = line ? `${line} ${w}` : w;
+          if (g.measureText(next).width > maxW - 24 && line) {
+            wrapped.push({ ...l, text: line });
+            line = w;
+          } else line = next;
+        }
+        if (line) wrapped.push({ ...l, text: line });
+      }
+      let w = 0;
+      for (const l of wrapped) {
+        g.font = `${l.bold ? '600' : 'normal'} ${size}px ${ctx.theme.font}`;
+        w = Math.max(w, g.measureText(l.text).width);
+      }
+      const h = wrapped.length * size * 1.35 + 16;
+      const x = 12;
+      const y = 12;
+      g.save();
+      softShadow(g, ctx.theme.dark, 10, 2);
+      roundRect(g, x, y, w + 24, h, 10);
+      g.fillStyle = ctx.theme.bg;
+      g.fill();
+      g.restore();
+      roundRect(g, x, y, w + 24, h, 10);
+      g.strokeStyle = ctx.theme.grid;
+      g.lineWidth = 1;
+      g.stroke();
+      g.textAlign = 'left';
+      g.textBaseline = 'top';
+      wrapped.forEach((l, i) => {
+        g.font = `${l.bold ? '600' : 'normal'} ${size}px ${ctx.theme.font}`;
+        g.fillStyle = l.color ?? ctx.theme.text;
+        g.fillText(l.text, x + 12, y + 8 + i * size * 1.35);
+      });
     }
 
     return {
       update(changed, source) {
+        if (changed.has('q') || source === 'init' || source === 'replace') {
+          target = targetCurve(p.q, seededRandom(p.q * 6151 + 3));
+          solved = false;
+          revealed = false;
+        }
+        if (changed.has('step') && source === 'input') stageTween.play();
         // Links, Beispiele und Zurücksetzen: Ausschnitt so wählen, dass die erste Periode sichtbar ist
         if (source === 'init' || source === 'replace') {
           const view = fitView(params(), p.period && p.info);
@@ -235,6 +360,30 @@ export default defineSimulation({
         ctx.readout('shift', `${xPart}; ${yPart}`);
         const [lo, hi] = range(p);
         ctx.readout('range', `W = [${fmt.num(lo)}${ctx.t('rangeSep')} ${fmt.num(hi)}]`);
+        ctx.readout('stage', p.mode === 'build' ? stageText(p.step) : null);
+        if (p.mode === 'build') ctx.readout('f', { html: formulaFor(stageParams(params(), p.step)) });
+        if (p.mode === 'match') {
+          const e = matchError();
+          if (e < 0.06 && !solved) {
+            solved = true;
+            pop.play();
+            ctx.announce(ctx.t('matchOk'));
+          } else if (e >= 0.06) solved = false;
+          ctx.readout('game', solved ? ctx.t('matchOk') : tr('matchClose', { e: fmt.num(e, 2) }));
+        } else ctx.readout('game', null);
+      },
+
+      action(id) {
+        if (ctx.locked) return;
+        if (id === 'next') {
+          ctx.set({ step: p.step >= 4 ? 0 : p.step + 1 });
+          stageTween.play();
+        } else if (id === 'newc') {
+          ctx.set({ q: p.q >= 999 ? 1 : p.q + 1, a: 1, b: 1, cPi: 0, c: 0, d: 0, base: 'sin' });
+        } else if (id === 'reveal') {
+          revealed = true;
+        }
+        ctx.requestRender();
       },
 
       render() {
@@ -246,9 +395,25 @@ export default defineSimulation({
         if (p.grid) plot.grid();
         plot.axes();
 
-        if (p.compare) {
+        if (p.compare && p.mode !== 'build') {
           const base = p.base === 'sin' ? Math.sin : Math.cos;
           plot.fn(base, { color: ctx.theme.muted, width: 1.5, dash: [6, 5] });
+        }
+
+        if (p.mode === 'build') {
+          const k = p.step;
+          // vorheriger Schritt gestrichelt, damit man die Veränderung sieht
+          if (k > 0) plot.fn((x) => evaluate(stageParams(sp, k - 1), x), { color: ctx.theme.muted, width: 2, dash: [6, 5], alpha: 0.9 });
+          const t = stageTween.running ? stageTween.value : 1;
+          plot.fn((x) => evaluate(stageParams(sp, k, t), x), { color: colorF(), width: 3.5 });
+          plot.end();
+          card([{ text: stageText(k), bold: true }]);
+          if (stageTween.running) ctx.requestRender();
+          return;
+        }
+
+        if (p.mode === 'match') {
+          plot.fn((x) => evaluate(targetParams(), x), { color: ctx.theme.series[3]!, width: 9, alpha: 0.45 });
         }
 
         if (p.midline && p.info) {
@@ -278,6 +443,17 @@ export default defineSimulation({
           plot.point(c + per, sp.d, { color: colorPeriod(), radius: 5, hollow: true });
         }
         plot.end();
+        if (p.mode === 'match') {
+          const lines: { text: string; color?: string; bold?: boolean }[] = [{ text: tr('matchTask', { q: p.q }), bold: true }];
+          if (solved) lines.push({ text: ctx.t('matchOk'), color: ctx.theme.series[2]!, bold: true });
+          else lines.push({ text: tr('matchClose', { e: fmt.num(matchError(), 2) }), color: ctx.theme.muted });
+          if (solved || revealed) {
+            const tf = formulaFor(targetParams(), true).replace(/<[^>]+>/g, '');
+            lines.push({ text: tr('matchSol', { f: tf }), color: ctx.theme.series[3]! });
+          }
+          card(lines);
+          if (pop.running) ctx.requestRender();
+        }
       },
 
       resetView: () => plot.resetView(),

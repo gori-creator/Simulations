@@ -30,6 +30,9 @@ The **cosine** is a shifted sine: $\cos(x) = \sin\!\left(x + \frac{\pi}{2}\right
 3. Shift the graph with $c$ or drag the point $(c, d)$ on the midline where the period starts. [c = π/4](?cPi=3)
 4. Drag the maximum (amplitude) and the hollow point at the end of the period directly in the coordinate system.
 5. Show that the cosine is a shifted sine. [Sine shifted π/2 to the left](?cPi=-6) – compare with [the cosine](?base=cos).
+6. **Step by step:** build $f(x) = 2 \cdot \sin(2(x - \frac{\pi}{4})) + 1$ from $\sin x$. Press “Next step” several times. What does each step do to the graph? [Step by step](?mode=build&step=0&a=2&b=2&cPi=3&d=1)
+7. Imagine swapping the order: what happens if you shift first and then compress with $b$? Compare with the simulation.
+8. **Game: match the curve.** Read the midline, amplitude, period and shift off the orange curve and set the sliders so that your curve lies exactly on it. [Start the game](?mode=match&q=1)
 
 ## Exercises
 
@@ -77,9 +80,26 @@ $$f(t) \approx 3.8 \cdot \sin\big(0.52\,(t - 2.7)\big) + 0.2$$
 
 </details>
 
+### Exercise 4: Order of the steps
+
+$f(x) = 2 \cdot \sin\left(2\left(x - \frac{\pi}{4}\right)\right) + 1$ arises from $\sin x$. Give the four steps in the right order and find the first maximum to the right of $x = 0$. [Load exercise](?mode=build&step=0&a=2&b=2&cPi=3&d=1&info=0&_hide=1)
+
+<details>
+<summary>Show solution</summary>
+
+1. vertical stretch by the factor 2 (amplitude 2),
+2. horizontal stretch: period $\frac{2\pi}{2} = \pi$,
+3. shift by $\frac{\pi}{4}$ to the right,
+4. shift by 1 up.
+
+The maximum of $2\sin(2x)$ is at $x = \frac{\pi}{4}$, so after the shift it is at $x = \frac{\pi}{2}$ with $y = 2 + 1 = 3$: $H\left(\frac{\pi}{2}, 3\right)$. [Show the steps](?mode=build&step=4&a=2&b=2&cPi=3&d=1)
+
+</details>
+
 ## Ideas for the classroom
 
 - **Order:** first the "vertical" parameters $a$ and $d$, then $c$, and $b$ last – many students find its effect the least intuitive.
+- **Game as a starter or for revision:** in the game “Match the curve” the curves are numbered; the same number means the same curve. The first two curves only need $a$ and $d$. Any solution in another form also counts, for example $-\sin x$ instead of $\sin(x - \pi)$.
 - **Common stumbling blocks:**
   - "Larger $b$ means a longer period": in fact the period gets shorter.
   - The sign of $c$ is misread, just as with parabolas.

@@ -1008,8 +1008,8 @@ export const mathematik: Subject = {
             slug: L('sinusfunktion', 'sine-function'),
             title: L('Allgemeine Sinusfunktion', 'General sine function'),
             summary: L(
-              'Verändere Amplitude, Periode und Verschiebung einer Sinuskurve mit Reglern oder durch Ziehen.',
-              'Change the amplitude, period and shift of a sine curve with sliders or by dragging.',
+              'Verändere Amplitude, Periode und Verschiebung einer Sinuskurve mit Reglern oder durch Ziehen, bau sie Schritt für Schritt aus sin x auf und triff vorgegebene Kurven im Spiel.',
+              'Change the amplitude, period and shift of a sine curve with sliders or by dragging, build it step by step from sin x and match given curves in a game.',
             ),
             grades: [10, 11],
             kmk: ['M-L3', 'M-K3', 'M-K4'],
