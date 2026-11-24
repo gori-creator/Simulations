@@ -1345,8 +1345,8 @@ export const mathematik: Subject = {
             slug: L('galtonbrett', 'galton-board'),
             title: L('Galtonbrett', 'Galton board'),
             summary: L(
-              'An jedem Nagel links oder rechts, rein zufällig. Trotzdem türmen sich die Kugeln jedes Mal zur selben Glockenform auf.',
-              'Left or right at every pin, purely by chance. Yet every time the balls pile up into the same bell shape.',
+              'An jedem Nagel links oder rechts, rein zufällig. Trotzdem türmen sich die Kugeln jedes Mal zur selben Glockenform auf. Übungsaufgaben fragen nach der Zahl der Wege und der Wahrscheinlichkeit für ein Fach.',
+              'Left or right at every pin, purely by chance. Yet every time the balls pile up into the same bell shape. Practice tasks ask for the number of paths and the probability of a bin.',
             ),
             grades: [9, 12],
             kmk: ['M-L5', 'M-K3', 'M-K4'],

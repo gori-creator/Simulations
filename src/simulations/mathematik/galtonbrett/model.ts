@@ -60,3 +60,47 @@ export function roundedRelation(value: number, decimals: number): { exact: boole
   const factor = 10 ** decimals;
   return { exact: Math.abs(value * factor - Math.round(value * factor)) < 1e-9 * Math.max(1, Math.abs(value * factor)) };
 }
+
+// ───────────────────────── Üben ─────────────────────────
+
+export interface GaltonTask {
+  /** Anzahl der Wege zu Fach k oder Wahrscheinlichkeit für Fach k (in Prozent) */
+  kind: 'paths' | 'prob';
+  n: number;
+  p: number;
+  k: number;
+  answer: number;
+}
+
+const P_VALUES = [0.5, 0.5, 0.3, 0.4, 0.6, 0.7] as const;
+
+/**
+ * Reproduzierbare Aufgabe Nr. q: ungerade Nummern fragen die Anzahl der Wege
+ * zu einem Fach (Pascal’sches Dreieck), gerade die Wahrscheinlichkeit in
+ * Prozent (Bernoulli-Formel). Aufgabe 2 nutzt p = 0,5.
+ */
+export function galtonTask(q: number, rand: () => number): GaltonTask {
+  if (q % 2 === 1) {
+    const n = 3 + Math.floor(rand() * 5);
+    const k = Math.floor(rand() * (n + 1));
+    return { kind: 'paths', n, p: 0.5, k, answer: binomialCoefficient(n, k) };
+  }
+  const n = 3 + Math.floor(rand() * 6);
+  const p = q === 2 ? 0.5 : P_VALUES[Math.floor(rand() * P_VALUES.length)]!;
+  const k = Math.floor(rand() * (n + 1));
+  return { kind: 'prob', n, p, k, answer: binomialPmf(n, k, p) * 100 };
+}
+
+/** Erste Zahl in der Eingabe (Komma oder Punkt), sonst null. */
+export function parseNumber(text: string): number | null {
+  const m = text.replace(/\s/g, '').match(/\d+(?:[.,]\d+)?/);
+  return m ? Number(m[0].replace(',', '.')) : null;
+}
+
+/** Wege: genau; Wahrscheinlichkeit: höchstens 0,06 Prozentpunkte bzw. 1 % daneben (Runden auf eine Stelle). */
+export function checkGalton(task: GaltonTask, text: string): { ok: boolean; got: number | null } {
+  const got = parseNumber(text);
+  if (got === null) return { ok: false, got };
+  if (task.kind === 'paths') return { ok: got === task.answer, got };
+  return { ok: Math.abs(got - task.answer) <= Math.max(0.06, 0.01 * task.answer), got };
+}

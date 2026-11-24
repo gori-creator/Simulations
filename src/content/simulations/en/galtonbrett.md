@@ -29,6 +29,7 @@ With many rows, the shape of the distribution approaches a **bell curve** (norma
 2. Show Pascal's triangle. Why do more balls land in the middle? [Pascal's triangle](?n=6&pascal=1&binomial=1)
 3. Set $p = 0.7$. Where does the distribution move? [Skewed](?p=0.7&binomial=1)
 4. With 16 rows, drop **1000 instantly** and compare with the bell curve. Here $\sigma = 2$, so the Laplace condition is not met. For $p = 0.5$ the curve still fits well. [16 rows](?n=16&normal=1&binomial=1&rate=40)
+5. **Practice:** how many paths lead into a bin, and how likely is it that a ball lands there? Work it out, enter your result and have it checked. After the correct answer, Pascal's triangle appears. [Practice](?mode=quiz&q=1)
 
 ## Exercises
 
@@ -80,12 +81,24 @@ For $p = 0.5$ every path is equally likely, and there are as many paths to bin $
 
 </details>
 
+### Exercise 5: A bin at the edge
+
+With $n = 6$ rows and $p = 0.5$: how many paths lead into bin $0$, and how many into bin $3$? Out of $1000$ balls, roughly how many land in bin $0$?
+
+<details>
+<summary>Show solution</summary>
+
+Only $1$ path leads into bin $0$ (always left); $\binom{6}{3} = 20$ paths lead into bin $3$. $P(X = 0) = 0.5^6 = \frac{1}{64} \approx 1.6\,\%$, so out of $1000$ balls about $16$ land in bin $0$. [Practice](?mode=quiz&q=1)
+
+</details>
+
 ## Ideas for the classroom
 
 - **Use:** Upper secondary (Bernoulli chains, binomial distribution); qualitatively also earlier with multi-stage random experiments. The bell curve leads on to the normal distribution.
 - **Display:** As long as they fit, the balls are stacked one by one; with many balls the bins are shown as bars. The horizontal marks (“B(n; p)” in the legend) show the expected count $N \cdot P(X = k)$ for $N$ balls.
 - **Compare groups:** Let several groups drop 100 balls each. Every group gets a slightly different distribution – combined, the frequencies come closer and closer to the binomial distribution.
 - **Images:** The wooden board and the balls are drawn; photos can be added optionally (see `docs/BILDER.md`).
+- **Practice:** the tasks are numbered; the same number means the same task. Odd numbers ask for the number of paths (from about grade 7/8 with Pascal's triangle), even numbers for the probability in percent (Bernoulli formula, upper secondary). You can also drop balls alongside and compare the answer with the experiment.
 - **Common stumbling blocks:**
   - “The ball is steered to the middle.” – There are just more paths leading there.
   - Bin number and path get confused: many different paths lead to the same bin.
