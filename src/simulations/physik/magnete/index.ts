@@ -47,6 +47,19 @@ const B_MAX = 14;
  */
 export default defineSimulation({
   id: 'magnete',
+  images: {
+    nail: 'nagel.webp',
+    clip: 'bueroklammer.webp',
+    scissors: 'schere.webp',
+    can: 'dose.webp',
+    foil: 'alufolie.webp',
+    wire: 'kupferdraht.webp',
+    ring: 'ring.webp',
+    eraser: 'radiergummi.webp',
+    pencil: 'bleistift.webp',
+    glass: 'glasmurmel.webp',
+    filings: 'eisenfeilspaene.webp',
+  },
   animated: true,
   dragHint: true,
   layout: { aspect: 1.55, aspectNarrow: 0.62 },
@@ -95,6 +108,7 @@ export default defineSimulation({
     { key: 'rot', type: 'number', label: L('Magnet drehen', 'Rotate the magnet'), min: 0, max: 360, step: 5, default: 0, unit: '°', visibleIf: (v) => v.mode === 'field' && v.arr === 'single' },
     { key: 'lines', type: 'boolean', group: 'view', label: L('Feldlinien', 'Field lines'), default: true, visibleIf: (v) => v.mode === 'poles' || v.mode === 'field' || v.mode === 'earth' },
     { key: 'filings', type: 'boolean', group: 'view', label: L('Eisenfeilspäne', 'Iron filings'), default: false, visibleIf: (v) => v.mode === 'field' },
+    { key: 'photo', type: 'boolean', group: 'view', label: L('Foto echter Eisenfeilspäne', 'Photo of real iron filings'), default: true, visibleIf: (v) => v.mode === 'field' && v.filings === true && v.arr === 'single' },
     { key: 'needles', type: 'boolean', group: 'view', label: L('Viele kleine Kompassnadeln', 'Many small compass needles'), default: false, visibleIf: (v) => v.mode === 'field' },
     { key: 'cx', type: 'number', label: L('Kompass x', 'Compass x'), min: -11, max: 11, step: 0.1, default: -6, unit: 'cm', visibleIf: () => false },
     { key: 'cy', type: 'number', label: L('Kompass y', 'Compass y'), min: -7, max: 7, step: 0.1, default: 3, unit: 'cm', visibleIf: () => false },
@@ -1097,7 +1111,45 @@ export default defineSimulation({
       if (p.filings) {
         if (!filings.length) makeFilings();
         const u = reduced ? 1 : sprinkleTw.running ? sprinkleTw.value : 1;
+        // Foto echter Späne um einen Stabmagneten; die gezeichneten Späne gehen darin über
+        const photo = p.photo && p.arr === 'single' ? ctx.images.get('filings') : null;
+        if (photo) {
+          g.save();
+          g.beginPath();
+          g.rect(r.x, r.y, r.w, r.h);
+          g.clip();
+          const [ox, oy] = plot.toPx(0, 0);
+          // Pole im Foto bei 28,1 % und 68,1 % der Breite, auf halber Höhe; im Modell ±3,52
+          const k = plot.scale.x / (0.4 * photo.width / 7.04);
+          g.translate(ox, oy);
+          g.rotate(-p.rot * DEG);
+          g.globalAlpha = u;
+          // im dunklen Modus umgekehrt: helle Späne auf dunklem Grund
+          if (th().dark) g.filter = 'invert(1) brightness(0.85)';
+          const pw = photo.width * k;
+          const ph = photo.height * k;
+          const px0 = -0.481 * pw;
+          const py0 = -0.51 * ph;
+          g.drawImage(photo, px0, py0, pw, ph);
+          g.filter = 'none';
+          // weiche Ränder: zur Kartenfarbe hin ausblenden
+          const bg = th().dark ? '20,27,38' : '255,255,255';
+          const fw = Math.min(pw, ph) * 0.16;
+          const edge = (x0: number, y0: number, x1: number, y1: number, rx: number, ry: number, rw: number, rh: number) => {
+            const gr = g.createLinearGradient(x0, y0, x1, y1);
+            gr.addColorStop(0, `rgba(${bg},1)`);
+            gr.addColorStop(1, `rgba(${bg},0)`);
+            g.fillStyle = gr;
+            g.fillRect(rx, ry, rw, rh);
+          };
+          edge(px0, 0, px0 + fw, 0, px0 - 1, py0 - 1, fw + 1, ph + 2);
+          edge(px0 + pw, 0, px0 + pw - fw, 0, px0 + pw - fw, py0 - 1, fw + 1, ph + 2);
+          edge(0, py0, 0, py0 + fw, px0 - 1, py0 - 1, pw + 2, fw + 1);
+          edge(0, py0 + ph, 0, py0 + ph - fw, px0 - 1, py0 + ph - fw, pw + 2, fw + 1);
+          g.restore();
+        }
         g.save();
+        if (photo) g.globalAlpha = 1 - u;
         g.lineCap = 'round';
         const base = th().dark ? '#c8ced8' : '#3b4250';
         for (const f of filings) {
@@ -1447,6 +1499,14 @@ export default defineSimulation({
     /* -------------------------------------------------------------- */
 
     function drawThing(g: CanvasRenderingContext2D, id: string, cx: number, cy: number, s: number): void {
+      // Foto des Gegenstands (freigestellt), sonst die gezeichnete Ersatzgrafik
+      const photo = id === 'cent' || id === 'euro' || id === 'filings' ? null : ctx.images.get(id);
+      if (photo) {
+        // so groß, dass der Gegenstand auf dem Tisch steht und oben am Magneten hängt
+        const d = s * 1.5;
+        g.drawImage(photo, cx - d / 2, cy - d / 2 - s * 0.1, d, d);
+        return;
+      }
       g.save();
       g.translate(cx, cy);
       g.lineJoin = 'round';
@@ -1634,7 +1694,8 @@ export default defineSimulation({
       }
       const thing = order[idx]!;
       const s = Math.min(R.w, R.h) * 0.16;
-      const restY = R.y + R.h * 0.72;
+      // Tisch so hoch, dass darunter Name und Rückmeldung Platz haben
+      const restY = Math.min(R.y + R.h * 0.72, R.y + R.h - s * 0.65 - 92);
       const stickY = top + mh + s * 0.6;
       let y = restY;
       let rot = 0;
@@ -1668,7 +1729,7 @@ export default defineSimulation({
       g.fillText(`${idx + 1} / ${order.length}`, R.x + R.w - 34, R.y + R.h - 14);
       g.restore();
       if (answered !== null) {
-        tag(g, cx, restY + s * 0.65 + 60, answered ? ctx.t('sortRight') : ctx.t('sortWrong'), answered ? COL.south() : COL.north(), R, 15);
+        tag(g, cx, restY + s * 0.65 + 72, answered ? ctx.t('sortRight') : ctx.t('sortWrong'), answered ? COL.south() : COL.north(), R, 15);
       }
     }
 

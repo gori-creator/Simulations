@@ -20,10 +20,11 @@ The **magnetic field** can be made visible with **iron filings** or **compass ne
 2. Two north poles: [repulsion](?mode=poles&other=magnet&flip=1&bx=1)
 3. Iron and aluminium: [iron](?mode=poles&other=iron&bx=5) · [aluminium](?mode=poles&other=alu&bx=2)
 4. Drag the compass round the bar magnet: [load](?mode=field&arr=single&rot=0&lines=1&filings=0&needles=0&cx=-6&cy=3)
-5. Iron filings between two north poles: [load](?mode=field&arr=repel&lines=0&filings=1&needles=0&cx=0&cy=3)
-6. Magnetise a nail, then hammer it: [load](?mode=domains&pieces=1)
-7. Compass from the equator to the pole: [load](?mode=earth&lat=0&tilt=10&lines=1)
-8. Game: [what does the magnet attract?](?mode=sort&round=1)
+5. Sprinkle iron filings around the bar magnet. The drawn filings turn into a photo of real ones. Where are they densest? [Real filings](?mode=field&arr=single&rot=0&lines=0&filings=1&photo=1&needles=0&cx=-6&cy=3)
+6. Iron filings between two north poles: [load](?mode=field&arr=repel&lines=0&filings=1&needles=0&cx=0&cy=3)
+7. Magnetise a nail, then hammer it: [load](?mode=domains&pieces=1)
+8. Compass from the equator to the pole: [load](?mode=earth&lat=0&tilt=10&lines=1)
+9. Game: [what does the magnet attract?](?mode=sort&round=1)
 
 ## Tasks
 

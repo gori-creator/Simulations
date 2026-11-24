@@ -1073,3 +1073,27 @@ Ersatzgrafik: keine nötig (Rasterbild ohne Ladefehler-Risiko im Build). Im dunk
 ## Zahlenfabrik (Spiel)
 
 Prompts, Dateinamen und Prüfliste: `docs/ZAHLENFABRIK-BILDER.md` (14 Bilder, alle vorhanden seit 04.11.2026: Quelle, Maschine, Weiche, Zusammenführer, Lager, volles Lager, Basis, drei Felsen, Brücke, Boden hell/dunkel, Münze). Ablage `src/assets/zahlenfabrik/<name>.webp`; ohne Datei zeichnet das Spiel seine eigene Grafik (`src/spiele/zahlenfabrik/art.ts`). Die Teile werden gedreht (Ausgang rechts = Richtung 0), daher Draufsicht ohne seitlichen Schlagschatten. Runde 4 (eingebaut 10.11.2026): 17 Bilder – Zähler-, Sammel- und Puffer-Maschine, Weiche „ganze Zahl?“, Verteiler, drei Erz-Quellen (Primzahlen, Quadratzahlen, Zählreihe), zwei Abnehmer (Sternwarte, Bäckerei), sieben Kapitelbilder (Zähler, Sammler, Puffer, ganze Zahl, Schleife, Regeln, Endgegner). Runde 3 (eingebaut 05.11.2026): 37 Bilder für übrige Maschinen, Weichen, Zusammenführer, Abnehmer, Kapitel. Runde 2 (eingebaut 05.11.2026): 36 weitere Bilder – Maschinen je Rechenart, Weichen je Prüfung, Bäume/Busch/Kisten/Nebel, Sterne, Pokal, Effekte, ein Bild je Kapitel (16 : 9) und ein Titelbild; Prompts im selben Dokument.
+
+## Physik Runde 3: Magnete, Hubble, HR-Diagramm, Messunsicherheit (eingebaut 24.11.2026)
+
+17 Bilder, erzeugt mit ChatGPT; Prompts wörtlich in `docs/BILDER-WUNSCHLISTE.md`, Abschnitt „Runde 4“ (Nr. 1–17). Die beiden Münzen im Magnet-Spiel bleiben gezeichnet (keine echten Münzen als Foto). Rotverschobene Galaxien bleiben gezeichnet, damit die Färbung sichtbar ist.
+
+| Simulation | Datei | Größe | Verwendung | Ersatzgrafik |
+| --- | --- | --- | --- | --- |
+| magnete | `src/assets/sims/magnete/nagel.webp` | 512 × 512, transparent | Spiel „Was zieht der Magnet an?“: Eisennagel | gezeichneter Gegenstand |
+| magnete | `src/assets/sims/magnete/bueroklammer.webp` | 512 × 512, transparent | Spiel „Was zieht der Magnet an?“: Büroklammer | gezeichneter Gegenstand |
+| magnete | `src/assets/sims/magnete/schere.webp` | 512 × 512, transparent | Spiel „Was zieht der Magnet an?“: Schere | gezeichneter Gegenstand |
+| magnete | `src/assets/sims/magnete/dose.webp` | 512 × 512, transparent | Spiel „Was zieht der Magnet an?“: Konservendose | gezeichneter Gegenstand |
+| magnete | `src/assets/sims/magnete/alufolie.webp` | 512 × 512, transparent | Spiel „Was zieht der Magnet an?“: Alufolie | gezeichneter Gegenstand |
+| magnete | `src/assets/sims/magnete/kupferdraht.webp` | 512 × 512, transparent | Spiel „Was zieht der Magnet an?“: Kupferdraht | gezeichneter Gegenstand |
+| magnete | `src/assets/sims/magnete/ring.webp` | 512 × 512, transparent | Spiel „Was zieht der Magnet an?“: Goldring | gezeichneter Gegenstand |
+| magnete | `src/assets/sims/magnete/radiergummi.webp` | 512 × 512, transparent | Spiel „Was zieht der Magnet an?“: Radiergummi | gezeichneter Gegenstand |
+| magnete | `src/assets/sims/magnete/bleistift.webp` | 512 × 512, transparent | Spiel „Was zieht der Magnet an?“: Bleistift | gezeichneter Gegenstand |
+| magnete | `src/assets/sims/magnete/glasmurmel.webp` | 512 × 512, transparent | Spiel „Was zieht der Magnet an?“: Glasmurmel | gezeichneter Gegenstand |
+| magnete | `src/assets/sims/magnete/eisenfeilspaene.webp` | 1600 × 1000, deckend | Feldlinien, Stabmagnet: Foto echter Späne, maßstäblich auf die Pole gelegt (Pole im Foto bei 28,1 % und 68,1 % der Breite), mitgedreht, Ränder weich; im Dunkelmodus umgekehrt; Schalter „Foto echter Eisenfeilspäne“ | gezeichnete Späne |
+| hubble | `src/assets/sims/hubble/galaxie-spirale.webp` | 512 × 512, transparent | Spiralgalaxie von oben (ab mittlerer Größe) | gezeichnete Galaxie |
+| hubble | `src/assets/sims/hubble/galaxie-schraeg.webp` | 512 × 512, transparent | schräg gesehene Spiralgalaxie | gezeichnete Galaxie |
+| hubble | `src/assets/sims/hubble/galaxie-elliptisch.webp` | 512 × 512, transparent | elliptische Galaxie | gezeichnete Galaxie |
+| hr-diagramm | `src/assets/sims/hr-diagramm/sternenhimmel.webp` | 1920 × 1080, deckend | Himmelsflächen (im Diagramm stark abgedunkelt) | Farbverlauf mit Punkten |
+| hr-diagramm | `src/assets/sims/hr-diagramm/sonne.webp` | 1024 × 1024, transparent | Oberfläche großer Sterne (Vergleich, Lebensweg, Übung), nach Temperatur eingefärbt | Leuchtball |
+| messunsicherheit | `src/assets/sims/messunsicherheit/holzklotz.webp` | 800 × 500, transparent | Gegenstand im Messschieber (Ausschnitt 143,155–656,347) | Holz-Verlauf |

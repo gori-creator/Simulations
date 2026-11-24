@@ -10,6 +10,7 @@ interface Layout { main: Rect; side: Rect; foot: Rect; wide: boolean }
 /** Vom Ablesen am Lineal über Wiederholungsmessungen zur Ausgleichsgeraden. */
 export default defineSimulation({
   id: 'messunsicherheit',
+  images: { block: 'holzklotz.webp' },
   animated: true,
   dragHint: true,
   hint: L('Ziehe den Ablesezeiger oder einen Messpunkt. Alle Werte lassen sich auch mit den Reglern bearbeiten.', 'Drag the reading pointer or a measured point. All values can also be edited with the controls.'),
@@ -656,9 +657,18 @@ export default defineSimulation({
         grd.addColorStop(0, ctx.theme.dark ? '#a77d4f' : '#d9b07a');
         grd.addColorStop(1, ctx.theme.dark ? '#7a5634' : '#b88a55');
         g.fillStyle = grd;
-        roundRect(g, X(0) + 1, objTop + jawLen * 0.2, Math.max(1, X(jaw) - X(0) - 2), jawLen * 0.55, 3);
-        g.fill();
-        if (X(jaw) - X(0) > 70) label(ctx.t('calObj'), (X(0) + X(jaw)) / 2, objTop + jawLen * 0.5, 11, ctx.theme.dark ? '#f4e6d3' : '#4a3520', 'center');
+        const bx = X(0) + 1;
+        const by = objTop + jawLen * 0.2;
+        const bw = Math.max(1, X(jaw) - X(0) - 2);
+        const bh = jawLen * 0.55;
+        // Foto des Holzklotzes (Ausschnitt ohne transparenten Rand), sonst gezeichnetes Holz
+        const photo = ctx.images.get('block');
+        if (photo) g.drawImage(photo, 143, 155, 513, 192, bx, by, bw, bh);
+        else {
+          roundRect(g, bx, by, bw, bh, 3);
+          g.fill();
+        }
+        if (!photo && X(jaw) - X(0) > 70) label(ctx.t('calObj'), (X(0) + X(jaw)) / 2, objTop + jawLen * 0.5, 11, ctx.theme.dark ? '#f4e6d3' : '#4a3520', 'center');
       }
       const steel = (y: number, h: number) => {
         const sg = g.createLinearGradient(0, y, 0, y + h);
