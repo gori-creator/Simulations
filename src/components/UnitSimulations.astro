@@ -12,9 +12,11 @@ interface Props {
   elsewhere?: { label: string; href: string }[];
   /** Ebene der Kartenüberschriften: eine unter der Überschrift des Lernbereichs */
   headingLevel?: 'h3' | 'h4';
+  /** Methoden- oder Projektthema ohne eigene Simulation */
+  method?: boolean;
 }
 
-const { lang, ids, elsewhere = [], headingLevel = 'h4' } = Astro.props;
+const { lang, ids, elsewhere = [], headingLevel = 'h4', method = false } = Astro.props;
 const sims = ids.map((id) => getSimulation(id));
 const ready = sims.filter((s) => s.status === 'ready');
 const planned = sims.filter((s) => s.status === 'planned');
@@ -32,7 +34,7 @@ const planned = sims.filter((s) => s.status === 'planned');
       ))}
     </p>
   ) : sims.length === 0 ? (
-    <p class="muted lp-none">{t(lang, 'curriculum.noSim')}</p>
+    <p class="muted lp-none">{t(lang, method ? 'curriculum.method' : 'curriculum.noSim')}</p>
   ) : (
     <div class="lp-sims">
       {ready.length > 0 && (

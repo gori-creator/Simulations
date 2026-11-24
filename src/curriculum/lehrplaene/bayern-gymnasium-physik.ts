@@ -439,6 +439,7 @@ export const bayernGymnasiumPhysik: StateCurriculum = {
             },
             {
               code: "4.3",
+              method: true,
               title: L(
                 "Außerunterrichtliche Aktivität",
                 "Activity outside the classroom",

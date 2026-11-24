@@ -316,6 +316,7 @@ export const hessenGymnasiumPhysik: StateCurriculum = {
           parts: [
             {
               code: '9.1',
+              method: true,
               title: L('Verantwortung gegenüber der Umwelt', 'Responsibility towards the environment'),
               summary: L(
                 'Umwelt- und Gesundheitsaspekte beim Experimentieren und im Alltag berücksichtigen.',
@@ -324,6 +325,7 @@ export const hessenGymnasiumPhysik: StateCurriculum = {
             },
             {
               code: '9.2',
+              method: true,
               title: L('Rolle der Physik bei Umwelt- und Naturereignissen', 'Role of physics in environmental and natural events'),
               summary: L(
                 'Physikalische Informationen aus Meldungen zu Ereignissen entnehmen.',
@@ -602,6 +604,7 @@ export const hessenGymnasiumPhysik: StateCurriculum = {
           parts: [
             {
               code: '9.1',
+              method: true,
               title: L('Verantwortung gegenüber der Umwelt', 'Responsibility towards the environment'),
               summary: L(
                 'Umwelt- und Gesundheitsaspekte beim Experimentieren und im Alltag berücksichtigen.',
@@ -610,6 +613,7 @@ export const hessenGymnasiumPhysik: StateCurriculum = {
             },
             {
               code: '9.2',
+              method: true,
               title: L('Rolle der Physik bei Umwelt- und Naturereignissen', 'Role of physics in environmental and natural events'),
               summary: L(
                 'Physikalische Informationen aus Meldungen zu Ereignissen entnehmen.',
@@ -887,6 +891,7 @@ export const hessenGymnasiumPhysik: StateCurriculum = {
           parts: [
             {
               code: '9.1',
+              method: true,
               title: L('Verantwortung gegenüber der Umwelt', 'Responsibility towards the environment'),
               summary: L(
                 'Umwelt- und Gesundheitsaspekte beim Experimentieren und im Alltag berücksichtigen.',
@@ -895,6 +900,7 @@ export const hessenGymnasiumPhysik: StateCurriculum = {
             },
             {
               code: '9.2',
+              method: true,
               title: L('Rolle der Physik bei Umwelt- und Naturereignissen', 'Role of physics in environmental and natural events'),
               summary: L(
                 'Physikalische Informationen aus Meldungen zu Ereignissen entnehmen.',
@@ -920,6 +926,7 @@ export const hessenGymnasiumPhysik: StateCurriculum = {
           parts: [
             {
               code: '1.1',
+              method: true,
               title: L(
                 'Besonderheiten und Gemeinsamkeiten der Physik, Chemie und Biologie',
                 'Particularities and commonalities of physics, chemistry and biology',
@@ -1209,6 +1216,7 @@ export const hessenGymnasiumPhysik: StateCurriculum = {
             },
             {
               code: '9.3',
+              method: true,
               title: L('Konsequenzen der Nutzung physikalischer Forschungsergebnisse', 'Consequences of using the results of physics research'),
               summary: L(
                 'Chancen und Risiken technologischer Entwicklungen abwägen.',
@@ -1234,6 +1242,7 @@ export const hessenGymnasiumPhysik: StateCurriculum = {
           parts: [
             {
               code: '1.1',
+              method: true,
               title: L(
                 'Besonderheiten und Gemeinsamkeiten der Physik, Chemie und Biologie',
                 'Particularities and commonalities of physics, chemistry and biology',
@@ -1520,6 +1529,7 @@ export const hessenGymnasiumPhysik: StateCurriculum = {
             },
             {
               code: '9.3',
+              method: true,
               title: L('Konsequenzen der Nutzung physikalischer Forschungsergebnisse', 'Consequences of using the results of physics research'),
               summary: L(
                 'Chancen und Risiken technologischer Entwicklungen abwägen.',

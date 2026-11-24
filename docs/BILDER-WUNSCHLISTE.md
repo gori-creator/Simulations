@@ -1,5 +1,58 @@
 # Bilder-Wunschliste
 
+## Runde 5 · Ausbau und neue Physik-Simulationen · offen (begonnen am 25.11.2026)
+
+Diese Liste wächst mit jeder neuen Simulation. Alle Simulationen funktionieren **ohne** diese Bilder (gezeichnete Ersatzgrafik); eingebaut werden sie, sobald sie hochgeladen sind.
+
+**So geht's:** Bild mit dem Prompt erzeugen, auf die Größe zuschneiden, als **WebP** (Qualität ca. 85, höchstens 300 KB) speichern und nach `incoming/<simulation>/` hochladen (Dateiname wie in der Tabelle). Danach Bescheid geben – ich baue sie ein und trage sie in `docs/BILDER.md` ein.
+
+Allgemein: keine Schrift, keine Logos, keine Marken, **keine echten Münzen**; fotorealistisch, weiches Studiolicht, freundlich. „Transparent“ heißt echter Alpha-Kanal. „Von oben“ heißt genau senkrecht von oben (die Simulation legt ein Maßband um den Rand).
+
+### Übersicht
+
+| Nr. | Simulation | Datei | Größe | Hintergrund | Wofür |
+| --- | --- | --- | --- | --- | --- |
+| 1 | Kreiszahl π | `incoming/kreiszahl-pi/knopf.webp` | 512 × 512 | transparent | „Messen im Alltag“: Knopf von oben |
+| 2 | Kreiszahl π | `incoming/kreiszahl-pi/dose.webp` | 512 × 512 | transparent | Dose von oben |
+| 3 | Kreiszahl π | `incoming/kreiszahl-pi/tasse.webp` | 512 × 512 | transparent | Tasse von oben |
+| 4 | Kreiszahl π | `incoming/kreiszahl-pi/cd.webp` | 512 × 512 | transparent | CD von oben |
+| 5 | Kreiszahl π | `incoming/kreiszahl-pi/teller.webp` | 512 × 512 | transparent | Teller von oben |
+| 6 | Kreiszahl π | `incoming/kreiszahl-pi/wanduhr.webp` | 512 × 512 | transparent | Wanduhr von vorn |
+| 7 | Exponentielles Wachstum | `incoming/exponentielles-wachstum/petrischale.webp` | 512 × 512 | transparent | „Messwerte“: Bakterienkultur |
+| 8 | Exponentielles Wachstum | `incoming/exponentielles-wachstum/teetasse.webp` | 512 × 512 | transparent | „Messwerte“: abkühlender Tee |
+| 9 | Exponentielles Wachstum | `incoming/exponentielles-wachstum/tabletten.webp` | 512 × 512 | transparent | „Messwerte“: Medikament |
+
+Neue Simulationen für die Physik-Lücken kommen unten dazu, sobald sie gebaut sind.
+
+### Prompts
+
+#### 1 · `knopf.webp` – Knopf
+> A single round four-hole sewing button seen exactly from above, plain medium blue plastic with a raised rim, centered and filling most of the frame, isolated on a fully transparent background, soft even studio light, photorealistic, no text
+
+#### 2 · `dose.webp` – Dose
+> A plain unlabeled food tin can seen exactly from above, silver metal lid with concentric rings and a ring pull, perfectly circular outline filling most of the frame, isolated on a fully transparent background, soft even studio light, photorealistic, no text, no logos
+
+#### 3 · `tasse.webp` – Tasse
+> A plain white ceramic mug seen exactly from above, filled with black coffee, the handle pointing to the upper left, circular rim filling most of the frame, isolated on a fully transparent background, soft even studio light, photorealistic, no text, no logos
+
+#### 4 · `cd.webp` – CD
+> A blank compact disc seen exactly from above, silver reflective surface with soft rainbow sheen, clear center ring and hole, perfectly circular, filling most of the frame, isolated on a fully transparent background, soft studio light, photorealistic, no text, no printing
+
+#### 5 · `teller.webp` – Teller
+> An empty plain white porcelain dinner plate seen exactly from above, wide rim with a thin pale blue line, perfectly circular, filling most of the frame, isolated on a fully transparent background, soft even studio light, photorealistic, no text
+
+#### 6 · `wanduhr.webp` – Wanduhr
+> A simple round wall clock seen straight from the front, white dial with twelve plain black tick marks and no numbers, black hands at about ten past ten, thin black frame, perfectly circular, filling most of the frame, isolated on a fully transparent background, soft studio light, photorealistic, no text, no brand
+
+#### 7 · `petrischale.webp` – Petrischale
+> A glass petri dish seen from slightly above, with small cream-colored bacterial colonies on pale amber agar, clean laboratory look, centered, isolated on a fully transparent background, soft studio light, photorealistic, no text, no labels
+
+#### 8 · `teetasse.webp` – Teetasse
+> A clear glass cup of hot tea with gentle steam rising, warm amber tea, side view slightly from above, centered, isolated on a fully transparent background, soft studio light, photorealistic, no text, no logos
+
+#### 9 · `tabletten.webp` – Tabletten
+> A few plain round white tablets and one blister strip without any printing, lying on a neutral surface seen from slightly above, centered, isolated on a fully transparent background, soft studio light, photorealistic, no text, no brand names
+
 ## Runde 4 · Physik: Magnete, Hubble, HR-Diagramm, Messunsicherheit · eingebaut am 24.11.2026 (17 Bilder)
 
 Alle 17 Bilder sind geliefert (erzeugt mit ChatGPT) und eingebaut; Einbau und Verwendung in `docs/BILDER.md` im Abschnitt „Physik Runde 3“.

@@ -2,9 +2,9 @@
 
 <!-- Automatisch erzeugt mit `npm run lehrplan:luecken` aus src/curriculum/lehrplaene/ – nicht von Hand bearbeiten. -->
 
-Lernbereiche der Länder-Lehrpläne, zu denen es noch **keine** Simulation gibt – Vorrat für neue Simulationen (Anleitung: `docs/NEUE-SIMULATION.md`). Insgesamt **179 von 1773** Lernbereichen ohne Simulation.
+Lernbereiche der Länder-Lehrpläne, zu denen es noch **keine** Simulation gibt – Vorrat für neue Simulationen (Anleitung: `docs/NEUE-SIMULATION.md`). Insgesamt **169 von 1773** Lernbereichen ohne Simulation.
 
-Nicht jeder Lernbereich eignet sich für eine Simulation (z. B. reine Rechenfertigkeiten oder Methoden). Kommt ein Thema in mehreren Ländern vor, lohnt es sich besonders.
+Nicht jeder Lernbereich eignet sich für eine Simulation. Reine Methoden-, Praktikums- und Projektthemen sind im Lehrplan mit `method: true` gekennzeichnet und zählen nicht als Lücke. Kommt ein Thema in mehreren Ländern vor, lohnt es sich besonders.
 
 ## Mathematik (61)
 
@@ -136,7 +136,7 @@ Alle Lernbereiche haben eine Simulation.
 | 7–9 | 2.4 | Größen und Messen › Sachaufgaben | Größen in Sachzusammenhängen bestimmen und Ergebnisse und Lösungsweg bewerten. |
 | 12 | S.3 | Stochastik › Hypergeometrische Verteilung | Ziehen ohne Zurücklegen mit der hypergeometrischen Verteilung beschreiben. |
 
-## Physik (118)
+## Physik (108)
 
 ### Baden-Württemberg · Gymnasium (1)
 
@@ -144,7 +144,7 @@ Alle Lernbereiche haben eine Simulation.
 | --- | --- | --- | --- |
 | 7/8 | 3.1.4 | Einführung in die Physik: Energie effizient nutzen | Grundeigenschaften der Energie und Energieketten; Wärmeleitung, Konvektion und Wärmestrahlung untersuchen, Dämmstoffe prüfen und Regeln zum Energiesparen ableiten. |
 
-### Bayern · Gymnasium (12)
+### Bayern · Gymnasium (11)
 
 | Stufe | Nr. | Lernbereich | Kurz |
 | --- | --- | --- | --- |
@@ -153,7 +153,6 @@ Alle Lernbereiche haben eine Simulation.
 | 9 | 4.1 | Profilbereich am NTG (nur NTG) › Klima | Weitere Aspekte des Klimasystems wie Meeresspiegelanstieg, Rückkopplungen und Kippelemente; alternative Erklärungen für die Erderwärmung physikalisch prüfen. |
 | 11 | 4.1 | Profilbereich am NTG (27 Std.) (nur NTG) › Die Methode der kleinen Schritte | Bewegungen mit veränderlicher Kraft schrittweise am Computer berechnen, z. B. Fall mit Luftwiderstand und harmonische Schwingung, und mit Experimenten vergleichen. |
 | 11 | 4.2 | Profilbereich am NTG (27 Std.) (nur NTG) › Photovoltaik in Anwendungen | U-I-Kennlinie einer Solarzelle und den Punkt maximaler Leistung bestimmen, Komponenten von Photovoltaikanlagen kennen und ihren Nutzen bewerten. |
-| 11 | 4.3 | Profilbereich am NTG (27 Std.) (nur NTG) › Außerunterrichtliche Aktivität | Mindestens eine Aktivität außerhalb des Unterrichts, etwa Schülerlabor, Museum, Betriebsbesuch oder ein eigenes Forschungsprojekt. |
 | 13 | 1.2 | Grundideen der Quantenphysik › Einblick in das Weltbild der Quantenphysik | Wellenfunktion und Nachweiswahrscheinlichkeit, Superposition, Komplementarität und der quantenphysikalische Messprozess. |
 | 13 | 4.1 | Kernphysik › Ein einfaches Kernmodell der Quantenphysik | Bindungsenergie je Nukleon, Potentialtopfmodell des Kerns, Entstehung der Strahlungsarten und Energiebilanzen bei Zerfällen und Kernreaktionen. |
 | 13 | A1 | Orientierung am Himmel (nur Astrophysik) | Sternbilder und Objekte am Nachthimmel mit Sternkarte oder Software finden, Sichtbarkeit beurteilen und Schleifenbahnen der Planeten erklären. |
@@ -180,7 +179,7 @@ Alle Lernbereiche haben eine Simulation.
 
 Alle Lernbereiche haben eine Simulation.
 
-### Hessen · Gymnasium (53)
+### Hessen · Gymnasium (49)
 
 | Stufe | Nr. | Lernbereich | Kurz |
 | --- | --- | --- | --- |
@@ -189,15 +188,11 @@ Alle Lernbereiche haben eine Simulation.
 | 6–8 | 4.3 | Elektrizität im Alltag › Gefahren beim Umgang mit Elektrizität im Alltag | Gefahren erkennen und sicheres Verhalten begründen. |
 | 6–8 | 5.4 | Wettererscheinungen und Klima › Stoffe bei Temperaturänderung | Ausdehnung von festen, flüssigen und gasförmigen Stoffen untersuchen. |
 | 6–8 | 5.5 | Wettererscheinungen und Klima › Anomalie des Wassers und seine Bedeutung für das irdische Leben | Dichteverhalten von Wasser bei 4 °C und Folgen für Gewässer. |
-| 6–8 | 9.1 | Physik in der Verantwortung › Verantwortung gegenüber der Umwelt | Umwelt- und Gesundheitsaspekte beim Experimentieren und im Alltag berücksichtigen. |
-| 6–8 | 9.2 | Physik in der Verantwortung › Rolle der Physik bei Umwelt- und Naturereignissen | Physikalische Informationen aus Meldungen zu Ereignissen entnehmen. |
-| 9/10 | 1.1 | Haus der Naturwissenschaften › Besonderheiten und Gemeinsamkeiten der Physik, Chemie und Biologie | Arbeitsweisen der drei Naturwissenschaften vergleichen. |
 | 9/10 | 4.3 | Elektrizität im Alltag › Elektrostatische Phänomene | Aufladung, Anziehung und Abstoßung mit Ladungen erklären. |
 | 9/10 | 5.1 | Wettererscheinungen und Klima › Übertragung thermischer Energie | Wärmeleitung, Wärmeströmung und Wärmestrahlung untersuchen. |
 | 9/10 | 5.3 | Wettererscheinungen und Klima › Druck- und Temperaturunterschiede | Wettererscheinungen als Ausgleich von Unterschieden erklären. |
 | 9/10 | 6.2 | Fortbewegung und Mobilität › Trägheit eines Körpers | Trägheit als Beharrungsvermögen; Bedeutung für die Verkehrssicherheit. |
 | 9/10 | 6.4 | Fortbewegung und Mobilität › Menschliche und technische Leistungen und deren Vergleich | Eigene körperliche Leistung bestimmen und mit Maschinen vergleichen. |
-| 9/10 | 9.3 | Physik in der Verantwortung › Konsequenzen der Nutzung physikalischer Forschungsergebnisse | Chancen und Risiken technologischer Entwicklungen abwägen. |
 | 11 | E.1.5 | Bewegungen und ihre Beschreibung › Idealisierung | Massepunkt und Vernachlässigung der Reibung als Modellannahmen. |
 | 11 | E.2.1 | Newton’sche Axiome und Erhaltungssätze › Die drei Newton’schen Axiome | Trägheitsgesetz, Grundgleichung F = m·a, Wechselwirkungsprinzip und Inertialsysteme. |
 | 11 | E.4.3 | Weitere Bewegungen › Numerische Simulation | Bewegungen schrittweise mit Differenzenquotienten (z. B. Tabellenkalkulation) berechnen. |
@@ -261,13 +256,11 @@ Alle Lernbereiche haben eine Simulation.
 | 7–10 | 10.3 | Ionisierende Strahlung und Kernenergie › Kernenergie | Kernspaltung, Kernfusion, Kernkraftwerke und Endlagerung. |
 | 12/13 | LK-4.4 | Atom- und Kernphysik (Leistungskurs) › Kernspaltung und -fusion | Bindungsenergien, Massendefekt und Kettenreaktion. |
 
-### Rheinland-Pfalz · Gymnasium (19)
+### Rheinland-Pfalz · Gymnasium (16)
 
 | Stufe | Nr. | Lernbereich | Kurz |
 | --- | --- | --- | --- |
-| 7–10 | 7 | Kosmos und Forschung | Physik als sich weiter entwickelnde Wissenschaft: Methode der Erkenntnisgewinnung, Recherche und Präsentation zu Themen moderner Physik wie Sternen, Raumfahrt oder Exoplaneten. |
 | 7–10 | 8 | Wärmetransporte und ihre Beeinflussung | Thermische Energieströme im Basiskonzept System: Temperaturdifferenz als Antrieb, thermischer Widerstand, Kühlung und Wärmedämmung, Wärmepumpe und Wärmekraftmaschine. |
-| 7–10 | 12 | Praxis und Forschung | Selbstständig und fragengeleitet experimentieren: Hypothesen aufstellen, Experimente planen, durchführen und auswerten, mit Inhalten aus früheren oder neuen Themenfeldern. |
 | 12/13 | GF-W.5 | Wahlpflichtbausteine (Grundfach, fünf zu wählen) › Elektromagnetische Wellen | Rückkopplung, offener Schwingkreis, Ausbreitung und Modulation, Anwendungen und Spektrum. |
 | 12/13 | GF-W.6 | Wahlpflichtbausteine (Grundfach, fünf zu wählen) › Wechselstromkreise | Effektivwerte, Impedanz und Phasenverschiebung, Wirk- und Blindleistung. |
 | 12/13 | GF-W.8 | Wahlpflichtbausteine (Grundfach, fünf zu wählen) › Festkörperphysik | Bändermodell und Eigenschaften von Festkörpern. |
@@ -276,7 +269,6 @@ Alle Lernbereiche haben eine Simulation.
 | 12/13 | GF-W.14 | Wahlpflichtbausteine (Grundfach, fünf zu wählen) › Entropie | Entropie als Energieträger, Entropieerzeugung und Carnot-Wirkungsgrad. |
 | 12/13 | GF-W.21 | Wahlpflichtbausteine (Grundfach, fünf zu wählen) › Chaos und Fraktale – Nichtlineare dynamische Systeme | Chaosphänomene, Merkmale chaotischer Systeme und fraktale Strukturen. |
 | 12/13 | GF-W.22 | Wahlpflichtbausteine (Grundfach, fünf zu wählen) › Strömungsphysik | Strömungsarten, Kontinuitätsgleichung, Bernoulli-Gleichung und dynamischer Auftrieb. |
-| 12/13 | GF-W.23 | Wahlpflichtbausteine (Grundfach, fünf zu wählen) › Physik als sich weiterentwickelnde Wissenschaft | Wissenschaftliche Revolutionen und physikalische Arbeitsweisen im historischen und gesellschaftlichen Zusammenhang. |
 | 12/13 | LF-W.2 | Wahlpflichtbausteine (Leistungsfach, sieben zu wählen) › Veränderliche elektromagnetische Felder II | Maxwell-Gleichungen, Felder und Bezugssysteme, Lorentz-Transformation. |
 | 12/13 | LF-W.5 | Wahlpflichtbausteine (Leistungsfach, sieben zu wählen) › Elektromagnetische Wellen | Rückkopplung, offener Schwingkreis, Ausbreitung und Modulation, Anwendungen und Spektrum. |
 | 12/13 | LF-W.6 | Wahlpflichtbausteine (Leistungsfach, sieben zu wählen) › Wechselstromkreise | Effektivwerte, Impedanz und Phasenverschiebung, Wirk- und Blindleistung. |
@@ -306,14 +298,12 @@ Alle Lernbereiche haben eine Simulation.
 | 11 | LK-4 | Modellbildung und Simulation (Leistungskurs) | Bewegungen numerisch modellieren, Parameter variieren und mit dem Experiment vergleichen. |
 | 12 | LK-W2 | Deterministisches Chaos (Wahlbereich Leistungskurs) | Nichtlineare Systeme, Attraktoren und begrenzte Vorhersagbarkeit. |
 
-### Sachsen-Anhalt · Gymnasium (4)
+### Sachsen-Anhalt · Gymnasium (2)
 
 | Stufe | Nr. | Lernbereich | Kurz |
 | --- | --- | --- | --- |
 | 10 | 4 | Klimaphysik | Elektromagnetisches Spektrum, Strahlungshaushalt der Erde, Albedo, Stefan-Boltzmann-Gesetz, natürlicher und menschengemachter Treibhauseffekt. |
-| 11/12 | gA-4.2 | Praktika (grundlegendes Anforderungsniveau) › Aufgabenpraktikum | Strategien zum Lösen physikalischer Aufgaben üben: Bilanzen, Analogien, Vereinfachen und passende Modelle wählen. |
 | 11/12 | eA-2.4 | Elektrodynamik (erhöhtes Anforderungsniveau) › Wechselstromwiderstände und elektromagnetische Schwingungen | Effektivwerte, induktiver und kapazitiver Widerstand mit Zeigerdiagramm, Schwingkreis und Thomson’sche Gleichung. |
-| 11/12 | eA-4.2 | Praktika (erhöhtes Anforderungsniveau) › Aufgabenpraktikum | Strategien zum Lösen physikalischer Aufgaben üben, auch mit Kraftansätzen und der Wahl eines geeigneten Bezugssystems. |
 
 ### Schleswig-Holstein · Gymnasium (3)
 

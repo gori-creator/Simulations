@@ -50,6 +50,12 @@ export interface CurriculumUnit {
   summary?: Localized;
   /** IDs der passenden Simulationen. */
   simulations?: string[];
+  /**
+   * Methoden-, Praktikums- oder Projektthema ohne festen Inhalt (z. B.
+   * „Aufgabenpraktikum“, „Verantwortung gegenüber der Umwelt“): Dazu passt
+   * keine eigene Simulation, daher zählt es nicht als Lücke.
+   */
+  method?: boolean;
   /** Unterbereiche (z. B. 1.1, 1.2). */
   parts?: CurriculumUnit[];
 }

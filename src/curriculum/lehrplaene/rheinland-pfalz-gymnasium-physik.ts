@@ -85,6 +85,7 @@ const SEK_I_UNITS: CurriculumUnit[] = [
   },
   {
     code: '7',
+    method: true,
     title: L('Kosmos und Forschung', 'Cosmos and research'),
     summary: L(
       'Physik als sich weiter entwickelnde Wissenschaft: Methode der Erkenntnisgewinnung, Recherche und Präsentation zu Themen moderner Physik wie Sternen, Raumfahrt oder Exoplaneten.',
@@ -128,6 +129,7 @@ const SEK_I_UNITS: CurriculumUnit[] = [
   },
   {
     code: '12',
+    method: true,
     title: L('Praxis und Forschung', 'Practice and research'),
     summary: L(
       'Selbstständig und fragengeleitet experimentieren: Hypothesen aufstellen, Experimente planen, durchführen und auswerten, mit Inhalten aus früheren oder neuen Themenfeldern.',
@@ -491,6 +493,7 @@ const QP_UNITS: CurriculumUnit[] = [
       },
       {
         code: 'GF-W.23',
+        method: true,
         title: L('Physik als sich weiterentwickelnde Wissenschaft', 'Physics as an evolving science'),
         summary: L('Wissenschaftliche Revolutionen und physikalische Arbeitsweisen im historischen und gesellschaftlichen Zusammenhang.', 'Scientific revolutions and ways of working in physics in their historical and social context.'),
       },
