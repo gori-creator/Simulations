@@ -26,6 +26,18 @@ export interface ControlsOptions {
  * Beschriftung einer Auswahl-Option: „Rn-220 (T½ = 55,6 s)“, im Aufgabenmodus
  * ohne die Zusatzangabe `detail` („Rn-220“). Zahl und Einheit bleiben zusammen.
  */
+/**
+ * Knöpfe oder Menü? Viele oder lange Einträge (z. B. die Ansichten einer
+ * Simulation) als Ausklappmenü, damit die Einstellungen nicht mit einem großen
+ * Knopfblock beginnen; kurze Einträge (Einheiten, Funktionen) bleiben Knöpfe.
+ */
+export function choiceDisplay(def: ChoiceParam, lang: Lang = 'de'): 'buttons' | 'menu' {
+  if (def.display) return def.display;
+  const n = def.options.length;
+  const avg = def.options.reduce((sum, o) => sum + o.label[lang].length, 0) / Math.max(1, n);
+  return n >= 9 || (n >= 5 && avg >= 14) ? 'menu' : 'buttons';
+}
+
 export function choiceOptionLabel(option: ChoiceOption, lang: Lang, taskHidden: boolean): string {
   const label = option.label[lang];
   const detail = option.detail?.[lang]?.trim();
@@ -485,7 +497,55 @@ export class Controls {
     };
   }
 
+  /** Auswahl als Ausklappmenü (viele oder lange Einträge). */
+  private menuView(def: ChoiceParam): ControlView {
+    const { lang, idPrefix, onInput } = this.options;
+    const root = document.createElement('div');
+    root.className = 'ctl ctl--choice ctl--menu';
+    const head = document.createElement('div');
+    head.className = 'ctl__head';
+    const label = document.createElement('label');
+    label.className = 'ctl__label';
+    const id = `${idPrefix}-${def.key}`;
+    label.htmlFor = id;
+    setSubLabel(label, def.label[lang]);
+    head.append(label);
+    const select = document.createElement('select');
+    select.className = 'ctl__select';
+    select.id = id;
+    const items: { option: ChoiceOption; el: HTMLOptionElement }[] = [];
+    for (const option of def.options) {
+      const el = document.createElement('option');
+      el.value = option.value;
+      el.textContent = plainSubText(choiceOptionLabel(option, lang, this.taskHidden));
+      select.append(el);
+      items.push({ option, el });
+    }
+    select.addEventListener('change', () => onInput(def.key, select.value));
+    root.append(head, select);
+    const help = this.helpText(def);
+    if (help) {
+      if (help.toggle) head.append(help.toggle);
+      root.append(help.text);
+    }
+    return {
+      def,
+      root,
+      sync: (value) => {
+        select.value = String(value);
+      },
+      summary: (value) => plainSubText(def.options.find((o) => o.value === value)?.label[lang] ?? ''),
+      setDisabled: (disabled) => {
+        select.disabled = disabled;
+      },
+      setTaskHidden: (hidden) => {
+        for (const { option, el } of items) el.textContent = plainSubText(choiceOptionLabel(option, lang, hidden));
+      },
+    };
+  }
+
   private choiceView(def: ChoiceParam): ControlView {
+    if (choiceDisplay(def, this.options.lang) === 'menu') return this.menuView(def);
     const { lang, idPrefix, onInput } = this.options;
     const root = document.createElement('fieldset');
     root.className = 'ctl ctl--choice';
