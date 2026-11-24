@@ -922,8 +922,8 @@ export const mathematik: Subject = {
             slug: L('quadratische-funktion', 'quadratic-function'),
             title: L('Quadratische Funktion', 'Quadratic function'),
             summary: L(
-              'Strecke, spiegle und verschiebe Parabeln und lies Scheitelpunkt und Nullstellen ab.',
-              'Stretch, reflect and shift parabolas and read off the vertex and the zeros.',
+              'Strecke, spiegle und verschiebe Parabeln und lies Scheitelpunkt und Nullstellen ab. Mit Schnittpunkten von Parabel und Gerade, einer Wurfparabel und einem Spiel zum Nachstellen von Parabeln.',
+              'Stretch, reflect and shift parabolas and read off the vertex and the zeros. With intersections of parabola and line, a ball being thrown and a game for copying parabolas.',
             ),
             grades: [9, 10],
             kmk: ['M-L3', 'M-K4', 'M-K5'],

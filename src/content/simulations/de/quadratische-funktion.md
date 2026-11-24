@@ -36,6 +36,10 @@ $$
 x_{1,2} = \frac{-b \pm \sqrt{b^2 - 4ac}}{2a}
 $$
 
+### Parabel und Gerade
+
+Wo schneidet die Parabel $f(x) = ax^2 + bx + c$ die Gerade $y = mx + n$? Gleichsetzen ergibt die quadratische Gleichung $ax^2 + (b - m)x + (c - n) = 0$. Ihre Diskriminante entscheidet: positiv – zwei Schnittpunkte (**Sekante**), null – ein Berührpunkt (**Tangente**), negativ – kein gemeinsamer Punkt (**Passante**). Beispiel: $x^2 = x + 2$ führt auf $x^2 - x - 2 = 0$ mit $x_1 = -1$, $x_2 = 2$.
+
 ## Ausprobieren
 
 1. Verändere nur $a$ – auch ins Negative. Vergleiche mit der gestrichelten Normalparabel. [a = 2](?a=2) [a = −0,5](?a=-0.5)
@@ -43,6 +47,9 @@ $$
 3. Ziehe den Scheitelpunkt $S$ nach oben und unten. Wann gibt es zwei, eine oder keine Nullstelle?
 4. Schalte das **Streckfaktor-Dreieck** ein: Vom Scheitel aus geht es 1 nach rechts und $a$ nach oben. Ziehe den hohlen Punkt rechts vom Scheitel nach oben oder unten – so änderst du $a$. [Beispiel laden](?a=1.5&d=-1&e=-2&step=1)
 5. Wechsle oben zur **allgemeinen Form**. Die Parabel bleibt gleich – nur die Darstellung ändert sich.
+6. **Parabel und Gerade:** Zieh die beiden Punkte der Geraden. Stelle eine Tangente ein: Wann gibt es genau einen gemeinsamen Punkt? [Sekante](?mode=line&a=1&d=0&e=0&m=1&n=2) · [Tangente](?mode=line&a=1&d=0&e=0&m=2&n=-1)
+7. **Wurfparabel:** Tippe auf „Werfen“ und verändere dann den höchsten Punkt $(d \mid e)$ und $a$. Wie weit fliegt der Ball? [Ballwurf](?mode=throw&a=-0.1&d=6&e=5)
+8. **Spiel:** Lies Scheitel und Streckfaktor der orangen Parabel ab und stelle sie nach. [Parabel treffen](?mode=match&q=1&a=1&d=0&e=0)
 
 ## Aufgaben
 
@@ -91,18 +98,31 @@ Entscheide ohne die Nullstellen auszurechnen, wie viele Nullstellen die Funktion
 
 ### Aufgabe 4: Ballwurf (Modellieren)
 
-Die Flugbahn eines Balls wird durch $h(x) = -0{,}2\,(x - 5)^2 + 6$ beschrieben ($x$: Entfernung in m, $h$: Höhe in m). Wie hoch fliegt der Ball höchstens, und wie weit fliegt er? Tipp: Zum Überprüfen musst du herauszoomen.
+Die Flugbahn eines Balls wird durch $h(x) = -0{,}2\,(x - 5)^2 + 6$ beschrieben ($x$: Entfernung in m, $h$: Höhe in m). Wie hoch fliegt der Ball höchstens, und wie weit fliegt er? Zum Überprüfen eignet sich die Ansicht „Wurfparabel“.
 
 <details>
 <summary>Lösung anzeigen</summary>
 
-Der Scheitelpunkt $S(5 \mid 6)$ ist der höchste Punkt: 6 m Höhe nach 5 m. Landung: $0{,}2\,(x-5)^2 = 6 \Rightarrow (x-5)^2 = 30 \Rightarrow x = 5 + \sqrt{30} \approx 10{,}5$ m. [In der Simulation zeigen](?a=-0.2&d=5&e=6)
+Der Scheitelpunkt $S(5 \mid 6)$ ist der höchste Punkt: 6 m Höhe nach 5 m. Landung: $0{,}2\,(x-5)^2 = 6 \Rightarrow (x-5)^2 = 30 \Rightarrow x = 5 + \sqrt{30} \approx 10{,}5$ m. [In der Simulation zeigen](?mode=throw&a=-0.2&d=5&e=6)
+
+</details>
+
+### Aufgabe 5: Gerade durch die Parabel
+
+Berechne die Schnittpunkte der Parabel $f(x) = x^2$ mit der Geraden $y = x + 2$. Für welches $n$ ist $y = 2x + n$ eine Tangente? [Aufgabe laden](?mode=line&a=1&d=0&e=0&m=1&n=2&zeros=0&_hide=1)
+
+<details>
+<summary>Lösung anzeigen</summary>
+
+$x^2 = x + 2 \iff x^2 - x - 2 = 0 \iff (x + 1)(x - 2) = 0$: $S_1(-1 \mid 1)$, $S_2(2 \mid 4)$. Tangente: $x^2 - 2x - n = 0$ braucht die Diskriminante $4 + 4n = 0$, also $n = -1$; Berührpunkt $(1 \mid 1)$. [Tangente zeigen](?mode=line&a=1&d=0&e=0&m=2&n=-1)
 
 </details>
 
 ## Ideen für den Unterricht
 
 - **Einsatz:** Einführung der Scheitelpunktform (Klasse 9), Zusammenhang der Darstellungsformen, Vorbereitung der Lösungsformel.
+- **Wurfparabel als Einstieg:** Erst den Ball werfen lassen, dann fragen: Welche Bedeutung haben $d$, $e$ und das Vorzeichen von $a$? Höchster Punkt und Landestelle stehen im Bild, wenn **Nullstellen** eingeschaltet ist.
+- **Spiel „Parabel treffen“:** Die Parabeln sind nummeriert, gleiche Nummer heißt gleiche Parabel. Gut zum Üben, den Streckfaktor über „1 nach rechts, $a$ nach oben“ abzulesen.
 - **Häufige Stolpersteine:**
   - Das Vorzeichen von $d$ wird falsch gedeutet: $(x + 2)^2$ verschiebt nach **links**.
   - „Gestreckt“ wird mit „breiter“ verwechselt. Der gestrichelte Vergleich mit der Normalparabel hilft.

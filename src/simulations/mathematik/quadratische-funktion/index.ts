@@ -1,6 +1,10 @@
-import { defineSimulation, Plot, Surface, term } from '../../../sim-core';
+import { defineSimulation, ease, Plot, roundRect, seededRandom, softShadow, Surface, term, Tween } from '../../../sim-core';
 import {
   clampVertexForGeneral,
+  lineIntersections,
+  matchParabola,
+  maxDifference,
+  throwInfo,
   discriminant,
   fitsGeneral,
   generalToVertex,
@@ -21,9 +25,23 @@ const L = (de: string, en: string) => ({ de, en });
 export default defineSimulation({
   id: 'quadratische-funktion',
   dragHint: true,
-  hint: { de: 'Tipp: Zieh den Scheitel S oder den hohlen Punkt rechts daneben (Streckfaktor a).', en: 'Tip: Drag the vertex S or the hollow point to its right (stretch factor a).' },
   groups: [{ id: 'view', label: L('Anzeige', 'Display') }],
   params: [
+    {
+      key: 'mode',
+      type: 'choice',
+      label: L('Ansicht', 'View'),
+      options: [
+        { value: 'explore', label: L('Parabel verändern', 'Change the parabola') },
+        { value: 'line', label: L('Parabel und Gerade', 'Parabola and line') },
+        { value: 'throw', label: L('Wurfparabel', 'Throwing a ball') },
+        { value: 'match', label: L('Spiel: Parabel treffen', 'Game: match the parabola') },
+      ],
+      default: 'explore',
+    },
+    { key: 'm', type: 'number', label: L('Steigung der Geraden m', 'Slope of the line m'), min: -5, max: 5, step: 0.1, default: 1, visibleIf: (v) => v.mode === 'line' },
+    { key: 'n', type: 'number', label: L('y-Achsenabschnitt n', 'y-intercept n'), min: -8, max: 8, step: 0.1, default: 2, visibleIf: (v) => v.mode === 'line' },
+    { key: 'q', type: 'number', label: L('Parabel Nr.', 'Parabola no.'), min: 1, max: 999, step: 1, default: 1, visibleIf: (v) => v.mode === 'match' },
     {
       key: 'form',
       type: 'choice',
@@ -33,6 +51,7 @@ export default defineSimulation({
         { value: 'allgemein', label: L('Allgemeine Form', 'Standard form') },
       ],
       default: 'scheitel',
+      visibleIf: (v) => v.mode === 'explore' || v.mode === 'line',
     },
     {
       key: 'a',
@@ -52,7 +71,7 @@ export default defineSimulation({
       max: 8,
       step: 0.1,
       default: 0,
-      visibleIf: (v) => v.form === 'scheitel',
+      visibleIf: (v) => v.form === 'scheitel' || v.mode === 'throw' || v.mode === 'match',
     },
     {
       key: 'e',
@@ -62,7 +81,7 @@ export default defineSimulation({
       max: 8,
       step: 0.1,
       default: 0,
-      visibleIf: (v) => v.form === 'scheitel',
+      visibleIf: (v) => v.form === 'scheitel' || v.mode === 'throw' || v.mode === 'match',
     },
     {
       key: 'b',
@@ -72,7 +91,7 @@ export default defineSimulation({
       max: 20,
       step: 0.1,
       default: 0,
-      visibleIf: (v) => v.form === 'allgemein',
+      visibleIf: (v) => v.form === 'allgemein' && (v.mode === 'explore' || v.mode === 'line'),
     },
     {
       key: 'c',
@@ -82,7 +101,7 @@ export default defineSimulation({
       max: 20,
       step: 0.1,
       default: 0,
-      visibleIf: (v) => v.form === 'allgemein',
+      visibleIf: (v) => v.form === 'allgemein' && (v.mode === 'explore' || v.mode === 'line'),
     },
     {
       key: 'notation',
@@ -100,13 +119,28 @@ export default defineSimulation({
       ),
       visibleIf: (v) => v.form === 'scheitel',
     },
-    { key: 'normal', type: 'boolean', group: 'view', label: L('Normalparabel y = x² zum Vergleich', 'Standard parabola y = x² for comparison'), default: true },
+    { key: 'normal', type: 'boolean', group: 'view', label: L('Normalparabel y = x² zum Vergleich', 'Standard parabola y = x² for comparison'), default: true, visibleIf: (v) => v.mode === 'explore' || v.mode === 'match' },
     { key: 'axis', type: 'boolean', group: 'view', label: L('Symmetrieachse', 'Axis of symmetry'), default: true },
     { key: 'zeros', type: 'boolean', group: 'view', label: L('Nullstellen', 'Zeros'), default: true },
     { key: 'step', type: 'boolean', group: 'view', label: L('Streckfaktor-Dreieck (1 nach rechts, a nach oben)', 'Stretch triangle (1 right, a up)'), default: false },
     { key: 'grid', type: 'boolean', group: 'view', label: L('Gitternetz', 'Grid'), default: true },
   ],
+  hint: (v) => {
+    if (v.mode === 'line') return L('Tipp: Zieh die beiden Punkte der Geraden – wie viele Schnittpunkte gibt es?', 'Tip: Drag the two points of the line – how many intersection points are there?');
+    if (v.mode === 'throw') return L('Tipp: Ändere den höchsten Punkt (d | e) und a, dann tippe auf „Werfen“.', 'Tip: Change the highest point (d | e) and a, then tap “Throw”.');
+    if (v.mode === 'match') return L('Tipp: Zieh den Scheitel S und den hohlen Punkt, bis deine Parabel auf der orangen liegt.', 'Tip: Drag the vertex S and the hollow point until your parabola lies on the orange one.');
+    return L('Tipp: Zieh den Scheitel S oder den hohlen Punkt rechts daneben (Streckfaktor a).', 'Tip: Drag the vertex S or the hollow point to its right (stretch factor a).');
+  },
+  actions: [
+    { id: 'throw', label: L('Werfen', 'Throw'), primary: true, visibleIf: (v) => v.mode === 'throw' },
+    { id: 'newq', label: L('Neue Parabel', 'New parabola'), primary: true, visibleIf: (v) => v.mode === 'match' },
+    { id: 'reveal', label: L('Lösung zeigen', 'Show solution'), visibleIf: (v) => v.mode === 'match' },
+  ],
   readouts: [
+    { key: 'task', label: L('Aufgabe', 'Task') },
+    { key: 'line', label: L('Parabel und Gerade', 'Parabola and line'), spoiler: true },
+    { key: 'throwInfo', label: L('Wurf', 'Throw'), spoiler: true },
+    { key: 'game', label: L('Spiel', 'Game') },
     { key: 'vertexForm', label: L('Scheitelpunktform', 'Vertex form'), spoiler: true },
     { key: 'generalForm', label: L('Allgemeine Form', 'Standard form'), spoiler: true },
     { key: 'factored', label: L('Linearfaktorform', 'Factored form'), spoiler: true },
@@ -122,6 +156,9 @@ export default defineSimulation({
     { id: 'no-zeros', label: L('Keine Nullstellen', 'No zeros'), values: { a: 0.5, d: 1, e: 2 } },
     { id: 'double', label: L('Doppelte Nullstelle', 'Double zero'), values: { a: 2, d: 1.5, e: 0 } },
     { id: 'general', label: L('Allgemeine Form', 'Standard form'), values: { form: 'allgemein', a: 1, b: -2, c: -3 } },
+    { id: 'line', label: L('Parabel und Gerade', 'Parabola and line'), values: { mode: 'line', a: 1, d: 0, e: 0, m: 1, n: 2 } },
+    { id: 'throw', label: L('Wurfparabel', 'Throwing a ball'), values: { mode: 'throw', a: -0.1, d: 6, e: 5 } },
+    { id: 'match', label: L('Spiel: Parabel treffen', 'Game: match the parabola'), values: { mode: 'match', q: 1, a: 1, d: 0, e: 0 } },
   ],
   strings: {
     de: {
@@ -142,6 +179,20 @@ export default defineSimulation({
       zero: 'null → eine (doppelte) Nullstelle',
       negative: 'negativ → keine Nullstelle',
       noFactored: 'nicht möglich (keine reellen Nullstellen)',
+      secant: 'zwei Schnittpunkte – die Gerade ist eine Sekante',
+      tangent: 'ein Berührpunkt – die Gerade ist eine Tangente',
+      passant: 'kein gemeinsamer Punkt – die Gerade ist eine Passante',
+      lineEq: 'Gleichsetzen: {lhs} = {rhs} ⇒ {diff} = 0, Diskriminante {D}',
+      throwTask: 'Ein Ball wird bei x = 0 aus der Höhe {h} m abgeworfen und fliegt auf der Parabel h(x) = a(x − d)² + e.',
+      throwRes: 'Höchster Punkt {top}, Landung nach {land} m',
+      throwNoLand: 'Der Ball landet nicht – wähle a < 0 und e > 0.',
+      ground: 'Boden',
+      highest: 'höchster Punkt',
+      landing: 'Landung',
+      matchTask: 'Parabel {q}: Stell a, d und e so ein, dass deine blaue Parabel auf der orangen liegt.',
+      matchClose: 'Noch {e} daneben (größte Abweichung zwischen −6 und 6).',
+      matchOk: 'Getroffen! Die Parabeln liegen aufeinander.',
+      matchSol: 'Lösung: f(x) = {f}',
     },
     en: {
       canvas:
@@ -161,6 +212,20 @@ export default defineSimulation({
       zero: 'zero → one (double) zero',
       negative: 'negative → no zeros',
       noFactored: 'not possible (no real zeros)',
+      secant: 'two intersection points – the line is a secant',
+      tangent: 'one point of contact – the line is a tangent',
+      passant: 'no common point – the line misses the parabola',
+      lineEq: 'Setting equal: {lhs} = {rhs} ⇒ {diff} = 0, discriminant {D}',
+      throwTask: 'A ball is thrown at x = 0 from a height of {h} m and flies along the parabola h(x) = a(x − d)² + e.',
+      throwRes: 'Highest point {top}, lands after {land} m',
+      throwNoLand: 'The ball does not land – choose a < 0 and e > 0.',
+      ground: 'ground',
+      highest: 'highest point',
+      landing: 'landing',
+      matchTask: 'Parabola {q}: set a, d and e so that your blue parabola lies on the orange one.',
+      matchClose: 'Still {e} off (largest difference between −6 and 6).',
+      matchOk: 'Got it! The parabolas lie on top of each other.',
+      matchSol: 'Solution: f(x) = {f}',
     },
   },
 
@@ -181,8 +246,9 @@ export default defineSimulation({
     const dFor = (x: number) => (p.notation === 'plus' ? -x : x);
 
     /** Aktuelle Koeffizienten und Scheitelpunkt – egal in welcher Form eingegeben. */
+    const vertexMode = () => p.form === 'scheitel' || p.mode === 'throw' || p.mode === 'match';
     function state(): Coefficients & { vertex: { d: number; e: number } | null } {
-      if (p.form === 'scheitel') {
+      if (vertexMode()) {
         const coefficients = vertexToGeneral(p.a, vertexX(), p.e);
         return { ...coefficients, vertex: p.a === 0 ? null : { d: vertexX(), e: p.e } };
       }
@@ -190,7 +256,7 @@ export default defineSimulation({
     }
 
     function moveVertex(d: number, e: number): void {
-      if (p.form === 'scheitel') ctx.set({ d: dFor(d), e });
+      if (vertexMode()) ctx.set({ d: dFor(d), e });
       else {
         // b und c haben feste Reglergrenzen: Scheitel auf den darstellbaren Bereich begrenzen,
         // sonst würde er beim Ziehen an eine andere Stelle springen.
@@ -221,7 +287,7 @@ export default defineSimulation({
         if (!v) return;
         const a = Math.round((y - v.e) * 10) / 10;
         if (a === 0) return;
-        if (p.form === 'scheitel') ctx.set({ a });
+        if (vertexMode()) ctx.set({ a });
         else {
           if (!fitsGeneral(a, v.d, v.e)) return;
           const { b, c } = vertexToGeneral(a, v.d, v.e);
@@ -234,6 +300,84 @@ export default defineSimulation({
     });
 
     const sq = term.sup(2);
+    const tr = (key: string, vars: Record<string, string | number>) => ctx.t(key).replace(/\{(\w+)\}/g, (_, k: string) => String(vars[k] ?? ''));
+
+    /* ---- Parabel und Gerade: zwei ziehbare Punkte der Geraden (x = −2 und x = 2) ---- */
+    const colorLine = () => ctx.theme.series[4]!;
+    plot.addHandle({
+      get: () => [-2, -2 * p.m + p.n],
+      set: (_x, y) => {
+        const y2 = 2 * p.m + p.n;
+        ctx.set({ m: (y2 - y) / 4, n: (y + y2) / 2 });
+      },
+      axis: 'y',
+      enabled: () => editable() && p.mode === 'line',
+      color: colorLine,
+    });
+    plot.addHandle({
+      get: () => [2, 2 * p.m + p.n],
+      set: (_x, y) => {
+        const y1 = -2 * p.m + p.n;
+        ctx.set({ m: (y - y1) / 4, n: (y + y1) / 2 });
+      },
+      axis: 'y',
+      enabled: () => editable() && p.mode === 'line',
+      color: colorLine,
+    });
+
+    /* ---- Wurf: Ball fliegt (Fortschritt 0 … 1 bis zur Landung) ---- */
+    const flight = new Tween(1800, ease.linear);
+    let flown = false;
+
+    /* ---- Spiel ---- */
+    let target = matchParabola(1, seededRandom(1));
+    let solved = false;
+    let revealed = false;
+    const pop = new Tween(500, ease.outBack);
+    const targetCoef = () => vertexToGeneral(target.a, target.d, target.e);
+
+    function card(lines: { text: string; color?: string; bold?: boolean }[]): void {
+      const g = surface.g;
+      const r = plot.rect;
+      const size = surface.width < 520 ? 13 : 15;
+      const maxW = Math.min(500, r.w - 90);
+      const out: { text: string; color?: string; bold?: boolean }[] = [];
+      for (const l of lines) {
+        g.font = `${l.bold ? '600' : 'normal'} ${size}px ${ctx.theme.font}`;
+        let line = '';
+        for (const w of l.text.split(' ')) {
+          const next = line ? `${line} ${w}` : w;
+          if (g.measureText(next).width > maxW - 24 && line) {
+            out.push({ ...l, text: line });
+            line = w;
+          } else line = next;
+        }
+        if (line) out.push({ ...l, text: line });
+      }
+      let w = 0;
+      for (const l of out) {
+        g.font = `${l.bold ? '600' : 'normal'} ${size}px ${ctx.theme.font}`;
+        w = Math.max(w, g.measureText(l.text).width);
+      }
+      const h = out.length * size * 1.35 + 16;
+      g.save();
+      softShadow(g, ctx.theme.dark, 10, 2);
+      roundRect(g, r.x + 10, r.y + 10, w + 24, h, 10);
+      g.fillStyle = ctx.theme.bg;
+      g.fill();
+      g.restore();
+      roundRect(g, r.x + 10, r.y + 10, w + 24, h, 10);
+      g.strokeStyle = ctx.theme.grid;
+      g.lineWidth = 1;
+      g.stroke();
+      g.textAlign = 'left';
+      g.textBaseline = 'top';
+      out.forEach((l, i) => {
+        g.font = `${l.bold ? '600' : 'normal'} ${size}px ${ctx.theme.font}`;
+        g.fillStyle = l.color ?? ctx.theme.text;
+        g.fillText(l.text, r.x + 22, r.y + 18 + i * size * 1.35);
+      });
+    }
 
     /**
      * Sichtbarer Bereich: Standard x −8 … 8, y −6 … 8. Beim Laden so erweitert, dass S und der
@@ -241,6 +385,20 @@ export default defineSimulation({
      */
     let range = '';
     function fitRange(): void {
+      if (p.mode === 'throw') {
+        const key = 'throw';
+        if (key === range) return;
+        range = key;
+        plot.setRange([-2, 16], [-1.5, 9]);
+        return;
+      }
+      if (p.mode === 'match') {
+        const key = 'match';
+        if (key === range) return;
+        range = key;
+        plot.setRange([-8, 8], [-6, 8]);
+        return;
+      }
       const v = state().vertex;
       let x: [number, number] = [-8, 8];
       let y: [number, number] = [-6, 8];
@@ -253,6 +411,89 @@ export default defineSimulation({
       if (key === range) return;
       range = key;
       plot.setRange(x, y);
+    }
+
+    function modeReadouts(): void {
+      for (const k of ['task', 'line', 'throwInfo', 'game']) ctx.readout(k, null);
+      const s = state();
+      if (p.mode === 'line') {
+        const { xs, disc } = lineIntersections(s, p.m, p.n);
+        const kind = xs.length === 2 ? 'secant' : xs.length === 1 ? 'tangent' : 'passant';
+        const lhs = term.polynomial([s.a, s.b, s.c], fmt).replace(/<[^>]+>/g, '');
+        const rhs = term.polynomial([0, p.m, p.n], fmt).replace(/<[^>]+>/g, '');
+        const diff = term.polynomial([s.a, s.b - p.m, s.c - p.n], fmt).replace(/<[^>]+>/g, '');
+        const pts = xs.map((x) => fmt.point(x, p.m * x + p.n)).join(', ');
+        ctx.readout('line', `${tr('lineEq', { lhs, rhs, diff, D: fmt.num(disc) })}. ${ctx.t(kind)}${pts ? `: ${pts}` : ''}`);
+      } else if (p.mode === 'throw') {
+        const t = throwInfo(p.a, vertexX(), p.e);
+        ctx.readout('task', tr('throwTask', { h: fmt.num(t.start) }));
+        ctx.readout('throwInfo', t.land === null || p.a >= 0 ? ctx.t('throwNoLand') : tr('throwRes', { top: fmt.point(t.top.x, t.top.y), land: fmt.num(t.land) }));
+      } else if (p.mode === 'match') {
+        const e = maxDifference(s, targetCoef());
+        if (e < 0.06 && !solved) {
+          solved = true;
+          pop.play();
+          ctx.announce(ctx.t('matchOk'));
+        } else if (e >= 0.06) solved = false;
+        ctx.readout('task', tr('matchTask', { q: p.q }));
+        ctx.readout('game', solved ? ctx.t('matchOk') : tr('matchClose', { e: fmt.num(e, 2) }));
+      }
+    }
+
+    function targetText(): string {
+      const factor = (z: number) => {
+        const inner = term.shifted(z, fmt);
+        return inner === term.x ? term.x : `(${inner})`;
+      };
+      return term.sum([{ coef: target.a, body: `${factor(target.d)}${sq}` }, { coef: target.e, body: '' }], fmt).replace(/<[^>]+>/g, '');
+    }
+
+    function drawThrow(): void {
+      const s = state();
+      const f = (x: number) => s.a * x * x + s.b * x + s.c;
+      const t = throwInfo(p.a, vertexX(), p.e);
+      const g = surface.g;
+      const bd = plot.bounds;
+      // Rasen
+      plot.polygon([[bd.xMin, 0], [bd.xMax, 0], [bd.xMax, bd.yMin], [bd.xMin, bd.yMin]], { fill: ctx.theme.dark ? '#2f5a35' : '#7cc47f', alpha: 0.8 });
+      plot.segment([bd.xMin, 0], [bd.xMax, 0], { color: ctx.theme.dark ? '#3c6b42' : '#4e9a52', width: 2 });
+      // Strichmännchen bei x = 0, Hand in Abwurfhöhe
+      const hand = Math.max(0.3, t.start);
+      const ink = ctx.theme.text;
+      const head = Math.max(0.6, hand + 0.35);
+      plot.circle(-0.55, head, 0.28, { stroke: ink, width: 2.5 });
+      plot.segment([-0.55, head - 0.28], [-0.55, Math.max(0.9, head - 1.2)], { color: ink, width: 2.5 });
+      plot.segment([-0.55, Math.max(0.9, head - 1.2)], [-0.9, 0], { color: ink, width: 2.5 });
+      plot.segment([-0.55, Math.max(0.9, head - 1.2)], [-0.2, 0], { color: ink, width: 2.5 });
+      plot.segment([-0.55, head - 0.6], [0, hand], { color: ink, width: 2.5 });
+      const end = t.land ?? bd.xMax;
+      // Flugbahn (nur zwischen Abwurf und Landung)
+      plot.fn(f, { color: colorF(), width: 2, dash: [6, 5], alpha: 0.6, from: 0, to: end });
+      const prog = flight.running ? flight.value : flown ? 1 : 0;
+      const xb = prog * end;
+      if (prog > 0) plot.fn(f, { color: colorF(), width: 3.5, from: 0, to: xb });
+      // höchster Punkt und Landung
+      if (p.a < 0 && t.top.x > 0) {
+        plot.segment([t.top.x, 0], [t.top.x, t.top.y], { color: colorVertex(), width: 1.5, dash: [4, 4] });
+        plot.point(t.top.x, t.top.y, { color: colorVertex(), radius: 6 });
+        if (p.zeros) plot.text(t.top.x, t.top.y, `${ctx.t('highest')} ${fmt.point(t.top.x, t.top.y)}`, { color: colorVertex(), size: 13, weight: '600', align: 'center', offset: [0, -14] });
+      }
+      if (t.land !== null && p.a < 0) {
+        plot.point(t.land, 0, { color: colorZero(), radius: 6 });
+        if (p.zeros) plot.text(t.land, 0, `${ctx.t('landing')}: ${fmt.num(t.land)} m`, { color: colorZero(), size: 13, weight: '600', align: 'center', baseline: 'top', offset: [0, 10] });
+      }
+      // Ball
+      const bx = prog > 0 ? xb : 0;
+      const by = prog > 0 ? Math.max(0, f(xb)) : t.start;
+      const [px, py] = plot.toPx(bx, by);
+      g.save();
+      softShadow(g, ctx.theme.dark, 6, 2);
+      g.fillStyle = ctx.theme.series[3]!;
+      g.beginPath();
+      g.arc(px, py - 7, 7, 0, Math.PI * 2);
+      g.fill();
+      g.restore();
+      plot.text(0, t.start, `${fmt.num(t.start)} m`, { color: ctx.theme.muted, size: 12, align: 'left', baseline: 'middle', offset: [12, 0] });
     }
 
     return {
@@ -275,6 +516,18 @@ export default defineSimulation({
         // Punkt „1 rechts vom Scheitel“ im Bild sind. Beim Ziehen und an den Reglern bleibt der
         // Maßstab fest, damit nichts unter dem Zeiger wegläuft.
         if (source === 'init' || source === 'replace') fitRange();
+        if (changed.has('q') || source === 'init' || source === 'replace') {
+          target = matchParabola(p.q, seededRandom(p.q * 4421 + 9));
+          solved = false;
+          revealed = false;
+        }
+        if (changed.has('mode')) {
+          range = '';
+          fitRange();
+          flown = false;
+          flight.finish();
+        }
+        modeReadouts();
 
         const s = state();
         /** „f(x) = …“ oder „f(x) ≈ …“, wenn eine der Zahlen nur gerundet gezeigt wird. */
@@ -331,6 +584,19 @@ export default defineSimulation({
         ctx.readout('shape', `${ctx.t(s.a > 0 ? 'up' : 'down')}, ${ctx.t(shape)}`);
       },
 
+      action(id) {
+        if (ctx.locked) return;
+        if (id === 'throw') {
+          flown = true;
+          flight.play();
+        } else if (id === 'newq') {
+          ctx.set({ q: p.q >= 999 ? 1 : p.q + 1, a: 1, d: 0, e: 0 });
+        } else if (id === 'reveal') {
+          revealed = true;
+        }
+        ctx.requestRender();
+      },
+
       render() {
         const s = state();
         const f = (x: number) => s.a * x * x + s.b * x + s.c;
@@ -338,8 +604,26 @@ export default defineSimulation({
         plot.begin();
         if (p.grid) plot.grid();
         plot.axes();
+        if (p.mode === 'throw') {
+          drawThrow();
+          plot.end();
+          if (flight.running) ctx.requestRender();
+          return;
+        }
+        if (p.mode === 'match') plot.fn((x) => {
+          const t = targetCoef();
+          return t.a * x * x + t.b * x + t.c;
+        }, { color: ctx.theme.series[3]!, width: 10, alpha: 0.42 });
+        if (p.mode === 'line') {
+          plot.line([-2, -2 * p.m + p.n], [2, 2 * p.m + p.n], { color: colorLine(), width: 2.5 });
+          const { xs } = lineIntersections(s, p.m, p.n);
+          xs.forEach((x) => {
+            plot.point(x, p.m * x + p.n, { color: colorLine(), radius: 7, hollow: true });
+            if (p.zeros) plot.text(x, p.m * x + p.n, fmt.point(x, p.m * x + p.n), { color: colorLine(), size: 13, weight: '600', align: 'left', offset: [10, -10] });
+          });
+        }
 
-        if (p.normal) {
+        if (p.normal && (p.mode === 'explore' || p.mode === 'match')) {
           plot.fn((x) => x * x, { color: ctx.theme.muted, width: 1.5, dash: [6, 5] });
           // Beschriftung am linken Ast, damit die Normalparabel nicht nur über Farbe/Strichart erkennbar ist
           const { xMin: x0, yMax: y1 } = plot.bounds;
@@ -397,6 +681,17 @@ export default defineSimulation({
         }
         if (xLabel > xMin) plot.text(xLabel, f(xLabel), 'f', { color: colorF(), math: true, size: 18, offset: [10, 4] });
         plot.end();
+        if (p.mode === 'match') {
+          const lines: { text: string; color?: string; bold?: boolean }[] = [{ text: tr('matchTask', { q: p.q }), bold: true }];
+          const e = maxDifference(s, targetCoef());
+          lines.push(solved ? { text: ctx.t('matchOk'), color: ctx.theme.series[2]!, bold: true } : { text: tr('matchClose', { e: fmt.num(e, 2) }), color: ctx.theme.muted });
+          if (solved || revealed) lines.push({ text: tr('matchSol', { f: targetText() }), color: ctx.theme.series[3]! });
+          card(lines);
+          if (pop.running) ctx.requestRender();
+        } else if (p.mode === 'line') {
+          const { xs } = lineIntersections(s, p.m, p.n);
+          card([{ text: ctx.t(xs.length === 2 ? 'secant' : xs.length === 1 ? 'tangent' : 'passant'), bold: true, color: colorLine() }]);
+        }
       },
 
       resetView: () => plot.resetView(),
