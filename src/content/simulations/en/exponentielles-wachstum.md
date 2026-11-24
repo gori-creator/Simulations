@@ -20,12 +20,24 @@ $$
 
 Instead of $\lg$ you can use any logarithm, e.g. $\ln$. The simulation shows the value rounded to two decimal places (“≈”). Only when it is exact does it show “=” (e.g. $T_d = 1$ day for $p = 100$).
 
+### A function from measurements
+
+Real measurements never lie exactly on a curve. A sign of exponential growth: the **ratios** of successive values (at equal time intervals) are roughly equal – not the differences. From two data points $(t_1, v_1)$ and $(t_2, v_2)$ you get a matching exponential function:
+
+$$
+b = \left(\frac{v_2}{v_1}\right)^{\frac{1}{t_2 - t_1}} \qquad a = \frac{v_1}{b^{t_1}}
+$$
+
+Using the first and the last data point keeps the effect of small measurement errors smallest.
+
 ## Try it
 
 1. Start the water lilies with “Play”. The pond is full after 10 days. When was it half full?
 2. Compare compound interest with linear growth (simple interest). [5 % interest](?scenario=zinsen&a=1000&p=5&span=40&linear=1)
 3. Watch the individual nuclei in radioactive decay. Do they decay evenly? [Iodine-131](?scenario=zerfall&a=1000&p=-8&span=40) With $p = -8$ you get $T_{1/2} \approx 8.31$ days – close to the real value of just over 8 days.
 4. Switch on the logarithmic y-axis. What happens to the graph? [Logarithmic](?scenario=zinsen&a=1000&p=5&span=60&log=1)
+5. **Fitting measurements:** set $a$ and $p$ so that the graph passes through the data points. Below the picture you can see how well the function fits. “Calculate from two points” uses the first and the last point. [Bacteria](?scenario=daten&ds=bakterien&a=100&p=10) · [Tea](?scenario=daten&ds=tee&a=100&p=10) · [Medicine](?scenario=daten&ds=medikament&a=100&p=10)
+6. **Practice:** calculate a function value, the percentage change or the doubling time or half-life, enter it and have it checked. [Practice](?scenario=ueben&q=1)
 
 ## Exercises
 
@@ -73,11 +85,35 @@ Exact: $\frac{\ln 2}{\ln 1.02} \approx 35.0$, $\frac{\ln 2}{\ln 1.05} \approx 14
 
 </details>
 
+### Exercise 5: Medicine in the blood
+
+After taking a medicine there are $400\,\text{mg}$ of the active substance in the blood, after $10$ hours still $79\,\text{mg}$. Find an exponential function that fits. What percentage is broken down per hour, and what is the half-life? [See the measurements](?scenario=daten&ds=medikament&a=100&p=10)
+
+<details>
+<summary>Show solution</summary>
+
+$b = \left(\frac{79}{400}\right)^{\frac{1}{10}} \approx 0.850$, so $f(t) = 400 \cdot 0.85^t$. About $15\,\%$ is broken down per hour. Half-life: $T_{1/2} = \frac{\lg 0.5}{\lg 0.85} \approx 4.27$ hours. [Show in the simulation](?scenario=daten&ds=medikament&a=400&p=-15)
+
+</details>
+
+### Exercise 6: Linear or exponential?
+
+For the cooling tea, measurements were taken every 5 minutes: $70$, $57.5$, $46.2$, $38.3$ (degrees above room temperature). Use differences and ratios to check which model fits better.
+
+<details>
+<summary>Show solution</summary>
+
+Differences: $-12.5$, $-11.3$, $-7.9$ – not equal. Ratios: $0.82$, $0.80$, $0.83$ – roughly equal. Exponential decrease fits better, about $18\,\%$ per 5 minutes. [See the measurements](?scenario=daten&ds=tee&a=70&p=-4)
+
+</details>
+
 ## Ideas for the classroom
 
 - **Use:** About grade 10 (exponential functions, exponential growth, logarithm).
 - **Decay:** Each of the 400 nuclei decays at a random time; on average the number follows the exponential function. This shows that decay is a random process.
 - **Logarithmic axis:** Exponential functions appear as straight lines – a good preparation for the logarithm.
+- **Modelling:** the data sets are invented example data with small fluctuations. Well suited for comparing fitting by eye with the calculation from two points.
+- **Practice:** the tasks are numbered. The same number means the same task. Odd numbers ask for a function value, even ones alternately for the percentage change and the doubling time or half-life (which needs the logarithm).
 - **Common pitfalls:**
   - Exponential growth is extrapolated like linear growth (water lily puzzle).
   - “After two half-lives everything has decayed.” In fact a quarter is still left.
