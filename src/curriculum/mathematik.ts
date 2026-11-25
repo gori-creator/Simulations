@@ -1844,6 +1844,22 @@ export const mathematik: Subject = {
               ['differential equation', 'ODE', 'direction field', 'slope field', 'initial value problem', 'solution curve', 'Euler method', 'Heun method', 'Runge–Kutta', 'step size', 'exponential growth', 'bounded growth', 'logistic growth', 'cooling', 'oscillation', 'damping', 'phase plane', 'isocline', 'separation of variables'],
             ),
           },
+          {
+            id: 'dynamische-systeme',
+            status: 'ready',
+            slug: L('dynamische-systeme-chaos-fraktale', 'dynamical-systems-chaos-fractals'),
+            title: L('Dynamische Systeme, Chaos und Fraktale', 'Dynamical systems, chaos and fractals'),
+            summary: L(
+              'Hasen und Füchse schwingen im Wechsel. Eine einfache Wachstumsformel wird ab einem bestimmten Faktor unvorhersagbar, und das Feigenbaum-Diagramm zeigt den Weg ins Chaos. Fraktale wie die Koch-Schneeflocke haben einen unendlich langen Rand um eine endliche Fläche.',
+              'Hares and foxes oscillate in turn. A simple growth formula becomes unpredictable beyond a certain factor, and the Feigenbaum diagram shows the road to chaos. Fractals like the Koch snowflake have an infinitely long border around a finite area.',
+            ),
+            grades: [12, 13],
+            kmk: ['M-L4', 'M-K3', 'M-K5'],
+            keywords: L(
+              ['dynamisches System', 'Räuber-Beute-Modell', 'Lotka-Volterra', 'Phasendiagramm', 'Gleichgewicht', 'logistische Gleichung', 'Feigenbaum-Diagramm', 'Periodenverdopplung', 'Chaos', 'Fraktal', 'Koch-Schneeflocke', 'Sierpinski-Dreieck', 'Selbstähnlichkeit', 'fraktale Dimension'],
+              ['dynamical system', 'predator-prey model', 'Lotka-Volterra', 'phase diagram', 'equilibrium', 'logistic map', 'Feigenbaum diagram', 'period doubling', 'chaos', 'fractal', 'Koch snowflake', 'Sierpinski triangle', 'self-similarity', 'fractal dimension'],
+            ),
+          },
         ]),
         topic('weiterfuehrend', L('Weiterführend (Hochschule)', 'Further topics (university)'), [
           {

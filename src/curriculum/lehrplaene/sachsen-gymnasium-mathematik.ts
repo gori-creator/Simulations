@@ -486,6 +486,7 @@ const OBERSTUFE_UNITS: CurriculumUnit[] = [
     code: 'GK-W3',
     title: L('Dynamische Systeme und fraktale Strukturen (Wahlbereich Grundkurs)', 'Dynamical systems and fractals (optional, basic course)'),
     summary: L('Räuber-Beute-System und fraktale Strukturen.', 'Predator–prey systems and fractal structures.'),
+    simulations: ['dynamische-systeme'],
   },
   {
     code: 'GK-W4',
@@ -599,6 +600,7 @@ const OBERSTUFE_UNITS: CurriculumUnit[] = [
     code: 'LK-W3',
     title: L('Dynamische Systeme und fraktale Strukturen (Wahlbereich Leistungskurs)', 'Dynamical systems and fractals (optional, advanced course)'),
     summary: L('Räuber-Beute-System, Fraktale, Feigenbaum-Diagramm und Chaos.', 'Predator–prey systems, fractals, the Feigenbaum diagram and chaos.'),
+    simulations: ['dynamische-systeme'],
   },
   {
     code: 'LK-W4',
