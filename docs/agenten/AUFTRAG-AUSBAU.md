@@ -1,6 +1,6 @@
 # Auftrag: kleine Simulationen ausbauen (für jeden Account)
 
-Stand 25.11.2026. Diesen Text kann jede Claude- oder Codex-Sitzung mit Zugriff auf `gori-creator/Simulations` bekommen. Mehrere Accounts arbeiten **gleichzeitig**; die Abstimmung läuft nur über Git. Die **Leitung** (Manager-Sitzung) prüft und mergt.
+Stand 25.11.2026. Diesen Text kann jede Claude- oder Codex-Sitzung mit Zugriff auf `gori-creator/Simulations` bekommen. Mehrere Accounts arbeiten **gleichzeitig**; die Abstimmung läuft nur über Git. Die **Leitung** (Manager-Sitzung) baut selbst nichts; sie verteilt, prüft und mergt.
 
 ## 1. Worum es geht
 
@@ -9,7 +9,7 @@ Im November entstanden 50 kleine Simulationen, die Lehrplan-Lücken schließen, 
 ## 2. Eine Aufgabe nehmen (verbindlich, damit nichts doppelt gebaut wird)
 
 1. `git fetch origin` und in `docs/agenten/AUSBAU-BRETT.md` (Stand von `origin/main`) die **erste Zeile mit Status „offen“** in deinem Fach wählen. Was du nicht wählen darfst, steht dort mit „läuft“ oder „PR“.
-2. **Prüfen, ob schon jemand dran ist:** Gibt es den Zweig `ausbau/<id>` schon (`git ls-remote --heads origin ausbau/<id>`)? Dann ist die Aufgabe vergeben → nächste nehmen.
+2. **Prüfen, ob schon jemand dran ist:** Gibt es den Zweig `ausbau/<id>` schon (`git ls-remote --heads origin ausbau/<id>`) **mit eigenen Commits** (also nicht nur genau auf einem Stand von `main`)? Dann ist die Aufgabe vergeben → nächste nehmen. Steht im Brett ausdrücklich „frei – darf übernommen werden“, den vorhandenen leeren Zweig einfach weiterverwenden.
 3. **Sofort reservieren:** Zweig `ausbau/<id>` von `origin/main` anlegen und **gleich pushen** (`git push -u origin ausbau/<id>`), bevor du baust. Der Zweig ist die Reservierung. Die Leitung trägt ihn ins Brett ein.
 4. Höchstens **eine** Aufgabe gleichzeitig pro Sitzung.
 

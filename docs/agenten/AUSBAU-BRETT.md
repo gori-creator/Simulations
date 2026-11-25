@@ -1,6 +1,6 @@
 # Ausbau-Brett
 
-Stand der Arbeit an den 50 kleinen Simulationen. **Nur die Leitung bearbeitet diese Datei.** Wie man eine Aufgabe nimmt: `docs/agenten/AUFTRAG-AUSBAU.md` (Reservierung = Zweig `ausbau/<id>` pushen).
+Stand der Arbeit an den 50 kleinen Simulationen. **Nur die Leitung bearbeitet diese Datei.** Die Leitung baut selbst nichts, sie verteilt, prüft und mergt. Wie man eine Aufgabe nimmt: `docs/agenten/AUFTRAG-AUSBAU.md` (Reservierung = Zweig `ausbau/<id>` pushen).
 
 Status: **offen** · **läuft (wer)** · **PR #…** · **fertig**
 
@@ -11,8 +11,8 @@ Stand: 25.11.2026 · 49 Aufgaben
 
 | ID | Simulation | Fach | Klassen | Status | Zweig |
 | --- | --- | --- | --- | --- | --- |
-| `newtonsche-gesetze` | Newton’sche Gesetze | Physik | 7–12 | läuft (Leitung, Claude) | `ausbau/newtonsche-gesetze` |
-| `druck` | Druck und Hydraulik | Physik | 7–10 | läuft (Leitung, Claude) | `ausbau/druck` |
+| `newtonsche-gesetze` | Newton’sche Gesetze | Physik | 7–12 | offen | `ausbau/newtonsche-gesetze` (leerer Zweig, frei – darf übernommen werden) |
+| `druck` | Druck und Hydraulik | Physik | 7–10 | offen | `ausbau/druck` (leerer Zweig, frei – darf übernommen werden) |
 | `waermetransport` | Wärmetransport und Klima | Physik | 5–13 | offen |  |
 | `waermeausdehnung` | Wärmeausdehnung, Anomalie des Wassers | Physik | 6–10 | offen |  |
 | `ladungen-coulomb` | Ladung und Coulomb’sches Gesetz | Physik | 6–12 | offen |  |
