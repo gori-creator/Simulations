@@ -319,6 +319,7 @@ const K9: CurriculumUnit[] = [
     code: 'W1',
     title: L('Der goldene Schnitt (Wahlbereich)', 'The golden ratio (optional)'),
     summary: L('Definition, Konstruktion und Vorkommen in Kunst und Architektur.', 'Definition, construction and occurrence in art and architecture.'),
+    simulations: ['goldener-schnitt'],
   },
   {
     code: 'W2',

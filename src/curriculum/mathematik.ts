@@ -611,6 +611,22 @@ export const mathematik: Subject = {
               ['scale factor', 'similar', 'similarity', 'enlargement', 'reduction', 'area', 'surface area', 'volume', 'unit cube', 'square', 'cube', 'cuboid', 'cube root', 'scale', 'pizza', 'surface to volume'],
             ),
           },
+          {
+            id: 'goldener-schnitt',
+            status: 'ready',
+            slug: L('goldener-schnitt', 'golden-ratio'),
+            title: L('Der goldene Schnitt', 'The golden ratio'),
+            summary: L(
+              'Teile eine Strecke so, dass der große Teil zum kleinen passt wie das Ganze zum großen Teil. Dann ist das Verhältnis immer φ ≈ 1,618. Es lässt sich mit Zirkel und Lineal konstruieren, steckt im goldenen Rechteck und in den Fibonacci-Zahlen.',
+              'Divide a segment so that the larger part relates to the smaller as the whole does to the larger part. The ratio is then always φ ≈ 1.618. It can be constructed with compass and ruler and appears in the golden rectangle and the Fibonacci numbers.',
+            ),
+            grades: [9, 10],
+            kmk: ['M-L3', 'M-L1', 'M-K1', 'M-K5'],
+            keywords: L(
+              ['goldener Schnitt', 'goldene Zahl', 'phi', 'stetige Teilung', 'Verhältnis', 'Konstruktion', 'goldenes Rechteck', 'goldene Spirale', 'Fibonacci-Zahlen', 'Kunst', 'Architektur', 'Pentagramm'],
+              ['golden ratio', 'golden section', 'phi', 'extreme and mean ratio', 'ratio', 'construction', 'golden rectangle', 'golden spiral', 'Fibonacci numbers', 'art', 'architecture', 'pentagram'],
+            ),
+          },
         ]),
         topic('trigonometrie-dreieck', L('Trigonometrie im Dreieck', 'Trigonometry in triangles'), [
           {
