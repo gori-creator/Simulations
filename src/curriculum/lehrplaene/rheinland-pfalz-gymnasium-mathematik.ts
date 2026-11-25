@@ -658,7 +658,7 @@ const MSS_UNITS: CurriculumUnit[] = [
       'Zahlenfolgen explizit und rekursiv beschreiben, eine inhaltliche Vorstellung vom Grenzwert gewinnen, Grenzwertsätze anwenden und Grenzwerte bestimmen.',
       'Describing sequences explicitly and recursively, gaining an intuitive idea of a limit, applying limit laws and finding limits.',
     ),
-    simulations: ['grenzverhalten'],
+    simulations: ['grenzverhalten', 'folgen-reihen'],
   },
   {
     code: 'GF-2',
@@ -767,7 +767,7 @@ const MSS_UNITS: CurriculumUnit[] = [
       'Folgen und Funktionen auf Monotonie und Beschränktheit untersuchen, Grenzwerte für x → ±∞ und x → x₀, Stetigkeit, Grenzwertsätze beweisen und anwenden.',
       'Examining sequences and functions for monotonicity and boundedness, limits as x → ±∞ and x → x₀, continuity, proving and applying limit laws.',
     ),
-    simulations: ['grenzverhalten', 'polstellen-asymptoten'],
+    simulations: ['grenzverhalten', 'polstellen-asymptoten', 'folgen-reihen'],
   },
   {
     code: 'LF-2',

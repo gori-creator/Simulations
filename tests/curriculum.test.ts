@@ -195,6 +195,7 @@ describe('Länder-Lehrpläne', () => {
       schall: 'Akustik erst als Wahlthema in 12/13; die Simulation ist für Klasse 5 bis 11 gedacht.',
     },
     'baden-wuerttemberg-gymnasium-mathematik': {
+      'folgen-reihen': 'Folgen, Reihen und Grenzwerte von Folgen kommen im Lehrplan nicht eigens vor.',
       verteilungen: 'Poisson-, hypergeometrische und Exponentialverteilung kommen im Lehrplan nicht vor.',
       uebergangsmatrizen: 'Übergangsmatrizen und Markov-Ketten nicht im Lehrplan',
       richtungsfeld: 'Differenzialgleichungen und Richtungsfelder nicht im Lehrplan',
@@ -203,6 +204,7 @@ describe('Länder-Lehrpläne', () => {
       kegelschnitte: 'Kegelschnitte nicht im Lehrplan (Ortslinien nur in Klasse 7/8 mit Kreis und Mittelsenkrechte)',
     },
     'bayern-gymnasium-mathematik': {
+      'folgen-reihen': 'Folgen, Reihen und Grenzwerte von Folgen kommen im Lehrplan nicht eigens vor.',
       verteilungen: 'Poisson-, hypergeometrische und Exponentialverteilung kommen im Lehrplan nicht vor.',
       uebergangsmatrizen: 'Übergangsmatrizen und Markov-Ketten nicht im Lehrplan',
       richtungsfeld: 'Differenzialgleichungen und Richtungsfelder nicht im Lehrplan',
@@ -221,6 +223,7 @@ describe('Länder-Lehrpläne', () => {
       'doppler-effekt': 'nur in der Lehrplanalternative Astrophysik (Jgst. 13), die nicht abgebildet ist',
     },
     'berlin-gymnasium-mathematik': {
+      'folgen-reihen': 'Folgen, Reihen und Grenzwerte von Folgen kommen im Lehrplan nicht eigens vor.',
       verteilungen: 'Poisson-, hypergeometrische und Exponentialverteilung kommen im Lehrplan nicht vor.',
       uebergangsmatrizen: 'Übergangsmatrizen und Markov-Ketten nicht im Lehrplan',
       'komplexe-zahlen': 'Komplexe Zahlen nicht im Lehrplan',
@@ -253,6 +256,7 @@ describe('Länder-Lehrpläne', () => {
       zeitdilatation: 'Spezielle Relativitätstheorie nicht im Rahmenlehrplan der Oberstufe',
     },
     'brandenburg-gymnasium-mathematik': {
+      'folgen-reihen': 'Folgen, Reihen und Grenzwerte von Folgen kommen im Lehrplan nicht eigens vor.',
       verteilungen: 'Poisson-, hypergeometrische und Exponentialverteilung kommen im Lehrplan nicht vor.',
       uebergangsmatrizen: 'Übergangsmatrizen und Markov-Ketten nicht im Lehrplan',
       'komplexe-zahlen': 'Komplexe Zahlen nicht im Lehrplan',
@@ -285,6 +289,7 @@ describe('Länder-Lehrpläne', () => {
       zeitdilatation: 'Spezielle Relativitätstheorie nicht im Rahmenlehrplan der Oberstufe',
     },
     'bremen-gymnasium-mathematik': {
+      'folgen-reihen': 'Folgen, Reihen und Grenzwerte von Folgen kommen im Lehrplan nicht eigens vor.',
       verteilungen: 'Poisson-, hypergeometrische und Exponentialverteilung kommen im Lehrplan nicht vor.',
       richtungsfeld: 'Differenzialgleichungen und Richtungsfelder nicht im Lehrplan',
       'komplexe-zahlen': 'Komplexe Zahlen nicht im Lehrplan',
@@ -315,6 +320,7 @@ describe('Länder-Lehrpläne', () => {
       zeitdilatation: 'Spezielle Relativitätstheorie nicht im Bildungsplan der Oberstufe',
     },
     'hamburg-gymnasium-mathematik': {
+      'folgen-reihen': 'Folgen, Reihen und Grenzwerte von Folgen kommen im Lehrplan nicht eigens vor.',
       verteilungen: 'Poisson-, hypergeometrische und Exponentialverteilung kommen im Lehrplan nicht vor.',
       richtungsfeld: 'Differenzialgleichungen und Richtungsfelder nicht im Lehrplan',
       'komplexe-zahlen': 'Komplexe Zahlen nicht im Lehrplan',
@@ -360,6 +366,7 @@ describe('Länder-Lehrpläne', () => {
       'doppler-effekt': 'kein passender Schwerpunkt (siehe docs/lehrplaene/hessen-gymnasium-physik.md)',
     },
     'niedersachsen-gymnasium-mathematik': {
+      'folgen-reihen': 'Folgen, Reihen und Grenzwerte von Folgen kommen im Lehrplan nicht eigens vor.',
       verteilungen: 'Poisson-, hypergeometrische und Exponentialverteilung kommen im Lehrplan nicht vor.',
       uebergangsmatrizen: 'Übergangsmatrizen und Markov-Ketten nicht im Lehrplan',
       'komplexe-zahlen': 'Komplexe Zahlen nicht im Lehrplan',
@@ -389,6 +396,7 @@ describe('Länder-Lehrpläne', () => {
       zeitdilatation: 'Spezielle Relativitätstheorie nicht im Kerncurriculum',
     },
     'nordrhein-westfalen-gymnasium-mathematik': {
+      'folgen-reihen': 'Folgen, Reihen und Grenzwerte von Folgen kommen im Lehrplan nicht eigens vor.',
       verteilungen: 'Poisson-, hypergeometrische und Exponentialverteilung kommen im Lehrplan nicht vor.',
       uebergangsmatrizen: 'Übergangsmatrizen und Markov-Ketten nicht im Lehrplan',
       richtungsfeld: 'Differenzialgleichungen und Richtungsfelder nicht im Lehrplan',
@@ -425,6 +433,7 @@ describe('Länder-Lehrpläne', () => {
       'fourier-reihen': 'nicht im Lehrplan (Hochschule)',
     },
     'saarland-gymnasium-mathematik': {
+      'folgen-reihen': 'Folgen, Reihen und Grenzwerte von Folgen kommen im Lehrplan nicht eigens vor.',
       verteilungen: 'Poisson-, hypergeometrische und Exponentialverteilung kommen im Lehrplan nicht vor.',
       uebergangsmatrizen: 'Übergangsmatrizen und Markov-Ketten nicht im Lehrplan',
       richtungsfeld: 'Differenzialgleichungen und Richtungsfelder nicht im Lehrplan',
@@ -452,6 +461,7 @@ describe('Länder-Lehrpläne', () => {
       zeitdilatation: 'Spezielle Relativitätstheorie nicht im Lehrplan der Oberstufe',
     },
     'sachsen-gymnasium-mathematik': {
+      'folgen-reihen': 'Folgen, Reihen und Grenzwerte von Folgen kommen im Lehrplan nicht eigens vor.',
       verteilungen: 'Poisson-, hypergeometrische und Exponentialverteilung kommen im Lehrplan nicht vor.',
       uebergangsmatrizen: 'Übergangsmatrizen und Markov-Ketten nicht im Lehrplan',
       'taylor-polynome': 'nicht im Lehrplan (Hochschule; siehe docs/lehrplaene/sachsen-gymnasium-mathematik.md)',
@@ -460,6 +470,7 @@ describe('Länder-Lehrpläne', () => {
       cavalieri: 'Prinzip von Cavalieri nicht im Lehrplan',
     },
     'sachsen-anhalt-gymnasium-mathematik': {
+      'folgen-reihen': 'Folgen, Reihen und Grenzwerte von Folgen kommen im Lehrplan nicht eigens vor.',
       verteilungen: 'Poisson-, hypergeometrische und Exponentialverteilung kommen im Lehrplan nicht vor.',
       uebergangsmatrizen: 'Übergangsmatrizen und Markov-Ketten nicht im Lehrplan',
       richtungsfeld: 'Differenzialgleichungen und Richtungsfelder nicht im Lehrplan',
@@ -484,6 +495,7 @@ describe('Länder-Lehrpläne', () => {
       'doppler-effekt': 'Doppler-Effekt nicht im Fachlehrplan (siehe docs/lehrplaene/sachsen-anhalt-gymnasium-physik.md)',
     },
     'schleswig-holstein-gymnasium-mathematik': {
+      'folgen-reihen': 'Folgen, Reihen und Grenzwerte von Folgen kommen im Lehrplan nicht eigens vor.',
       uebergangsmatrizen: 'Übergangsmatrizen und Markov-Ketten nicht im Lehrplan',
       richtungsfeld: 'Differenzialgleichungen und Richtungsfelder nicht im Lehrplan',
       'komplexe-zahlen': 'Komplexe Zahlen nicht im Lehrplan',

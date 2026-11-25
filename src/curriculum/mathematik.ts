@@ -1123,6 +1123,22 @@ export const mathematik: Subject = {
             ),
           },
           {
+            id: 'folgen-reihen',
+            status: 'ready',
+            slug: L('folgen-und-reihen-grenzwert', 'sequences-and-series-limit'),
+            title: L('Folgen und Reihen: Grenzwert und Summe', 'Sequences and series: limit and sum'),
+            summary: L(
+              'Kommen die Glieder einer Folge einer Zahl beliebig nahe? Ein Streifen um den Grenzwert zeigt es. Und die Teilsummen verraten, ob eine unendliche Summe einen endlichen Wert hat.',
+              'Do the terms of a sequence get arbitrarily close to a number? A strip around the limit shows it. And the partial sums reveal whether an infinite sum has a finite value.',
+            ),
+            grades: [10, 12],
+            kmk: ['M-L4', 'M-K2', 'M-K4', 'M-K5'],
+            keywords: L(
+              ['Folge', 'Zahlenfolge', 'Folgenglied', 'arithmetische Folge', 'geometrische Folge', 'Grenzwert', 'Konvergenz', 'Divergenz', 'ε-Umgebung', 'Nullfolge', 'Eulersche Zahl', 'Reihe', 'Teilsumme', 'geometrische Reihe', 'harmonische Reihe', 'Gaußsche Summenformel', 'unendliche Summe'],
+              ['sequence', 'term', 'arithmetic sequence', 'geometric sequence', 'limit', 'convergence', 'divergence', 'ε-neighbourhood', 'null sequence', "Euler's number", 'series', 'partial sum', 'geometric series', 'harmonic series', "Gauss's sum formula", 'infinite sum'],
+            ),
+          },
+          {
             id: 'grenzverhalten',
             status: 'ready',
             slug: L('grenzverhalten-asymptoten', 'limits-and-asymptotes'),

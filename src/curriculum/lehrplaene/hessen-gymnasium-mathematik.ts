@@ -2570,6 +2570,7 @@ export const hessenGymnasiumMathematik: StateCurriculum = {
                 'Konvergenz und Divergenz begründen und Grenzwerte mit Grenzwertsätzen bestimmen.',
                 'Justifying convergence and divergence and finding limits with limit laws.',
               ),
+              simulations: ['folgen-reihen'],
             },
             {
               code: 'E.7.2',
@@ -2578,6 +2579,7 @@ export const hessenGymnasiumMathematik: StateCurriculum = {
                 'Arithmetische und geometrische Reihen und ihre Grenzwerte untersuchen.',
                 'Investigating arithmetic and geometric series and their limits.',
               ),
+              simulations: ['folgen-reihen'],
             },
           ],
         },
