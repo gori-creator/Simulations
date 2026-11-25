@@ -70,6 +70,7 @@ const K6: CurriculumUnit[] = [
     code: 'W2',
     title: L('Wärmedämmung (Wahlbereich)', 'Thermal insulation (optional)'),
     summary: L('Wärmeverluste am Haus finden und Dämmung untersuchen.', 'Finding heat losses in a house and investigating insulation.'),
+    simulations: ['waermetransport'],
   },
   {
     code: 'W3',
@@ -141,7 +142,7 @@ const K8: CurriculumUnit[] = [
       'Thermische Energie im Teilchenbild, Wärme und Aggregatzustandsänderungen, Wärmeübertragung sowie Strahlungshaushalt der Erde und Treibhauseffekt.',
       'Thermal energy in the particle model, heat and changes of state, heat transfer, and the Earth’s radiation budget and the greenhouse effect.',
     ),
-    simulations: ['teilchenmodell'],
+    simulations: ['teilchenmodell', 'waermetransport'],
   },
   {
     code: '3',

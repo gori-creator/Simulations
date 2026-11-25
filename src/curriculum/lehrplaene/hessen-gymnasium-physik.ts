@@ -163,6 +163,7 @@ export const hessenGymnasiumPhysik: StateCurriculum = {
               code: '3.2',
               title: L('Energietransport', 'Energy transport'),
               summary: L('Wege, auf denen Energie von einem Ort zum anderen gelangt.', 'Ways in which energy gets from one place to another.'),
+              simulations: ['waermetransport'],
             },
             {
               code: '3.3',
@@ -445,6 +446,7 @@ export const hessenGymnasiumPhysik: StateCurriculum = {
               code: '3.2',
               title: L('Energietransport', 'Energy transport'),
               summary: L('Wege, auf denen Energie von einem Ort zum anderen gelangt.', 'Ways in which energy gets from one place to another.'),
+              simulations: ['waermetransport'],
             },
             {
               code: '3.3',
@@ -733,6 +735,7 @@ export const hessenGymnasiumPhysik: StateCurriculum = {
               code: '3.2',
               title: L('Energietransport', 'Energy transport'),
               summary: L('Wege, auf denen Energie von einem Ort zum anderen gelangt.', 'Ways in which energy gets from one place to another.'),
+              simulations: ['waermetransport'],
             },
             {
               code: '3.3',
@@ -1060,6 +1063,7 @@ export const hessenGymnasiumPhysik: StateCurriculum = {
               code: '5.1',
               title: L('Übertragung thermischer Energie', 'Transfer of thermal energy'),
               summary: L('Wärmeleitung, Wärmeströmung und Wärmestrahlung untersuchen.', 'Investigating conduction, convection and radiation.'),
+              simulations: ['waermetransport'],
             },
             {
               code: '5.2',
@@ -1375,6 +1379,7 @@ export const hessenGymnasiumPhysik: StateCurriculum = {
               code: '5.1',
               title: L('Übertragung thermischer Energie', 'Transfer of thermal energy'),
               summary: L('Wärmeleitung, Wärmeströmung und Wärmestrahlung untersuchen.', 'Investigating conduction, convection and radiation.'),
+              simulations: ['waermetransport'],
             },
             {
               code: '5.2',

@@ -99,6 +99,7 @@ const SEK_I_UNITS: CurriculumUnit[] = [
       'Thermische Energieströme im Basiskonzept System: Temperaturdifferenz als Antrieb, thermischer Widerstand, Kühlung und Wärmedämmung, Wärmepumpe und Wärmekraftmaschine.',
       'Thermal energy flows and systems: temperature difference as the drive, thermal resistance, cooling and insulation, heat pumps and heat engines.',
     ),
+    simulations: ['waermetransport'],
   },
   {
     code: '9',
