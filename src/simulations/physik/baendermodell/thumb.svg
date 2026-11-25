@@ -1,0 +1,17 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 320 180">
+  <g fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round">
+    <rect x="70" y="24" width="180" height="44" stroke-width="3" />
+    <rect x="70" y="112" width="180" height="44" stroke-width="3" />
+    <path d="M160 74V106" stroke-width="3" stroke-opacity="0.6" />
+    <path d="M40 30V150" stroke-width="2" stroke-opacity="0.5" />
+    <path d="M34 40L40 28L46 40" stroke-width="2" stroke-opacity="0.5" />
+  </g>
+  <g fill="currentColor">
+    <circle cx="90" cy="124" r="5" /><circle cx="110" cy="124" r="5" /><circle cx="150" cy="124" r="5" /><circle cx="170" cy="124" r="5" /><circle cx="190" cy="124" r="5" /><circle cx="230" cy="124" r="5" />
+    <circle cx="90" cy="144" r="5" /><circle cx="110" cy="144" r="5" /><circle cx="130" cy="144" r="5" /><circle cx="150" cy="144" r="5" /><circle cx="170" cy="144" r="5" /><circle cx="190" cy="144" r="5" /><circle cx="210" cy="144" r="5" /><circle cx="230" cy="144" r="5" />
+    <circle cx="125" cy="52" r="5" /><circle cx="205" cy="40" r="5" />
+  </g>
+  <g fill="none" stroke="currentColor" stroke-width="2">
+    <circle cx="130" cy="124" r="5" /><circle cx="210" cy="124" r="5" />
+  </g>
+</svg>

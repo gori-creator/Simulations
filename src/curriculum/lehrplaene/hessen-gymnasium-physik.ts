@@ -2585,7 +2585,7 @@ export const hessenGymnasiumPhysik: StateCurriculum = {
               code: 'Q4.5.1',
               title: L('Leiter, Nichtleiter und Halbleiter', 'Conductors, non-conductors and semiconductors'),
               summary: L('Bändermodell (qualitativ) und Dotierung.', 'Band model (qualitative) and doping.'),
-              simulations: ['diode-transistor'],
+              simulations: ['diode-transistor', 'baendermodell'],
             },
             {
               code: 'Q4.5.2',
@@ -2600,6 +2600,7 @@ export const hessenGymnasiumPhysik: StateCurriculum = {
               code: 'Q4.5.3',
               title: L('Quantenphysikalische Erklärung der Energiebänder (nur LK)', 'Quantum explanation of energy bands (advanced course only)'),
               summary: L('Fermienergie (qualitativ).', 'Fermi energy (qualitative).'),
+              simulations: ['baendermodell'],
             },
             {
               code: 'Q4.5.4',
@@ -2611,6 +2612,7 @@ export const hessenGymnasiumPhysik: StateCurriculum = {
               code: 'Q4.5.5',
               title: L('Supraleitung (nur qualitativ) (nur LK)', 'Superconductivity (qualitative only) (advanced course only)'),
               summary: L('Phänomen der Supraleitung.', 'The phenomenon of superconductivity.'),
+              simulations: ['baendermodell'],
             },
           ],
         },

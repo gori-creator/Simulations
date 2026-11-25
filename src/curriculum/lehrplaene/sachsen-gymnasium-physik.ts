@@ -344,7 +344,7 @@ const J11: CurriculumUnit[] = [
     code: 'GK-W1',
     title: L('Leitungsvorgänge in Halbleitern (Wahlbereich Grundkurs)', 'Conduction in semiconductors (optional, basic course)'),
     summary: L('Bändermodell, pn-Übergang, Diode und Transistor.', 'The band model, pn junction, diode and transistor.'),
-    simulations: ['diode-transistor'],
+    simulations: ['diode-transistor', 'baendermodell'],
   },
   {
     code: 'GK-W2',
@@ -422,7 +422,7 @@ const J11: CurriculumUnit[] = [
     code: 'LK-W2',
     title: L('Leitungsvorgänge in Halbleitern (Wahlbereich Leistungskurs)', 'Conduction in semiconductors (optional, advanced course)'),
     summary: L('Bändermodell, pn-Übergang, Diode und Transistor.', 'The band model, pn junction, diode and transistor.'),
-    simulations: ['diode-transistor'],
+    simulations: ['diode-transistor', 'baendermodell'],
   },
 ];
 

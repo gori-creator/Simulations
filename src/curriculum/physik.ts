@@ -855,6 +855,22 @@ export const physik: Subject = {
                 ['diode', 'semiconductor', 'pn junction', 'depletion layer', 'doping', 'holes', 'characteristic', 'threshold voltage', 'forward bias', 'reverse bias', 'Shockley equation', 'light-emitting diode', 'LED', 'rectifier', 'bridge rectifier', 'smoothing capacitor', 'transistor', 'current gain', 'twilight switch', 'photoresistor', 'electronics'],
               ),
             },
+            {
+              id: 'baendermodell',
+              status: 'ready',
+              slug: L('baendermodell-halbleiter-supraleitung', 'band-model-semiconductors-superconductivity'),
+              title: L('Bändermodell: Leiter, Halbleiter, Supraleiter', 'Band model: conductors, semiconductors, superconductors'),
+              summary: L(
+                'Rücken viele Atome zusammen, werden aus ihren Energieniveaus Bänder. Die Lücke dazwischen entscheidet, ob ein Stoff leitet – und manche Metalle verlieren in großer Kälte jeden Widerstand.',
+                'When many atoms come close together, their energy levels become bands. The gap in between decides whether a material conducts – and some metals lose all resistance when very cold.',
+              ),
+              grades: [11, 13],
+              kmk: ['P-S', 'P-E', 'P-BK-Materie', 'P-BK-Mathematisieren'],
+              keywords: L(
+                ['Bändermodell', 'Energieband', 'Valenzband', 'Leitungsband', 'Bandlücke', 'Fermi-Energie', 'Fermi-Niveau', 'Leiter', 'Halbleiter', 'Isolator', 'Eigenleitung', 'Elektron', 'Loch', 'Silizium', 'Germanium', 'Diamant', 'Kupfer', 'Leitfähigkeit', 'Temperaturabhängigkeit', 'Supraleitung', 'Sprungtemperatur', 'Meißner-Ochsenfeld-Effekt', 'Festkörperphysik'],
+                ['band model', 'energy band', 'valence band', 'conduction band', 'band gap', 'Fermi energy', 'Fermi level', 'conductor', 'semiconductor', 'insulator', 'intrinsic conduction', 'electron', 'hole', 'silicon', 'germanium', 'diamond', 'copper', 'conductivity', 'temperature dependence', 'superconductivity', 'critical temperature', 'Meissner effect', 'solid-state physics'],
+              ),
+            },
           ],
         },
       ],

@@ -414,6 +414,7 @@ const QP_UNITS: CurriculumUnit[] = [
         code: 'GF-W.8',
         title: L('Festkörperphysik', 'Solid-state physics'),
         summary: L('Bändermodell und Eigenschaften von Festkörpern.', 'The band model and properties of solids.'),
+        simulations: ['baendermodell'],
       },
       {
         code: 'GF-W.9',
@@ -674,6 +675,7 @@ const QP_UNITS: CurriculumUnit[] = [
         code: 'LF-W.8',
         title: L('Festkörperphysik', 'Solid-state physics'),
         summary: L('Bändermodell und Eigenschaften von Festkörpern.', 'The band model and properties of solids.'),
+        simulations: ['baendermodell'],
       },
       {
         code: 'LF-W.9',

@@ -2,7 +2,7 @@
 
 <!-- Automatisch erzeugt mit `npm run lehrplan:luecken` aus src/curriculum/lehrplaene/ – nicht von Hand bearbeiten. -->
 
-Lernbereiche der Länder-Lehrpläne, zu denen es noch **keine** Simulation gibt – Vorrat für neue Simulationen (Anleitung: `docs/NEUE-SIMULATION.md`). Insgesamt **82 von 1773** Lernbereichen ohne Simulation.
+Lernbereiche der Länder-Lehrpläne, zu denen es noch **keine** Simulation gibt – Vorrat für neue Simulationen (Anleitung: `docs/NEUE-SIMULATION.md`). Insgesamt **78 von 1773** Lernbereichen ohne Simulation.
 
 Nicht jeder Lernbereich eignet sich für eine Simulation. Reine Methoden-, Praktikums- und Projektthemen sind im Lehrplan mit `method: true` gekennzeichnet und zählen nicht als Lücke. Kommt ein Thema in mehreren Ländern vor, lohnt es sich besonders.
 
@@ -136,7 +136,7 @@ Alle Lernbereiche haben eine Simulation.
 | 7–9 | 2.4 | Größen und Messen › Sachaufgaben | Größen in Sachzusammenhängen bestimmen und Ergebnisse und Lösungsweg bewerten. |
 | 12 | S.3 | Stochastik › Hypergeometrische Verteilung | Ziehen ohne Zurücklegen mit der hypergeometrischen Verteilung beschreiben. |
 
-## Physik (21)
+## Physik (17)
 
 ### Baden-Württemberg · Gymnasium (0)
 
@@ -169,7 +169,7 @@ Alle Lernbereiche haben eine Simulation.
 
 Alle Lernbereiche haben eine Simulation.
 
-### Hessen · Gymnasium (9)
+### Hessen · Gymnasium (7)
 
 | Stufe | Nr. | Lernbereich | Kurz |
 | --- | --- | --- | --- |
@@ -180,8 +180,6 @@ Alle Lernbereiche haben eine Simulation.
 | 13 | Q4.2.1 | Technische Anwendungen der Quantenphysik › Laser | Metastabile Niveaus, Besetzungsinversion, stimulierte Emission, Aufbau und Anwendungen. |
 | 13 | Q4.2.2 | Technische Anwendungen der Quantenphysik › Rastertunnelmikroskop (nur LK) | Tunneleffekt sowie Aufbau und Anwendungen. |
 | 13 | Q4.4.3 | Spezielle Relativitätstheorie › Lorentztransformation und Addition von Geschwindigkeiten (nur LK) | Umrechnung zwischen bewegten Bezugssystemen. |
-| 13 | Q4.5.3 | Festkörperphysik › Quantenphysikalische Erklärung der Energiebänder (nur LK) | Fermienergie (qualitativ). |
-| 13 | Q4.5.5 | Festkörperphysik › Supraleitung (nur qualitativ) (nur LK) | Phänomen der Supraleitung. |
 
 ### Niedersachsen · Gymnasium (0)
 
@@ -193,14 +191,12 @@ Alle Lernbereiche haben eine Simulation.
 | --- | --- | --- | --- |
 | 5/6 | 2.2 | Elektrischer Strom und Magnetismus › Wirkungen des elektrischen Stroms | Wärme-, Licht- und magnetische Wirkung, Sicherungen und Gefahren durch Elektrizität. |
 
-### Rheinland-Pfalz · Gymnasium (5)
+### Rheinland-Pfalz · Gymnasium (3)
 
 | Stufe | Nr. | Lernbereich | Kurz |
 | --- | --- | --- | --- |
-| 12/13 | GF-W.8 | Wahlpflichtbausteine (Grundfach, fünf zu wählen) › Festkörperphysik | Bändermodell und Eigenschaften von Festkörpern. |
 | 12/13 | GF-W.13 | Wahlpflichtbausteine (Grundfach, fünf zu wählen) › Elementarteilchenphysik | Fundamentalteilchen und Wechselwirkungen, Standardmodell und offene Fragen. |
 | 12/13 | LF-W.2 | Wahlpflichtbausteine (Leistungsfach, sieben zu wählen) › Veränderliche elektromagnetische Felder II | Maxwell-Gleichungen, Felder und Bezugssysteme, Lorentz-Transformation. |
-| 12/13 | LF-W.8 | Wahlpflichtbausteine (Leistungsfach, sieben zu wählen) › Festkörperphysik | Bändermodell und Eigenschaften von Festkörpern. |
 | 12/13 | LF-W.13 | Wahlpflichtbausteine (Leistungsfach, sieben zu wählen) › Elementarteilchenphysik | Standardmodell, fundamentale Wechselwirkungen, experimentelle Befunde und offene Fragen. |
 
 ### Saarland · Gymnasium (0)
