@@ -1,0 +1,9 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 320 180">
+  <path d="M40 160H200L230 100L130 50H40Z" fill="currentColor" fill-opacity="0.16" />
+  <g fill="none" stroke="currentColor" stroke-linecap="round">
+    <path d="M30 160H300M40 170V10" stroke-width="2" stroke-opacity="0.6" />
+    <path d="M40 160H200L230 100L130 50H40Z" stroke-width="3" />
+    <path d="M150 170L290 30" stroke-width="3" stroke-dasharray="10 7" />
+  </g>
+  <circle cx="230" cy="100" r="9" fill="currentColor" />
+</svg>

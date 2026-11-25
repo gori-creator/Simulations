@@ -262,6 +262,7 @@ const K8: CurriculumUnit[] = [
     code: 'W2',
     title: L('Lineare Optimierung (Wahlbereich)', 'Linear optimisation (optional)'),
     summary: L('Optimierungsprobleme grafisch mit einer Zielfunktion lösen.', 'Solving optimisation problems graphically with an objective function.'),
+    simulations: ['lineare-optimierung'],
   },
   {
     code: 'W3',

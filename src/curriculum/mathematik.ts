@@ -362,6 +362,22 @@ export const mathematik: Subject = {
             ),
           },
           {
+            id: 'lineare-optimierung',
+            status: 'ready',
+            slug: L('lineare-optimierung', 'linear-programming'),
+            title: L('Lineare Optimierung', 'Linear programming'),
+            summary: L(
+              'Wie viele Tische und Stühle bringen den größten Gewinn, wenn Holz und Arbeitszeit knapp sind? Die Bedingungen bilden ein Vieleck. Eine Zielgerade wird so lange verschoben, bis sie es gerade noch berührt – meist in einer Ecke.',
+              'How many tables and chairs bring the biggest profit when wood and working time are scarce? The constraints form a polygon. An objective line is moved until it only just touches it – usually at a vertex.',
+            ),
+            grades: [8, 10],
+            kmk: ['M-L4', 'M-K3', 'M-K2', 'M-K4'],
+            keywords: L(
+              ['lineare Optimierung', 'Planungsvieleck', 'Planungsbereich', 'Ungleichungssystem', 'Zielfunktion', 'Zielgerade', 'Maximum', 'Minimum', 'Gewinn', 'Kosten', 'Nebenbedingungen', 'ganzzahlig'],
+              ['linear programming', 'feasible region', 'feasible polygon', 'system of inequalities', 'objective function', 'objective line', 'maximum', 'minimum', 'profit', 'cost', 'constraints', 'integer'],
+            ),
+          },
+          {
             id: 'gleichungen-grafisch',
             status: 'ready',
             slug: L('gleichungen-grafisch-loesen', 'solving-equations-graphically'),

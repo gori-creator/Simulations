@@ -195,6 +195,7 @@ describe('Länder-Lehrpläne', () => {
       schall: 'Akustik erst als Wahlthema in 12/13; die Simulation ist für Klasse 5 bis 11 gedacht.',
     },
     'baden-wuerttemberg-gymnasium-mathematik': {
+      'lineare-optimierung': 'Lineare Optimierung mit Planungsvieleck kommt im Lehrplan nicht vor.',
       'goldener-schnitt': 'Der goldene Schnitt kommt im Lehrplan nicht vor.',
       'platonische-koerper': 'Platonische Körper und der Eulersche Polyedersatz kommen im Lehrplan nicht vor.',
       parameterkurven: 'Kurven in Parameterdarstellung und Polarkoordinaten kommen im Lehrplan nicht vor (Parameterform nur für Geraden und Ebenen).',
@@ -209,6 +210,7 @@ describe('Länder-Lehrpläne', () => {
       kegelschnitte: 'Kegelschnitte nicht im Lehrplan (Ortslinien nur in Klasse 7/8 mit Kreis und Mittelsenkrechte)',
     },
     'bayern-gymnasium-mathematik': {
+      'lineare-optimierung': 'Lineare Optimierung mit Planungsvieleck kommt im Lehrplan nicht vor.',
       'goldener-schnitt': 'Der goldene Schnitt kommt im Lehrplan nicht vor.',
       'platonische-koerper': 'Platonische Körper und der Eulersche Polyedersatz kommen im Lehrplan nicht vor.',
       parameterkurven: 'Kurven in Parameterdarstellung und Polarkoordinaten kommen im Lehrplan nicht vor (Parameterform nur für Geraden und Ebenen).',
@@ -233,6 +235,7 @@ describe('Länder-Lehrpläne', () => {
       'doppler-effekt': 'nur in der Lehrplanalternative Astrophysik (Jgst. 13), die nicht abgebildet ist',
     },
     'berlin-gymnasium-mathematik': {
+      'lineare-optimierung': 'Lineare Optimierung mit Planungsvieleck kommt im Lehrplan nicht vor.',
       'goldener-schnitt': 'Der goldene Schnitt kommt im Lehrplan nicht vor.',
       'platonische-koerper': 'Platonische Körper und der Eulersche Polyedersatz kommen im Lehrplan nicht vor.',
       parameterkurven: 'Kurven in Parameterdarstellung und Polarkoordinaten kommen im Lehrplan nicht vor (Parameterform nur für Geraden und Ebenen).',
@@ -272,6 +275,7 @@ describe('Länder-Lehrpläne', () => {
       zeitdilatation: 'Spezielle Relativitätstheorie nicht im Rahmenlehrplan der Oberstufe',
     },
     'brandenburg-gymnasium-mathematik': {
+      'lineare-optimierung': 'Lineare Optimierung mit Planungsvieleck kommt im Lehrplan nicht vor.',
       'goldener-schnitt': 'Der goldene Schnitt kommt im Lehrplan nicht vor.',
       'platonische-koerper': 'Platonische Körper und der Eulersche Polyedersatz kommen im Lehrplan nicht vor.',
       parameterkurven: 'Kurven in Parameterdarstellung und Polarkoordinaten kommen im Lehrplan nicht vor (Parameterform nur für Geraden und Ebenen).',
@@ -311,6 +315,7 @@ describe('Länder-Lehrpläne', () => {
       zeitdilatation: 'Spezielle Relativitätstheorie nicht im Rahmenlehrplan der Oberstufe',
     },
     'bremen-gymnasium-mathematik': {
+      'lineare-optimierung': 'Lineare Optimierung mit Planungsvieleck kommt im Lehrplan nicht vor.',
       'goldener-schnitt': 'Der goldene Schnitt kommt im Lehrplan nicht vor.',
       'platonische-koerper': 'Platonische Körper und der Eulersche Polyedersatz kommen im Lehrplan nicht vor.',
       'uneigentliche-integrale': 'Uneigentliche Integrale werden im Lehrplan nicht genannt.',
@@ -349,6 +354,7 @@ describe('Länder-Lehrpläne', () => {
       zeitdilatation: 'Spezielle Relativitätstheorie nicht im Bildungsplan der Oberstufe',
     },
     'hamburg-gymnasium-mathematik': {
+      'lineare-optimierung': 'Lineare Optimierung mit Planungsvieleck kommt im Lehrplan nicht vor.',
       'goldener-schnitt': 'Der goldene Schnitt kommt im Lehrplan nicht vor.',
       'platonische-koerper': 'Platonische Körper und der Eulersche Polyedersatz kommen im Lehrplan nicht vor.',
       'uneigentliche-integrale': 'Uneigentliche Integrale werden im Lehrplan nicht genannt.',
@@ -386,6 +392,7 @@ describe('Länder-Lehrpläne', () => {
       gasgesetze: 'Gasgesetze nicht im Bildungsplan (Sek. I nur Temperatur im Teilchenmodell)',
     },
     'hessen-gymnasium-mathematik': {
+      'lineare-optimierung': 'Lineare Optimierung mit Planungsvieleck kommt im Lehrplan nicht vor.',
       'goldener-schnitt': 'Der goldene Schnitt kommt im Lehrplan nicht vor.',
       'platonische-koerper': 'Platonische Körper und der Eulersche Polyedersatz kommen im Lehrplan nicht vor.',
       zahlensysteme: 'Andere Stellenwertsysteme (Zweier-, Hexadezimalsystem) und Zahlschriften anderer Kulturen kommen im Lehrplan nicht vor.',
@@ -405,6 +412,7 @@ describe('Länder-Lehrpläne', () => {
       'doppler-effekt': 'kein passender Schwerpunkt (siehe docs/lehrplaene/hessen-gymnasium-physik.md)',
     },
     'niedersachsen-gymnasium-mathematik': {
+      'lineare-optimierung': 'Lineare Optimierung mit Planungsvieleck kommt im Lehrplan nicht vor.',
       'goldener-schnitt': 'Der goldene Schnitt kommt im Lehrplan nicht vor.',
       'platonische-koerper': 'Platonische Körper und der Eulersche Polyedersatz kommen im Lehrplan nicht vor.',
       parameterkurven: 'Kurven in Parameterdarstellung und Polarkoordinaten kommen im Lehrplan nicht vor (Parameterform nur für Geraden und Ebenen).',
@@ -440,6 +448,7 @@ describe('Länder-Lehrpläne', () => {
       zeitdilatation: 'Spezielle Relativitätstheorie nicht im Kerncurriculum',
     },
     'nordrhein-westfalen-gymnasium-mathematik': {
+      'lineare-optimierung': 'Lineare Optimierung mit Planungsvieleck kommt im Lehrplan nicht vor.',
       'goldener-schnitt': 'Der goldene Schnitt kommt im Lehrplan nicht vor.',
       'platonische-koerper': 'Platonische Körper und der Eulersche Polyedersatz kommen im Lehrplan nicht vor.',
       parameterkurven: 'Kurven in Parameterdarstellung und Polarkoordinaten kommen im Lehrplan nicht vor (Parameterform nur für Geraden und Ebenen).',
@@ -475,6 +484,7 @@ describe('Länder-Lehrpläne', () => {
       'doppler-effekt': 'Doppler-Effekt nicht im Kernlehrplan (siehe docs/lehrplaene/nordrhein-westfalen-gymnasium-physik.md)',
     },
     'rheinland-pfalz-gymnasium-mathematik': {
+      'lineare-optimierung': 'Lineare Optimierung mit Planungsvieleck kommt im Lehrplan nicht vor.',
       'goldener-schnitt': 'Der goldene Schnitt kommt im Lehrplan nicht vor.',
       'platonische-koerper': 'Platonische Körper und der Eulersche Polyedersatz kommen im Lehrplan nicht vor.',
       'uneigentliche-integrale': 'Uneigentliche Integrale werden im Lehrplan nicht genannt.',
@@ -487,6 +497,7 @@ describe('Länder-Lehrpläne', () => {
       'fourier-reihen': 'nicht im Lehrplan (Hochschule)',
     },
     'saarland-gymnasium-mathematik': {
+      'lineare-optimierung': 'Lineare Optimierung mit Planungsvieleck kommt im Lehrplan nicht vor.',
       'goldener-schnitt': 'Der goldene Schnitt kommt im Lehrplan nicht vor.',
       'platonische-koerper': 'Platonische Körper und der Eulersche Polyedersatz kommen im Lehrplan nicht vor.',
       'uneigentliche-integrale': 'Uneigentliche Integrale werden im Lehrplan nicht genannt.',
@@ -531,6 +542,7 @@ describe('Länder-Lehrpläne', () => {
       cavalieri: 'Prinzip von Cavalieri nicht im Lehrplan',
     },
     'sachsen-anhalt-gymnasium-mathematik': {
+      'lineare-optimierung': 'Lineare Optimierung mit Planungsvieleck kommt im Lehrplan nicht vor.',
       'goldener-schnitt': 'Der goldene Schnitt kommt im Lehrplan nicht vor.',
       'platonische-koerper': 'Platonische Körper und der Eulersche Polyedersatz kommen im Lehrplan nicht vor.',
       'uneigentliche-integrale': 'Uneigentliche Integrale werden im Lehrplan nicht genannt.',
@@ -561,6 +573,7 @@ describe('Länder-Lehrpläne', () => {
       'doppler-effekt': 'Doppler-Effekt nicht im Fachlehrplan (siehe docs/lehrplaene/sachsen-anhalt-gymnasium-physik.md)',
     },
     'schleswig-holstein-gymnasium-mathematik': {
+      'lineare-optimierung': 'Lineare Optimierung mit Planungsvieleck kommt im Lehrplan nicht vor.',
       'goldener-schnitt': 'Der goldene Schnitt kommt im Lehrplan nicht vor.',
       'platonische-koerper': 'Platonische Körper und der Eulersche Polyedersatz kommen im Lehrplan nicht vor.',
       parameterkurven: 'Kurven in Parameterdarstellung und Polarkoordinaten kommen im Lehrplan nicht vor (Parameterform nur für Geraden und Ebenen).',
