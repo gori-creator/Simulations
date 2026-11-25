@@ -243,7 +243,7 @@ const K10: CurriculumUnit[] = [
       'F = m · a, Trägheits- und Wechselwirkungsgesetz, Kräfte überlagern, geneigte Ebene sowie Bremsweg und Gefahren im Straßenverkehr.',
       'F = m · a, the laws of inertia and interaction, superposition of forces, the inclined plane, and braking distance and road safety.',
     ),
-    simulations: ['kraefteaddition', 'schiefe-ebene'],
+    simulations: ['kraefteaddition', 'schiefe-ebene', 'newtonsche-gesetze'],
   },
   {
     code: '2',
@@ -305,7 +305,7 @@ const J11: CurriculumUnit[] = [
       'Energieerhaltung, Reibung und Bewegung auf der geneigten Ebene, Superposition von Kräften, F = m · a und die gleichförmige Kreisbewegung.',
       'Conservation of energy, friction and motion on an inclined plane, superposition of forces, F = m · a and uniform circular motion.',
     ),
-    simulations: ['energieerhaltung', 'schiefe-ebene', 'kraefteaddition', 'kreisbewegung'],
+    simulations: ['energieerhaltung', 'schiefe-ebene', 'kraefteaddition', 'kreisbewegung', 'newtonsche-gesetze'],
   },
   {
     code: 'GK-2',
@@ -361,7 +361,7 @@ const J11: CurriculumUnit[] = [
     code: 'LK-2',
     title: L('Kräfte (Leistungskurs)', 'Forces (advanced course)'),
     summary: L('Reibung, Zerlegung von Kräften an der geneigten Ebene, Grundgesetz der Mechanik und Kreisbewegung.', 'Friction, resolving forces on an inclined plane, Newton’s second law and circular motion.'),
-    simulations: ['schiefe-ebene', 'kraefteaddition', 'kreisbewegung'],
+    simulations: ['schiefe-ebene', 'kraefteaddition', 'kreisbewegung', 'newtonsche-gesetze'],
   },
   {
     code: 'LK-3',

@@ -164,7 +164,7 @@ const SJ_9_UNITS: CurriculumUnit[] = [
       'Newton’sche Axiome, Kräftezerlegung an der geneigten Ebene, gleichmäßig beschleunigte Bewegung mit Diagrammen und freiem Fall, Kreisbewegung, Energie, Leistung und Reibung.',
       'Newton’s laws, resolving forces on an inclined plane, uniformly accelerated motion with graphs and free fall, circular motion, energy, power and friction.',
     ),
-    simulations: ['bewegungsdiagramme', 'freier-fall', 'kraefteaddition', 'schiefe-ebene', 'kreisbewegung', 'energieerhaltung'],
+    simulations: ['bewegungsdiagramme', 'freier-fall', 'kraefteaddition', 'schiefe-ebene', 'kreisbewegung', 'energieerhaltung', 'newtonsche-gesetze'],
   },
 ];
 

@@ -177,7 +177,7 @@ const SEK_I_UNITS: CurriculumUnit[] = [
         code: '4.4',
         title: L('Dynamik (Block II)', 'Dynamics (block II)'),
         summary: L('Trägheitsprinzip, Kraft als Ursache von Geschwindigkeitsänderungen, Reibung und Energiebilanzen, qualitativ; Impuls als Ergänzung.', 'The principle of inertia, force as the cause of changes in velocity, friction and energy balances, qualitatively; momentum as an extension.'),
-        simulations: ['energieerhaltung', 'stoesse'],
+        simulations: ['energieerhaltung', 'stoesse', 'newtonsche-gesetze'],
       },
     ],
   },
@@ -324,7 +324,7 @@ const EP_UNITS: CurriculumUnit[] = [
         code: 'M.2',
         title: L('Dynamik', 'Dynamics'),
         summary: L('Masse, Kraft und Beschleunigung, Trägheitsprinzip, Reibungskraft, Energieerhaltung und iterative Vorhersage realer Bewegungen; Kreisbewegungen können hier beginnen.', 'Mass, force and acceleration, the principle of inertia, friction, conservation of energy and iterative prediction of real motion; circular motion can start here.'),
-        simulations: ['kraefteaddition', 'schiefe-ebene', 'energieerhaltung', 'kreisbewegung'],
+        simulations: ['kraefteaddition', 'schiefe-ebene', 'energieerhaltung', 'kreisbewegung', 'newtonsche-gesetze'],
       },
       {
         code: 'M.3',

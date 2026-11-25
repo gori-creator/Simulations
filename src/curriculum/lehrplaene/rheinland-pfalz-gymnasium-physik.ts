@@ -63,7 +63,7 @@ const SEK_I_UNITS: CurriculumUnit[] = [
       'Bewegungsänderungen im Basiskonzept Wechselwirkung: Geschwindigkeit mit Betrag und Richtung, Trägheit, Kraft als Maß der Wechselwirkung, Kraftpfeilpaare und Kräftegleichgewicht; Impuls als Vertiefung.',
       'Changes of motion and interaction: velocity with magnitude and direction, inertia, force as a measure of interaction, pairs of force arrows and equilibrium; momentum as an extension.',
     ),
-    simulations: ['bewegungsdiagramme', 'kraefteaddition', 'hookesches-gesetz', 'stoesse', 'dichte-auftrieb'],
+    simulations: ['bewegungsdiagramme', 'kraefteaddition', 'hookesches-gesetz', 'stoesse', 'dichte-auftrieb', 'newtonsche-gesetze'],
   },
   {
     code: '5',
@@ -161,7 +161,7 @@ const EP_UNITS: CurriculumUnit[] = [
           'Ursachen für Bewegungsänderungen, Wechselwirkungsprinzip und Trägheit, mit Impuls- oder Kraftbegriff.',
           'Causes of changes in motion, the interaction principle and inertia, using momentum or force.',
         ),
-        simulations: ['kraefteaddition', 'kreisbewegung'],
+        simulations: ['kraefteaddition', 'kreisbewegung', 'newtonsche-gesetze'],
       },
       {
         code: 'GF-P.3',
@@ -217,7 +217,7 @@ const EP_UNITS: CurriculumUnit[] = [
           'Ursachen für Bewegungsänderungen, Wechselwirkungsprinzip und Trägheit, ausgebaut zum Wechselwirkungskonzept.',
           'Causes of changes in motion, the interaction principle and inertia, built up into the concept of interaction.',
         ),
-        simulations: ['kraefteaddition', 'schiefe-ebene', 'kreisbewegung'],
+        simulations: ['kraefteaddition', 'schiefe-ebene', 'kreisbewegung', 'newtonsche-gesetze'],
       },
       {
         code: 'LF-P.3',

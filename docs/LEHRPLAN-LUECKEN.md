@@ -2,7 +2,7 @@
 
 <!-- Automatisch erzeugt mit `npm run lehrplan:luecken` aus src/curriculum/lehrplaene/ – nicht von Hand bearbeiten. -->
 
-Lernbereiche der Länder-Lehrpläne, zu denen es noch **keine** Simulation gibt – Vorrat für neue Simulationen (Anleitung: `docs/NEUE-SIMULATION.md`). Insgesamt **131 von 1773** Lernbereichen ohne Simulation.
+Lernbereiche der Länder-Lehrpläne, zu denen es noch **keine** Simulation gibt – Vorrat für neue Simulationen (Anleitung: `docs/NEUE-SIMULATION.md`). Insgesamt **127 von 1773** Lernbereichen ohne Simulation.
 
 Nicht jeder Lernbereich eignet sich für eine Simulation. Reine Methoden-, Praktikums- und Projektthemen sind im Lehrplan mit `method: true` gekennzeichnet und zählen nicht als Lücke. Kommt ein Thema in mehreren Ländern vor, lohnt es sich besonders.
 
@@ -97,7 +97,7 @@ Alle Lernbereiche haben eine Simulation.
 | --- | --- | --- | --- |
 | 12 | S.3 | Stochastik › Hypergeometrische Verteilung | Ziehen ohne Zurücklegen mit der hypergeometrischen Verteilung beschreiben. |
 
-## Physik (104)
+## Physik (100)
 
 ### Baden-Württemberg · Gymnasium (1)
 
@@ -140,7 +140,7 @@ Alle Lernbereiche haben eine Simulation.
 
 Alle Lernbereiche haben eine Simulation.
 
-### Hessen · Gymnasium (46)
+### Hessen · Gymnasium (43)
 
 | Stufe | Nr. | Lernbereich | Kurz |
 | --- | --- | --- | --- |
@@ -151,10 +151,7 @@ Alle Lernbereiche haben eine Simulation.
 | 9/10 | 4.3 | Elektrizität im Alltag › Elektrostatische Phänomene | Aufladung, Anziehung und Abstoßung mit Ladungen erklären. |
 | 9/10 | 5.1 | Wettererscheinungen und Klima › Übertragung thermischer Energie | Wärmeleitung, Wärmeströmung und Wärmestrahlung untersuchen. |
 | 9/10 | 5.3 | Wettererscheinungen und Klima › Druck- und Temperaturunterschiede | Wettererscheinungen als Ausgleich von Unterschieden erklären. |
-| 9/10 | 6.2 | Fortbewegung und Mobilität › Trägheit eines Körpers | Trägheit als Beharrungsvermögen; Bedeutung für die Verkehrssicherheit. |
 | 9/10 | 6.4 | Fortbewegung und Mobilität › Menschliche und technische Leistungen und deren Vergleich | Eigene körperliche Leistung bestimmen und mit Maschinen vergleichen. |
-| 11 | E.1.5 | Bewegungen und ihre Beschreibung › Idealisierung | Massepunkt und Vernachlässigung der Reibung als Modellannahmen. |
-| 11 | E.2.1 | Newton’sche Axiome und Erhaltungssätze › Die drei Newton’schen Axiome | Trägheitsgesetz, Grundgleichung F = m·a, Wechselwirkungsprinzip und Inertialsysteme. |
 | 11 | E.4.3 | Weitere Bewegungen › Numerische Simulation | Bewegungen schrittweise mit Differenzenquotienten (z. B. Tabellenkalkulation) berechnen. |
 | 11 | E.6.1 | Grundlagen der Thermodynamik › Wärmeenergie als innere Energie | Begriff der inneren Energie und sein historischer Hintergrund. |
 | 11 | E.6.2 | Grundlagen der Thermodynamik › Reversible und irreversible Vorgänge | Umkehrbare und nicht umkehrbare Prozesse unterscheiden. |
@@ -191,11 +188,10 @@ Alle Lernbereiche haben eine Simulation.
 | 13 | Q4.5.3 | Festkörperphysik › Quantenphysikalische Erklärung der Energiebänder (nur LK) | Fermienergie (qualitativ). |
 | 13 | Q4.5.5 | Festkörperphysik › Supraleitung (nur qualitativ) (nur LK) | Phänomen der Supraleitung. |
 
-### Niedersachsen · Gymnasium (4)
+### Niedersachsen · Gymnasium (3)
 
 | Stufe | Nr. | Lernbereich | Kurz |
 | --- | --- | --- | --- |
-| 11 | EF-1.2 | Dynamik › Grundgleichung der Mechanik und newtonsche Axiome | F = m · a, Krafteinheit und die drei Axiome. |
 | 11 | EF-2.4 | Wahlmodule (Vorschläge) › Strahlungsphysik | Strahlungsgesetze, Strahlungsgleichgewicht, selektive Absorption und der Treibhauseffekt. |
 | 12/13 | Q-3.2 | Quantenobjekte › Komplementarität und Unbestimmtheit | Nur eA: Mach-Zehnder-Interferometer, Delayed-Choice-Experiment, Zustand, Präparation, Superposition und Unbestimmtheit. |
 | 12/13 | Q-5.2 | Atomkern › Energiespektren und Anwendungen | Halbleiterdetektor, Alpha-Spektrum einer Zerfallsreihe, Bragg-Kurve; nur eA: Nukleonen im Potenzialtopf. |

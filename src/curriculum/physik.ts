@@ -106,6 +106,22 @@ export const physik: Subject = {
               ),
             },
             {
+              id: 'newtonsche-gesetze',
+              status: 'ready',
+              slug: L('newtonsche-gesetze', 'newtons-laws'),
+              title: L('Newton’sche Gesetze: Trägheit, F = m · a, Wechselwirkung', 'Newton’s laws: inertia, F = m · a, action and reaction'),
+              summary: L(
+                'Beim scharfen Bremsen rutscht die Kiste weiter, ein Zuggewicht beschleunigt einen Wagen, zwei Wagen stoßen sich gleich stark ab. Außerdem: eine Kiste gegen Haft- und Gleitreibung schieben, die Waage im Aufzug beobachten, eine Messreihe zu F = m · a aufnehmen und Aufgaben üben.',
+                'When the truck brakes hard the box keeps sliding, a hanging weight accelerates a cart, two carts push apart with equal forces. Plus: pushing a box against static and sliding friction, scales in a lift, a measurement series for F = m · a and practice tasks.',
+              ),
+              grades: [7, 12],
+              kmk: ['P-S', 'P-E', 'P-BK-Wechselwirkung', 'P-BK-Mathematisieren'],
+              keywords: L(
+                ['Newton', 'Newtonsche Gesetze', 'Newtonsche Axiome', 'Trägheit', 'Trägheitsgesetz', 'Beharrungsvermögen', 'Sicherheitsgurt', 'Grundgleichung der Mechanik', 'F = m · a', 'Kraft', 'Masse', 'Beschleunigung', 'Wechselwirkungsprinzip', 'actio gleich reactio', 'Gegenkraft', 'Reibung', 'Fahrbahnversuch', 'Rolle', 'Massepunkt', 'Idealisierung', 'Haftreibung', 'Gleitreibung', 'resultierende Kraft', 'Kräftegleichgewicht', 'Kräfteplan', 'Normalkraft', 'Aufzug', 'Personenwaage', 'Schwerelosigkeit', 'Messreihe', 'Lichtschranke'],
+                ['Newton', 'Newton’s laws', 'inertia', 'law of inertia', 'seat belt', 'second law', 'F = m · a', 'force', 'mass', 'acceleration', 'third law', 'action and reaction', 'reaction force', 'friction', 'air track', 'pulley', 'point mass', 'idealisation', 'static friction', 'sliding friction', 'resultant force', 'balanced forces', 'free-body diagram', 'normal force', 'lift', 'elevator', 'bathroom scales', 'weightlessness', 'measurement series', 'light gate'],
+              ),
+            },
+            {
               id: 'kraefteaddition',
               status: 'ready',
               slug: L('kraefte-addieren-und-zerlegen', 'adding-and-resolving-forces'),

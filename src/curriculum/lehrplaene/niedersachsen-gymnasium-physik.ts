@@ -86,7 +86,7 @@ const DJ_7_8: CurriculumUnit[] = [
       'Geradlinige Bewegungen in t-s- und t-v-Diagrammen, Trägheit und Masse, Kraft als Ursache von Bewegungsänderung und Verformung, hookesches Gesetz, Gewichtskraft sowie Kräfte als Pfeile addieren.',
       'Straight-line motion in t–s and t–v graphs, inertia and mass, force as the cause of changes in motion and deformation, Hooke’s law, weight and adding forces as arrows.',
     ),
-    simulations: ['bewegungsdiagramme', 'hookesches-gesetz', 'kraefteaddition', 'messunsicherheit', 'dichte-auftrieb'],
+    simulations: ['bewegungsdiagramme', 'hookesches-gesetz', 'kraefteaddition', 'messunsicherheit', 'dichte-auftrieb', 'newtonsche-gesetze'],
   },
 ];
 
@@ -153,6 +153,7 @@ const EF_UNITS: CurriculumUnit[] = [
         code: 'EF-1.2',
         title: L('Grundgleichung der Mechanik und newtonsche Axiome', 'Fundamental equation of mechanics and Newton’s laws'),
         summary: L('F = m · a, Krafteinheit und die drei Axiome.', 'F = m · a, the unit of force and the three laws.'),
+        simulations: ['newtonsche-gesetze'],
       },
       {
         code: 'EF-1.3',

@@ -173,7 +173,7 @@ const EP_UNITS: CurriculumUnit[] = [
       'Trägheitssatz und gleichförmige Bewegung, gleichmäßig beschleunigte Bewegung, Grundgesetz der Mechanik, freier Fall und senkrechter Wurf, Wechselwirkungsprinzip und Stöße, gleichförmige Kreisbewegung.',
       'The law of inertia and uniform motion, uniformly accelerated motion, Newton’s second law, free fall and vertical projection, action and reaction and collisions, uniform circular motion.',
     ),
-    simulations: ['bewegungsdiagramme', 'freier-fall', 'kraefteaddition', 'schiefe-ebene', 'energieerhaltung', 'stoesse', 'kreisbewegung'],
+    simulations: ['bewegungsdiagramme', 'freier-fall', 'kraefteaddition', 'schiefe-ebene', 'energieerhaltung', 'stoesse', 'kreisbewegung', 'newtonsche-gesetze'],
   },
   {
     code: '2',
