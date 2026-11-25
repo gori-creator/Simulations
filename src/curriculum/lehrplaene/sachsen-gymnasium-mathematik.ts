@@ -145,6 +145,7 @@ const K6: CurriculumUnit[] = [
     code: 'W2',
     title: L('Unterhaltsame Geometrie (Wahlbereich)', 'Entertaining geometry (optional)'),
     summary: L('Optische Täuschungen, „unmögliche Figuren“ und Legespiele.', 'Optical illusions, “impossible figures” and tiling puzzles.'),
+    simulations: ['optische-taeuschungen'],
   },
   {
     code: 'W3',

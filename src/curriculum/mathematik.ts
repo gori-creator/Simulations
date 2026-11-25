@@ -487,6 +487,22 @@ export const mathematik: Subject = {
               ['quadrilateral', 'square', 'rectangle', 'rhombus', 'parallelogram', 'trapezium', 'trapezoid', 'isosceles trapezium', 'kite', 'parallel', 'line of symmetry', 'point symmetry', 'diagonal', 'properties'],
             ),
           },
+          {
+            id: 'optische-taeuschungen',
+            status: 'ready',
+            slug: L('optische-taeuschungen', 'optical-illusions'),
+            title: L('Optische Täuschungen: Messen statt glauben', 'Optical illusions: measure, don’t trust'),
+            summary: L(
+              'Zwei gleich lange Linien wirken verschieden lang, parallele Linien scheinen zu kippen. Stelle ein, was für dich gleich aussieht, und miss dann nach. Das Auge lässt sich täuschen, das Lineal nicht.',
+              'Two lines of equal length look different, and parallel lines seem to tilt. Set what looks equal to you, then measure. The eye can be fooled, the ruler can’t.',
+            ),
+            grades: [5, 7],
+            kmk: ['M-L3', 'M-L2', 'M-K1'],
+            keywords: L(
+              ['optische Täuschung', 'Müller-Lyer', 'Ebbinghaus', 'Zöllner', 'Hering', 'Parallelität', 'Länge', 'Messen', 'Schätzen', 'Wahrnehmung', 'unterhaltsame Geometrie'],
+              ['optical illusion', 'Müller-Lyer', 'Ebbinghaus', 'Zöllner', 'Hering', 'parallel lines', 'length', 'measuring', 'estimating', 'perception', 'recreational geometry'],
+            ),
+          },
         ]),
         topic('symmetrie', L('Symmetrie und Konstruktionen', 'Symmetry and constructions'), [
           {
