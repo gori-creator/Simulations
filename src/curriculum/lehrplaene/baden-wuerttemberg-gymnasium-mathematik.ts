@@ -446,6 +446,7 @@ export const badenWuerttembergGymnasiumMathematik: StateCurriculum = {
         },
         {
           code: "3.2.2",
+          method: true,
           title: L(
             "Leitidee Messen (keine Inhalte in den Klassen 7/8)",
             "Guiding idea: measuring (no content in grades 7/8)",
@@ -679,6 +680,7 @@ export const badenWuerttembergGymnasiumMathematik: StateCurriculum = {
         },
         {
           code: "3.2.2",
+          method: true,
           title: L(
             "Leitidee Messen (keine Inhalte in den Klassen 7/8)",
             "Guiding idea: measuring (no content in grades 7/8)",
@@ -1535,6 +1537,7 @@ export const badenWuerttembergGymnasiumMathematik: StateCurriculum = {
                 "Einfache geometrische Sätze mit Vektoren beweisen.",
                 "Proving simple geometric theorems with vectors.",
               ),
+              simulations: ['vektoren-3d', 'skalar-vektorprodukt'],
             },
           ],
         },
@@ -2042,6 +2045,7 @@ export const badenWuerttembergGymnasiumMathematik: StateCurriculum = {
                 "Einfache geometrische Sätze mit Vektoren beweisen.",
                 "Proving simple geometric theorems with vectors.",
               ),
+              simulations: ['vektoren-3d', 'skalar-vektorprodukt'],
             },
           ],
         },

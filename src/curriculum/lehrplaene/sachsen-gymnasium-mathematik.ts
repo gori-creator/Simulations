@@ -72,6 +72,7 @@ const K5: CurriculumUnit[] = [
     code: 'W1',
     title: L('Dynamisieren geometrischer Objekte (Wahlbereich)', 'Dynamic geometry (optional)'),
     summary: L('Figuren mit dynamischer Geometriesoftware darstellen und bewegen.', 'Drawing and moving figures with dynamic geometry software.'),
+    simulations: ['spiegelung'],
   },
   {
     code: 'W2',
@@ -136,6 +137,7 @@ const K6: CurriculumUnit[] = [
     code: 'W1',
     title: L('Finden von Vermutungen mit dynamischer Geometrie (Wahlbereich)', 'Finding conjectures with dynamic geometry (optional)'),
     summary: L('Mit Geometriesoftware messen und Zusammenhänge vermuten.', 'Measuring with geometry software and conjecturing relationships.'),
+    simulations: ['winkelsumme', 'mittelsenkrechte'],
   },
   {
     code: 'W2',
@@ -187,6 +189,7 @@ const K7: CurriculumUnit[] = [
   },
   {
     code: 'W1',
+    method: true,
     title: L('Tabellenkalkulation – ein mathematisches Werkzeug (Wahlbereich)', 'Spreadsheets as a mathematical tool (optional)'),
     summary: L('Formeln, Bezüge und Diagramme in der Tabellenkalkulation.', 'Formulas, references and charts in spreadsheets.'),
   },
@@ -243,11 +246,13 @@ const K8: CurriculumUnit[] = [
   },
   {
     code: '5',
+    method: true,
     title: L('Vernetzung: Heuristische Strategien', 'Connections: problem-solving strategies'),
     summary: L('Vorwärts- und Rückwärtsarbeiten, Lösungspläne aufstellen und Lösungswege darstellen.', 'Working forwards and backwards, making solution plans and presenting solutions.'),
   },
   {
     code: 'W1',
+    method: true,
     title: L('Programmierung mathematischer Algorithmen (Wahlbereich)', 'Programming mathematical algorithms (optional)'),
     summary: L('Algorithmen beschreiben und mit Sequenz, Verzweigung und Schleife umsetzen.', 'Describing algorithms and implementing them with sequence, branching and loops.'),
   },
@@ -304,6 +309,7 @@ const K9: CurriculumUnit[] = [
   },
   {
     code: '5',
+    method: true,
     title: L('Vernetzung: Mathematik und moderne Rechentechnik', 'Connections: mathematics and modern computing'),
     summary: L('Rechentechnik beim Problemlösen nutzen und Ergebnisse kritisch werten.', 'Using computers to solve problems and judging the results critically.'),
   },

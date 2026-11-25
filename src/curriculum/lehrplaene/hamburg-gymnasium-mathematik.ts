@@ -409,6 +409,7 @@ const KS_9_10_UNITS: CurriculumUnit[] = [
   },
   {
     code: '11',
+    method: true,
     title: L('Üben und Vertiefen', 'Practice and consolidation'),
     summary: L(
       'Üben und Vertiefen zu allen Leitideen und prozessbezogenen Kompetenzen mit Blick auf die Prüfung.',

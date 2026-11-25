@@ -288,6 +288,7 @@ const KS_7_9_UNITS: CurriculumUnit[] = [
         code: '2.4',
         title: L('Sachaufgaben', 'word problems'),
         summary: L('Größen in Sachzusammenhängen bestimmen und Ergebnisse und Lösungsweg bewerten.', 'Finding quantities in real contexts and evaluating results and methods.'),
+        simulations: ['einheiten'],
       },
       {
         code: '2.5',
