@@ -3114,6 +3114,7 @@ export const hessenGymnasiumMathematik: StateCurriculum = {
                 'Representing parabolic trajectories using parameters (advanced course only)',
               ),
               summary: L('Flugbahnen (z. B. eines Balls) parametrisch beschreiben.', 'Describing trajectories (e.g. of a ball) parametrically.'),
+              simulations: ['parameterkurven'],
             },
           ],
         },

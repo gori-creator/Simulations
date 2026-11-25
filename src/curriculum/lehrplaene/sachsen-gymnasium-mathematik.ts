@@ -392,6 +392,7 @@ const K10: CurriculumUnit[] = [
     code: 'W3',
     title: L('Kurven in Parameterdarstellung und in Polarkoordinaten (Wahlbereich)', 'Parametric curves and polar coordinates (optional)'),
     summary: L('Kurven mit Parametern und Polarkoordinaten beschreiben.', 'Describing curves with parameters and polar coordinates.'),
+    simulations: ['parameterkurven'],
   },
 ];
 

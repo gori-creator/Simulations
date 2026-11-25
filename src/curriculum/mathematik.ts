@@ -862,6 +862,22 @@ export const mathematik: Subject = {
               ['equation of a circle', 'centre-radius form', 'general form', 'circle and line', 'secant', 'tangent', 'non-intersecting line', 'distance point line', 'two circles', 'intersection points', 'point of contact', 'Thales circle', 'analytic geometry'],
             ),
           },
+          {
+            id: 'parameterkurven',
+            status: 'ready',
+            slug: L('parameterkurven-polarkoordinaten', 'parametric-curves-polar-coordinates'),
+            title: L('Kurven in Parameterdarstellung und Polarkoordinaten', 'Parametric curves and polar coordinates'),
+            summary: L(
+              'Ein Ball fliegt auf einer Parabel, und die Zeit ist der Parameter. Ein Punkt auf einem Rad zeichnet eine Zykloide, zwei Schwingungen eine Lissajous-Figur. In Polarkoordinaten entstehen Spiralen, Rosen und Herzkurven.',
+              'A ball flies along a parabola, with time as the parameter. A point on a wheel traces a cycloid and two oscillations a Lissajous figure. Polar coordinates give spirals, roses and cardioids.',
+            ),
+            grades: [10, 13],
+            kmk: ['M-L4', 'M-L3', 'M-K3', 'M-K4'],
+            keywords: L(
+              ['Parameterdarstellung', 'Parameter', 'Kurve', 'Wurfparabel', 'schräger Wurf', 'Flugbahn', 'Bahngleichung', 'Lissajous-Figur', 'Zykloide', 'Ellipse', 'Polarkoordinaten', 'Spirale', 'Rosenkurve', 'Kardioide', 'Lemniskate'],
+              ['parametric form', 'parameter', 'curve', 'projectile path', 'oblique throw', 'trajectory', 'equation of the path', 'Lissajous figure', 'cycloid', 'ellipse', 'polar coordinates', 'spiral', 'rose curve', 'cardioid', 'lemniscate'],
+            ),
+          },
         ]),
       ],
     }),
