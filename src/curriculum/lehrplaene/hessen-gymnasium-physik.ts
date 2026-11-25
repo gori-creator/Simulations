@@ -2555,7 +2555,7 @@ export const hessenGymnasiumPhysik: StateCurriculum = {
                 'Relativitätsprinzip, Konstanz von c, Zeitdilatation, Längenkontraktion, Minkowski-Diagramme.',
                 'Principle of relativity, constancy of c, time dilation, length contraction, Minkowski diagrams.',
               ),
-              simulations: ['zeitdilatation'],
+              simulations: ['zeitdilatation', 'minkowski'],
             },
             {
               code: 'Q4.4.2',
@@ -2570,6 +2570,7 @@ export const hessenGymnasiumPhysik: StateCurriculum = {
                 'Lorentz transformation and addition of velocities (advanced course only)',
               ),
               summary: L('Umrechnung zwischen bewegten Bezugssystemen.', 'Transforming between moving reference frames.'),
+              simulations: ['minkowski'],
             },
             {
               code: 'Q4.4.4',

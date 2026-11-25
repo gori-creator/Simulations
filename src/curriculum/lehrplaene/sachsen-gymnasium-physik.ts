@@ -416,7 +416,7 @@ const J11: CurriculumUnit[] = [
     code: 'LK-W1',
     title: L('Einblick in die Relativitätstheorie (Wahlbereich Leistungskurs)', 'Introduction to relativity (optional, advanced course)'),
     summary: L('Postulate, Michelson-Experiment, Zeitdilatation und E = m · c².', 'Postulates, the Michelson experiment, time dilation and E = m · c².'),
-    simulations: ['zeitdilatation'],
+    simulations: ['zeitdilatation', 'minkowski'],
   },
   {
     code: 'LK-W2',

@@ -218,7 +218,7 @@ const S_UNITS: CurriculumUnit[] = [
       'Himmelsbeobachtung und Instrumente, Raumzeit, Sternentwicklung und schwarze Löcher, Gravitationswellen, Skalen im Universum, Strahlungsbilanzen von Planeten.',
       'Observing the sky and instruments, spacetime, stellar evolution and black holes, gravitational waves, scales in the universe, radiation budgets of planets.',
     ),
-    simulations: ['hubble', 'hr-diagramm', 'zeitdilatation'],
+    simulations: ['hubble', 'hr-diagramm', 'zeitdilatation', 'minkowski'],
   },
 ];
 

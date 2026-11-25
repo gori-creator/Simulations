@@ -226,6 +226,7 @@ describe('Länder-Lehrpläne', () => {
       'fourier-reihen': 'nicht im Rahmenlehrplan (Hochschule)',
     },
     'berlin-gymnasium-physik': {
+      minkowski: 'Spezielle Relativitätstheorie mit Raum-Zeit-Diagrammen kommt in den erfassten Lernbereichen nicht vor.',
       standardmodell: 'Elementarteilchen und Standardmodell kommen in den erfassten Lernbereichen nicht vor (Kernaufbau nur bis Proton und Neutron).',
       roentgen: 'Röntgenspektrum und Compton-Effekt kommen in den erfassten Lernbereichen nicht vor.',
       laser: 'Laser (Besetzungsinversion, stimulierte Emission) kommt in den erfassten Lernbereichen nicht ausdrücklich vor.',
@@ -253,6 +254,7 @@ describe('Länder-Lehrpläne', () => {
       'fourier-reihen': 'nicht im Rahmenlehrplan (Hochschule)',
     },
     'brandenburg-gymnasium-physik': {
+      minkowski: 'Spezielle Relativitätstheorie mit Raum-Zeit-Diagrammen kommt in den erfassten Lernbereichen nicht vor.',
       standardmodell: 'Elementarteilchen und Standardmodell kommen in den erfassten Lernbereichen nicht vor (Kernaufbau nur bis Proton und Neutron).',
       roentgen: 'Röntgenspektrum und Compton-Effekt kommen in den erfassten Lernbereichen nicht vor.',
       laser: 'Laser (Besetzungsinversion, stimulierte Emission) kommt in den erfassten Lernbereichen nicht ausdrücklich vor.',
@@ -282,6 +284,7 @@ describe('Länder-Lehrpläne', () => {
       'fourier-reihen': 'nicht im Bildungsplan (Hochschule)',
     },
     'bremen-gymnasium-physik': {
+      minkowski: 'Spezielle Relativitätstheorie mit Raum-Zeit-Diagrammen kommt in den erfassten Lernbereichen nicht vor.',
       stromwirkungen: 'Wirkungen und Gefahren des Stroms sind in den erfassten Lernbereichen nicht ausdrücklich genannt (ggf. im Fach Naturwissenschaften 5/6).',
       roentgen: 'Röntgenspektrum und Compton-Effekt kommen in den erfassten Lernbereichen nicht vor.',
       laser: 'Laser (Besetzungsinversion, stimulierte Emission) kommt in den erfassten Lernbereichen nicht ausdrücklich vor.',
@@ -345,6 +348,7 @@ describe('Länder-Lehrpläne', () => {
       'fourier-reihen': 'nicht im Kerncurriculum (Hochschule)',
     },
     'niedersachsen-gymnasium-physik': {
+      minkowski: 'Spezielle Relativitätstheorie mit Raum-Zeit-Diagrammen kommt in den erfassten Lernbereichen nicht vor.',
       standardmodell: 'Elementarteilchen und Standardmodell kommen in den erfassten Lernbereichen nicht vor (Kernaufbau nur bis Proton und Neutron).',
       laser: 'Laser (Besetzungsinversion, stimulierte Emission) kommt in den erfassten Lernbereichen nicht ausdrücklich vor.',
       tunneleffekt: 'Tunneleffekt und Rastertunnelmikroskop kommen in den erfassten Lernbereichen nicht ausdrücklich vor.',
@@ -401,6 +405,7 @@ describe('Länder-Lehrpläne', () => {
       'fourier-reihen': 'nicht im Lehrplan (Hochschule)',
     },
     'saarland-gymnasium-physik': {
+      minkowski: 'Spezielle Relativitätstheorie mit Raum-Zeit-Diagrammen kommt in den erfassten Lernbereichen nicht vor.',
       standardmodell: 'Elementarteilchen und Standardmodell kommen in den erfassten Lernbereichen nicht vor (Kernaufbau nur bis Proton und Neutron).',
       roentgen: 'Röntgenspektrum und Compton-Effekt kommen in den erfassten Lernbereichen nicht vor.',
       laser: 'Laser (Besetzungsinversion, stimulierte Emission) kommt in den erfassten Lernbereichen nicht ausdrücklich vor.',

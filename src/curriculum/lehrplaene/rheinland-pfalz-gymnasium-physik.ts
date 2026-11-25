@@ -468,7 +468,7 @@ const QP_UNITS: CurriculumUnit[] = [
         code: 'GF-W.17',
         title: L('Relativistische Kinematik', 'Relativistic kinematics'),
         summary: L('Relativität der Gleichzeitigkeit, Zeitdilatation und Längenkontraktion, Raum-Zeit-Diagramme.', 'Relativity of simultaneity, time dilation and length contraction, spacetime diagrams.'),
-        simulations: ['zeitdilatation'],
+        simulations: ['zeitdilatation', 'minkowski'],
       },
       {
         code: 'GF-W.18',
@@ -641,6 +641,7 @@ const QP_UNITS: CurriculumUnit[] = [
         code: 'LF-W.2',
         title: L('Veränderliche elektromagnetische Felder II', 'Changing electromagnetic fields II'),
         summary: L('Maxwell-Gleichungen, Felder und Bezugssysteme, Lorentz-Transformation.', 'Maxwell’s equations, fields and frames of reference, the Lorentz transformation.'),
+        simulations: ['minkowski'],
       },
       {
         code: 'LF-W.3',
@@ -718,7 +719,7 @@ const QP_UNITS: CurriculumUnit[] = [
         code: 'LF-W.15',
         title: L('Relativistische Kinematik', 'Relativistic kinematics'),
         summary: L('Relativität der Gleichzeitigkeit, Zeitdilatation und Längenkontraktion, Raum-Zeit-Diagramme.', 'Relativity of simultaneity, time dilation and length contraction, spacetime diagrams.'),
-        simulations: ['zeitdilatation'],
+        simulations: ['zeitdilatation', 'minkowski'],
       },
       {
         code: 'LF-W.16',

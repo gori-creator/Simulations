@@ -474,7 +474,7 @@ const EF_UNITS: CurriculumUnit[] = [
           'Geo- und heliozentrisches Weltbild, Grundprinzipien der speziellen Relativitätstheorie und Zeitdilatation an der Lichtuhr.',
           'Geocentric and heliocentric world views, basic principles of special relativity and time dilation with the light clock.',
         ),
-        simulations: ['zeitdilatation'],
+        simulations: ['zeitdilatation', 'minkowski'],
       },
     ],
   },

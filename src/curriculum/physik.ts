@@ -1287,6 +1287,22 @@ export const physik: Subject = {
                 ['special relativity', 'theory of relativity', 'Einstein', 'postulates', 'principle of relativity', 'speed of light', 'constancy of the speed of light', 'light clock', 'time dilation', 'proper time', 'length contraction', 'rest length', 'Lorentz factor', 'relativity of simultaneity', 'simultaneity', 'inertial frame', 'frame of reference', 'muon', 'cosmic rays', 'GPS', 'relativistic mass', 'mass increase', 'rest energy', 'total energy', 'E = mc²', 'relativistic momentum', 'particle accelerator', 'world view'],
               ),
             },
+            {
+              id: 'minkowski',
+              status: 'ready',
+              slug: L('minkowski-diagramm-lorentz-transformation', 'minkowski-diagram-lorentz-transformation'),
+              title: L('Minkowski-Diagramm und Lorentz-Transformation', 'Minkowski diagram and Lorentz transformation'),
+              summary: L(
+                'Raum und Zeit in einem Bild: Die Achsen eines bewegten Beobachters kippen zur Lichtlinie hin. Was für den einen gleichzeitig ist, ist es für den anderen nicht – und Geschwindigkeiten addieren sich nie über c hinaus.',
+                'Space and time in one picture: the axes of a moving observer tilt towards the light line. What is simultaneous for one is not for the other – and velocities never add up beyond c.',
+              ),
+              grades: [11, 13],
+              kmk: ['P-S', 'P-E', 'P-BK-Mathematisieren', 'P-BK-Wechselwirkung'],
+              keywords: L(
+                ['Minkowski-Diagramm', 'Raum-Zeit-Diagramm', 'Raumzeit', 'Lorentz-Transformation', 'Lorentz-Faktor', 'Bezugssystem', 'Inertialsystem', 'Relativität der Gleichzeitigkeit', 'Lichtkegel', 'Weltlinie', 'Ereignis', 'Raumzeit-Intervall', 'Geschwindigkeitsaddition', 'Lichtgeschwindigkeit', 'spezielle Relativitätstheorie'],
+                ['Minkowski diagram', 'spacetime diagram', 'spacetime', 'Lorentz transformation', 'Lorentz factor', 'frame of reference', 'inertial frame', 'relativity of simultaneity', 'light cone', 'world line', 'event', 'spacetime interval', 'velocity addition', 'speed of light', 'special relativity'],
+              ),
+            },
           ],
         },
         {
