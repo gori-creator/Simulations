@@ -113,7 +113,7 @@ const KS_9_10_UNITS: CurriculumUnit[] = [
       'Trägheits-, Wechselwirkungs- und Grundgesetz der Dynamik, Zerlegen und Addieren von Kräften, Reibung und Radialkraft (qualitativ).',
       'The laws of inertia, interaction and the fundamental law of dynamics, resolving and adding forces, friction and centripetal force (qualitative).',
     ),
-    simulations: ['kraefteaddition', 'schiefe-ebene', 'kreisbewegung', 'newtonsche-gesetze'],
+    simulations: ['kraefteaddition', 'schiefe-ebene', 'kreisbewegung', 'newtonsche-gesetze', 'kleine-schritte'],
   },
   {
     code: '3.9',

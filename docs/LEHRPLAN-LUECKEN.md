@@ -2,7 +2,7 @@
 
 <!-- Automatisch erzeugt mit `npm run lehrplan:luecken` aus src/curriculum/lehrplaene/ – nicht von Hand bearbeiten. -->
 
-Lernbereiche der Länder-Lehrpläne, zu denen es noch **keine** Simulation gibt – Vorrat für neue Simulationen (Anleitung: `docs/NEUE-SIMULATION.md`). Insgesamt **125 von 1773** Lernbereichen ohne Simulation.
+Lernbereiche der Länder-Lehrpläne, zu denen es noch **keine** Simulation gibt – Vorrat für neue Simulationen (Anleitung: `docs/NEUE-SIMULATION.md`). Insgesamt **121 von 1773** Lernbereichen ohne Simulation.
 
 Nicht jeder Lernbereich eignet sich für eine Simulation. Reine Methoden-, Praktikums- und Projektthemen sind im Lehrplan mit `method: true` gekennzeichnet und zählen nicht als Lücke. Kommt ein Thema in mehreren Ländern vor, lohnt es sich besonders.
 
@@ -136,18 +136,17 @@ Alle Lernbereiche haben eine Simulation.
 | 7–9 | 2.4 | Größen und Messen › Sachaufgaben | Größen in Sachzusammenhängen bestimmen und Ergebnisse und Lösungsweg bewerten. |
 | 12 | S.3 | Stochastik › Hypergeometrische Verteilung | Ziehen ohne Zurücklegen mit der hypergeometrischen Verteilung beschreiben. |
 
-## Physik (64)
+## Physik (60)
 
 ### Baden-Württemberg · Gymnasium (0)
 
 Alle Lernbereiche haben eine Simulation.
 
-### Bayern · Gymnasium (9)
+### Bayern · Gymnasium (8)
 
 | Stufe | Nr. | Lernbereich | Kurz |
 | --- | --- | --- | --- |
 | 8 | 4.1 | Profilbereich am NTG (nur NTG) › Untersuchungen an Solarzellen und anderen Elektrizitätsquellen | Solarmodule in Reihe und parallel messen und äußere Einflüsse wie Neigung und Schatten untersuchen; weitere Quellen wie galvanische Elemente oder Netzgeräte erkunden. |
-| 11 | 4.1 | Profilbereich am NTG (27 Std.) (nur NTG) › Die Methode der kleinen Schritte | Bewegungen mit veränderlicher Kraft schrittweise am Computer berechnen, z. B. Fall mit Luftwiderstand und harmonische Schwingung, und mit Experimenten vergleichen. |
 | 11 | 4.2 | Profilbereich am NTG (27 Std.) (nur NTG) › Photovoltaik in Anwendungen | U-I-Kennlinie einer Solarzelle und den Punkt maximaler Leistung bestimmen, Komponenten von Photovoltaikanlagen kennen und ihren Nutzen bewerten. |
 | 13 | 1.2 | Grundideen der Quantenphysik › Einblick in das Weltbild der Quantenphysik | Wellenfunktion und Nachweiswahrscheinlichkeit, Superposition, Komplementarität und der quantenphysikalische Messprozess. |
 | 13 | 4.1 | Kernphysik › Ein einfaches Kernmodell der Quantenphysik | Bindungsenergie je Nukleon, Potentialtopfmodell des Kerns, Entstehung der Strahlungsarten und Energiebilanzen bei Zerfällen und Kernreaktionen. |
@@ -174,7 +173,7 @@ Alle Lernbereiche haben eine Simulation.
 
 Alle Lernbereiche haben eine Simulation.
 
-### Hessen · Gymnasium (30)
+### Hessen · Gymnasium (29)
 
 | Stufe | Nr. | Lernbereich | Kurz |
 | --- | --- | --- | --- |
@@ -182,7 +181,6 @@ Alle Lernbereiche haben eine Simulation.
 | 6–8 | 4.3 | Elektrizität im Alltag › Gefahren beim Umgang mit Elektrizität im Alltag | Gefahren erkennen und sicheres Verhalten begründen. |
 | 9/10 | 4.3 | Elektrizität im Alltag › Elektrostatische Phänomene | Aufladung, Anziehung und Abstoßung mit Ladungen erklären. |
 | 9/10 | 6.4 | Fortbewegung und Mobilität › Menschliche und technische Leistungen und deren Vergleich | Eigene körperliche Leistung bestimmen und mit Maschinen vergleichen. |
-| 11 | E.4.3 | Weitere Bewegungen › Numerische Simulation | Bewegungen schrittweise mit Differenzenquotienten (z. B. Tabellenkalkulation) berechnen. |
 | 11 | E.7.2 | Drehbewegungen › Drehimpuls | Drehimpuls als Erhaltungsgröße; Präzession. |
 | 11 | E.7.3 | Drehbewegungen › Trägheitsmoment | Anwendungsbeispiele wie die Pirouette. |
 | 12 | Q1.1.4 | Elektrisches Feld › Coulomb’sches Gesetz | Kraft zwischen Punktladungen. |
@@ -246,14 +244,12 @@ Alle Lernbereiche haben eine Simulation.
 
 Alle Lernbereiche haben eine Simulation.
 
-### Sachsen · Gymnasium (5)
+### Sachsen · Gymnasium (3)
 
 | Stufe | Nr. | Lernbereich | Kurz |
 | --- | --- | --- | --- |
 | 7 | W3 | Vom Fliegen (Wahlbereich) | Geschichte des Fliegens und dynamischer Auftrieb am Tragflügel. |
 | 8 | W3 | Elektrisches Messen nichtelektrischer Größen (Wahlbereich) | Sensoren wandeln Größen wie Temperatur oder Licht in Spannungen um. |
-| 11 | GK-W2 | Messen und Modellieren (Wahlbereich Grundkurs) | Messreihen mit Videoanalyse und Messschnittstellen erfassen und mit Modellen vergleichen. |
-| 11 | LK-4 | Modellbildung und Simulation (Leistungskurs) | Bewegungen numerisch modellieren, Parameter variieren und mit dem Experiment vergleichen. |
 | 12 | LK-W2 | Deterministisches Chaos (Wahlbereich Leistungskurs) | Nichtlineare Systeme, Attraktoren und begrenzte Vorhersagbarkeit. |
 
 ### Sachsen-Anhalt · Gymnasium (0)

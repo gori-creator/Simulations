@@ -152,7 +152,7 @@ const EF_UNITS: CurriculumUnit[] = [
         code: 'EF-1.2',
         title: L('Grundgleichung der Mechanik und newtonsche Axiome', 'Fundamental equation of mechanics and Newton’s laws'),
         summary: L('F = m · a, Krafteinheit und die drei Axiome.', 'F = m · a, the unit of force and the three laws.'),
-        simulations: ['newtonsche-gesetze'],
+        simulations: ['newtonsche-gesetze', 'kleine-schritte'],
       },
       {
         code: 'EF-1.3',

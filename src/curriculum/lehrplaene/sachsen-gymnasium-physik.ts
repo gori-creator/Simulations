@@ -349,6 +349,7 @@ const J11: CurriculumUnit[] = [
     code: 'GK-W2',
     title: L('Messen und Modellieren (Wahlbereich Grundkurs)', 'Measuring and modelling (optional, basic course)'),
     summary: L('Messreihen mit Videoanalyse und Messschnittstellen erfassen und mit Modellen vergleichen.', 'Recording measurements with video analysis and data loggers and comparing them with models.'),
+    simulations: ['kleine-schritte'],
   },
   {
     code: 'GK-W3',
@@ -378,6 +379,7 @@ const J11: CurriculumUnit[] = [
     code: 'LK-4',
     title: L('Modellbildung und Simulation (Leistungskurs)', 'Modelling and simulation (advanced course)'),
     summary: L('Bewegungen numerisch modellieren, Parameter variieren und mit dem Experiment vergleichen.', 'Modelling motion numerically, varying parameters and comparing with experiment.'),
+    simulations: ['kleine-schritte'],
   },
   {
     code: 'LK-5',

@@ -89,6 +89,22 @@ export const physik: Subject = {
                 ['free fall', 'gravitational acceleration', 'feather', 'vacuum', 'air resistance', 'stroboscope', 'law of falling bodies', 'reaction time', 'ruler', 'uniformly accelerated motion'],
               ),
             },
+            {
+              id: 'kleine-schritte',
+              status: 'ready',
+              slug: L('methode-der-kleinen-schritte', 'method-of-small-steps'),
+              title: L('Methode der kleinen Schritte', 'Method of small steps'),
+              summary: L(
+                'Wenn sich die Kraft dauernd ändert, hilft keine Formel aus dem Buch. Man rechnet in kleinen Zeitschritten, wie in einer Tabelle – und sieht, wie gut das klappt.',
+                'When the force keeps changing, no textbook formula helps. You compute in small time steps, like in a spreadsheet – and see how well it works.',
+              ),
+              grades: [10, 13],
+              kmk: ['P-S', 'P-E', 'P-BK-Mathematisieren'],
+              keywords: L(
+                ['Methode der kleinen Schritte', 'numerische Simulation', 'Modellbildung', 'Tabellenkalkulation', 'Euler-Verfahren', 'Differenzenquotient', 'Zeitschritt', 'Luftwiderstand', 'Fallschirmspringer', 'Endgeschwindigkeit', 'Federpendel', 'Iteration', 'Computer'],
+                ['method of small steps', 'numerical simulation', 'modelling', 'spreadsheet', 'Euler method', 'difference quotient', 'time step', 'air resistance', 'skydiver', 'terminal velocity', 'spring pendulum', 'iteration', 'computer'],
+              ),
+            },
           ],
         },
         {

@@ -1721,6 +1721,7 @@ export const hessenGymnasiumPhysik: StateCurriculum = {
                 'Bewegungen schrittweise mit Differenzenquotienten (z. B. Tabellenkalkulation) berechnen.',
                 'Calculating motion step by step with difference quotients (e.g. spreadsheet).',
               ),
+              simulations: ['kleine-schritte'],
             },
           ],
         },

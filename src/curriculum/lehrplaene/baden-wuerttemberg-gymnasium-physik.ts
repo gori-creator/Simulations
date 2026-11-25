@@ -415,6 +415,7 @@ export const badenWuerttembergGymnasiumPhysik: StateCurriculum = {
                 "freier-fall",
                 "planetenbahnen",
                 'newtonsche-gesetze',
+                'kleine-schritte',
               ],
             },
             {

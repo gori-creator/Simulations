@@ -428,6 +428,7 @@ export const bayernGymnasiumPhysik: StateCurriculum = {
                 "Bewegungen mit veränderlicher Kraft schrittweise am Computer berechnen, z. B. Fall mit Luftwiderstand und harmonische Schwingung, und mit Experimenten vergleichen.",
                 "Calculating motion under changing forces step by step on a computer, e.g. falling with air resistance and harmonic oscillation, and comparing with experiments.",
               ),
+              simulations: ['kleine-schritte'],
             },
             {
               code: "4.2",

@@ -326,7 +326,7 @@ const EP_UNITS: CurriculumUnit[] = [
         code: 'M.2',
         title: L('Dynamik', 'Dynamics'),
         summary: L('Masse, Kraft und Beschleunigung, Trägheitsprinzip, Reibungskraft, Energieerhaltung und iterative Vorhersage realer Bewegungen; Kreisbewegungen können hier beginnen.', 'Mass, force and acceleration, the principle of inertia, friction, conservation of energy and iterative prediction of real motion; circular motion can start here.'),
-        simulations: ['kraefteaddition', 'schiefe-ebene', 'energieerhaltung', 'kreisbewegung', 'newtonsche-gesetze'],
+        simulations: ['kraefteaddition', 'schiefe-ebene', 'energieerhaltung', 'kreisbewegung', 'newtonsche-gesetze', 'kleine-schritte'],
       },
       {
         code: 'M.3',

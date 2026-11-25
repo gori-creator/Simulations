@@ -124,7 +124,7 @@ const KS_10_UNITS: CurriculumUnit[] = [
       'Waagerechter und senkrechter Wurf mit Superpositionsprinzip, Impuls und Impulserhaltung mit Stößen, Kreisbewegung und Zentripetalkraft, Bezugssysteme, harmonische Schwingungen; optional Satellitenbahnen.',
       'Horizontal and vertical projection with the superposition principle, momentum and its conservation with collisions, circular motion and centripetal force, frames of reference, harmonic oscillation; optionally satellite orbits.',
     ),
-    simulations: ['kreisbewegung', 'schiefer-wurf', 'stoesse', 'planetenbahnen', 'fadenpendel', 'federpendel'],
+    simulations: ['kreisbewegung', 'schiefer-wurf', 'stoesse', 'planetenbahnen', 'fadenpendel', 'federpendel', 'kleine-schritte'],
   },
 ];
 
