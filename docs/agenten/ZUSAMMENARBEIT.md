@@ -1,5 +1,11 @@
 # Zusammenarbeit (ab 18.10.2026)
 
+> **Neu ab 25.11.2026: mehrere Accounts, eine Leitung.** Mehrere Claude- und Codex-Accounts bauen gleichzeitig; abgestimmt wird nur über Git. Die **Leitung** (Manager-Sitzung des Projektinhabers, Zweig `claude/sleepy-goodall-ddchwy`) verteilt, prüft und mergt.
+> - Aufträge zum Kopieren: `docs/agenten/AUFTRAG-AUSBAU.md` (50 kleine Simulationen ausbauen).
+> - Stand: `docs/agenten/AUSBAU-BRETT.md` (pflegt nur die Leitung).
+> - Reservierung einer Aufgabe = Zweig `ausbau/<id>` sofort pushen. Ein Pull Request je Simulation, nie selbst mergen.
+> Die Abschnitte unten beschreiben die frühere Aufteilung und gelten nur noch, wo sie nicht widersprechen.
+
 Zwei Personen arbeiten mit je eigenem Claude Code am Projekt.
 
 ## Wer macht was
