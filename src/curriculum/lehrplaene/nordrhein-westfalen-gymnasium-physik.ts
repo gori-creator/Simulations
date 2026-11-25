@@ -64,7 +64,7 @@ const ERPROBUNG_UNITS: CurriculumUnit[] = [
           'Aggregatzustände und ihre Übergänge sowie Wärmeausdehnung, gedeutet mit Teilchen; die Anomalie des Wassers.',
           'States of matter and changes of state as well as thermal expansion, interpreted with particles; the anomaly of water.',
         ),
-        simulations: ['teilchenmodell'],
+        simulations: ['teilchenmodell', 'waermeausdehnung'],
       },
     ],
   },

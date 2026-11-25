@@ -60,7 +60,7 @@ const KS_7_8_UNITS: CurriculumUnit[] = [
       'Ausdehnung fester, flüssiger und gasförmiger Körper bei Temperaturänderung, Dichte, Druck und Temperatur eines Gases, Aggregatzustände im Teilchenmodell.',
       'Expansion of solids, liquids and gases with temperature, density, pressure and temperature of a gas, states of matter in the particle model.',
     ),
-    simulations: ['teilchenmodell', 'gasgesetze', 'dichte-auftrieb'],
+    simulations: ['teilchenmodell', 'gasgesetze', 'dichte-auftrieb', 'waermeausdehnung'],
   },
   {
     code: '3.2',

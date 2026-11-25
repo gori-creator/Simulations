@@ -75,7 +75,7 @@ const SJ_6_UNITS: CurriculumUnit[] = [
       'Temperatur messen, Ausdehnung beim Erwärmen mit dem Teilchenmodell erklären, Wärmeleitung, -strömung und -strahlung, Anomalie des Wassers.',
       'Measuring temperature, explaining thermal expansion with the particle model, conduction, convection and radiation, the anomaly of water.',
     ),
-    simulations: ['teilchenmodell', 'waermetransport'],
+    simulations: ['teilchenmodell', 'waermetransport', 'waermeausdehnung'],
   },
   {
     code: '5',

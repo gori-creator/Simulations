@@ -255,7 +255,7 @@ export const badenWuerttembergGymnasiumPhysik: StateCurriculum = {
             "Wärmeausdehnung und Dichte, Celsius- und Kelvinskala mit absolutem Nullpunkt und die drei Arten des Wärmetransports mit technischen Anwendungen.",
             "Thermal expansion and density, Celsius and Kelvin scales with absolute zero, and the three types of heat transfer with technical applications.",
           ),
-          simulations: ["gasgesetze", "teilchenmodell", "dichte-auftrieb", 'waermetransport'],
+          simulations: ["gasgesetze", "teilchenmodell", "dichte-auftrieb", 'waermetransport', 'waermeausdehnung'],
         },
         {
           code: "3.2.5",
@@ -336,7 +336,7 @@ export const badenWuerttembergGymnasiumPhysik: StateCurriculum = {
             "Wärmeausdehnung und Dichte, Celsius- und Kelvinskala mit absolutem Nullpunkt und die drei Arten des Wärmetransports mit technischen Anwendungen.",
             "Thermal expansion and density, Celsius and Kelvin scales with absolute zero, and the three types of heat transfer with technical applications.",
           ),
-          simulations: ["gasgesetze", "dichte-auftrieb", 'waermetransport'],
+          simulations: ["gasgesetze", "dichte-auftrieb", 'waermetransport', 'waermeausdehnung'],
         },
         {
           code: "3.2.5",
