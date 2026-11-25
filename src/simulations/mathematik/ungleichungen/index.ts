@@ -1,4 +1,4 @@
-import { defineSimulation, drawArrowHead, Plot, Surface, text, withAlpha } from '../../../sim-core';
+import { defineSimulation, drawArrowHead, Plot, Surface, text } from '../../../sim-core';
 import { holds, inSolution, REL_SYMBOL, solve, steps, type Rel } from './model';
 
 const L = (de: string, en: string) => ({ de, en });
@@ -116,7 +116,7 @@ export default defineSimulation({
 
     plot.addHandle({
       get: () => [p.t, f(p.t)],
-      set: (x) => ctx.set('t', Math.max(-10, Math.min(10, Math.round(x * 2) / 2))),
+      set: (x) => ctx.set({ t: Math.max(-10, Math.min(10, Math.round(x * 2) / 2)) }),
       axis: 'x',
       enabled: () => !ctx.locked,
       color: () => ctx.theme.series[0]!,
