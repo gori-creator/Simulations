@@ -59,7 +59,7 @@ jobs:
           BASE_PATH: /
       - name: Server-Einstellungen (.htaccess)
         if: steps.ready.outputs.ok == 'true'
-        # Immer https und ohne „www.“; eigene 404-Seite; Dateien in _astro/ (Prüfsumme im Namen) lange zwischenspeichern
+        # Immer https und ohne „www.“; eigene 404-Seite; Textdateien komprimiert ausliefern (Fachseiten sind groß); Dateien in _astro/ (Prüfsumme im Namen) lange zwischenspeichern
         run: |
           cat > dist/.htaccess <<'EOF'
           ErrorDocument 404 /404.html
@@ -67,6 +67,9 @@ jobs:
           RewriteCond %{SERVER_PORT} !^443$ [OR]
           RewriteCond %{HTTP_HOST} ^www\. [NC]
           RewriteRule ^ https://scitura.de%{REQUEST_URI} [L,R=301]
+          <IfModule mod_deflate.c>
+          AddOutputFilterByType DEFLATE text/html text/css text/plain text/xml application/javascript text/javascript application/json application/manifest+json image/svg+xml
+          </IfModule>
           EOF
           cat > dist/_astro/.htaccess <<'EOF'
           <IfModule mod_headers.c>

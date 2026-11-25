@@ -15,9 +15,15 @@ interface Props {
   sim: SimulationEntry;
   showSubject?: boolean;
   headingLevel?: 'h2' | 'h3' | 'h4';
+  /**
+   * Karte in der Ansicht eines einzelnen Bundeslands: nur dessen Etikett, ohne
+   * Suchtext und Sortierschlüssel (hält die Fachseiten klein, dort steht jede
+   * Karte sonst bis zu 15-mal mit allen Ländern).
+   */
+  region?: string;
 }
 
-const { lang, sim, showSubject = false, headingLevel = 'h3' } = Astro.props;
+const { lang, sim, showSubject = false, headingLevel = 'h3', region: onlyRegion } = Astro.props;
 const Heading = headingLevel;
 const ready = sim.status === 'ready';
 const subject = getSubject(sim.subject);
@@ -25,8 +31,9 @@ const searchText = [sim.title[lang], sim.summary?.[lang] ?? '', ...(sim.keywords
   .join(' ')
   .toLowerCase();
 // Einstellung „Bundesland“: Sortierschlüssel je Land (CSS `order` und Skript) und Etikett mit der Jahrgangsstufe
-const orders = regionOrders(sim.id);
+const orders = onlyRegion ? {} : regionOrders(sim.id);
 const regionBadges = regionsOf(lang)
+  .filter((region) => !onlyRegion || region.id === onlyRegion)
   .map((region) => ({ region, grades: regionGradeLabels(sim.id, region.id) }))
   .filter((r) => r.grades.length > 0);
 ---
@@ -39,7 +46,7 @@ const regionBadges = regionsOf(lang)
   data-community={sim.community ? '' : undefined}
   data-grade-from={sim.grades[0]}
   data-grade-to={sim.uni ? Math.max(sim.grades[1], 14) : sim.grades[1]}
-  data-search={searchText}
+  data-search={onlyRegion ? undefined : searchText}
   data-region-order={Object.keys(orders).length ? JSON.stringify(orders) : undefined}
   style={regionOrderStyle(orders)}
 >
