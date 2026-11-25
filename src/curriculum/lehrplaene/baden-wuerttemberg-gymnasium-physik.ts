@@ -90,7 +90,7 @@ export const badenWuerttembergGymnasiumPhysik: StateCurriculum = {
             "Kräfte ändern Bewegungen und verformen Körper: Trägheit, Hooke’sches Gesetz, Masse und Gewichtskraft sowie Kräftegleichgewicht und resultierende Kraft in einer Richtung.",
             "Forces change motion and deform bodies: inertia, Hooke’s law, mass and weight, and balanced forces and resultant force along one line.",
           ),
-          simulations: ["hookesches-gesetz", "hebelgesetz", "dichte-auftrieb"],
+          simulations: ["hookesches-gesetz", "hebelgesetz", "dichte-auftrieb", 'newtonsche-gesetze'],
         },
         {
           code: "3.1.7",
@@ -183,7 +183,7 @@ export const badenWuerttembergGymnasiumPhysik: StateCurriculum = {
             "Kräfte ändern Bewegungen und verformen Körper: Trägheit, Hooke’sches Gesetz, Masse und Gewichtskraft sowie Kräftegleichgewicht und resultierende Kraft in einer Richtung.",
             "Forces change motion and deform bodies: inertia, Hooke’s law, mass and weight, and balanced forces and resultant force along one line.",
           ),
-          simulations: ["hookesches-gesetz", "hebelgesetz", "dichte-auftrieb"],
+          simulations: ["hookesches-gesetz", "hebelgesetz", "dichte-auftrieb", 'newtonsche-gesetze'],
         },
         {
           code: "3.1.7",
@@ -412,6 +412,7 @@ export const badenWuerttembergGymnasiumPhysik: StateCurriculum = {
                 "schiefe-ebene",
                 "freier-fall",
                 "planetenbahnen",
+                'newtonsche-gesetze',
               ],
             },
             {

@@ -424,7 +424,7 @@ const EF_UNITS: CurriculumUnit[] = [
           'Newton’sche Gesetze, beschleunigende Kräfte, Kräftegleichgewicht mit Komponentenzerlegung und Reibung.',
           'Newton’s laws, accelerating forces, equilibrium of forces using components, and friction.',
         ),
-        simulations: ['kraefteaddition', 'schiefe-ebene'],
+        simulations: ['kraefteaddition', 'schiefe-ebene', 'newtonsche-gesetze'],
       },
       {
         code: 'EF-1.3',

@@ -1098,6 +1098,7 @@ export const hessenGymnasiumPhysik: StateCurriculum = {
                 'Trägheit als Beharrungsvermögen; Bedeutung für die Verkehrssicherheit.',
                 'Inertia as resistance to changes in motion; importance for road safety.',
               ),
+              simulations: ['newtonsche-gesetze'],
             },
             {
               code: '6.3',
@@ -1411,6 +1412,7 @@ export const hessenGymnasiumPhysik: StateCurriculum = {
                 'Trägheit als Beharrungsvermögen; Bedeutung für die Verkehrssicherheit.',
                 'Inertia as resistance to changes in motion; importance for road safety.',
               ),
+              simulations: ['newtonsche-gesetze'],
             },
             {
               code: '6.3',
@@ -1593,6 +1595,7 @@ export const hessenGymnasiumPhysik: StateCurriculum = {
                 'Massepunkt und Vernachlässigung der Reibung als Modellannahmen.',
                 'Point mass and neglect of friction as model assumptions.',
               ),
+              simulations: ['newtonsche-gesetze'],
             },
             {
               code: 'E.1.6',
@@ -1620,6 +1623,7 @@ export const hessenGymnasiumPhysik: StateCurriculum = {
                 'Trägheitsgesetz, Grundgleichung F = m·a, Wechselwirkungsprinzip und Inertialsysteme.',
                 'Law of inertia, F = m·a, action–reaction principle and inertial frames.',
               ),
+              simulations: ['newtonsche-gesetze'],
             },
             {
               code: 'E.2.2',

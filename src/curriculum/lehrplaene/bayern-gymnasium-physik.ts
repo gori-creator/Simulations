@@ -121,6 +121,7 @@ export const bayernGymnasiumPhysik: StateCurriculum = {
                 "schiefe-ebene",
                 "hookesches-gesetz",
                 "hebelgesetz",
+                'newtonsche-gesetze',
               ],
             },
           ],
