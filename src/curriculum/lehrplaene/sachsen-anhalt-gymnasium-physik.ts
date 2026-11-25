@@ -339,6 +339,7 @@ const QPHASE_UNITS: CurriculumUnit[] = [
       },
       {
         code: 'gA-4.2',
+        method: true,
         title: L('Aufgabenpraktikum', 'Problem-solving practical'),
         summary: L(
           'Strategien zum Lösen physikalischer Aufgaben üben: Bilanzen, Analogien, Vereinfachen und passende Modelle wählen.',
@@ -494,6 +495,7 @@ const QPHASE_UNITS: CurriculumUnit[] = [
       },
       {
         code: 'eA-4.2',
+        method: true,
         title: L('Aufgabenpraktikum', 'Problem-solving practical'),
         summary: L(
           'Strategien zum Lösen physikalischer Aufgaben üben, auch mit Kraftansätzen und der Wahl eines geeigneten Bezugssystems.',

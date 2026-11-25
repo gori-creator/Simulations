@@ -8,7 +8,10 @@ const UPDATE = process.env.npm_lifecycle_event === 'lehrplan:luecken';
 
 describe('Lehrplan-Lücken', () => {
   it('listet nur Lernbereiche ohne Simulation', () => {
-    for (const gap of curriculumGaps()) expect(gap.unit.simulations?.length ?? 0, gap.unit.code).toBe(0);
+    for (const gap of curriculumGaps()) {
+      expect(gap.unit.simulations?.length ?? 0, gap.unit.code).toBe(0);
+      expect(gap.unit.method ?? false, gap.unit.code).toBe(false);
+    }
   });
 
   it(`${FILE} ist aktuell (sonst: npm run lehrplan:luecken)`, () => {

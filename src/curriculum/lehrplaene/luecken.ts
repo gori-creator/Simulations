@@ -22,8 +22,8 @@ export function curriculumGaps(curricula: StateCurriculum[] = STATE_CURRICULA): 
       const stage = gradeLabel(grade);
       for (const unit of grade.units) {
         if (unit.parts) {
-          for (const part of unit.parts) if (!part.simulations?.length) gaps.push({ curriculum, stage, unit: part, parent: unit });
-        } else if (!unit.simulations?.length) gaps.push({ curriculum, stage, unit });
+          for (const part of unit.parts) if (!part.simulations?.length && !part.method) gaps.push({ curriculum, stage, unit: part, parent: unit });
+        } else if (!unit.simulations?.length && !unit.method) gaps.push({ curriculum, stage, unit });
       }
     }
   }
@@ -46,7 +46,7 @@ export function curriculumGapsMarkdown(curricula: StateCurriculum[] = STATE_CURR
     '',
     `Lernbereiche der Länder-Lehrpläne, zu denen es noch **keine** Simulation gibt – Vorrat für neue Simulationen (Anleitung: \`docs/NEUE-SIMULATION.md\`). Insgesamt **${gaps.length} von ${total}** Lernbereichen ohne Simulation.`,
     '',
-    'Nicht jeder Lernbereich eignet sich für eine Simulation (z. B. reine Rechenfertigkeiten oder Methoden). Kommt ein Thema in mehreren Ländern vor, lohnt es sich besonders.',
+    'Nicht jeder Lernbereich eignet sich für eine Simulation. Reine Methoden-, Praktikums- und Projektthemen sind im Lehrplan mit `method: true` gekennzeichnet und zählen nicht als Lücke. Kommt ein Thema in mehreren Ländern vor, lohnt es sich besonders.',
     '',
   ];
   for (const subject of [...new Set(curricula.map((c) => c.subject))]) {

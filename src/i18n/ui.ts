@@ -169,6 +169,7 @@ const de = {
   'curriculum.gradeNav': 'Jahrgangsstufe wählen',
   'curriculum.unit': 'Lernbereich {code}',
   'curriculum.noSim': 'Hierfür ist keine eigene Simulation geplant.',
+  'curriculum.method': 'Methoden- oder Projektthema: Dazu passen viele Simulationen, aber keine eigene.',
   'curriculum.elsewhere': 'Passende Simulationen stehen bei',
   'curriculum.source': 'Originaltext: {source}, {school}, {subject}, Jahrgangsstufe {n}',
   'curriculum.disclaimer':
@@ -514,6 +515,7 @@ const en: Record<UiKey, string> = {
   'curriculum.gradeNav': 'Choose a grade',
   'curriculum.unit': 'Unit {code}',
   'curriculum.noSim': 'No separate simulation is planned for this.',
+  'curriculum.method': 'Methods or project topic: many simulations fit, but there is no separate one.',
   'curriculum.elsewhere': 'Matching simulations are listed under',
   'curriculum.source': 'Original text (German): {source}, {school}, {subject}, grade {n}',
   'curriculum.disclaimer': 'The summaries describe the curriculum in our own words. The original text is authoritative.',
