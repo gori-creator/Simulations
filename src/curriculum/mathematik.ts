@@ -776,6 +776,22 @@ export const mathematik: Subject = {
             ),
           },
           {
+            id: 'platonische-koerper',
+            status: 'ready',
+            slug: L('platonische-koerper-eulerscher-polyedersatz', 'platonic-solids-euler-formula'),
+            title: L('Platonische Körper und Eulerscher Polyedersatz', 'Platonic solids and Euler’s polyhedron formula'),
+            summary: L(
+              'Es gibt genau fünf Körper aus lauter gleichen regelmäßigen Vielecken. Zähle ihre Ecken, Kanten und Flächen: Immer ist e − k + f = 2. Im Würfel steckt ein Oktaeder, im Dodekaeder ein Ikosaeder.',
+              'There are exactly five solids made of identical regular polygons. Count their vertices, edges and faces: V − E + F is always 2. Inside a cube sits an octahedron, inside a dodecahedron an icosahedron.',
+            ),
+            grades: [7, 10],
+            kmk: ['M-L3', 'M-K1', 'M-K4'],
+            keywords: L(
+              ['platonische Körper', 'reguläres Polyeder', 'Tetraeder', 'Würfel', 'Hexaeder', 'Oktaeder', 'Dodekaeder', 'Ikosaeder', 'Eulerscher Polyedersatz', 'Ecken', 'Kanten', 'Flächen', 'dualer Körper', 'Vielflächner'],
+              ['Platonic solids', 'regular polyhedron', 'tetrahedron', 'cube', 'hexahedron', 'octahedron', 'dodecahedron', 'icosahedron', 'Euler’s polyhedron formula', 'vertices', 'edges', 'faces', 'dual solid', 'polyhedron'],
+            ),
+          },
+          {
             id: 'cavalieri',
             status: 'ready',
             slug: L('prinzip-von-cavalieri', 'cavalieris-principle'),

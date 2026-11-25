@@ -204,6 +204,7 @@ const K7: CurriculumUnit[] = [
     code: 'W3',
     title: L('Platonische Körper (Wahlbereich)', 'Platonic solids (optional)'),
     summary: L('Reguläre Polyeder und der Euler’sche Polyedersatz.', 'Regular polyhedra and Euler’s polyhedron formula.'),
+    simulations: ['platonische-koerper'],
   },
 ];
 
