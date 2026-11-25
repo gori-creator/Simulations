@@ -196,8 +196,8 @@ export const physik: Subject = {
         },
         {
           id: 'dichte-auftrieb',
-          title: L('Dichte und Auftrieb', 'Density and buoyancy'),
-          grades: [7, 10],
+          title: L('Dichte, Druck und Strömung', 'Density, pressure and flow'),
+          grades: [7, 13],
           simulations: [
             {
               id: 'dichte-auftrieb',
@@ -229,6 +229,22 @@ export const physik: Subject = {
               keywords: L(
                 ['Druck', 'Auflagedruck', 'Pascal', 'Bar', 'Hektopascal', 'hydraulische Presse', 'Hydraulik', 'Kraftwandler', 'Schweredruck', 'Wasserdruck', 'Tauchen', 'Luftdruck', 'Barometer', 'barometrische Höhenformel', 'Hochdruckgebiet', 'Tiefdruckgebiet', 'Wind', 'Seewind', 'Landwind', 'Wetter'],
                 ['pressure', 'contact pressure', 'pascal', 'bar', 'hectopascal', 'hydraulic press', 'hydraulics', 'force multiplier', 'hydrostatic pressure', 'water pressure', 'diving', 'air pressure', 'barometer', 'barometric formula', 'high-pressure area', 'low-pressure area', 'wind', 'sea breeze', 'land breeze', 'weather'],
+              ),
+            },
+            {
+              id: 'stroemung',
+              status: 'ready',
+              slug: L('stroemung-bernoulli-tragfluegel', 'fluid-flow-bernoulli-wing'),
+              title: L('Strömung: Engstelle, Bernoulli und Tragflügel', 'Fluid flow: constriction, Bernoulli and the wing'),
+              summary: L(
+                'In der Engstelle fließt Wasser schneller und drückt weniger. Am Tragflügel strömt die Luft oben schneller als unten – so entsteht der Auftrieb, bis die Strömung abreißt.',
+                'In a constriction water flows faster and pushes less. Around a wing the air flows faster on top than below – that creates lift, until the flow stalls.',
+              ),
+              grades: [7, 13],
+              kmk: ['P-S', 'P-E', 'P-BK-Wechselwirkung', 'P-BK-Mathematisieren'],
+              keywords: L(
+                ['Strömung', 'Strömungslehre', 'Kontinuitätsgleichung', 'Bernoulli', 'Bernoulli-Gleichung', 'Venturi', 'Engstelle', 'Steigrohr', 'statischer Druck', 'Staudruck', 'laminar', 'turbulent', 'Reynolds-Zahl', 'Tragflügel', 'Auftrieb', 'dynamischer Auftrieb', 'Anstellwinkel', 'Auftriebsbeiwert', 'Strömungsabriss', 'Stromlinien', 'Fliegen', 'Flugzeug'],
+                ['flow', 'fluid dynamics', 'continuity equation', 'Bernoulli', 'Bernoulli’s equation', 'Venturi', 'constriction', 'standpipe', 'static pressure', 'dynamic pressure', 'laminar', 'turbulent', 'Reynolds number', 'wing', 'airfoil', 'lift', 'dynamic lift', 'angle of attack', 'lift coefficient', 'stall', 'streamlines', 'flight', 'aeroplane'],
               ),
             },
           ],

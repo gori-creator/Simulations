@@ -336,7 +336,7 @@ export const bayernGymnasiumPhysik: StateCurriculum = {
                 "Wahlthemen wie Physik im Sport (optimaler Wurf, Billardstöße), Fliegen, Chaos, Anwendungen der Radioaktivität oder Elektrotechnik.",
                 "Optional topics such as physics in sport (optimal throw, billiard collisions), flight, chaos, applications of radioactivity or electrical engineering.",
               ),
-              simulations: ["schiefer-wurf", "stoesse", 'drehimpuls'],
+              simulations: ["schiefer-wurf", "stoesse", 'drehimpuls', 'stroemung'],
             },
           ],
         },

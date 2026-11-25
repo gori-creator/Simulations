@@ -125,6 +125,7 @@ const K7: CurriculumUnit[] = [
     code: 'W3',
     title: L('Vom Fliegen (Wahlbereich)', 'Flight (optional)'),
     summary: L('Geschichte des Fliegens und dynamischer Auftrieb am Tragflügel.', 'History of flight and dynamic lift on a wing.'),
+    simulations: ['stroemung'],
   },
 ];
 

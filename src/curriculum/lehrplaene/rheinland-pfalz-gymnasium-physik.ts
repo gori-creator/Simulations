@@ -496,6 +496,7 @@ const QP_UNITS: CurriculumUnit[] = [
         code: 'GF-W.22',
         title: L('Strömungsphysik', 'Fluid dynamics'),
         summary: L('Strömungsarten, Kontinuitätsgleichung, Bernoulli-Gleichung und dynamischer Auftrieb.', 'Types of flow, the continuity equation, Bernoulli’s equation and dynamic lift.'),
+        simulations: ['stroemung'],
       },
       {
         code: 'GF-W.23',
@@ -743,6 +744,7 @@ const QP_UNITS: CurriculumUnit[] = [
         code: 'LF-W.20',
         title: L('Strömungsphysik', 'Fluid dynamics'),
         summary: L('Strömungsarten, Kontinuitätsgleichung, Bernoulli-Gleichung und dynamischer Auftrieb.', 'Types of flow, the continuity equation, Bernoulli’s equation and dynamic lift.'),
+        simulations: ['stroemung'],
       },
       {
         code: 'LF-W.21',
