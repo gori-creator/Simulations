@@ -19,29 +19,6 @@ export const physik: Subject = {
   status: 'active',
   areas: [
     {
-      id: 'messen',
-      slug: L('messen', 'measurement'),
-      title: L('Messen und Auswerten', 'Measurement and analysis'),
-      description: L('Größen ablesen, Messreihen auswerten und Unsicherheit verstehen.', 'Read quantities, analyse measurements and understand uncertainty.'),
-      grades: [5, 13],
-      kmk: ['P-E', 'P-K'],
-      topics: [{
-        id: 'messmethoden',
-        title: L('Messmethoden', 'Measurement methods'),
-        grades: [5, 13],
-        simulations: [{
-          id: 'messunsicherheit',
-          status: 'ready',
-          slug: L('messunsicherheit', 'measurement-uncertainty'),
-          title: L('Messen und Messunsicherheit', 'Measurement and uncertainty'),
-          summary: L('Lies ein Lineal ab, verändere Messwerte und untersuche Mittelwert, Streuung, Fehlerbalken und Ausgleichsgeraden. Wiederholte Versuche zeigen, warum mehr Messungen nicht jeden Fehler beseitigen.', 'Read a ruler, edit measurements and explore means, scatter, error bars and best-fit lines. Repeated experiments show why more readings do not remove every error.'),
-          grades: [5, 13],
-          kmk: ['P-E', 'P-K', 'P-S'],
-          keywords: L(['Messen', 'Einheiten', 'Messunsicherheit', 'Messfehler', 'Mittelwert', 'Standardabweichung', 'Standardfehler', 'Ausgleichsgerade', 'Regression', 'Fehlerbalken', 'Auflösung', 'Praktikum'], ['measurement', 'units', 'uncertainty', 'mean', 'standard deviation', 'standard error', 'regression', 'error bars', 'resolution', 'practical']),
-        }],
-      }],
-    },
-    {
       id: 'mechanik',
       slug: L('mechanik', 'mechanics'),
       title: L('Mechanik', 'Mechanics'),
@@ -290,169 +267,6 @@ export const physik: Subject = {
       ],
     },
     {
-      id: 'schwingungen-wellen',
-      slug: L('schwingungen-und-wellen', 'oscillations-and-waves'),
-      title: L('Schwingungen und Wellen', 'Oscillations and waves'),
-      description: L(
-        'Pendel, Resonanz, Wellenausbreitung und Interferenz – mit Zeitlupe und Diagrammen in Echtzeit.',
-        'Pendulums, resonance, wave propagation and interference – with slow motion and real-time graphs.',
-      ),
-      grades: [5, 13],
-      kmk: ['P-S', 'P-E', 'P-BK-Superposition', 'P-BK-Mathematisieren'],
-      topics: [
-        {
-          id: 'akustik',
-          title: L('Akustik', 'Acoustics'),
-          grades: [5, 11],
-          simulations: [
-            {
-              id: 'schall',
-              status: 'ready',
-              slug: L('schall-tonhoehe-lautstaerke', 'sound-pitch-loudness'),
-              title: L('Schall: Tonhöhe und Lautstärke', 'Sound: pitch and loudness'),
-              summary: L(
-                'Höher heißt schneller schwingen, lauter heißt weiter schwingen. Auf dem Oszilloskop sieht man den Unterschied, und hören kann man ihn auch.',
-                'Higher means vibrating faster, louder means vibrating further. You can see the difference on the oscilloscope, and hear it too.',
-              ),
-              grades: [5, 11],
-              kmk: ['P-S', 'P-E', 'P-BK-Wechselwirkung', 'P-BK-Energie', 'P-BK-Mathematisieren'],
-              keywords: L(
-                ['Schall', 'Akustik', 'Tonhöhe', 'Lautstärke', 'Frequenz', 'Hertz', 'Amplitude', 'Periodendauer', 'Oszilloskop', 'Klangfarbe', 'Obertöne', 'Schallgeschwindigkeit', 'Wellenlänge', 'Längswelle', 'Schallausbreitung', 'Vakuum', 'Dezibel', 'Schallpegel', 'Lärm', 'Gehör', 'Hörbereich', 'Ultraschall', 'Infraschall', 'Echo', 'Schwebung', 'Saite', 'Pfeife', 'Sender', 'Empfänger', 'Lautsprecher'],
-                ['sound', 'acoustics', 'pitch', 'loudness', 'frequency', 'hertz', 'amplitude', 'period', 'oscilloscope', 'timbre', 'overtones', 'speed of sound', 'wavelength', 'longitudinal wave', 'propagation of sound', 'vacuum', 'decibel', 'sound level', 'noise', 'hearing', 'range of hearing', 'ultrasound', 'infrasound', 'echo', 'beats', 'string', 'pipe', 'transmitter', 'receiver', 'loudspeaker'],
-              ),
-            },
-          ],
-        },
-        {
-          id: 'schwingungen',
-          title: L('Mechanische Schwingungen', 'Mechanical oscillations'),
-          grades: [10, 12],
-          simulations: [
-            {
-              id: 'fadenpendel',
-              status: 'ready',
-              slug: L('fadenpendel', 'simple-pendulum'),
-              title: L('Fadenpendel', 'Simple pendulum'),
-              summary: L(
-                'Lenke ein Pendel aus, lass es los und miss, wie lange eine Schwingung dauert. Wovon hängt das ab? Auch mit großen Winkeln und Dämpfung.',
-                'Pull a pendulum aside, let it go and measure how long one swing takes. What does it depend on? Also with large angles and damping.',
-              ),
-              grades: [10, 12],
-              kmk: ['P-E', 'P-BK-Mathematisieren', 'P-BK-Energie'],
-              keywords: L(
-                ['Pendel', 'Fadenpendel', 'Schwingung', 'Periodendauer', 'Frequenz', 'Amplitude', 'Kleinwinkelnäherung', 'harmonische Schwingung', 'Dämpfung', 'Sekundenpendel', 'Ortsfaktor', 'Fadenkraft', 'Rückstellkraft', 'Phasendiagramm', 'Messreihe'],
-                ['pendulum', 'oscillation', 'period', 'frequency', 'amplitude', 'small-angle approximation', 'harmonic motion', 'damping', 'seconds pendulum', 'gravitational acceleration', 'tension', 'restoring force', 'phase diagram', 'measurement series'],
-              ),
-            },
-            {
-              id: 'federpendel',
-              status: 'ready',
-              slug: L('federpendel', 'spring-pendulum'),
-              title: L('Federpendel', 'Spring pendulum'),
-              summary: L(
-                'Ein Körper schwingt an einer Feder auf und ab. Diagramme zeigen Ort, Geschwindigkeit und Energie während der Schwingung.',
-                'A mass bounces up and down on a spring. Graphs show position, speed and energy during the oscillation.',
-              ),
-              grades: [10, 12],
-              kmk: ['P-S', 'P-E', 'P-BK-Mathematisieren', 'P-BK-Energie', 'P-BK-Wechselwirkung'],
-              keywords: L(
-                ['Federpendel', 'Schwingung', 'harmonische Schwingung', 'Periodendauer', 'Frequenz', 'Kreisfrequenz', 'Amplitude', 'Elongation', 'Phase', 'Nullphasenwinkel', 'Zeigerdiagramm', 'Federhärte', 'Rückstellkraft', 'lineares Kraftgesetz', 'Spannenergie', 'Dämpfung', 'Stoppuhr'],
-                ['spring pendulum', 'mass on a spring', 'oscillation', 'harmonic motion', 'period', 'frequency', 'angular frequency', 'amplitude', 'displacement', 'phase', 'initial phase', 'phasor diagram', 'spring constant', 'restoring force', 'elastic energy', 'damping', 'stopwatch'],
-              ),
-            },
-            {
-              id: 'resonanz',
-              status: 'ready',
-              slug: L('erzwungene-schwingung-resonanz', 'driven-oscillation-resonance'),
-              title: L('Erzwungene Schwingung und Resonanz', 'Driven oscillation and resonance'),
-              summary: L(
-                'Ein Motor treibt ein schwingendes Rad an. Trifft der Motor genau den richtigen Takt, schwingt das Rad besonders stark: Resonanz.',
-                'A motor drives an oscillating wheel. If the motor hits exactly the right rhythm, the wheel swings especially strongly: resonance.',
-              ),
-              grades: [10, 13],
-              uni: true,
-              kmk: ['P-S', 'P-E', 'P-BK-Mathematisieren', 'P-BK-Energie', 'P-BK-Wechselwirkung'],
-              keywords: L(
-                ['Resonanz', 'erzwungene Schwingung', 'Pohlsches Rad', 'Drehpendel', 'Erreger', 'Erregerfrequenz', 'Eigenfrequenz', 'Resonanzfrequenz', 'Resonanzkurve', 'Phasenverschiebung', 'Einschwingvorgang', 'Dämpfung', 'Wirbelstrombremse', 'Resonanzkatastrophe', 'Zeigerdiagramm'],
-                ['resonance', 'driven oscillation', 'forced oscillation', 'Pohl’s wheel', 'torsion pendulum', 'driver', 'driving frequency', 'natural frequency', 'resonance frequency', 'resonance curve', 'phase shift', 'transient', 'damping', 'eddy-current brake', 'resonance disaster', 'phasor diagram'],
-              ),
-            },
-          ],
-        },
-        {
-          id: 'wellen',
-          title: L('Wellen', 'Waves'),
-          grades: [10, 13],
-          simulations: [
-            {
-              id: 'wellen-ausbreitung',
-              status: 'ready',
-              slug: L('transversal-longitudinalwellen', 'transverse-longitudinal-waves'),
-              title: L('Transversal- und Longitudinalwellen', 'Transverse and longitudinal waves'),
-              summary: L(
-                'Eine Welle läuft durch eine Kette von Teilchen. Jedes Teilchen schwingt nur auf der Stelle, quer oder längs zur Laufrichtung.',
-                'A wave travels through a chain of particles. Each particle only oscillates in place, across or along the direction of travel.',
-              ),
-              grades: [10, 12],
-              kmk: ['P-S', 'P-E', 'P-BK-Mathematisieren', 'P-BK-Materie', 'P-BK-Wechselwirkung'],
-              keywords: L(
-                ['Welle', 'mechanische Welle', 'Transversalwelle', 'Longitudinalwelle', 'Querwelle', 'Längswelle', 'Wellenlänge', 'Frequenz', 'Ausbreitungsgeschwindigkeit', 'c = λ·f', 'Wellenfront', 'Verdichtung', 'Verdünnung', 'Wellenberg', 'Wellental', 'Phase', 'gleichphasig', 'Zeigerdiagramm', 'gekoppelte Oszillatoren', 'Momentaufnahme', 'Schall'],
-                ['wave', 'mechanical wave', 'transverse wave', 'longitudinal wave', 'wavelength', 'frequency', 'wave speed', 'c = λf', 'wave front', 'compression', 'rarefaction', 'crest', 'trough', 'phase', 'in phase', 'phasor', 'coupled oscillators', 'snapshot', 'sound'],
-              ),
-            },
-            {
-              id: 'doppler-effekt',
-              status: 'ready',
-              slug: L('doppler-effekt', 'doppler-effect'),
-              title: L('Doppler-Effekt', 'Doppler effect'),
-              summary: L(
-                'Ein Krankenwagen fährt vorbei, und der Ton wird tiefer. Die Wellenfronten zeigen warum. Auf Wunsch zum Anhören.',
-                'An ambulance drives past and the siren sounds lower. The wave fronts show why. You can also listen to it.',
-              ),
-              grades: [10, 12],
-              kmk: ['P-S', 'P-E', 'P-BK-Mathematisieren', 'P-BK-Wechselwirkung', 'P-BK-Superposition'],
-              keywords: L(
-                ['Doppler-Effekt', 'Dopplereffekt', 'Schall', 'Frequenz', 'Tonhöhe', 'Wellenlänge', 'Wellenfront', 'Martinshorn', 'Krankenwagen', 'bewegte Quelle', 'bewegter Beobachter', 'Schallgeschwindigkeit', 'Radialgeschwindigkeit', 'Schallmauer', 'Überschall', 'Machscher Kegel', 'Machzahl', 'Überschallknall'],
-                ['Doppler effect', 'sound', 'frequency', 'pitch', 'wavelength', 'wave front', 'siren', 'ambulance', 'moving source', 'moving observer', 'speed of sound', 'radial velocity', 'sound barrier', 'supersonic', 'Mach cone', 'Mach number', 'sonic boom'],
-              ),
-            },
-            {
-              id: 'interferenz',
-              status: 'ready',
-              slug: L('interferenz-kreiswellen', 'interference-circular-waves'),
-              title: L('Interferenz zweier Kreiswellen', 'Interference of two circular waves'),
-              summary: L(
-                'Zwei Kreiswellen überlagern sich und verstärken sich an manchen Stellen, an anderen löschen sie sich aus.',
-                'Two circular waves overlap: in some places they reinforce each other, in others they cancel out.',
-              ),
-              grades: [10, 13],
-              kmk: ['P-S', 'P-E', 'P-BK-Superposition', 'P-BK-Mathematisieren'],
-              keywords: L(
-                ['Interferenz', 'Überlagerung', 'Superposition', 'Kreiswelle', 'Wellenwanne', 'Gangunterschied', 'Phasenunterschied', 'Knotenlinie', 'Bauchlinie', 'Hyperbel', 'Maximum', 'Minimum', 'konstruktive Interferenz', 'destruktive Interferenz', 'Auslöschung', 'Verstärkung', 'Zeigerdiagramm', 'kohärent', 'gegenphasig', 'Doppelspalt', 'Fernfeld'],
-                ['interference', 'superposition', 'circular wave', 'ripple tank', 'path difference', 'phase difference', 'nodal line', 'antinodal line', 'hyperbola', 'maximum', 'minimum', 'constructive interference', 'destructive interference', 'phasor', 'coherent', 'antiphase', 'double slit', 'far field'],
-              ),
-            },
-            {
-              id: 'stehende-wellen',
-              status: 'ready',
-              slug: L('stehende-wellen', 'standing-waves'),
-              title: L('Stehende Wellen', 'Standing waves'),
-              summary: L(
-                'Eine Welle wird am Ende zurückgeworfen, und es entsteht ein festes Muster aus Knoten und Bäuchen, wie auf einer Gitarrensaite.',
-                'A wave is reflected at the end and a fixed pattern of nodes and antinodes appears, like on a guitar string.',
-              ),
-              grades: [11, 13],
-              kmk: ['P-S', 'P-E', 'P-BK-Superposition', 'P-BK-Mathematisieren', 'P-BK-Wechselwirkung'],
-              keywords: L(
-                ['stehende Welle', 'Reflexion', 'festes Ende', 'loses Ende', 'Phasensprung', 'Knoten', 'Bauch', 'Schwingungsknoten', 'Schwingungsbauch', 'Überlagerung', 'Superposition', 'Eigenschwingung', 'Eigenfrequenz', 'Grundschwingung', 'Oberschwingung', 'Harmonische', 'Saite', 'Gitarre', 'Luftsäule', 'Pfeife', 'gedackte Pfeife', 'offene Pfeife', 'Orgelpfeife', 'Druckknoten', 'Schnelleknoten', 'Resonanz', 'Melde-Versuch', 'Hüllkurve'],
-                ['standing wave', 'stationary wave', 'reflection', 'fixed end', 'free end', 'phase jump', 'node', 'antinode', 'superposition', 'normal mode', 'natural frequency', 'fundamental', 'overtone', 'harmonic', 'string', 'guitar', 'air column', 'pipe', 'stopped pipe', 'open pipe', 'organ pipe', 'pressure node', 'displacement node', 'resonance', 'Melde’s experiment', 'envelope'],
-              ),
-            },
-          ],
-        },
-      ],
-    },
-    {
       id: 'elektrizitaet',
       slug: L('elektrizitaetslehre', 'electricity-and-magnetism'),
       title: L('Elektrizitätslehre', 'Electricity and magnetism'),
@@ -677,6 +491,330 @@ export const physik: Subject = {
       ],
     },
     {
+      id: 'schwingungen-wellen',
+      slug: L('schwingungen-und-wellen', 'oscillations-and-waves'),
+      title: L('Schwingungen und Wellen', 'Oscillations and waves'),
+      description: L(
+        'Pendel, Resonanz, Wellenausbreitung und Interferenz – mit Zeitlupe und Diagrammen in Echtzeit.',
+        'Pendulums, resonance, wave propagation and interference – with slow motion and real-time graphs.',
+      ),
+      grades: [5, 13],
+      kmk: ['P-S', 'P-E', 'P-BK-Superposition', 'P-BK-Mathematisieren'],
+      topics: [
+        {
+          id: 'akustik',
+          title: L('Akustik', 'Acoustics'),
+          grades: [5, 11],
+          simulations: [
+            {
+              id: 'schall',
+              status: 'ready',
+              slug: L('schall-tonhoehe-lautstaerke', 'sound-pitch-loudness'),
+              title: L('Schall: Tonhöhe und Lautstärke', 'Sound: pitch and loudness'),
+              summary: L(
+                'Höher heißt schneller schwingen, lauter heißt weiter schwingen. Auf dem Oszilloskop sieht man den Unterschied, und hören kann man ihn auch.',
+                'Higher means vibrating faster, louder means vibrating further. You can see the difference on the oscilloscope, and hear it too.',
+              ),
+              grades: [5, 11],
+              kmk: ['P-S', 'P-E', 'P-BK-Wechselwirkung', 'P-BK-Energie', 'P-BK-Mathematisieren'],
+              keywords: L(
+                ['Schall', 'Akustik', 'Tonhöhe', 'Lautstärke', 'Frequenz', 'Hertz', 'Amplitude', 'Periodendauer', 'Oszilloskop', 'Klangfarbe', 'Obertöne', 'Schallgeschwindigkeit', 'Wellenlänge', 'Längswelle', 'Schallausbreitung', 'Vakuum', 'Dezibel', 'Schallpegel', 'Lärm', 'Gehör', 'Hörbereich', 'Ultraschall', 'Infraschall', 'Echo', 'Schwebung', 'Saite', 'Pfeife', 'Sender', 'Empfänger', 'Lautsprecher'],
+                ['sound', 'acoustics', 'pitch', 'loudness', 'frequency', 'hertz', 'amplitude', 'period', 'oscilloscope', 'timbre', 'overtones', 'speed of sound', 'wavelength', 'longitudinal wave', 'propagation of sound', 'vacuum', 'decibel', 'sound level', 'noise', 'hearing', 'range of hearing', 'ultrasound', 'infrasound', 'echo', 'beats', 'string', 'pipe', 'transmitter', 'receiver', 'loudspeaker'],
+              ),
+            },
+          ],
+        },
+        {
+          id: 'schwingungen',
+          title: L('Mechanische Schwingungen', 'Mechanical oscillations'),
+          grades: [10, 12],
+          simulations: [
+            {
+              id: 'fadenpendel',
+              status: 'ready',
+              slug: L('fadenpendel', 'simple-pendulum'),
+              title: L('Fadenpendel', 'Simple pendulum'),
+              summary: L(
+                'Lenke ein Pendel aus, lass es los und miss, wie lange eine Schwingung dauert. Wovon hängt das ab? Auch mit großen Winkeln und Dämpfung.',
+                'Pull a pendulum aside, let it go and measure how long one swing takes. What does it depend on? Also with large angles and damping.',
+              ),
+              grades: [10, 12],
+              kmk: ['P-E', 'P-BK-Mathematisieren', 'P-BK-Energie'],
+              keywords: L(
+                ['Pendel', 'Fadenpendel', 'Schwingung', 'Periodendauer', 'Frequenz', 'Amplitude', 'Kleinwinkelnäherung', 'harmonische Schwingung', 'Dämpfung', 'Sekundenpendel', 'Ortsfaktor', 'Fadenkraft', 'Rückstellkraft', 'Phasendiagramm', 'Messreihe'],
+                ['pendulum', 'oscillation', 'period', 'frequency', 'amplitude', 'small-angle approximation', 'harmonic motion', 'damping', 'seconds pendulum', 'gravitational acceleration', 'tension', 'restoring force', 'phase diagram', 'measurement series'],
+              ),
+            },
+            {
+              id: 'federpendel',
+              status: 'ready',
+              slug: L('federpendel', 'spring-pendulum'),
+              title: L('Federpendel', 'Spring pendulum'),
+              summary: L(
+                'Ein Körper schwingt an einer Feder auf und ab. Diagramme zeigen Ort, Geschwindigkeit und Energie während der Schwingung.',
+                'A mass bounces up and down on a spring. Graphs show position, speed and energy during the oscillation.',
+              ),
+              grades: [10, 12],
+              kmk: ['P-S', 'P-E', 'P-BK-Mathematisieren', 'P-BK-Energie', 'P-BK-Wechselwirkung'],
+              keywords: L(
+                ['Federpendel', 'Schwingung', 'harmonische Schwingung', 'Periodendauer', 'Frequenz', 'Kreisfrequenz', 'Amplitude', 'Elongation', 'Phase', 'Nullphasenwinkel', 'Zeigerdiagramm', 'Federhärte', 'Rückstellkraft', 'lineares Kraftgesetz', 'Spannenergie', 'Dämpfung', 'Stoppuhr'],
+                ['spring pendulum', 'mass on a spring', 'oscillation', 'harmonic motion', 'period', 'frequency', 'angular frequency', 'amplitude', 'displacement', 'phase', 'initial phase', 'phasor diagram', 'spring constant', 'restoring force', 'elastic energy', 'damping', 'stopwatch'],
+              ),
+            },
+            {
+              id: 'resonanz',
+              status: 'ready',
+              slug: L('erzwungene-schwingung-resonanz', 'driven-oscillation-resonance'),
+              title: L('Erzwungene Schwingung und Resonanz', 'Driven oscillation and resonance'),
+              summary: L(
+                'Ein Motor treibt ein schwingendes Rad an. Trifft der Motor genau den richtigen Takt, schwingt das Rad besonders stark: Resonanz.',
+                'A motor drives an oscillating wheel. If the motor hits exactly the right rhythm, the wheel swings especially strongly: resonance.',
+              ),
+              grades: [10, 13],
+              uni: true,
+              kmk: ['P-S', 'P-E', 'P-BK-Mathematisieren', 'P-BK-Energie', 'P-BK-Wechselwirkung'],
+              keywords: L(
+                ['Resonanz', 'erzwungene Schwingung', 'Pohlsches Rad', 'Drehpendel', 'Erreger', 'Erregerfrequenz', 'Eigenfrequenz', 'Resonanzfrequenz', 'Resonanzkurve', 'Phasenverschiebung', 'Einschwingvorgang', 'Dämpfung', 'Wirbelstrombremse', 'Resonanzkatastrophe', 'Zeigerdiagramm'],
+                ['resonance', 'driven oscillation', 'forced oscillation', 'Pohl’s wheel', 'torsion pendulum', 'driver', 'driving frequency', 'natural frequency', 'resonance frequency', 'resonance curve', 'phase shift', 'transient', 'damping', 'eddy-current brake', 'resonance disaster', 'phasor diagram'],
+              ),
+            },
+          ],
+        },
+        {
+          id: 'wellen',
+          title: L('Wellen', 'Waves'),
+          grades: [10, 13],
+          simulations: [
+            {
+              id: 'wellen-ausbreitung',
+              status: 'ready',
+              slug: L('transversal-longitudinalwellen', 'transverse-longitudinal-waves'),
+              title: L('Transversal- und Longitudinalwellen', 'Transverse and longitudinal waves'),
+              summary: L(
+                'Eine Welle läuft durch eine Kette von Teilchen. Jedes Teilchen schwingt nur auf der Stelle, quer oder längs zur Laufrichtung.',
+                'A wave travels through a chain of particles. Each particle only oscillates in place, across or along the direction of travel.',
+              ),
+              grades: [10, 12],
+              kmk: ['P-S', 'P-E', 'P-BK-Mathematisieren', 'P-BK-Materie', 'P-BK-Wechselwirkung'],
+              keywords: L(
+                ['Welle', 'mechanische Welle', 'Transversalwelle', 'Longitudinalwelle', 'Querwelle', 'Längswelle', 'Wellenlänge', 'Frequenz', 'Ausbreitungsgeschwindigkeit', 'c = λ·f', 'Wellenfront', 'Verdichtung', 'Verdünnung', 'Wellenberg', 'Wellental', 'Phase', 'gleichphasig', 'Zeigerdiagramm', 'gekoppelte Oszillatoren', 'Momentaufnahme', 'Schall'],
+                ['wave', 'mechanical wave', 'transverse wave', 'longitudinal wave', 'wavelength', 'frequency', 'wave speed', 'c = λf', 'wave front', 'compression', 'rarefaction', 'crest', 'trough', 'phase', 'in phase', 'phasor', 'coupled oscillators', 'snapshot', 'sound'],
+              ),
+            },
+            {
+              id: 'doppler-effekt',
+              status: 'ready',
+              slug: L('doppler-effekt', 'doppler-effect'),
+              title: L('Doppler-Effekt', 'Doppler effect'),
+              summary: L(
+                'Ein Krankenwagen fährt vorbei, und der Ton wird tiefer. Die Wellenfronten zeigen warum. Auf Wunsch zum Anhören.',
+                'An ambulance drives past and the siren sounds lower. The wave fronts show why. You can also listen to it.',
+              ),
+              grades: [10, 12],
+              kmk: ['P-S', 'P-E', 'P-BK-Mathematisieren', 'P-BK-Wechselwirkung', 'P-BK-Superposition'],
+              keywords: L(
+                ['Doppler-Effekt', 'Dopplereffekt', 'Schall', 'Frequenz', 'Tonhöhe', 'Wellenlänge', 'Wellenfront', 'Martinshorn', 'Krankenwagen', 'bewegte Quelle', 'bewegter Beobachter', 'Schallgeschwindigkeit', 'Radialgeschwindigkeit', 'Schallmauer', 'Überschall', 'Machscher Kegel', 'Machzahl', 'Überschallknall'],
+                ['Doppler effect', 'sound', 'frequency', 'pitch', 'wavelength', 'wave front', 'siren', 'ambulance', 'moving source', 'moving observer', 'speed of sound', 'radial velocity', 'sound barrier', 'supersonic', 'Mach cone', 'Mach number', 'sonic boom'],
+              ),
+            },
+            {
+              id: 'interferenz',
+              status: 'ready',
+              slug: L('interferenz-kreiswellen', 'interference-circular-waves'),
+              title: L('Interferenz zweier Kreiswellen', 'Interference of two circular waves'),
+              summary: L(
+                'Zwei Kreiswellen überlagern sich und verstärken sich an manchen Stellen, an anderen löschen sie sich aus.',
+                'Two circular waves overlap: in some places they reinforce each other, in others they cancel out.',
+              ),
+              grades: [10, 13],
+              kmk: ['P-S', 'P-E', 'P-BK-Superposition', 'P-BK-Mathematisieren'],
+              keywords: L(
+                ['Interferenz', 'Überlagerung', 'Superposition', 'Kreiswelle', 'Wellenwanne', 'Gangunterschied', 'Phasenunterschied', 'Knotenlinie', 'Bauchlinie', 'Hyperbel', 'Maximum', 'Minimum', 'konstruktive Interferenz', 'destruktive Interferenz', 'Auslöschung', 'Verstärkung', 'Zeigerdiagramm', 'kohärent', 'gegenphasig', 'Doppelspalt', 'Fernfeld'],
+                ['interference', 'superposition', 'circular wave', 'ripple tank', 'path difference', 'phase difference', 'nodal line', 'antinodal line', 'hyperbola', 'maximum', 'minimum', 'constructive interference', 'destructive interference', 'phasor', 'coherent', 'antiphase', 'double slit', 'far field'],
+              ),
+            },
+            {
+              id: 'stehende-wellen',
+              status: 'ready',
+              slug: L('stehende-wellen', 'standing-waves'),
+              title: L('Stehende Wellen', 'Standing waves'),
+              summary: L(
+                'Eine Welle wird am Ende zurückgeworfen, und es entsteht ein festes Muster aus Knoten und Bäuchen, wie auf einer Gitarrensaite.',
+                'A wave is reflected at the end and a fixed pattern of nodes and antinodes appears, like on a guitar string.',
+              ),
+              grades: [11, 13],
+              kmk: ['P-S', 'P-E', 'P-BK-Superposition', 'P-BK-Mathematisieren', 'P-BK-Wechselwirkung'],
+              keywords: L(
+                ['stehende Welle', 'Reflexion', 'festes Ende', 'loses Ende', 'Phasensprung', 'Knoten', 'Bauch', 'Schwingungsknoten', 'Schwingungsbauch', 'Überlagerung', 'Superposition', 'Eigenschwingung', 'Eigenfrequenz', 'Grundschwingung', 'Oberschwingung', 'Harmonische', 'Saite', 'Gitarre', 'Luftsäule', 'Pfeife', 'gedackte Pfeife', 'offene Pfeife', 'Orgelpfeife', 'Druckknoten', 'Schnelleknoten', 'Resonanz', 'Melde-Versuch', 'Hüllkurve'],
+                ['standing wave', 'stationary wave', 'reflection', 'fixed end', 'free end', 'phase jump', 'node', 'antinode', 'superposition', 'normal mode', 'natural frequency', 'fundamental', 'overtone', 'harmonic', 'string', 'guitar', 'air column', 'pipe', 'stopped pipe', 'open pipe', 'organ pipe', 'pressure node', 'displacement node', 'resonance', 'Melde’s experiment', 'envelope'],
+              ),
+            },
+          ],
+        },
+      ],
+    },
+    {
+      id: 'moderne-physik',
+      slug: L('atom-kern-und-quantenphysik', 'atomic-nuclear-and-quantum-physics'),
+      title: L('Atom-, Kern- und Quantenphysik', 'Atomic, nuclear and quantum physics'),
+      description: L(
+        'Radioaktiver Zerfall, Spektrallinien und Photoeffekt – Zufall und Quantisierung erleben.',
+        'Radioactive decay, spectral lines and the photoelectric effect – experience randomness and quantisation.',
+      ),
+      grades: [7, 14],
+      kmk: ['P-S', 'P-E', 'P-BK-Zufall', 'P-BK-Materie'],
+      topics: [
+        {
+          id: 'sterne',
+          title: L('Sterne', 'Stars'),
+          grades: [7, 13],
+          simulations: [
+            {
+              id: 'hr-diagramm',
+              status: 'ready',
+              slug: L('sterne-hertzsprung-russell-diagramm', 'stars-hertzsprung-russell-diagram'),
+              title: L('Sterne und Hertzsprung-Russell-Diagramm', 'Stars and the Hertzsprung–Russell diagram'),
+              summary: L(
+                'Blaue Riesen, Rote Zwerge, Weiße Zwerge: Im HR-Diagramm bekommt jeder Stern seinen Platz. Du verfolgst den Lebensweg eines Sterns bis zur Supernova und misst Entfernungen mit der Parallaxe.',
+                'Blue giants, red dwarfs, white dwarfs: in the HR diagram every star gets its place. Follow the life of a star up to a supernova and measure distances with the parallax.',
+              ),
+              grades: [7, 13],
+              kmk: ['P-S', 'P-E', 'P-BK-Materie', 'P-BK-Mathematisieren'],
+              keywords: L(
+                ['Stern', 'Sterne', 'Hertzsprung-Russell-Diagramm', 'HR-Diagramm', 'Hauptreihe', 'Roter Riese', 'Überriese', 'Weißer Zwerg', 'Leuchtkraft', 'Oberflächentemperatur', 'Spektralklasse', 'Stefan-Boltzmann-Gesetz', 'Wiensches Verschiebungsgesetz', 'Planck', 'Schwarzer Körper', 'Sternentwicklung', 'Supernova', 'Neutronenstern', 'Schwarzes Loch', 'Planetarischer Nebel', 'Parallaxe', 'Parsec', 'Lichtjahr', 'absolute Helligkeit', 'Sonne', 'Beteigeuze', 'Sirius'],
+                ['star', 'stars', 'Hertzsprung–Russell diagram', 'HR diagram', 'main sequence', 'red giant', 'supergiant', 'white dwarf', 'luminosity', 'surface temperature', 'spectral class', 'Stefan–Boltzmann law', 'Wien’s displacement law', 'Planck', 'black body', 'stellar evolution', 'supernova', 'neutron star', 'black hole', 'planetary nebula', 'parallax', 'parsec', 'light year', 'absolute magnitude', 'Sun', 'Betelgeuse', 'Sirius'],
+              ),
+            },
+          ],
+        },
+        {
+          id: 'radioaktivitaet',
+          title: L('Radioaktivität', 'Radioactivity'),
+          grades: [9, 12],
+          simulations: [
+            {
+              id: 'radioaktiver-zerfall',
+              status: 'ready',
+              slug: L('radioaktiver-zerfall', 'radioactive-decay'),
+              title: L('Radioaktiver Zerfall und Halbwertszeit', 'Radioactive decay and half-life'),
+              summary: L(
+                'Viele Atomkerne zerfallen zufällig, und ein Zählrohr knackt. Trotzdem ist nach jeder Halbwertszeit ungefähr die Hälfte übrig.',
+                'Many nuclei decay at random and a Geiger counter clicks. Even so, after each half-life almost exactly half are left.',
+              ),
+              grades: [8, 13],
+              kmk: ['P-BK-Zufall', 'P-BK-Mathematisieren', 'P-BK-Materie'],
+              keywords: L(
+                ['Radioaktivität', 'radioaktiver Zerfall', 'Halbwertszeit', 'Zerfallsgesetz', 'Zerfallskonstante', 'Aktivität', 'Becquerel', 'Zählrohr', 'Geiger-Müller-Zählrohr', 'Zählrate', 'Alphazerfall', 'Betazerfall', 'Gammastrahlung', 'Mutterkern', 'Tochterkern', 'Zerfallsgleichung', 'Nuklid', 'C-14-Methode', 'Altersbestimmung', 'Zufall', 'Exponentialfunktion'],
+                ['radioactivity', 'radioactive decay', 'half-life', 'decay law', 'decay constant', 'activity', 'becquerel', 'Geiger counter', 'count rate', 'alpha decay', 'beta decay', 'gamma radiation', 'parent nucleus', 'daughter nucleus', 'decay equation', 'nuclide', 'radiocarbon dating', 'chance', 'exponential function'],
+              ),
+            },
+          ],
+        },
+        {
+          id: 'relativitaet',
+          title: L('Relativitätstheorie', 'Theory of relativity'),
+          grades: [11, 13],
+          simulations: [
+            {
+              id: 'zeitdilatation',
+              status: 'ready',
+              slug: L('zeitdilatation-laengenkontraktion', 'time-dilation-length-contraction'),
+              title: L('Zeitdilatation und Längenkontraktion', 'Time dilation and length contraction'),
+              summary: L(
+                'Eine Lichtuhr fährt im Zug mit: Vom Bahnsteig aus läuft das Licht schräg und braucht länger. Auch Zug und Tunnel, ein Lichtblitz in der Zugmitte, Myonen und E = m · c² kommen vor.',
+                'A light clock rides on a train: seen from the platform, the light travels diagonally and takes longer. A train and a tunnel, a flash in the middle of the train, muons and E = m · c² follow.',
+              ),
+              grades: [11, 13],
+              kmk: ['P-S', 'P-E', 'P-K', 'P-BK-Mathematisieren', 'P-BK-Energie', 'P-BK-Erhaltung'],
+              keywords: L(
+                ['spezielle Relativitätstheorie', 'Relativitätstheorie', 'Einstein', 'Postulate', 'Relativitätsprinzip', 'Lichtgeschwindigkeit', 'Konstanz der Lichtgeschwindigkeit', 'Lichtuhr', 'Zeitdilatation', 'Eigenzeit', 'Längenkontraktion', 'Ruhelänge', 'Lorentzfaktor', 'Relativität der Gleichzeitigkeit', 'Gleichzeitigkeit', 'Inertialsystem', 'Bezugssystem', 'Myon', 'Höhenstrahlung', 'GPS', 'relativistische Masse', 'Massenzunahme', 'Ruheenergie', 'Gesamtenergie', 'E = mc²', 'relativistischer Impuls', 'Teilchenbeschleuniger', 'Weltbild'],
+                ['special relativity', 'theory of relativity', 'Einstein', 'postulates', 'principle of relativity', 'speed of light', 'constancy of the speed of light', 'light clock', 'time dilation', 'proper time', 'length contraction', 'rest length', 'Lorentz factor', 'relativity of simultaneity', 'simultaneity', 'inertial frame', 'frame of reference', 'muon', 'cosmic rays', 'GPS', 'relativistic mass', 'mass increase', 'rest energy', 'total energy', 'E = mc²', 'relativistic momentum', 'particle accelerator', 'world view'],
+              ),
+            },
+          ],
+        },
+        {
+          id: 'astrophysik',
+          title: L('Astrophysik und Kosmologie', 'Astrophysics and cosmology'),
+          grades: [11, 13],
+          simulations: [
+            {
+              id: 'hubble',
+              status: 'ready',
+              slug: L('expandierendes-universum-hubble', 'expanding-universe-hubble'),
+              title: L('Expandierendes Universum', 'Expanding universe'),
+              summary: L(
+                'Je weiter eine Galaxie entfernt ist, desto schneller flieht sie und desto röter ist ihr Licht. Rückwärts gerechnet führt das zum Urknall vor etwa 14 Milliarden Jahren.',
+                'The farther away a galaxy is, the faster it recedes and the redder its light. Run backwards, this leads to the Big Bang about 14 billion years ago.',
+              ),
+              grades: [11, 13],
+              kmk: ['P-S', 'P-E', 'P-BK-Mathematisieren', 'P-BK-Energie'],
+              keywords: L(
+                ['Hubble', 'Hubble-Konstante', 'Hubble-Gesetz', 'Hubble-Diagramm', 'Rotverschiebung', 'Spektrallinie', 'Fluchtgeschwindigkeit', 'Galaxie', 'Expansion', 'Urknall', 'Weltalter', 'Hubble-Zeit', 'Skalenfaktor', 'Friedmann', 'Dunkle Energie', 'Dunkle Materie', 'Hintergrundstrahlung', 'Kosmologie', 'Standardkerze', 'Supernova', 'Cepheiden', 'Parsec', 'Lichtjahr'],
+                ['Hubble', 'Hubble constant', 'Hubble’s law', 'Hubble diagram', 'redshift', 'spectral line', 'recession velocity', 'galaxy', 'expansion', 'Big Bang', 'age of the universe', 'Hubble time', 'scale factor', 'Friedmann', 'dark energy', 'dark matter', 'background radiation', 'cosmology', 'standard candle', 'supernova', 'Cepheids', 'parsec', 'light year'],
+              ),
+            },
+          ],
+        },
+        {
+          id: 'quanten',
+          title: L('Quantenphysik', 'Quantum physics'),
+          grades: [12, 14],
+          simulations: [
+            {
+              id: 'linienspektren',
+              status: 'ready',
+              slug: L('linienspektren-energieniveaus', 'line-spectra-energy-levels'),
+              title: L('Atommodelle und Linienspektren', 'Atomic models and line spectra'),
+              summary: L(
+                'Jedes Element leuchtet in seinen eigenen Farben. Springt ein Elektron eine Stufe tiefer, entsteht genau eine Linie im Spektrum.',
+                'Every element glows in its own colours. When an electron drops one level, exactly one line appears in the spectrum.',
+              ),
+              grades: [9, 13],
+              kmk: ['P-S', 'P-E', 'P-BK-Materie', 'P-BK-Energie', 'P-BK-Mathematisieren'],
+              keywords: L(
+                ['Linienspektrum', 'Spektrallinie', 'Energieniveau', 'Termschema', 'Elektronensprung', 'Photon', 'Emission', 'Absorption', 'Emissionsspektrum', 'Absorptionsspektrum', 'Bohrsches Atommodell', 'Wasserstoff', 'Balmer-Serie', 'Lyman-Serie', 'Natrium-D-Linie', 'Quecksilber', 'Helium', 'Planck-Konstante', 'Frequenz', 'Wellenlänge', 'Spektralfarben', 'Prisma', 'Fraunhofer-Linien'],
+                ['line spectrum', 'spectral line', 'energy level', 'energy level diagram', 'electron transition', 'photon', 'emission', 'absorption', 'emission spectrum', 'absorption spectrum', 'Bohr model', 'hydrogen', 'Balmer series', 'Lyman series', 'sodium D line', 'mercury', 'helium', 'Planck constant', 'frequency', 'wavelength', 'spectral colours', 'prism', 'Fraunhofer lines'],
+              ),
+            },
+            {
+              id: 'photoeffekt',
+              status: 'ready',
+              slug: L('photoeffekt-gegenfeldmethode', 'photoelectric-effect-retarding-field'),
+              title: L('Photoeffekt', 'Photoelectric effect'),
+              summary: L(
+                'Rotes Licht kann noch so hell sein, es löst kein einziges Elektron. Kurzwelliges Licht schafft es sofort. Für Wellen ist das rätselhaft, für Photonen nicht.',
+                'Red light can be as bright as you like, it frees not a single electron. Short-wave light does it at once. A puzzle for waves, not for photons.',
+              ),
+              grades: [12, 13],
+              kmk: ['P-S', 'P-E', 'P-BK-Materie', 'P-BK-Energie', 'P-BK-Mathematisieren'],
+              keywords: L(
+                ['Photoeffekt', 'lichtelektrischer Effekt', 'Fotozelle', 'Gegenfeldmethode', 'Gegenspannung', 'Austrittsarbeit', 'Grenzfrequenz', 'Einstein-Gerade', 'Photon', 'Planck-Konstante', 'Bewegungsenergie', 'Intensität', 'Fotostrom', 'Quantenobjekt'],
+                ['photoelectric effect', 'photocell', 'retarding field method', 'stopping voltage', 'work function', 'threshold frequency', 'Einstein line', 'photon', 'Planck constant', 'kinetic energy', 'intensity', 'photocurrent', 'quantum object'],
+              ),
+            },
+            {
+              id: 'elektronenbeugung',
+              status: 'ready',
+              slug: L('elektronenbeugung-graphit', 'electron-diffraction-graphite'),
+              title: L('Elektronenbeugung', 'Electron diffraction'),
+              summary: L(
+                'Elektronen treffen auf eine dünne Graphitschicht und bilden Ringe auf dem Schirm, wie es nur Wellen tun.',
+                'Electrons hit a thin layer of graphite and form rings on the screen, just like waves do.',
+              ),
+              grades: [12, 14],
+              uni: true,
+              kmk: ['P-S', 'P-E', 'P-BK-Materie', 'P-BK-Superposition', 'P-BK-Mathematisieren', 'P-BK-Zufall'],
+              keywords: L(
+                ['Elektronenbeugung', 'Elektronenbeugungsröhre', 'de-Broglie-Wellenlänge', 'Materiewelle', 'Welle-Teilchen-Dualismus', 'Graphit', 'Bragg-Bedingung', 'Netzebenenabstand', 'Beugungsring', 'Beschleunigungsspannung', 'Impuls', 'Planck-Konstante', 'Leuchtschirm', 'Linearisierung', 'Quantenobjekt'],
+                ['electron diffraction', 'electron diffraction tube', 'de Broglie wavelength', 'matter wave', 'wave–particle duality', 'graphite', 'Bragg condition', 'lattice spacing', 'diffraction ring', 'accelerating voltage', 'momentum', 'Planck constant', 'fluorescent screen', 'linearisation', 'quantum object'],
+              ),
+            },
+          ],
+        },
+      ],
+    },
+    {
       id: 'optik',
       slug: L('optik', 'optics'),
       title: L('Optik', 'Optics'),
@@ -844,165 +982,27 @@ export const physik: Subject = {
       ],
     },
     {
-      id: 'moderne-physik',
-      slug: L('atom-kern-und-quantenphysik', 'atomic-nuclear-and-quantum-physics'),
-      title: L('Atom-, Kern- und Quantenphysik', 'Atomic, nuclear and quantum physics'),
-      description: L(
-        'Radioaktiver Zerfall, Spektrallinien und Photoeffekt – Zufall und Quantisierung erleben.',
-        'Radioactive decay, spectral lines and the photoelectric effect – experience randomness and quantisation.',
-      ),
-      grades: [7, 14],
-      kmk: ['P-S', 'P-E', 'P-BK-Zufall', 'P-BK-Materie'],
-      topics: [
-        {
-          id: 'sterne',
-          title: L('Sterne', 'Stars'),
-          grades: [7, 13],
-          simulations: [
-            {
-              id: 'hr-diagramm',
-              status: 'ready',
-              slug: L('sterne-hertzsprung-russell-diagramm', 'stars-hertzsprung-russell-diagram'),
-              title: L('Sterne und Hertzsprung-Russell-Diagramm', 'Stars and the Hertzsprung–Russell diagram'),
-              summary: L(
-                'Blaue Riesen, Rote Zwerge, Weiße Zwerge: Im HR-Diagramm bekommt jeder Stern seinen Platz. Du verfolgst den Lebensweg eines Sterns bis zur Supernova und misst Entfernungen mit der Parallaxe.',
-                'Blue giants, red dwarfs, white dwarfs: in the HR diagram every star gets its place. Follow the life of a star up to a supernova and measure distances with the parallax.',
-              ),
-              grades: [7, 13],
-              kmk: ['P-S', 'P-E', 'P-BK-Materie', 'P-BK-Mathematisieren'],
-              keywords: L(
-                ['Stern', 'Sterne', 'Hertzsprung-Russell-Diagramm', 'HR-Diagramm', 'Hauptreihe', 'Roter Riese', 'Überriese', 'Weißer Zwerg', 'Leuchtkraft', 'Oberflächentemperatur', 'Spektralklasse', 'Stefan-Boltzmann-Gesetz', 'Wiensches Verschiebungsgesetz', 'Planck', 'Schwarzer Körper', 'Sternentwicklung', 'Supernova', 'Neutronenstern', 'Schwarzes Loch', 'Planetarischer Nebel', 'Parallaxe', 'Parsec', 'Lichtjahr', 'absolute Helligkeit', 'Sonne', 'Beteigeuze', 'Sirius'],
-                ['star', 'stars', 'Hertzsprung–Russell diagram', 'HR diagram', 'main sequence', 'red giant', 'supergiant', 'white dwarf', 'luminosity', 'surface temperature', 'spectral class', 'Stefan–Boltzmann law', 'Wien’s displacement law', 'Planck', 'black body', 'stellar evolution', 'supernova', 'neutron star', 'black hole', 'planetary nebula', 'parallax', 'parsec', 'light year', 'absolute magnitude', 'Sun', 'Betelgeuse', 'Sirius'],
-              ),
-            },
-          ],
-        },
-        {
-          id: 'radioaktivitaet',
-          title: L('Radioaktivität', 'Radioactivity'),
-          grades: [9, 12],
-          simulations: [
-            {
-              id: 'radioaktiver-zerfall',
-              status: 'ready',
-              slug: L('radioaktiver-zerfall', 'radioactive-decay'),
-              title: L('Radioaktiver Zerfall und Halbwertszeit', 'Radioactive decay and half-life'),
-              summary: L(
-                'Viele Atomkerne zerfallen zufällig, und ein Zählrohr knackt. Trotzdem ist nach jeder Halbwertszeit ungefähr die Hälfte übrig.',
-                'Many nuclei decay at random and a Geiger counter clicks. Even so, after each half-life almost exactly half are left.',
-              ),
-              grades: [8, 13],
-              kmk: ['P-BK-Zufall', 'P-BK-Mathematisieren', 'P-BK-Materie'],
-              keywords: L(
-                ['Radioaktivität', 'radioaktiver Zerfall', 'Halbwertszeit', 'Zerfallsgesetz', 'Zerfallskonstante', 'Aktivität', 'Becquerel', 'Zählrohr', 'Geiger-Müller-Zählrohr', 'Zählrate', 'Alphazerfall', 'Betazerfall', 'Gammastrahlung', 'Mutterkern', 'Tochterkern', 'Zerfallsgleichung', 'Nuklid', 'C-14-Methode', 'Altersbestimmung', 'Zufall', 'Exponentialfunktion'],
-                ['radioactivity', 'radioactive decay', 'half-life', 'decay law', 'decay constant', 'activity', 'becquerel', 'Geiger counter', 'count rate', 'alpha decay', 'beta decay', 'gamma radiation', 'parent nucleus', 'daughter nucleus', 'decay equation', 'nuclide', 'radiocarbon dating', 'chance', 'exponential function'],
-              ),
-            },
-          ],
-        },
-        {
-          id: 'relativitaet',
-          title: L('Relativitätstheorie', 'Theory of relativity'),
-          grades: [11, 13],
-          simulations: [
-            {
-              id: 'zeitdilatation',
-              status: 'ready',
-              slug: L('zeitdilatation-laengenkontraktion', 'time-dilation-length-contraction'),
-              title: L('Zeitdilatation und Längenkontraktion', 'Time dilation and length contraction'),
-              summary: L(
-                'Eine Lichtuhr fährt im Zug mit: Vom Bahnsteig aus läuft das Licht schräg und braucht länger. Auch Zug und Tunnel, ein Lichtblitz in der Zugmitte, Myonen und E = m · c² kommen vor.',
-                'A light clock rides on a train: seen from the platform, the light travels diagonally and takes longer. A train and a tunnel, a flash in the middle of the train, muons and E = m · c² follow.',
-              ),
-              grades: [11, 13],
-              kmk: ['P-S', 'P-E', 'P-K', 'P-BK-Mathematisieren', 'P-BK-Energie', 'P-BK-Erhaltung'],
-              keywords: L(
-                ['spezielle Relativitätstheorie', 'Relativitätstheorie', 'Einstein', 'Postulate', 'Relativitätsprinzip', 'Lichtgeschwindigkeit', 'Konstanz der Lichtgeschwindigkeit', 'Lichtuhr', 'Zeitdilatation', 'Eigenzeit', 'Längenkontraktion', 'Ruhelänge', 'Lorentzfaktor', 'Relativität der Gleichzeitigkeit', 'Gleichzeitigkeit', 'Inertialsystem', 'Bezugssystem', 'Myon', 'Höhenstrahlung', 'GPS', 'relativistische Masse', 'Massenzunahme', 'Ruheenergie', 'Gesamtenergie', 'E = mc²', 'relativistischer Impuls', 'Teilchenbeschleuniger', 'Weltbild'],
-                ['special relativity', 'theory of relativity', 'Einstein', 'postulates', 'principle of relativity', 'speed of light', 'constancy of the speed of light', 'light clock', 'time dilation', 'proper time', 'length contraction', 'rest length', 'Lorentz factor', 'relativity of simultaneity', 'simultaneity', 'inertial frame', 'frame of reference', 'muon', 'cosmic rays', 'GPS', 'relativistic mass', 'mass increase', 'rest energy', 'total energy', 'E = mc²', 'relativistic momentum', 'particle accelerator', 'world view'],
-              ),
-            },
-          ],
-        },
-        {
-          id: 'astrophysik',
-          title: L('Astrophysik und Kosmologie', 'Astrophysics and cosmology'),
-          grades: [11, 13],
-          simulations: [
-            {
-              id: 'hubble',
-              status: 'ready',
-              slug: L('expandierendes-universum-hubble', 'expanding-universe-hubble'),
-              title: L('Expandierendes Universum', 'Expanding universe'),
-              summary: L(
-                'Je weiter eine Galaxie entfernt ist, desto schneller flieht sie und desto röter ist ihr Licht. Rückwärts gerechnet führt das zum Urknall vor etwa 14 Milliarden Jahren.',
-                'The farther away a galaxy is, the faster it recedes and the redder its light. Run backwards, this leads to the Big Bang about 14 billion years ago.',
-              ),
-              grades: [11, 13],
-              kmk: ['P-S', 'P-E', 'P-BK-Mathematisieren', 'P-BK-Energie'],
-              keywords: L(
-                ['Hubble', 'Hubble-Konstante', 'Hubble-Gesetz', 'Hubble-Diagramm', 'Rotverschiebung', 'Spektrallinie', 'Fluchtgeschwindigkeit', 'Galaxie', 'Expansion', 'Urknall', 'Weltalter', 'Hubble-Zeit', 'Skalenfaktor', 'Friedmann', 'Dunkle Energie', 'Dunkle Materie', 'Hintergrundstrahlung', 'Kosmologie', 'Standardkerze', 'Supernova', 'Cepheiden', 'Parsec', 'Lichtjahr'],
-                ['Hubble', 'Hubble constant', 'Hubble’s law', 'Hubble diagram', 'redshift', 'spectral line', 'recession velocity', 'galaxy', 'expansion', 'Big Bang', 'age of the universe', 'Hubble time', 'scale factor', 'Friedmann', 'dark energy', 'dark matter', 'background radiation', 'cosmology', 'standard candle', 'supernova', 'Cepheids', 'parsec', 'light year'],
-              ),
-            },
-          ],
-        },
-        {
-          id: 'quanten',
-          title: L('Quantenphysik', 'Quantum physics'),
-          grades: [12, 14],
-          simulations: [
-            {
-              id: 'linienspektren',
-              status: 'ready',
-              slug: L('linienspektren-energieniveaus', 'line-spectra-energy-levels'),
-              title: L('Atommodelle und Linienspektren', 'Atomic models and line spectra'),
-              summary: L(
-                'Jedes Element leuchtet in seinen eigenen Farben. Springt ein Elektron eine Stufe tiefer, entsteht genau eine Linie im Spektrum.',
-                'Every element glows in its own colours. When an electron drops one level, exactly one line appears in the spectrum.',
-              ),
-              grades: [9, 13],
-              kmk: ['P-S', 'P-E', 'P-BK-Materie', 'P-BK-Energie', 'P-BK-Mathematisieren'],
-              keywords: L(
-                ['Linienspektrum', 'Spektrallinie', 'Energieniveau', 'Termschema', 'Elektronensprung', 'Photon', 'Emission', 'Absorption', 'Emissionsspektrum', 'Absorptionsspektrum', 'Bohrsches Atommodell', 'Wasserstoff', 'Balmer-Serie', 'Lyman-Serie', 'Natrium-D-Linie', 'Quecksilber', 'Helium', 'Planck-Konstante', 'Frequenz', 'Wellenlänge', 'Spektralfarben', 'Prisma', 'Fraunhofer-Linien'],
-                ['line spectrum', 'spectral line', 'energy level', 'energy level diagram', 'electron transition', 'photon', 'emission', 'absorption', 'emission spectrum', 'absorption spectrum', 'Bohr model', 'hydrogen', 'Balmer series', 'Lyman series', 'sodium D line', 'mercury', 'helium', 'Planck constant', 'frequency', 'wavelength', 'spectral colours', 'prism', 'Fraunhofer lines'],
-              ),
-            },
-            {
-              id: 'photoeffekt',
-              status: 'ready',
-              slug: L('photoeffekt-gegenfeldmethode', 'photoelectric-effect-retarding-field'),
-              title: L('Photoeffekt', 'Photoelectric effect'),
-              summary: L(
-                'Rotes Licht kann noch so hell sein, es löst kein einziges Elektron. Kurzwelliges Licht schafft es sofort. Für Wellen ist das rätselhaft, für Photonen nicht.',
-                'Red light can be as bright as you like, it frees not a single electron. Short-wave light does it at once. A puzzle for waves, not for photons.',
-              ),
-              grades: [12, 13],
-              kmk: ['P-S', 'P-E', 'P-BK-Materie', 'P-BK-Energie', 'P-BK-Mathematisieren'],
-              keywords: L(
-                ['Photoeffekt', 'lichtelektrischer Effekt', 'Fotozelle', 'Gegenfeldmethode', 'Gegenspannung', 'Austrittsarbeit', 'Grenzfrequenz', 'Einstein-Gerade', 'Photon', 'Planck-Konstante', 'Bewegungsenergie', 'Intensität', 'Fotostrom', 'Quantenobjekt'],
-                ['photoelectric effect', 'photocell', 'retarding field method', 'stopping voltage', 'work function', 'threshold frequency', 'Einstein line', 'photon', 'Planck constant', 'kinetic energy', 'intensity', 'photocurrent', 'quantum object'],
-              ),
-            },
-            {
-              id: 'elektronenbeugung',
-              status: 'ready',
-              slug: L('elektronenbeugung-graphit', 'electron-diffraction-graphite'),
-              title: L('Elektronenbeugung', 'Electron diffraction'),
-              summary: L(
-                'Elektronen treffen auf eine dünne Graphitschicht und bilden Ringe auf dem Schirm, wie es nur Wellen tun.',
-                'Electrons hit a thin layer of graphite and form rings on the screen, just like waves do.',
-              ),
-              grades: [12, 14],
-              uni: true,
-              kmk: ['P-S', 'P-E', 'P-BK-Materie', 'P-BK-Superposition', 'P-BK-Mathematisieren', 'P-BK-Zufall'],
-              keywords: L(
-                ['Elektronenbeugung', 'Elektronenbeugungsröhre', 'de-Broglie-Wellenlänge', 'Materiewelle', 'Welle-Teilchen-Dualismus', 'Graphit', 'Bragg-Bedingung', 'Netzebenenabstand', 'Beugungsring', 'Beschleunigungsspannung', 'Impuls', 'Planck-Konstante', 'Leuchtschirm', 'Linearisierung', 'Quantenobjekt'],
-                ['electron diffraction', 'electron diffraction tube', 'de Broglie wavelength', 'matter wave', 'wave–particle duality', 'graphite', 'Bragg condition', 'lattice spacing', 'diffraction ring', 'accelerating voltage', 'momentum', 'Planck constant', 'fluorescent screen', 'linearisation', 'quantum object'],
-              ),
-            },
-          ],
-        },
-      ],
+      id: 'messen',
+      slug: L('messen', 'measurement'),
+      title: L('Messen und Auswerten', 'Measurement and analysis'),
+      description: L('Größen ablesen, Messreihen auswerten und Unsicherheit verstehen.', 'Read quantities, analyse measurements and understand uncertainty.'),
+      grades: [5, 13],
+      kmk: ['P-E', 'P-K'],
+      topics: [{
+        id: 'messmethoden',
+        title: L('Messmethoden', 'Measurement methods'),
+        grades: [5, 13],
+        simulations: [{
+          id: 'messunsicherheit',
+          status: 'ready',
+          slug: L('messunsicherheit', 'measurement-uncertainty'),
+          title: L('Messen und Messunsicherheit', 'Measurement and uncertainty'),
+          summary: L('Lies ein Lineal ab, verändere Messwerte und untersuche Mittelwert, Streuung, Fehlerbalken und Ausgleichsgeraden. Wiederholte Versuche zeigen, warum mehr Messungen nicht jeden Fehler beseitigen.', 'Read a ruler, edit measurements and explore means, scatter, error bars and best-fit lines. Repeated experiments show why more readings do not remove every error.'),
+          grades: [5, 13],
+          kmk: ['P-E', 'P-K', 'P-S'],
+          keywords: L(['Messen', 'Einheiten', 'Messunsicherheit', 'Messfehler', 'Mittelwert', 'Standardabweichung', 'Standardfehler', 'Ausgleichsgerade', 'Regression', 'Fehlerbalken', 'Auflösung', 'Praktikum'], ['measurement', 'units', 'uncertainty', 'mean', 'standard deviation', 'standard error', 'regression', 'error bars', 'resolution', 'practical']),
+        }],
+      }],
     },
   ],
 };
