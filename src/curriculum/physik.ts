@@ -611,6 +611,22 @@ export const physik: Subject = {
               ),
             },
             {
+              id: 'ladungen-coulomb',
+              status: 'ready',
+              slug: L('elektrische-ladung-coulomb', 'electric-charge-coulomb'),
+              title: L('Elektrische Ladung und Coulomb’sches Gesetz', 'Electric charge and Coulomb’s law'),
+              summary: L(
+                'Reibt man einen Kunststoffstab an Wolle, wandern Elektronen – Stab und Tuch ziehen sich danach an. Ein Elektroskop zeigt die Ladung, und das Coulomb’sche Gesetz sagt, wie stark die Kraft ist.',
+                'Rub a plastic rod with wool and electrons move – afterwards rod and cloth attract. An electroscope shows the charge, and Coulomb’s law tells how strong the force is.',
+              ),
+              grades: [6, 12],
+              kmk: ['P-S', 'P-E', 'P-BK-Wechselwirkung', 'P-BK-Mathematisieren'],
+              keywords: L(
+                ['elektrische Ladung', 'Elektrostatik', 'Reibungselektrizität', 'Elektron', 'positiv', 'negativ', 'Anziehung', 'Abstoßung', 'Elektroskop', 'Ladungstrennung', 'Coulomb', 'Coulombsches Gesetz', 'Coulombkraft', 'Elementarladung', 'Erdung'],
+                ['electric charge', 'electrostatics', 'charging by friction', 'electron', 'positive', 'negative', 'attraction', 'repulsion', 'electroscope', 'charge separation', 'coulomb', 'Coulomb’s law', 'Coulomb force', 'elementary charge', 'earthing'],
+              ),
+            },
+            {
               id: 'reihe-parallel',
               status: 'ready',
               slug: L('reihen-und-parallelschaltung', 'series-and-parallel-circuits'),

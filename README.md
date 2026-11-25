@@ -15,7 +15,7 @@ Kostenlose, interaktive Simulationen für den **Mathematik- und Physikunterricht
 
 ## Was die Seite kann
 
-- **161 fertige Simulationen** (103 Mathematik, 58 Physik) entlang der KMK-Bildungsstandards, Klassen 5–13 und teils Uni – von Bruchteilen und Satz des Pythagoras über Funktionen, Stochastik und Analysis bis zu Mechanik, Optik, Elektrizität, Schwingungen und Quantenphysik.
+- **162 fertige Simulationen** (103 Mathematik, 59 Physik) entlang der KMK-Bildungsstandards, Klassen 5–13 und teils Uni – von Bruchteilen und Satz des Pythagoras über Funktionen, Stochastik und Analysis bis zu Mechanik, Optik, Elektrizität, Schwingungen und Quantenphysik.
 - **Länder-Lehrpläne:** Gymnasium, Mathematik und Physik, für 14 Bundesländer (alle außer Thüringen und Mecklenburg-Vorpommern) – mit Ansicht nach Jahrgangsstufe und Lernbereich.
 - **Lernspiel Zahlenfabrik:** Fabrik-Spiel zum Rechnen für Klasse 5–9 mit über 30 Kapiteln, Tagesrätsel, eigenem Level-Baukasten und offener Welt (`src/spiele/`).
 - **Optionale Bilder:** Simulationen können Fotos nutzen (Liste mit Bild-Prompts in [`docs/BILDER.md`](docs/BILDER.md)); fehlt ein Bild, wird eine gezeichnete Ersatzgrafik verwendet.

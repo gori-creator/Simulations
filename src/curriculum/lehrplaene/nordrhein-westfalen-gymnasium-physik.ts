@@ -318,6 +318,7 @@ const SEK_I_UNITS: CurriculumUnit[] = [
         code: '9.1',
         title: L('Elektrostatik', 'Electrostatics'),
         summary: L('Elektrische Ladungen und Felder, Elektroskop, Spannung durch Ladungstrennung.', 'Electric charges and fields, the electroscope, voltage from separating charges.'),
+        simulations: ['ladungen-coulomb'],
       },
       {
         code: '9.2',
