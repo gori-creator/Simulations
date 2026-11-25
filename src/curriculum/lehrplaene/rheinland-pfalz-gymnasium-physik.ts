@@ -63,7 +63,7 @@ const SEK_I_UNITS: CurriculumUnit[] = [
       'Bewegungsänderungen im Basiskonzept Wechselwirkung: Geschwindigkeit mit Betrag und Richtung, Trägheit, Kraft als Maß der Wechselwirkung, Kraftpfeilpaare und Kräftegleichgewicht; Impuls als Vertiefung.',
       'Changes of motion and interaction: velocity with magnitude and direction, inertia, force as a measure of interaction, pairs of force arrows and equilibrium; momentum as an extension.',
     ),
-    simulations: ['bewegungsdiagramme', 'kraefteaddition', 'hookesches-gesetz', 'stoesse', 'dichte-auftrieb', 'newtonsche-gesetze'],
+    simulations: ['bewegungsdiagramme', 'kraefteaddition', 'hookesches-gesetz', 'stoesse', 'dichte-auftrieb', 'newtonsche-gesetze', 'druck'],
   },
   {
     code: '5',

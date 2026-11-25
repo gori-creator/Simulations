@@ -161,7 +161,7 @@ const SEK_I_UNITS: CurriculumUnit[] = [
         code: '4.1',
         title: L('Dichte (Block I)', 'Density (block I)'),
         summary: L('Masse, Volumen und Dichte, Schwimmen, Schweben und Sinken.', 'Mass, volume and density, floating, hovering and sinking.'),
-        simulations: ['dichte-auftrieb'],
+        simulations: ['dichte-auftrieb', 'druck'],
       },
       {
         code: '4.2',

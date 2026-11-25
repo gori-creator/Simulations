@@ -199,6 +199,22 @@ export const physik: Subject = {
                 ['density', 'buoyancy', 'buoyant force', 'upthrust', 'Archimedes’ principle', 'floating', 'sinking', 'hovering', 'weight', 'overflow can', 'measuring cylinder', 'balance', 'volume', 'mass', 'ship', 'submarine', 'hot-air balloon', 'air density', 'iceberg', 'salt water'],
               ),
             },
+            {
+              id: 'druck',
+              status: 'ready',
+              slug: L('druck-hydraulik-luftdruck', 'pressure-hydraulics-air-pressure'),
+              title: L('Druck: Kraft pro Fläche, Hydraulik, Wasser- und Luftdruck', 'Pressure: force per area, hydraulics, water and air pressure'),
+              summary: L(
+                'Mit Schneeschuhen sinkt man nicht ein, mit einer kleinen Kraft hebt man ein Auto, und beim Tauchen drückt das Wasser von allen Seiten. Am Ende erklärt der Druck sogar den Wind an der Küste.',
+                'With snowshoes you don’t sink in, a small force lifts a car, and when diving the water presses from all sides. Finally, pressure even explains the wind at the coast.',
+              ),
+              grades: [7, 10],
+              kmk: ['P-S', 'P-E', 'P-BK-Wechselwirkung', 'P-BK-Mathematisieren'],
+              keywords: L(
+                ['Druck', 'Auflagedruck', 'Pascal', 'Bar', 'Hektopascal', 'hydraulische Presse', 'Hydraulik', 'Kraftwandler', 'Schweredruck', 'Wasserdruck', 'Tauchen', 'Luftdruck', 'Barometer', 'barometrische Höhenformel', 'Hochdruckgebiet', 'Tiefdruckgebiet', 'Wind', 'Seewind', 'Landwind', 'Wetter'],
+                ['pressure', 'contact pressure', 'pascal', 'bar', 'hectopascal', 'hydraulic press', 'hydraulics', 'force multiplier', 'hydrostatic pressure', 'water pressure', 'diving', 'air pressure', 'barometer', 'barometric formula', 'high-pressure area', 'low-pressure area', 'wind', 'sea breeze', 'land breeze', 'weather'],
+              ),
+            },
           ],
         },
         {
