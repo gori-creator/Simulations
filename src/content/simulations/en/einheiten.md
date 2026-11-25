@@ -31,6 +31,10 @@ Each column the point moves means “times $10$” or “divided by $10$”. Thr
 
 **Time is different:** $1\,\text{d} = 24\,\text{h}$, $1\,\text{h} = 60\,\text{min}$ and $1\,\text{min} = 60\,\text{s}$. These are not powers of ten, so the unit chart does not help. You work step by step along a **conversion chain**: multiply to go to a smaller unit, divide to go to a larger one. Time spans are often written in **mixed units**: $135\,\text{min} = 2\,\text{h}\;15\,\text{min} = 2.25\,\text{h}$, because $135 \div 60 = 2$ remainder $15$.
 
+**Finer angles:** Angles are also divided by $60$: $1° = 60'$ (minutes of arc) and $1' = 60''$ (seconds of arc). So $37.5° = 37°\,30'$. Maps and satellite navigation give positions this way, for example $50°\,7'\,N$. You convert with a conversion chain, as for time.
+
+**Money:** $€1 = 100\,\text{ct}$. In the chart the euro has three columns (hundreds, tens, ones) and the cent two. That is why cents always take **two places** after the point: $€3.05 = 305\,\text{ct}$, but $€3.5 = €3.50 = 350\,\text{ct}$.
+
 ## Try it
 
 1. Look at the starting example: where do the cards of $3.5\,\text{km}$ lie, and why does $3{,}500\,\text{m}$ need two zeros? [Load example](?q=len&v=3.5&lf=km&lt=m)
@@ -40,6 +44,7 @@ Each column the point moves means “times $10$” or “divided by $10$”. Thr
 5. Compare area and volume: how many columns does each unit have, and why? Look at the grid square and the cube in the illustration. [Area](?q=area&v=3.5&af=m2&at=dm2) · [Volume](?q=vol&v=1&vf=dm3&vt=cm3)
 6. Convert a time and watch the value move from station to station. [2 days in seconds](?q=time&v=2&tf=d&tt=s)
 7. After converting, press **Way back ⇄**: do you get the starting value again?
+8. Convert money and angles: [€3.05 to cents](?q=money&v=3.05&gf=eur&gt=ct) · [37.5° to minutes of arc](?q=angle&v=37.5&wf=deg&wt=am)
 
 ## Tasks
 
@@ -106,6 +111,17 @@ Tim writes: $3.5\,\text{m}^2 = 35\,\text{dm}^2$. What did he do wrong? [Load tas
 <summary>Show solution</summary>
 
 Tim used the conversion factor $10$, as for length. For area it is $100$: $1\,\text{m}^2 = 10\,\text{dm} \cdot 10\,\text{dm} = 100\,\text{dm}^2$. The correct answer is $3.5\,\text{m}^2 = 350\,\text{dm}^2$ – in the chart every area unit has two columns. [Show in the simulation](?q=area&v=3.5&af=m2&at=dm2)
+
+</details>
+
+### Task 7: Money and angles
+
+How many cents are €12.08? Write $52.25°$ in degrees and minutes of arc. [Load task](?q=angle&v=52.25&wf=deg&wt=am&show=0&_hide=1)
+
+<details>
+<summary>Show solution</summary>
+
+$€12.08 = 1{,}208\,\text{ct}$. Also $0.25° = 0.25 \cdot 60' = 15'$, so $52.25° = 52°\,15'$. [Show in the simulation](?q=angle&v=52.25&wf=deg&wt=am)
 
 </details>
 

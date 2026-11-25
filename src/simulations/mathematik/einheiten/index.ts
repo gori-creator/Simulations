@@ -19,6 +19,7 @@ import {
   tableResult,
   tableUnits,
   timeChain,
+  withSym,
   unitOf,
   type Conversion,
   type Dec,
@@ -39,11 +40,11 @@ const C30 = Math.cos(Math.PI / 6);
 /* Parameter                                                           */
 /* ------------------------------------------------------------------ */
 
-const FROM_KEY = { len: 'lf', mass: 'mf', time: 'tf', area: 'af', vol: 'vf' } as const;
-const TO_KEY = { len: 'lt', mass: 'mt', time: 'tt', area: 'at', vol: 'vt' } as const;
+const FROM_KEY = { len: 'lf', mass: 'mf', time: 'tf', area: 'af', vol: 'vf', money: 'gf', angle: 'wf' } as const;
+const TO_KEY = { len: 'lt', mass: 'mt', time: 'tt', area: 'at', vol: 'vt', money: 'gt', angle: 'wt' } as const;
 
 /** Beispielwert, wenn der Größenbereich gewechselt wird. */
-const START_VALUE: Record<QuantityId, string> = { len: '3,5', mass: '2,4', time: '135', area: '3,5', vol: '2,5' };
+const START_VALUE: Record<QuantityId, string> = { len: '3,5', mass: '2,4', time: '135', area: '3,5', vol: '2,5', money: '3,45', angle: '37,5' };
 
 function unitParam<K extends string>(q: QuantityId, key: K, label: Loc, def: string): ChoiceParam<K> {
   return {
@@ -140,6 +141,8 @@ const MERKE: Record<QuantityId, Loc> = {
   time: L('Zeit rechnet nicht im Zehnersystem: 1 d = 24 h, 1 h = 60 min, 1 min = 60 s.', 'Time does not work in tens: 1 d = 24 h, 1 h = 60 min, 1 min = 60 s.'),
   area: L('Benachbarte Flächeneinheiten: Umrechnungszahl 100, also zwei Spalten je Einheit.', 'Neighbouring area units: factor 100, so two columns per unit.'),
   vol: L('Benachbarte Volumeneinheiten: Umrechnungszahl 1 000. 1 dm³ = 1 l, 1 cm³ = 1 ml.', 'Neighbouring volume units: factor 1,000. 1 dm³ = 1 l, 1 cm³ = 1 ml.'),
+  angle: L('Winkel rechnen nicht im Zehnersystem: 1° = 60′ (Winkelminuten), 1′ = 60″ (Winkelsekunden).', 'Angles do not work in tens: 1° = 60′ (minutes of arc), 1′ = 60″ (seconds of arc).'),
+  money: L('1 € = 100 ct: Beim Euro stehen die Cent immer mit zwei Stellen hinter dem Komma (3,05 € = 305 ct).', '€1 = 100 ct: the cents always take two places after the point (€3.05 = 305 ct).'),
 };
 
 /**
@@ -163,6 +166,8 @@ export default defineSimulation({
         { value: 'time', label: L('Zeit', 'Time') },
         { value: 'area', label: L('Fläche', 'Area') },
         { value: 'vol', label: L('Volumen', 'Volume') },
+        { value: 'money', label: L('Geld', 'Money') },
+        { value: 'angle', label: L('Winkel', 'Angle') },
       ],
       default: 'len',
     },
@@ -185,6 +190,10 @@ export default defineSimulation({
     unitParam('area', 'at', TO_LABEL, 'dm2'),
     unitParam('vol', 'vf', FROM_LABEL, 'l'),
     unitParam('vol', 'vt', TO_LABEL, 'ml'),
+    unitParam('money', 'gf', FROM_LABEL, 'eur'),
+    unitParam('money', 'gt', TO_LABEL, 'ct'),
+    unitParam('angle', 'wf', FROM_LABEL, 'deg'),
+    unitParam('angle', 'wt', TO_LABEL, 'am'),
     {
       key: 'show',
       type: 'boolean',
@@ -214,6 +223,8 @@ export default defineSimulation({
     { id: 'area', label: L('3,5 m² in dm²', '3.5 m² to dm²'), values: { q: 'area', v: '3,5', af: 'm2', at: 'dm2' } },
     { id: 'litre', label: L('2,5 l in ml', '2.5 l to ml'), values: { q: 'vol', v: '2,5', vf: 'l', vt: 'ml' } },
     { id: 'time', label: L('135 min = 2 h 15 min', '135 min = 2 h 15 min'), values: { q: 'time', v: '135', tf: 'min', tt: 'h' } },
+    { id: 'money', label: L('3,05 € in ct', '€3.05 to ct'), values: { q: 'money', v: '3,05', gf: 'eur', gt: 'ct' } },
+    { id: 'angle', label: L('37,5° = 37° 30′', '37.5° = 37° 30′'), values: { q: 'angle', v: '37,5', wf: 'deg', wt: 'am' } },
   ],
   strings: {
     de: { canvas: 'Einheitentafel mit Ziffernkärtchen, in der beim Umrechnen das Komma Spalte für Spalte wandert; bei der Zeit eine Umrechnungskette; daneben eine Anschauung mit Lineal, Waage, Uhr, Kästchenquadrat oder Würfel' },
@@ -228,6 +239,8 @@ export default defineSimulation({
     const reduced = prefersReducedMotion();
     const T = (l: Loc) => l[lang];
     const tt = (de: string, en: string) => (lang === 'de' ? de : en);
+    /** Leerzeichen vor der Einheit – nicht bei °, ′, ″. */
+    const gap = (u: { sym: string }) => (/^[°′″]$/.test(u.sym) ? '' : ' ');
     const alpha = (c: string, a: number) => shade(c, 0, a);
     const fd = (d: Dec) => formatDec(d, lang);
     const gi = (n: number | bigint) => groupInt(String(n), lang);
@@ -303,14 +316,14 @@ export default defineSimulation({
     /* ---------------- Zeiten der Animation ---------------- */
     const layEnd = (st: State) => layAt + Math.max(1, st.given.length || 1) * STAGGER + DROP;
     function hopTiming(st: State): { n: number; hop: number; start: number; end: number; zerosEnd: number; resEnd: number } {
-      const n = st.q === 'time' ? timeSteps(st).length : Math.abs(st.conv?.shift ?? 0);
-      const hop = st.q === 'time' ? 780 : n ? clamp(2400 / n, 300, 520) : 0;
+      const n = !QUANTITIES[st.q].decimal ? timeSteps(st).length : Math.abs(st.conv?.shift ?? 0);
+      const hop = !QUANTITIES[st.q].decimal ? 780 : n ? clamp(2400 / n, 300, 520) : 0;
       const start = hopAt ?? Infinity;
       const end = start + n * hop;
       return { n, hop, start, end, zerosEnd: end + 500, resEnd: end + 1000 };
     }
     function timeSteps(st: State) {
-      return st.value ? timeChain(st.value, st.from.id, st.to.id) : [];
+      return st.value ? timeChain(st.value, st.from.id, st.to.id, st.q) : [];
     }
 
     /** Neu legen (Zahl oder Ausgangseinheit geändert) und ggf. danach umrechnen. */
@@ -937,16 +950,16 @@ export default defineSimulation({
       const fromC = cFrom();
       const toC = cTo();
       const left = [
-        { s: `${fd(conv.value)} `, c: theme.text },
+        { s: `${fd(conv.value)}${gap(conv.from)}`, c: theme.text },
         { s: conv.from.sym, c: fromC },
         { s: conv.exact || resA < 0.5 ? ' = ' : ' ≈ ', c: theme.muted },
       ];
       if (resA <= 0.02) {
-        richLine([...left, { s: '\u2009', c: toC }, { s: '?', c: toC, box: true }, { s: `\u2009 ${conv.to.sym}`, c: toC }], C.x + C.w / 2, y, size, C.w - 30);
+        richLine([...left, { s: '\u2009', c: toC }, { s: '?', c: toC, box: true }, { s: `\u2009${gap(conv.to)}${conv.to.sym}`, c: toC }], C.x + C.w / 2, y, size, C.w - 30);
         return;
       }
       const right = [
-        { s: `${fd(conv.result)} `, c: shade(toC, theme.dark ? 0.05 : -0.08) },
+        { s: `${fd(conv.result)}${gap(conv.to)}`, c: shade(toC, theme.dark ? 0.05 : -0.08) },
         { s: conv.to.sym, c: toC },
       ];
       const g = surface.g;
@@ -968,14 +981,14 @@ export default defineSimulation({
       g.globalAlpha = sceneA();
       const small = C.w < 470;
       const pad = small ? 10 : 18;
-      text(g, `${tt('Zeit', 'Time')} · ${tt('Umrechnungskette', 'conversion chain')}`, C.x + pad, C.y + 20, { font: font(750, small ? 11.5 : 12.5), color: theme.muted, align: 'left' });
+      text(g, `${T(QUANTITIES[st.q].name)} · ${tt('Umrechnungskette', 'conversion chain')}`, C.x + pad, C.y + 20, { font: font(750, small ? 11.5 : 12.5), color: theme.muted, align: 'left' });
       if (!st.value || !st.conv) {
         const msg = tt('Bitte eine Zahl eingeben, z. B. 135 oder 2,5.', 'Please enter a number, e.g. 135 or 2.5.');
         wrap(msg, C.w - 60, font(650, 14)).forEach((r, i) => text(g, r, C.x + C.w / 2, C.y + C.h * 0.45 + i * 20, { font: font(650, 14), color: theme.muted }));
         g.restore();
         return;
       }
-      const units = [...QUANTITIES.time.units].reverse(); // d, h, min, s
+      const units = [...QUANTITIES[st.q].units].reverse(); // d, h, min, s bzw. °, ′, ″
       const steps = timeSteps(st);
       const tm = hopTiming(st);
       const t = now;
@@ -998,14 +1011,15 @@ export default defineSimulation({
       const cy = startY + 26 + 34 + rr;
       const x0 = C.x + pad + rr + 8;
       const x1 = C.x + C.w - pad - rr - 8;
-      const sx = (i: number) => lerp(x0, x1, i / 3);
-      const FACT = [24, 60, 60];
-      const NAMES: Loc[] = [L('Tag', 'day'), L('Stunde', 'hour'), L('Minute', 'minute'), L('Sekunde', 'second')];
+      const last = units.length - 1;
+      const sx = (i: number) => lerp(x0, x1, i / last);
+      const FACT = units.slice(0, last).map((u, i) => u.exp / units[i + 1]!.exp);
+      const NAMES: Loc[] = units.map((u) => u.name);
       const fromC = cFrom();
       const toC = cTo();
 
       // Pfeile zwischen den Stationen: oben „· f“ (in die kleinere Einheit), unten „: f“
-      for (let i = 0; i < 3; i++) {
+      for (let i = 0; i < last; i++) {
         const a = sx(i) + rr + 4;
         const b = sx(i + 1) - rr - 4;
         for (const down of [true, false]) {
@@ -1114,8 +1128,8 @@ export default defineSimulation({
         }
         if (val !== null) {
           const appear = isFrom ? clamp((now - layAt) / 400, 0, 1) : 1;
-          const s = `${isApprox ? '≈ ' : ''}${val} ${u.sym}`;
-          const fs = fitSize(s, 800, small ? 12.5 : 14, (x1 - x0) / 3 - 8);
+          const s = `${isApprox ? '≈ ' : ''}${withSym(val, u)}`;
+          const fs = fitSize(s, 800, small ? 12.5 : 14, (x1 - x0) / last - 8);
           const w = measure(s, font(800, fs)) + 14;
           const by = cy + rr + badgeGap;
           g.save();
@@ -1134,7 +1148,7 @@ export default defineSimulation({
       let status: string;
       let statusC = theme.muted;
       if (hopAt === null) status = tt('Mal oder geteilt – und durch welche Zahl? Dann „Umrechnen“ antippen.', 'Multiply or divide – and by what? Then tap “Convert”.');
-      else if (t < tm.start) status = tt('Zeit rechnet nicht mit 10: 1 d = 24 h, 1 h = 60 min, 1 min = 60 s.', 'Time does not use tens: 1 d = 24 h, 1 h = 60 min, 1 min = 60 s.');
+      else if (t < tm.start) status = st.q === 'angle' ? tt('Winkel rechnen nicht mit 10: 1° = 60′, 1′ = 60″.', 'Angles do not use tens: 1° = 60′, 1′ = 60″.') : tt('Zeit rechnet nicht mit 10: 1 d = 24 h, 1 h = 60 min, 1 min = 60 s.', 'Time does not use tens: 1 d = 24 h, 1 h = 60 min, 1 min = 60 s.');
       else if (tm.n === 0) status = tt('Gleiche Einheit – nichts zu rechnen.', 'Same unit – nothing to calculate.');
       else {
         const k = Math.min(tm.n - 1, stepsDone);
@@ -1151,7 +1165,7 @@ export default defineSimulation({
       drawEquation(st, C, eqY, eqSize, resA);
       const big = st.from.exp >= st.to.exp ? st.from : st.to;
       const inBig = st.from === big ? st.value! : st.conv.result;
-      const mixed = st.from.id !== st.to.id && (digitsOf(inBig).frac !== '' || !st.conv.exact) ? mixedTime(st.value!, st.from.id, st.to.id) : null;
+      const mixed = st.from.id !== st.to.id && (digitsOf(inBig).frac !== '' || !st.conv.exact) ? mixedTime(st.value!, st.from.id, st.to.id, st.q) : null;
       if (mixed && mixed.length > 1 && resA > 0) {
         const s = `= ${mixedText(mixed, lang)}`;
         halo(s, C.x + C.w / 2, eqY + eqSize * 0.5 + 22, font(800, fitSize(s, 800, small ? 16 : 19, C.w - 30)), shade(toC, theme.dark ? 0.05 : -0.08), 'center', resA);
@@ -1179,7 +1193,7 @@ export default defineSimulation({
       const pad = 14;
       text(g, tt('Anschauung', 'Picture it'), R.x + pad, R.y + 18, { font: font(750, 12), color: theme.muted, align: 'left' });
       const smallSym = pair.small.sym;
-      const cap = `1 ${pair.big.sym} = ${gi(pair.factor)} ${smallSym}`;
+      const cap = `${withSym('1', pair.big)} = ${gi(pair.factor)}${gap(pair.small)}${smallSym}`;
       const capSize = fitSize(cap, 800, small ? 16 : 18, R.w - 2 * pad);
       const capY = small ? R.y + 18 : R.y + 42;
       text(g, cap, small ? R.x + R.w - pad : R.x + R.w / 2, capY, { font: font(800, capSize), color: theme.text, align: small ? 'right' : 'center' });
@@ -1208,6 +1222,8 @@ export default defineSimulation({
       else if (st.q === 'area') count = drawSquare(ill, pair, u);
       else if (st.q === 'vol') count = drawCube(ill, pair, u);
       else if (st.q === 'mass') count = drawBalance(ill, pair, u);
+      else if (st.q === 'money') count = drawMoney(ill, u);
+      else if (st.q === 'angle') count = drawArcDial(ill, pair, u);
       else count = drawClock(ill, pair, u);
       const color = illColor(st.q);
       const cs = fitSize(count, 800, 15, R.w - 2 * pad - 20);
@@ -1221,7 +1237,7 @@ export default defineSimulation({
 
     function illColor(q: QuantityId): string {
       const s = ctx.theme.series;
-      return q === 'len' ? s[0]! : q === 'area' ? s[2]! : q === 'vol' ? s[5]! : q === 'mass' ? s[4]! : s[1]!;
+      return q === 'len' ? s[0]! : q === 'area' ? s[2]! : q === 'vol' ? s[5]! : q === 'mass' ? s[4]! : q === 'money' ? s[3]! : s[1]!;
     }
 
     /** Lineal: 1 große Einheit, unterteilt in kleine; ein Messband wächst darüber. */
@@ -1410,6 +1426,88 @@ export default defineSimulation({
       text(g, side, 0, 0, { font: font(700, 12), color: theme.muted });
       g.restore();
       return `${gi(Math.min(100, Math.floor(filled + 1e-9)) * (F / 100))} ${pair.small.sym}`;
+    }
+
+    /** Winkel: Skala mit 60 Teilstrichen – ein Grad (bzw. eine Minute) wird in 60 Teile zerlegt. */
+    function drawArcDial(R: Rect, pair: ReturnType<typeof illustrationPair>, u: number): string {
+      const g = surface.g;
+      const theme = ctx.theme;
+      const color = illColor('angle');
+      const r = Math.max(40, Math.min(R.w / 2 - 30, R.h / 2 - 24));
+      const cx = R.x + R.w / 2;
+      const cy = R.y + R.h / 2;
+      g.fillStyle = theme.dark ? shade(theme.bg, 0.12) : '#ffffff';
+      g.beginPath();
+      g.arc(cx, cy, r, 0, Math.PI * 2);
+      g.fill();
+      const e = u * 60;
+      g.fillStyle = alpha(color, theme.dark ? 0.35 : 0.25);
+      g.beginPath();
+      g.moveTo(cx, cy);
+      g.arc(cx, cy, r, -Math.PI / 2, -Math.PI / 2 + (e / 60) * Math.PI * 2);
+      g.closePath();
+      g.fill();
+      for (let i = 0; i < 60; i++) {
+        const a = -Math.PI / 2 + (i / 60) * Math.PI * 2;
+        const long = i % 5 === 0;
+        g.strokeStyle = i < e ? shade(color, theme.dark ? 0.2 : -0.2) : alpha(theme.text, 0.35);
+        g.lineWidth = long ? 2 : 1;
+        g.beginPath();
+        g.moveTo(cx + Math.cos(a) * r * (long ? 0.84 : 0.9), cy + Math.sin(a) * r * (long ? 0.84 : 0.9));
+        g.lineTo(cx + Math.cos(a) * r, cy + Math.sin(a) * r);
+        g.stroke();
+      }
+      g.strokeStyle = shade(color, theme.dark ? 0.2 : -0.2);
+      g.lineWidth = 2.2;
+      g.beginPath();
+      g.arc(cx, cy, r, 0, Math.PI * 2);
+      g.stroke();
+      halo(`1${pair.big.sym} = 60${pair.small.sym}`, cx, cy, font(800, 14), shade(color, theme.dark ? 0.3 : -0.3));
+      return `${Math.round(e)}${pair.small.sym}`;
+    }
+
+    /** Geld: Hunderterfeld – 1 € besteht aus 100 Feldern zu 1 ct, Zehnerreihen zu 10 ct. */
+    function drawMoney(R: Rect, u: number): string {
+      const g = surface.g;
+      const theme = ctx.theme;
+      const color = illColor('money');
+      const S = Math.max(60, Math.min(R.w - 56, R.h - 40));
+      const x0 = R.x + (R.w - S) / 2 + 8;
+      const y0 = R.y + (R.h - S) / 2 - 6;
+      const cell = S / 10;
+      g.fillStyle = theme.dark ? shade(theme.bg, 0.12) : '#ffffff';
+      roundRect(g, x0, y0, S, S, 8);
+      g.fill();
+      const filled = u * 100;
+      for (let i = 0; i < 100; i++) {
+        const a = clamp(filled - i, 0, 1);
+        if (a <= 0) break;
+        const cx = x0 + (i % 10) * cell + cell / 2;
+        const cy = y0 + Math.floor(i / 10) * cell + cell / 2;
+        g.fillStyle = alpha(color, (theme.dark ? 0.55 : 0.45) * a);
+        g.beginPath();
+        g.arc(cx, cy, cell * 0.36 * (0.6 + 0.4 * ease.outBack(a)), 0, Math.PI * 2);
+        g.fill();
+      }
+      g.strokeStyle = alpha(theme.text, theme.dark ? 0.3 : 0.22);
+      g.lineWidth = 1;
+      g.beginPath();
+      for (let i = 1; i < 10; i++) {
+        const y = Math.round(y0 + i * cell) + 0.5;
+        g.moveTo(x0, y);
+        g.lineTo(x0 + S, y);
+      }
+      g.stroke();
+      g.strokeStyle = shade(color, theme.dark ? 0.2 : -0.2);
+      g.lineWidth = 2.2;
+      roundRect(g, x0, y0, S, S, 8);
+      g.stroke();
+      // eine Zehnerreihe hervorheben
+      g.lineWidth = 2;
+      g.strokeRect(x0 + 1, y0 + 1, S - 2, cell - 2);
+      halo(tt('eine Reihe = 10 ct', 'one row = 10 ct'), x0 + S / 2, y0 - 10, font(800, 11.5), shade(color, theme.dark ? 0.3 : -0.3));
+      text(g, tt('1 Feld = 1 ct', '1 field = 1 ct'), x0 + S / 2, y0 + S + 14, { font: font(700, 12), color: theme.muted });
+      return `${gi(Math.min(100, Math.floor(filled + 1e-9)))} ct`;
     }
 
     /** Würfel aus 10 · 10 · 10 kleinen Würfeln, Reihe für Reihe, Schicht für Schicht. */
@@ -1771,7 +1869,7 @@ export default defineSimulation({
         shown.add('task');
       } else {
         const c = st.conv;
-        ctx.readout('task', `${fd(c.value)} ${c.from.sym} = ? ${c.to.sym}`);
+        ctx.readout('task', `${withSym(fd(c.value), c.from)} = ?${gap(c.to)}${c.to.sym}`);
         shown.add('task');
       }
       // Lösung erst nach „Umrechnen“ (bzw. sofort, wenn „Ergebnis sofort anzeigen“ an ist)
@@ -1779,7 +1877,7 @@ export default defineSimulation({
         const c = st.conv;
         ctx.readout('res', conversionText(c, lang));
         let how: string;
-        if (st.q === 'time') {
+        if (!QUANTITIES[st.q].decimal) {
           const steps = timeSteps(st);
           if (!steps.length) how = tt('gleiche Einheit', 'same unit');
           else {
@@ -1796,8 +1894,8 @@ export default defineSimulation({
         if (st.q === 'vol' && (c.from.aliasOf || c.to.aliasOf)) rel += ' · 1 dm³ = 1 l · 1 cm³ = 1 ml';
         ctx.readout('rel', rel);
         shown.add('res').add('how').add('rel');
-        if (st.q === 'time' && c.from.id !== c.to.id) {
-          const mixed = mixedTime(c.value, c.from.id, c.to.id);
+        if (!QUANTITIES[st.q].decimal && c.from.id !== c.to.id) {
+          const mixed = mixedTime(c.value, c.from.id, c.to.id, st.q);
           if (mixed.length > 1) {
             ctx.readout('mixed', mixedText(mixed, lang));
             shown.add('mixed');
@@ -1924,7 +2022,7 @@ export default defineSimulation({
         hits = [];
         surface.begin();
         const st = getState();
-        if (st.q === 'time') drawTime(geo, st);
+        if (!QUANTITIES[st.q].decimal) drawTime(geo, st);
         else drawTable(geo, st);
         drawPanel(geo, st);
         const tm = hopTiming(st);

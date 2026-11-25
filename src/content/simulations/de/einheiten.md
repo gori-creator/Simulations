@@ -31,6 +31,10 @@ Jede Spalte, die das Komma wandert, bedeutet „mal $10$“ bzw. „geteilt durc
 
 **Zeit ist anders:** Hier gilt $1\,\text{d} = 24\,\text{h}$, $1\,\text{h} = 60\,\text{min}$ und $1\,\text{min} = 60\,\text{s}$. Weil das keine Zehnerzahlen sind, hilft die Einheitentafel nicht. Man rechnet Schritt für Schritt mit einer **Umrechnungskette**: in die kleinere Einheit mal, in die größere geteilt. Oft schreibt man Zeitspannen **gemischt**: $135\,\text{min} = 2\,\text{h}\;15\,\text{min} = 2{,}25\,\text{h}$, denn $135 : 60 = 2$ Rest $15$.
 
+**Winkel genauer:** Auch Winkel werden mit $60$ unterteilt: $1° = 60'$ (Winkelminuten) und $1' = 60''$ (Winkelsekunden). So schreibt man $37{,}5° = 37°\,30'$. Landkarten und Navigationsgeräte geben Orte so an, etwa $50°\,7'\,N$. Umgerechnet wird wie bei der Zeit mit einer Umrechnungskette.
+
+**Geld:** $1\,€ = 100\,\text{ct}$. In der Tafel hat der Euro drei Spalten (H, Z, E) und der Cent zwei. Deshalb stehen die Cent immer mit **zwei Stellen** hinter dem Komma: $3{,}05\,€ = 305\,\text{ct}$, aber $3{,}5\,€ = 3{,}50\,€ = 350\,\text{ct}$.
+
 ## Ausprobieren
 
 1. Sieh dir das Startbeispiel an: Wo liegen die Kärtchen von $3{,}5\,\text{km}$, und warum braucht man für $3\,500\,\text{m}$ zwei Nullen? [Beispiel laden](?q=len&v=3%2C5&lf=km&lt=m)
@@ -40,6 +44,7 @@ Jede Spalte, die das Komma wandert, bedeutet „mal $10$“ bzw. „geteilt durc
 5. Vergleiche Fläche und Volumen: Wie viele Spalten hat jede Einheit, und warum? Achte auf das Kästchenquadrat und den Würfel in der Anschauung. [Fläche](?q=area&v=3%2C5&af=m2&at=dm2) · [Volumen](?q=vol&v=1&vf=dm3&vt=cm3)
 6. Lass die Zeit umrechnen und beobachte, wie der Wert von Station zu Station wandert. [2 Tage in Sekunden](?q=time&v=2&tf=d&tt=s)
 7. Drücke nach dem Umrechnen auf **Rückweg ⇄**: Kommt wieder der Ausgangswert heraus?
+8. Rechne Geld und Winkel um: [3,05 € in Cent](?q=money&v=3%2C05&gf=eur&gt=ct) · [37,5° in Winkelminuten](?q=angle&v=37%2C5&wf=deg&wt=am)
 
 ## Aufgaben
 
@@ -106,6 +111,17 @@ Tim rechnet: $3{,}5\,\text{m}^2 = 35\,\text{dm}^2$. Was hat er falsch gemacht? [
 <summary>Lösung anzeigen</summary>
 
 Tim hat mit der Umrechnungszahl $10$ wie bei Längen gerechnet. Bei Flächen ist sie $100$: $1\,\text{m}^2 = 10\,\text{dm} \cdot 10\,\text{dm} = 100\,\text{dm}^2$. Richtig ist $3{,}5\,\text{m}^2 = 350\,\text{dm}^2$ – in der Tafel hat jede Flächeneinheit zwei Spalten. [In der Simulation zeigen](?q=area&v=3%2C5&af=m2&at=dm2)
+
+</details>
+
+### Aufgabe 7: Geld und Winkel
+
+Wie viele Cent sind $12{,}08\,€$? Schreibe $52{,}25°$ in Grad und Winkelminuten. [Aufgabe laden](?q=angle&v=52%2C25&wf=deg&wt=am&show=0&_hide=1)
+
+<details>
+<summary>Lösung anzeigen</summary>
+
+$12{,}08\,€ = 1\,208\,\text{ct}$. Außerdem gilt $0{,}25° = 0{,}25 \cdot 60' = 15'$, also $52{,}25° = 52°\,15'$. [In der Simulation zeigen](?q=angle&v=52%2C25&wf=deg&wt=am)
 
 </details>
 
