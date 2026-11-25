@@ -180,7 +180,7 @@ const K7: CurriculumUnit[] = [
       'Prismen und Pyramiden im Schrägbild, Zweitafelbild und Netz; Oberfläche, Volumen und Masse von Pyramiden und zusammengesetzten Körpern.',
       'Prisms and pyramids in oblique and two-view drawings and as nets; surface area, volume and mass of pyramids and composite solids.',
     ),
-    simulations: ['koerpernetze', 'pyramide-kegel-kugel'],
+    simulations: ['koerpernetze', 'pyramide-kegel-kugel', 'bauzeichnungen'],
   },
   {
     code: '4',
@@ -332,6 +332,7 @@ const K9: CurriculumUnit[] = [
     code: 'W3',
     title: L('Baupläne und Bauzeichnungen (Wahlbereich)', 'Building plans and technical drawings (optional)'),
     summary: L('Parallelprojektionen und wahre Größen in Bauzeichnungen.', 'Parallel projections and true sizes in technical drawings.'),
+    simulations: ['bauzeichnungen'],
   },
 ];
 

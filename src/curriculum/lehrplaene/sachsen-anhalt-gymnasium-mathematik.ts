@@ -269,7 +269,7 @@ const SJ_7_8_UNITS: CurriculumUnit[] = [
           'Prismen, Pyramiden, Zylinder und Kegel erkennen, als Netz, Schrägbild und Zweitafelbild darstellen.',
           'Recognising prisms, pyramids, cylinders and cones and drawing them as nets, oblique drawings and two-view projections.',
         ),
-        simulations: ['koerpernetze'],
+        simulations: ['koerpernetze', 'bauzeichnungen'],
       },
       {
         code: '2.3',

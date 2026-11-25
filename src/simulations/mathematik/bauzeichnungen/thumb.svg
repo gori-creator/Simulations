@@ -1,0 +1,9 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 320 180">
+  <g fill="none" stroke="currentColor" stroke-linejoin="round">
+    <path d="M20 90H130V50H20ZM20 50L75 18L130 50" stroke-width="3" />
+    <path d="M160 90H230V50H160ZM160 50L195 18L230 50" stroke-width="3" stroke-opacity="0.7" />
+    <path d="M20 110H130V160H20ZM20 135H130" stroke-width="3" stroke-opacity="0.85" />
+    <path d="M20 90V110M130 90V110M130 50H160M130 90H160" stroke-width="1.5" stroke-dasharray="4 4" stroke-opacity="0.6" />
+    <path d="M250 160L250 110L280 90L310 110L310 160ZM250 110H310" stroke-width="2.5" stroke-opacity="0.5" />
+  </g>
+</svg>

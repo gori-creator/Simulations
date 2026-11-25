@@ -20,7 +20,7 @@ Mathematics and physics are best understood by trying things out: change a param
 
 Already there:
 
-- **Secondary school mathematics and physics** – 195 simulations along the German educational standards, each with learning material and exercises.
+- **Secondary school mathematics and physics** – 196 simulations along the German educational standards, each with learning material and exercises.
 - **State curricula** – mapping to the Gymnasium curricula of 14 German states; choose your state via the federal state button at the top.
 - **Learning game** – the [Number Factory](../number-factory/) for grades 5–9.
 

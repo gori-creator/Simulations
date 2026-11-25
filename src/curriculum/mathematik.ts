@@ -840,6 +840,22 @@ export const mathematik: Subject = {
             ),
           },
           {
+            id: 'bauzeichnungen',
+            status: 'ready',
+            slug: L('bauzeichnungen-projektionen', 'building-drawings-projections'),
+            title: L('Baupläne: Grund-, Auf- und Seitenriss', 'Building plans: plan, front and side view'),
+            summary: L(
+              'Ein Haus wird von oben, von vorn und von der Seite gezeichnet, dazu als Schrägbild. Die schräge Dachfläche erscheint im Grundriss verkürzt. In wahrer Länge zeigt sie nur die Ansicht, in der sie parallel zur Zeichenebene liegt.',
+              'A house is drawn from above, from the front and from the side, and as an oblique drawing. The sloping roof appears shortened in the plan. Only the view in which it lies parallel to the drawing plane shows it in true length.',
+            ),
+            grades: [8, 10],
+            kmk: ['M-L3', 'M-K4', 'M-K5'],
+            keywords: L(
+              ['Bauzeichnung', 'Bauplan', 'Grundriss', 'Aufriss', 'Seitenriss', 'Dreitafelprojektion', 'Zweitafelbild', 'Schrägbild', 'Parallelprojektion', 'Kavalierprojektion', 'wahre Größe', 'wahre Länge', 'Satteldach', 'Walmdach', 'Ordnungslinie'],
+              ['building drawing', 'building plan', 'plan view', 'front view', 'side view', 'three-view drawing', 'orthographic projection', 'oblique drawing', 'parallel projection', 'cavalier projection', 'true size', 'true length', 'gable roof', 'hip roof', 'projection line'],
+            ),
+          },
+          {
             id: 'cavalieri',
             status: 'ready',
             slug: L('prinzip-von-cavalieri', 'cavalieris-principle'),
