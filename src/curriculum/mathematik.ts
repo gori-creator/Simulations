@@ -298,6 +298,22 @@ export const mathematik: Subject = {
         ]),
         topic('gleichungen', L('Gleichungen und Gleichungssysteme', 'Equations and systems of equations'), [
           {
+            id: 'ungleichungen',
+            status: 'ready',
+            slug: L('lineare-ungleichungen', 'linear-inequalities'),
+            title: L('Lineare Ungleichungen lösen', 'Solving linear inequalities'),
+            summary: L(
+              'Wann ist 2x + 1 kleiner als 7? Zwei Geraden und ein farbiger Streifen zeigen alle Lösungen auf einmal. Die Umformungen stehen daneben – samt dem Moment, in dem sich das Zeichen umdreht.',
+              'When is 2x + 1 less than 7? Two lines and a shaded strip show all solutions at once. The steps of the transformation are listed alongside, including the moment the sign reverses.',
+            ),
+            grades: [6, 9],
+            kmk: ['M-L4', 'M-L1', 'M-K5'],
+            keywords: L(
+              ['Ungleichung', 'lineare Ungleichung', 'Lösungsmenge', 'Äquivalenzumformung', 'Relationszeichen', 'kleiner', 'größer', 'Zeichen umdrehen', 'Zahlenstrahl', 'Intervall', 'Probe', 'Tarifvergleich'],
+              ['inequality', 'linear inequality', 'solution set', 'equivalent transformation', 'inequality sign', 'less than', 'greater than', 'reverse the sign', 'number line', 'interval', 'check', 'comparing tariffs'],
+            ),
+          },
+          {
             id: 'waagemodell',
             status: 'ready',
             slug: L('waagemodell', 'balance-model'),

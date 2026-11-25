@@ -142,7 +142,7 @@ const KS_7_UNITS: CurriculumUnit[] = [
     code: '2',
     title: L('Terme, Gleichungen und Ungleichungen', 'Terms, equations and inequalities'),
     summary: L('Aussagen und Aussageformen, Grund- und Lösungsmenge, Äquivalenzumformungen bei Gleichungen und Ungleichungen.', 'Statements and open sentences, domain and solution set, equivalent transformations of equations and inequalities.'),
-    simulations: ['termbaum', 'waagemodell'],
+    simulations: ['termbaum', 'waagemodell', 'ungleichungen'],
   },
   {
     code: '3',

@@ -224,6 +224,7 @@ describe('Länder-Lehrpläne', () => {
     },
     'berlin-gymnasium-mathematik': {
       'folgen-reihen': 'Folgen, Reihen und Grenzwerte von Folgen kommen im Lehrplan nicht eigens vor.',
+      ungleichungen: 'Ungleichungen werden im Lehrplan nicht eigens genannt (nur Gleichungen).',
       verteilungen: 'Poisson-, hypergeometrische und Exponentialverteilung kommen im Lehrplan nicht vor.',
       uebergangsmatrizen: 'Übergangsmatrizen und Markov-Ketten nicht im Lehrplan',
       'komplexe-zahlen': 'Komplexe Zahlen nicht im Lehrplan',
@@ -257,6 +258,7 @@ describe('Länder-Lehrpläne', () => {
     },
     'brandenburg-gymnasium-mathematik': {
       'folgen-reihen': 'Folgen, Reihen und Grenzwerte von Folgen kommen im Lehrplan nicht eigens vor.',
+      ungleichungen: 'Ungleichungen werden im Lehrplan nicht eigens genannt (nur Gleichungen).',
       verteilungen: 'Poisson-, hypergeometrische und Exponentialverteilung kommen im Lehrplan nicht vor.',
       uebergangsmatrizen: 'Übergangsmatrizen und Markov-Ketten nicht im Lehrplan',
       'komplexe-zahlen': 'Komplexe Zahlen nicht im Lehrplan',
@@ -290,6 +292,7 @@ describe('Länder-Lehrpläne', () => {
     },
     'bremen-gymnasium-mathematik': {
       'folgen-reihen': 'Folgen, Reihen und Grenzwerte von Folgen kommen im Lehrplan nicht eigens vor.',
+      ungleichungen: 'Ungleichungen werden im Lehrplan nicht eigens genannt (nur Gleichungen).',
       verteilungen: 'Poisson-, hypergeometrische und Exponentialverteilung kommen im Lehrplan nicht vor.',
       richtungsfeld: 'Differenzialgleichungen und Richtungsfelder nicht im Lehrplan',
       'komplexe-zahlen': 'Komplexe Zahlen nicht im Lehrplan',
@@ -367,6 +370,7 @@ describe('Länder-Lehrpläne', () => {
     },
     'niedersachsen-gymnasium-mathematik': {
       'folgen-reihen': 'Folgen, Reihen und Grenzwerte von Folgen kommen im Lehrplan nicht eigens vor.',
+      ungleichungen: 'Ungleichungen werden im Lehrplan nicht eigens genannt (nur Gleichungen).',
       verteilungen: 'Poisson-, hypergeometrische und Exponentialverteilung kommen im Lehrplan nicht vor.',
       uebergangsmatrizen: 'Übergangsmatrizen und Markov-Ketten nicht im Lehrplan',
       'komplexe-zahlen': 'Komplexe Zahlen nicht im Lehrplan',
@@ -397,6 +401,7 @@ describe('Länder-Lehrpläne', () => {
     },
     'nordrhein-westfalen-gymnasium-mathematik': {
       'folgen-reihen': 'Folgen, Reihen und Grenzwerte von Folgen kommen im Lehrplan nicht eigens vor.',
+      ungleichungen: 'Ungleichungen werden im Lehrplan nicht eigens genannt (nur Gleichungen).',
       verteilungen: 'Poisson-, hypergeometrische und Exponentialverteilung kommen im Lehrplan nicht vor.',
       uebergangsmatrizen: 'Übergangsmatrizen und Markov-Ketten nicht im Lehrplan',
       richtungsfeld: 'Differenzialgleichungen und Richtungsfelder nicht im Lehrplan',

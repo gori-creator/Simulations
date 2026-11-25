@@ -2,11 +2,11 @@
 
 <!-- Automatisch erzeugt mit `npm run lehrplan:luecken` aus src/curriculum/lehrplaene/ – nicht von Hand bearbeiten. -->
 
-Lernbereiche der Länder-Lehrpläne, zu denen es noch **keine** Simulation gibt – Vorrat für neue Simulationen (Anleitung: `docs/NEUE-SIMULATION.md`). Insgesamt **21 von 1773** Lernbereichen ohne Simulation.
+Lernbereiche der Länder-Lehrpläne, zu denen es noch **keine** Simulation gibt – Vorrat für neue Simulationen (Anleitung: `docs/NEUE-SIMULATION.md`). Insgesamt **19 von 1773** Lernbereichen ohne Simulation.
 
 Nicht jeder Lernbereich eignet sich für eine Simulation. Reine Methoden-, Praktikums- und Projektthemen sind im Lehrplan mit `method: true` gekennzeichnet und zählen nicht als Lücke. Kommt ein Thema in mehreren Ländern vor, lohnt es sich besonders.
 
-## Mathematik (21)
+## Mathematik (19)
 
 ### Baden-Württemberg · Gymnasium (0)
 
@@ -32,13 +32,12 @@ Alle Lernbereiche haben eine Simulation.
 
 Alle Lernbereiche haben eine Simulation.
 
-### Hessen · Gymnasium (5)
+### Hessen · Gymnasium (4)
 
 | Stufe | Nr. | Lernbereich | Kurz |
 | --- | --- | --- | --- |
 | 5/6 | 3.2.3 | Messvorgänge › Währung/Geld | Mit Geldbeträgen in Euro und Cent rechnen. |
 | 7/8 | 3.1.2 | Umgang mit Größen › Größen von Winkeln (Minuten, Sekunden) | Winkel genauer in Grad, Minuten und Sekunden angeben. |
-| 7/8 | 4.2.4 | Funktionen und Gleichungen › Lösen von Ungleichungen | Lineare Ungleichungen lösen und Lösungsmengen angeben. |
 | 12 | Q1.2.5 | Anwendungen der Integralrechnung › Uneigentliche Integrale (nur LK) | Unendlich ausgedehnte Flächen auf endlichen Inhalt untersuchen. |
 | 12 | Q2.3.17 | Geraden und Ebenen im Raum › Darstellung von Parabelbahnen mithilfe von Parametern (nur LK) | Flugbahnen (z. B. eines Balls) parametrisch beschreiben. |
 
@@ -77,11 +76,10 @@ Alle Lernbereiche haben eine Simulation.
 | 11/12 | LK-W3 | Dynamische Systeme und fraktale Strukturen (Wahlbereich Leistungskurs) | Räuber-Beute-System, Fraktale, Feigenbaum-Diagramm und Chaos. |
 | 11/12 | LK-W4 | Funktionen mit zwei Veränderlichen (Wahlbereich Leistungskurs) | Graphen im Raum, Schnittfiguren und partielle Ableitungen. |
 
-### Sachsen-Anhalt · Gymnasium (3)
+### Sachsen-Anhalt · Gymnasium (2)
 
 | Stufe | Nr. | Lernbereich | Kurz |
 | --- | --- | --- | --- |
-| 5/6 | 1.2 | Zahlen und Größen › Gleichungen und Ungleichungen | Begriffe Variable, Gleichung und Lösung; einfache Gleichungen und Ungleichungen durch Überlegen oder mit Umkehroperationen lösen und die Probe machen. |
 | 11/12 | gA-2.2 | Analytische Geometrie (grundlegendes Anforderungsniveau) › Kreise | Kreise in der Ebene durch Gleichungen beschreiben und die Lage von Punkt oder Gerade zum Kreis untersuchen. |
 | 11/12 | eA-2.2 | Analytische Geometrie (erhöhtes Anforderungsniveau) › Kreise | Wie im grundlegenden Niveau, zusätzlich die Lage zweier Kreise und Tangenten an einen Kreis, auch von einem Punkt außerhalb. |
 
