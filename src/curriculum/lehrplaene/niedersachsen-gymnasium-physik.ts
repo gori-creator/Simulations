@@ -292,7 +292,7 @@ const Q_UNITS: CurriculumUnit[] = [
           'Elektromagnetischer Schwingkreis, Ausbreitung harmonischer Wellen, Wellenlänge und Frequenz, Reflexion, Brechung, Beugung, longitudinale und transversale Wellen und Polarisation.',
           'The electromagnetic LC circuit, propagation of harmonic waves, wavelength and frequency, reflection, refraction, diffraction, longitudinal and transverse waves and polarisation.',
         ),
-        simulations: ['wellen-ausbreitung', 'schwingkreis'],
+        simulations: ['wellen-ausbreitung', 'schwingkreis', 'em-spektrum'],
       },
       {
         code: 'Q-2.3',

@@ -453,8 +453,24 @@ export const physik: Subject = {
         {
           id: 'em-schwingungen',
           title: L('Elektromagnetische Schwingungen und Wellen', 'Electromagnetic oscillations and waves'),
-          grades: [11, 13],
+          grades: [10, 13],
           simulations: [
+            {
+              id: 'em-spektrum',
+              status: 'ready',
+              slug: L('elektromagnetisches-spektrum', 'electromagnetic-spectrum'),
+              title: L('Elektromagnetisches Spektrum, Dipol und Modulation', 'Electromagnetic spectrum, dipole and modulation'),
+              summary: L(
+                'Radio, WLAN, Wärme, Licht, Röntgen: alles dieselbe Art Welle, nur mit anderer Wellenlänge. Ein Stab als Sender strahlt sie ab, und Musik reist huckepack auf der Radiowelle.',
+                'Radio, Wi-Fi, heat, light, X-rays: all the same kind of wave, just with a different wavelength. A rod antenna sends them out, and music rides piggyback on the radio wave.',
+              ),
+              grades: [10, 13],
+              kmk: ['P-S', 'P-E', 'P-BK-Wechselwirkung', 'P-BK-Mathematisieren'],
+              keywords: L(
+                ['elektromagnetisches Spektrum', 'elektromagnetische Welle', 'Wellenlänge', 'Frequenz', 'Lichtgeschwindigkeit', 'Radiowellen', 'Mikrowellen', 'Infrarot', 'Wärmestrahlung', 'sichtbares Licht', 'Ultraviolett', 'UV', 'Röntgenstrahlung', 'Gammastrahlung', 'Photonenenergie', 'ionisierende Strahlung', 'Hertzscher Dipol', 'Antenne', 'offener Schwingkreis', 'Modulation', 'Amplitudenmodulation', 'Frequenzmodulation', 'AM', 'FM', 'Trägerwelle'],
+                ['electromagnetic spectrum', 'electromagnetic wave', 'wavelength', 'frequency', 'speed of light', 'radio waves', 'microwaves', 'infrared', 'thermal radiation', 'visible light', 'ultraviolet', 'UV', 'X-rays', 'gamma rays', 'photon energy', 'ionising radiation', 'Hertzian dipole', 'antenna', 'open oscillating circuit', 'modulation', 'amplitude modulation', 'frequency modulation', 'AM', 'FM', 'carrier wave'],
+              ),
+            },
             {
               id: 'schwingkreis',
               status: 'ready',

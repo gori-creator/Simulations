@@ -276,7 +276,7 @@ const WELLEN: CurriculumUnit = {
       code: 'W.4',
       title: L('Spektren', 'Spectra'),
       summary: L('Farben, elektromagnetisches Spektrum, Emissions- und Absorptionsspektren, diskrete und kontinuierliche Spektren.', 'Colours, the electromagnetic spectrum, emission and absorption spectra, discrete and continuous spectra.'),
-      simulations: ['linienspektren'],
+      simulations: ['linienspektren', 'em-spektrum'],
     },
   ],
 };
