@@ -444,6 +444,7 @@ const QP_UNITS: CurriculumUnit[] = [
         code: 'GF-W.13',
         title: L('Elementarteilchenphysik', 'Particle physics'),
         summary: L('Fundamentalteilchen und Wechselwirkungen, Standardmodell und offene Fragen.', 'Fundamental particles and interactions, the Standard Model and open questions.'),
+        simulations: ['standardmodell'],
       },
       {
         code: 'GF-W.14',
@@ -705,6 +706,7 @@ const QP_UNITS: CurriculumUnit[] = [
         code: 'LF-W.13',
         title: L('Elementarteilchenphysik', 'Particle physics'),
         summary: L('Standardmodell, fundamentale Wechselwirkungen, experimentelle Befunde und offene Fragen.', 'The Standard Model, fundamental interactions, experimental findings and open questions.'),
+        simulations: ['standardmodell'],
       },
       {
         code: 'LF-W.14',

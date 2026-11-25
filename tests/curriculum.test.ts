@@ -180,6 +180,7 @@ describe('Länder-Lehrpläne', () => {
    */
   const NOT_IN_CURRICULUM: Record<string, Record<string, string>> = {
     'sachsen-gymnasium-physik': {
+      standardmodell: 'Elementarteilchen und Standardmodell kommen in den erfassten Lernbereichen nicht vor (Kernaufbau nur bis Proton und Neutron).',
       tunneleffekt: 'Tunneleffekt und Rastertunnelmikroskop kommen in den erfassten Lernbereichen nicht ausdrücklich vor.',
       magnete: 'In den erfassten Lernbereichen kommen Dauermagnete nicht vor (bitte am Lehrplan prüfen).',
       hubble: 'Kosmologie, Rotverschiebung und Hubble-Beziehung kommen im Lehrplan nicht vor.',
@@ -223,6 +224,7 @@ describe('Länder-Lehrpläne', () => {
       'fourier-reihen': 'nicht im Rahmenlehrplan (Hochschule)',
     },
     'berlin-gymnasium-physik': {
+      standardmodell: 'Elementarteilchen und Standardmodell kommen in den erfassten Lernbereichen nicht vor (Kernaufbau nur bis Proton und Neutron).',
       roentgen: 'Röntgenspektrum und Compton-Effekt kommen in den erfassten Lernbereichen nicht vor.',
       laser: 'Laser (Besetzungsinversion, stimulierte Emission) kommt in den erfassten Lernbereichen nicht ausdrücklich vor.',
       tunneleffekt: 'Tunneleffekt und Rastertunnelmikroskop kommen in den erfassten Lernbereichen nicht ausdrücklich vor.',
@@ -249,6 +251,7 @@ describe('Länder-Lehrpläne', () => {
       'fourier-reihen': 'nicht im Rahmenlehrplan (Hochschule)',
     },
     'brandenburg-gymnasium-physik': {
+      standardmodell: 'Elementarteilchen und Standardmodell kommen in den erfassten Lernbereichen nicht vor (Kernaufbau nur bis Proton und Neutron).',
       roentgen: 'Röntgenspektrum und Compton-Effekt kommen in den erfassten Lernbereichen nicht vor.',
       laser: 'Laser (Besetzungsinversion, stimulierte Emission) kommt in den erfassten Lernbereichen nicht ausdrücklich vor.',
       tunneleffekt: 'Tunneleffekt und Rastertunnelmikroskop kommen in den erfassten Lernbereichen nicht ausdrücklich vor.',
@@ -298,6 +301,7 @@ describe('Länder-Lehrpläne', () => {
       'fourier-reihen': 'nicht im Bildungsplan (Hochschule)',
     },
     'hamburg-gymnasium-physik': {
+      standardmodell: 'Elementarteilchen und Standardmodell kommen in den erfassten Lernbereichen nicht vor (Kernaufbau nur bis Proton und Neutron).',
       laser: 'Laser (Besetzungsinversion, stimulierte Emission) kommt in den erfassten Lernbereichen nicht ausdrücklich vor.',
       tunneleffekt: 'Tunneleffekt und Rastertunnelmikroskop kommen in den erfassten Lernbereichen nicht ausdrücklich vor.',
       baendermodell: 'Bändermodell und Supraleitung kommen in den erfassten Lernbereichen der Oberstufe nicht vor (Halbleiter nur qualitativ in der Mittelstufe).',
@@ -321,6 +325,7 @@ describe('Länder-Lehrpläne', () => {
       'fourier-reihen': 'nicht im Kerncurriculum (Hochschule)',
     },
     'hessen-gymnasium-physik': {
+      standardmodell: 'Elementarteilchen und Standardmodell kommen in den erfassten Lernbereichen nicht vor (Kernaufbau nur bis Proton und Neutron).',
       stroemung: 'Strömungslehre (Kontinuität, Bernoulli, Tragflügel) kommt im Lehrplan nicht vor.',
       'doppler-effekt': 'kein passender Schwerpunkt (siehe docs/lehrplaene/hessen-gymnasium-physik.md)',
     },
@@ -335,6 +340,7 @@ describe('Länder-Lehrpläne', () => {
       'fourier-reihen': 'nicht im Kerncurriculum (Hochschule)',
     },
     'niedersachsen-gymnasium-physik': {
+      standardmodell: 'Elementarteilchen und Standardmodell kommen in den erfassten Lernbereichen nicht vor (Kernaufbau nur bis Proton und Neutron).',
       laser: 'Laser (Besetzungsinversion, stimulierte Emission) kommt in den erfassten Lernbereichen nicht ausdrücklich vor.',
       tunneleffekt: 'Tunneleffekt und Rastertunnelmikroskop kommen in den erfassten Lernbereichen nicht ausdrücklich vor.',
       baendermodell: 'Bändermodell und Supraleitung kommen in den erfassten Lernbereichen der Oberstufe nicht vor (Halbleiter nur qualitativ in der Mittelstufe).',
@@ -363,6 +369,7 @@ describe('Länder-Lehrpläne', () => {
       'matrix-abbildungen': 'Matrizen nicht im Kernlehrplan',
     },
     'nordrhein-westfalen-gymnasium-physik': {
+      standardmodell: 'Elementarteilchen und Standardmodell kommen in den erfassten Lernbereichen nicht vor (Kernaufbau nur bis Proton und Neutron).',
       laser: 'Laser (Besetzungsinversion, stimulierte Emission) kommt in den erfassten Lernbereichen nicht ausdrücklich vor.',
       tunneleffekt: 'Tunneleffekt und Rastertunnelmikroskop kommen in den erfassten Lernbereichen nicht ausdrücklich vor.',
       baendermodell: 'Bändermodell und Supraleitung kommen in den erfassten Lernbereichen der Oberstufe nicht vor (Halbleiter nur qualitativ in der Mittelstufe).',
@@ -389,6 +396,7 @@ describe('Länder-Lehrpläne', () => {
       'fourier-reihen': 'nicht im Lehrplan (Hochschule)',
     },
     'saarland-gymnasium-physik': {
+      standardmodell: 'Elementarteilchen und Standardmodell kommen in den erfassten Lernbereichen nicht vor (Kernaufbau nur bis Proton und Neutron).',
       roentgen: 'Röntgenspektrum und Compton-Effekt kommen in den erfassten Lernbereichen nicht vor.',
       laser: 'Laser (Besetzungsinversion, stimulierte Emission) kommt in den erfassten Lernbereichen nicht ausdrücklich vor.',
       tunneleffekt: 'Tunneleffekt und Rastertunnelmikroskop kommen in den erfassten Lernbereichen nicht ausdrücklich vor.',
@@ -420,6 +428,7 @@ describe('Länder-Lehrpläne', () => {
       'fourier-reihen': 'nicht im Fachlehrplan (Hochschule)',
     },
     'sachsen-anhalt-gymnasium-physik': {
+      standardmodell: 'Elementarteilchen und Standardmodell kommen in den erfassten Lernbereichen nicht vor (Kernaufbau nur bis Proton und Neutron).',
       laser: 'Laser (Besetzungsinversion, stimulierte Emission) kommt in den erfassten Lernbereichen nicht ausdrücklich vor.',
       tunneleffekt: 'Tunneleffekt und Rastertunnelmikroskop kommen in den erfassten Lernbereichen nicht ausdrücklich vor.',
       baendermodell: 'Bändermodell und Supraleitung kommen in den erfassten Lernbereichen der Oberstufe nicht vor (Halbleiter nur qualitativ in der Mittelstufe).',

@@ -2,7 +2,7 @@
 
 <!-- Automatisch erzeugt mit `npm run lehrplan:luecken` aus src/curriculum/lehrplaene/ – nicht von Hand bearbeiten. -->
 
-Lernbereiche der Länder-Lehrpläne, zu denen es noch **keine** Simulation gibt – Vorrat für neue Simulationen (Anleitung: `docs/NEUE-SIMULATION.md`). Insgesamt **73 von 1773** Lernbereichen ohne Simulation.
+Lernbereiche der Länder-Lehrpläne, zu denen es noch **keine** Simulation gibt – Vorrat für neue Simulationen (Anleitung: `docs/NEUE-SIMULATION.md`). Insgesamt **70 von 1773** Lernbereichen ohne Simulation.
 
 Nicht jeder Lernbereich eignet sich für eine Simulation. Reine Methoden-, Praktikums- und Projektthemen sind im Lehrplan mit `method: true` gekennzeichnet und zählen nicht als Lücke. Kommt ein Thema in mehreren Ländern vor, lohnt es sich besonders.
 
@@ -136,7 +136,7 @@ Alle Lernbereiche haben eine Simulation.
 | 7–9 | 2.4 | Größen und Messen › Sachaufgaben | Größen in Sachzusammenhängen bestimmen und Ergebnisse und Lösungsweg bewerten. |
 | 12 | S.3 | Stochastik › Hypergeometrische Verteilung | Ziehen ohne Zurücklegen mit der hypergeometrischen Verteilung beschreiben. |
 
-## Physik (12)
+## Physik (9)
 
 ### Baden-Württemberg · Gymnasium (0)
 
@@ -158,11 +158,9 @@ Alle Lernbereiche haben eine Simulation.
 
 Alle Lernbereiche haben eine Simulation.
 
-### Bremen · Gymnasium (1)
+### Bremen · Gymnasium (0)
 
-| Stufe | Nr. | Lernbereich | Kurz |
-| --- | --- | --- | --- |
-| 11/12 | 8 | Struktur der Materie (LK) | LK: Bausteine der Materie, Kernmasse und Kernradius, Paarbildung, Quarks und Teilchenzoo. |
+Alle Lernbereiche haben eine Simulation.
 
 ### Hamburg · Gymnasium (0)
 
@@ -186,13 +184,11 @@ Alle Lernbereiche haben eine Simulation.
 | --- | --- | --- | --- |
 | 5/6 | 2.2 | Elektrischer Strom und Magnetismus › Wirkungen des elektrischen Stroms | Wärme-, Licht- und magnetische Wirkung, Sicherungen und Gefahren durch Elektrizität. |
 
-### Rheinland-Pfalz · Gymnasium (3)
+### Rheinland-Pfalz · Gymnasium (1)
 
 | Stufe | Nr. | Lernbereich | Kurz |
 | --- | --- | --- | --- |
-| 12/13 | GF-W.13 | Wahlpflichtbausteine (Grundfach, fünf zu wählen) › Elementarteilchenphysik | Fundamentalteilchen und Wechselwirkungen, Standardmodell und offene Fragen. |
 | 12/13 | LF-W.2 | Wahlpflichtbausteine (Leistungsfach, sieben zu wählen) › Veränderliche elektromagnetische Felder II | Maxwell-Gleichungen, Felder und Bezugssysteme, Lorentz-Transformation. |
-| 12/13 | LF-W.13 | Wahlpflichtbausteine (Leistungsfach, sieben zu wählen) › Elementarteilchenphysik | Standardmodell, fundamentale Wechselwirkungen, experimentelle Befunde und offene Fragen. |
 
 ### Saarland · Gymnasium (0)
 

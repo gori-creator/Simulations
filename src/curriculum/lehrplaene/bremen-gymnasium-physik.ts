@@ -155,6 +155,7 @@ const QP_UNITS: CurriculumUnit[] = [
     code: '8',
     title: L('Struktur der Materie (LK)', 'Structure of matter (LK)'),
     summary: L('LK: Bausteine der Materie, Kernmasse und Kernradius, Paarbildung, Quarks und Teilchenzoo.', 'LK: building blocks of matter, nuclear mass and radius, pair production, quarks and the particle zoo.'),
+    simulations: ['standardmodell'],
   },
 ];
 

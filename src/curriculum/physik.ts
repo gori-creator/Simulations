@@ -1281,6 +1281,29 @@ export const physik: Subject = {
           ],
         },
         {
+          id: 'teilchenphysik',
+          title: L('Teilchenphysik', 'Particle physics'),
+          grades: [11, 13],
+          simulations: [
+            {
+              id: 'standardmodell',
+              status: 'ready',
+              slug: L('standardmodell-quarks-paarbildung', 'standard-model-quarks-pair-production'),
+              title: L('Standardmodell: Quarks, Leptonen, Paarbildung', 'Standard model: quarks, leptons, pair production'),
+              summary: L(
+                'Alle Materie besteht aus wenigen Bausteinen. Tippe sie in der Teilchentabelle an, setze aus Quarks Protonen und Pionen zusammen und sieh zu, wie aus Licht ein Elektron und ein Positron werden.',
+                'All matter consists of just a few building blocks. Tap them in the particle table, assemble protons and pions from quarks and watch light turn into an electron and a positron.',
+              ),
+              grades: [11, 13],
+              kmk: ['P-S', 'P-E', 'P-BK-Materie', 'P-BK-Wechselwirkung'],
+              keywords: L(
+                ['Standardmodell', 'Elementarteilchen', 'Quark', 'Lepton', 'Neutrino', 'Generation', 'Austauschteilchen', 'Gluon', 'Photon', 'W-Boson', 'Z-Boson', 'Higgs-Boson', 'Hadron', 'Baryon', 'Meson', 'Proton', 'Neutron', 'Pion', 'Kaon', 'Teilchenzoo', 'Antiteilchen', 'Confinement', 'Farbladung', 'Paarbildung', 'Positron', 'Blasenkammer', 'Wechselwirkung'],
+                ['standard model', 'elementary particles', 'quark', 'lepton', 'neutrino', 'generation', 'force carrier', 'gluon', 'photon', 'W boson', 'Z boson', 'Higgs boson', 'hadron', 'baryon', 'meson', 'proton', 'neutron', 'pion', 'kaon', 'particle zoo', 'antiparticle', 'confinement', 'colour charge', 'pair production', 'positron', 'bubble chamber', 'interaction'],
+              ),
+            },
+          ],
+        },
+        {
           id: 'quanten',
           title: L('Quantenphysik', 'Quantum physics'),
           grades: [12, 14],

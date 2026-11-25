@@ -675,7 +675,7 @@ export const bayernGymnasiumPhysik: StateCurriculum = {
             "Methoden wie Streu- und Kollisionsexperimente sowie Grundaussagen des Standardmodells, selbstständig recherchiert und präsentiert.",
             "Methods such as scattering and collision experiments and the basic statements of the Standard Model, researched and presented independently.",
           ),
-          simulations: ["linienspektren"],
+          simulations: ["linienspektren", 'standardmodell'],
         },
         {
           code: "4",
@@ -818,7 +818,7 @@ export const bayernGymnasiumPhysik: StateCurriculum = {
             "Methoden der Strukturuntersuchung und Standardmodell, zusätzlich Röntgen-Strukturanalyse und Synchrotronstrahlung.",
             "Methods of structural investigation and the Standard Model, plus X-ray structure analysis and synchrotron radiation.",
           ),
-          simulations: ['roentgen'],
+          simulations: ['roentgen', 'standardmodell'],
         },
         {
           code: "E4",
