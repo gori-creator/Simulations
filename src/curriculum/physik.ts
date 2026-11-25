@@ -129,6 +129,22 @@ export const physik: Subject = {
               ),
             },
             {
+              id: 'newtonsche-gesetze',
+              status: 'ready',
+              slug: L('newtonsche-gesetze', 'newtons-laws'),
+              title: L('Newton’sche Gesetze: Trägheit, F = m · a, Wechselwirkung', 'Newton’s laws: inertia, F = m · a, action and reaction'),
+              summary: L(
+                'Beim scharfen Bremsen rutscht die Kiste weiter, ein Zuggewicht beschleunigt einen Wagen, und zwei Wagen stoßen sich mit gleich großen Kräften ab. Drei Versuche, drei Gesetze.',
+                'When the truck brakes hard the box keeps sliding, a hanging weight accelerates a cart, and two carts push each other apart with equal forces. Three experiments, three laws.',
+              ),
+              grades: [7, 12],
+              kmk: ['P-S', 'P-E', 'P-BK-Wechselwirkung', 'P-BK-Mathematisieren'],
+              keywords: L(
+                ['Newton', 'Newtonsche Gesetze', 'Newtonsche Axiome', 'Trägheit', 'Trägheitsgesetz', 'Beharrungsvermögen', 'Sicherheitsgurt', 'Grundgleichung der Mechanik', 'F = m · a', 'Kraft', 'Masse', 'Beschleunigung', 'Wechselwirkungsprinzip', 'actio gleich reactio', 'Gegenkraft', 'Reibung', 'Fahrbahnversuch', 'Rolle', 'Massepunkt', 'Idealisierung'],
+                ['Newton', 'Newton’s laws', 'inertia', 'law of inertia', 'seat belt', 'second law', 'F = m · a', 'force', 'mass', 'acceleration', 'third law', 'action and reaction', 'reaction force', 'friction', 'air track', 'pulley', 'point mass', 'idealisation'],
+              ),
+            },
+            {
               id: 'kraefteaddition',
               status: 'ready',
               slug: L('kraefte-addieren-und-zerlegen', 'adding-and-resolving-forces'),
