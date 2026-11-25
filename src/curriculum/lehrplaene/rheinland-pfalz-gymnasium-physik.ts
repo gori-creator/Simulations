@@ -426,7 +426,7 @@ const QP_UNITS: CurriculumUnit[] = [
         code: 'GF-W.10',
         title: L('Quantenmechanische Atomvorstellung II', 'Quantum view of the atom II'),
         summary: L('Franck-Hertz-Versuch, Resonanzabsorption, Lumineszenz, Laser und Spektralanalyse.', 'The Franck–Hertz experiment, resonance absorption, luminescence, lasers and spectral analysis.'),
-        simulations: ['linienspektren'],
+        simulations: ['linienspektren', 'laser'],
       },
       {
         code: 'GF-W.11',
@@ -693,7 +693,7 @@ const QP_UNITS: CurriculumUnit[] = [
         code: 'LF-W.11',
         title: L('Quantenmechanische Atomvorstellung II', 'Quantum view of the atom II'),
         summary: L('Franck-Hertz-Versuch, Resonanzabsorption, Lumineszenz, Laser und Spektralanalyse.', 'The Franck–Hertz experiment, resonance absorption, luminescence, lasers and spectral analysis.'),
-        simulations: ['linienspektren'],
+        simulations: ['linienspektren', 'laser'],
       },
       {
         code: 'LF-W.12',

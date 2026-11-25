@@ -20,7 +20,7 @@ Mathematik und Physik versteht man am besten, wenn man selbst ausprobieren kann:
 
 Schon da:
 
-- **Mathematik und Physik der Sekundarstufe I und II** – 172 Simulationen entlang der KMK-Bildungsstandards, jeweils mit Lernmaterial und Aufgaben.
+- **Mathematik und Physik der Sekundarstufe I und II** – 173 Simulationen entlang der KMK-Bildungsstandards, jeweils mit Lernmaterial und Aufgaben.
 - **Länder-Lehrpläne** – Zuordnung zu den Gymnasial-Lehrplänen von 14 Bundesländern; das Bundesland lässt sich über den Knopf „Bundesland“ oben wählen.
 - **Lernspiel** – die [Zahlenfabrik](../zahlenfabrik/) für Klasse 5–9.
 

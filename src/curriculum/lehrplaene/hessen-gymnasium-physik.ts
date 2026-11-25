@@ -2474,6 +2474,7 @@ export const hessenGymnasiumPhysik: StateCurriculum = {
                 'Metastabile Niveaus, Besetzungsinversion, stimulierte Emission, Aufbau und Anwendungen.',
                 'Metastable levels, population inversion, stimulated emission, design and applications.',
               ),
+              simulations: ['laser'],
             },
             {
               code: 'Q4.2.2',

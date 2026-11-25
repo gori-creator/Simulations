@@ -207,6 +207,7 @@ describe('Länder-Lehrpläne', () => {
       'matrix-abbildungen': 'Matrizen nicht im LehrplanPLUS',
     },
     'bayern-gymnasium-physik': {
+      laser: 'Laser (Besetzungsinversion, stimulierte Emission) kommt in den erfassten Lernbereichen nicht ausdrücklich vor.',
       tunneleffekt: 'Tunneleffekt und Rastertunnelmikroskop kommen in den erfassten Lernbereichen nicht ausdrücklich vor.',
       baendermodell: 'Bändermodell und Supraleitung kommen in den erfassten Lernbereichen der Oberstufe nicht vor (Halbleiter nur qualitativ in der Mittelstufe).',
       'doppler-effekt': 'nur in der Lehrplanalternative Astrophysik (Jgst. 13), die nicht abgebildet ist',
@@ -222,6 +223,7 @@ describe('Länder-Lehrpläne', () => {
       'fourier-reihen': 'nicht im Rahmenlehrplan (Hochschule)',
     },
     'berlin-gymnasium-physik': {
+      laser: 'Laser (Besetzungsinversion, stimulierte Emission) kommt in den erfassten Lernbereichen nicht ausdrücklich vor.',
       tunneleffekt: 'Tunneleffekt und Rastertunnelmikroskop kommen in den erfassten Lernbereichen nicht ausdrücklich vor.',
       baendermodell: 'Bändermodell und Supraleitung kommen in den erfassten Lernbereichen der Oberstufe nicht vor (Halbleiter nur qualitativ in der Mittelstufe).',
       stroemung: 'Strömungslehre (Kontinuität, Bernoulli, Tragflügel) kommt im Lehrplan nicht vor.',
@@ -246,6 +248,7 @@ describe('Länder-Lehrpläne', () => {
       'fourier-reihen': 'nicht im Rahmenlehrplan (Hochschule)',
     },
     'brandenburg-gymnasium-physik': {
+      laser: 'Laser (Besetzungsinversion, stimulierte Emission) kommt in den erfassten Lernbereichen nicht ausdrücklich vor.',
       tunneleffekt: 'Tunneleffekt und Rastertunnelmikroskop kommen in den erfassten Lernbereichen nicht ausdrücklich vor.',
       baendermodell: 'Bändermodell und Supraleitung kommen in den erfassten Lernbereichen der Oberstufe nicht vor (Halbleiter nur qualitativ in der Mittelstufe).',
       stroemung: 'Strömungslehre (Kontinuität, Bernoulli, Tragflügel) kommt im Lehrplan nicht vor.',
@@ -272,6 +275,7 @@ describe('Länder-Lehrpläne', () => {
       'fourier-reihen': 'nicht im Bildungsplan (Hochschule)',
     },
     'bremen-gymnasium-physik': {
+      laser: 'Laser (Besetzungsinversion, stimulierte Emission) kommt in den erfassten Lernbereichen nicht ausdrücklich vor.',
       tunneleffekt: 'Tunneleffekt und Rastertunnelmikroskop kommen in den erfassten Lernbereichen nicht ausdrücklich vor.',
       baendermodell: 'Bändermodell und Supraleitung kommen in den erfassten Lernbereichen der Oberstufe nicht vor (Halbleiter nur qualitativ in der Mittelstufe).',
       stroemung: 'Strömungslehre (Kontinuität, Bernoulli, Tragflügel) kommt im Lehrplan nicht vor.',
@@ -291,6 +295,7 @@ describe('Länder-Lehrpläne', () => {
       'fourier-reihen': 'nicht im Bildungsplan (Hochschule)',
     },
     'hamburg-gymnasium-physik': {
+      laser: 'Laser (Besetzungsinversion, stimulierte Emission) kommt in den erfassten Lernbereichen nicht ausdrücklich vor.',
       tunneleffekt: 'Tunneleffekt und Rastertunnelmikroskop kommen in den erfassten Lernbereichen nicht ausdrücklich vor.',
       baendermodell: 'Bändermodell und Supraleitung kommen in den erfassten Lernbereichen der Oberstufe nicht vor (Halbleiter nur qualitativ in der Mittelstufe).',
       stroemung: 'Strömungslehre (Kontinuität, Bernoulli, Tragflügel) kommt im Lehrplan nicht vor.',
@@ -327,6 +332,7 @@ describe('Länder-Lehrpläne', () => {
       'fourier-reihen': 'nicht im Kerncurriculum (Hochschule)',
     },
     'niedersachsen-gymnasium-physik': {
+      laser: 'Laser (Besetzungsinversion, stimulierte Emission) kommt in den erfassten Lernbereichen nicht ausdrücklich vor.',
       tunneleffekt: 'Tunneleffekt und Rastertunnelmikroskop kommen in den erfassten Lernbereichen nicht ausdrücklich vor.',
       baendermodell: 'Bändermodell und Supraleitung kommen in den erfassten Lernbereichen der Oberstufe nicht vor (Halbleiter nur qualitativ in der Mittelstufe).',
       stroemung: 'Strömungslehre (Kontinuität, Bernoulli, Tragflügel) kommt im Lehrplan nicht vor.',
@@ -354,6 +360,7 @@ describe('Länder-Lehrpläne', () => {
       'matrix-abbildungen': 'Matrizen nicht im Kernlehrplan',
     },
     'nordrhein-westfalen-gymnasium-physik': {
+      laser: 'Laser (Besetzungsinversion, stimulierte Emission) kommt in den erfassten Lernbereichen nicht ausdrücklich vor.',
       tunneleffekt: 'Tunneleffekt und Rastertunnelmikroskop kommen in den erfassten Lernbereichen nicht ausdrücklich vor.',
       baendermodell: 'Bändermodell und Supraleitung kommen in den erfassten Lernbereichen der Oberstufe nicht vor (Halbleiter nur qualitativ in der Mittelstufe).',
       stroemung: 'Strömungslehre (Kontinuität, Bernoulli, Tragflügel) kommt im Lehrplan nicht vor.',
@@ -379,6 +386,7 @@ describe('Länder-Lehrpläne', () => {
       'fourier-reihen': 'nicht im Lehrplan (Hochschule)',
     },
     'saarland-gymnasium-physik': {
+      laser: 'Laser (Besetzungsinversion, stimulierte Emission) kommt in den erfassten Lernbereichen nicht ausdrücklich vor.',
       tunneleffekt: 'Tunneleffekt und Rastertunnelmikroskop kommen in den erfassten Lernbereichen nicht ausdrücklich vor.',
       baendermodell: 'Bändermodell und Supraleitung kommen in den erfassten Lernbereichen der Oberstufe nicht vor (Halbleiter nur qualitativ in der Mittelstufe).',
       stroemung: 'Strömungslehre (Kontinuität, Bernoulli, Tragflügel) kommt im Lehrplan nicht vor.',
@@ -408,6 +416,7 @@ describe('Länder-Lehrpläne', () => {
       'fourier-reihen': 'nicht im Fachlehrplan (Hochschule)',
     },
     'sachsen-anhalt-gymnasium-physik': {
+      laser: 'Laser (Besetzungsinversion, stimulierte Emission) kommt in den erfassten Lernbereichen nicht ausdrücklich vor.',
       tunneleffekt: 'Tunneleffekt und Rastertunnelmikroskop kommen in den erfassten Lernbereichen nicht ausdrücklich vor.',
       baendermodell: 'Bändermodell und Supraleitung kommen in den erfassten Lernbereichen der Oberstufe nicht vor (Halbleiter nur qualitativ in der Mittelstufe).',
       stroemung: 'Strömungslehre (Kontinuität, Bernoulli, Tragflügel) kommt im Lehrplan nicht vor.',
@@ -428,6 +437,7 @@ describe('Länder-Lehrpläne', () => {
       'fourier-reihen': 'nicht in den Fachanforderungen (Hochschule)',
     },
     'schleswig-holstein-gymnasium-physik': {
+      laser: 'Laser (Besetzungsinversion, stimulierte Emission) kommt in den erfassten Lernbereichen nicht ausdrücklich vor.',
       tunneleffekt: 'Tunneleffekt und Rastertunnelmikroskop kommen in den erfassten Lernbereichen nicht ausdrücklich vor.',
       baendermodell: 'Bändermodell und Supraleitung kommen in den erfassten Lernbereichen der Oberstufe nicht vor (Halbleiter nur qualitativ in der Mittelstufe).',
       stroemung: 'Strömungslehre (Kontinuität, Bernoulli, Tragflügel) kommt im Lehrplan nicht vor.',

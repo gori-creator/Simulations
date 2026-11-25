@@ -456,7 +456,7 @@ const J12: CurriculumUnit[] = [
     code: 'GK-4',
     title: L('Atomvorstellungen (Grundkurs)', 'Models of the atom (basic course)'),
     summary: L('Bohr’sches Modell, Energieniveaus und diskrete Spektren, Orbitale und Laser.', 'The Bohr model, energy levels and discrete spectra, orbitals and lasers.'),
-    simulations: ['linienspektren'],
+    simulations: ['linienspektren', 'laser'],
   },
   {
     code: 'GK-W1',
@@ -510,7 +510,7 @@ const J12: CurriculumUnit[] = [
       'Atommodelle, Energieniveaus und Spektren, Potentialtopf, Lumineszenz, Laser und Röntgenspektrum.',
       'Atomic models, energy levels and spectra, the potential well, luminescence, lasers and the X-ray spectrum.',
     ),
-    simulations: ['linienspektren'],
+    simulations: ['linienspektren', 'laser'],
   },
   {
     code: 'LK-6',

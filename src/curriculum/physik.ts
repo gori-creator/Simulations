@@ -1302,6 +1302,22 @@ export const physik: Subject = {
               ),
             },
             {
+              id: 'laser',
+              status: 'ready',
+              slug: L('laser-besetzungsinversion', 'laser-population-inversion'),
+              title: L('Laser: Pumpen, Inversion, stimulierte Emission', 'Laser: pumping, inversion, stimulated emission'),
+              summary: L(
+                'Atome werden angeregt, bis mehr oben als unten sind. Dann löst ein Photon eine Lawine gleicher Photonen aus, und zwischen zwei Spiegeln entsteht Laserlicht – aber erst oberhalb einer Schwelle.',
+                'Atoms are excited until more are up than down. Then one photon triggers an avalanche of identical photons, and laser light builds up between two mirrors – but only above a threshold.',
+              ),
+              grades: [11, 13],
+              kmk: ['P-S', 'P-E', 'P-BK-Materie', 'P-BK-Mathematisieren'],
+              keywords: L(
+                ['Laser', 'stimulierte Emission', 'spontane Emission', 'Absorption', 'Besetzungsinversion', 'Pumpen', 'metastabiles Niveau', 'Dreiniveau-Laser', 'Vierniveau-Laser', 'Rubinlaser', 'Resonator', 'Spiegel', 'Laserschwelle', 'kohärentes Licht', 'Photon', 'Energieniveau', 'Ratengleichungen'],
+                ['laser', 'stimulated emission', 'spontaneous emission', 'absorption', 'population inversion', 'pumping', 'metastable level', 'three-level laser', 'four-level laser', 'ruby laser', 'resonator', 'mirror', 'laser threshold', 'coherent light', 'photon', 'energy level', 'rate equations'],
+              ),
+            },
+            {
               id: 'photoeffekt',
               status: 'ready',
               slug: L('photoeffekt-gegenfeldmethode', 'photoelectric-effect-retarding-field'),

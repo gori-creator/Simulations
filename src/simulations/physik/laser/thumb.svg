@@ -1,0 +1,12 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 320 180">
+  <g fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round">
+    <rect x="40" y="50" width="180" height="80" stroke-width="2" stroke-opacity="0.5" />
+    <path d="M30 40V140" stroke-width="8" />
+    <path d="M230 40V140" stroke-width="8" stroke-opacity="0.5" />
+    <path d="M60 75Q66 69 72 75T84 75T96 75" stroke-width="3" />
+    <path d="M120 100Q126 94 132 100T144 100T156 100" stroke-width="3" />
+    <path d="M170 80Q176 74 182 80T194 80T206 80" stroke-width="3" />
+  </g>
+  <rect x="234" y="84" width="76" height="12" fill="currentColor" />
+  <g fill="currentColor"><circle cx="70" cy="110" r="6" /><circle cx="110" cy="70" r="6" /><circle cx="150" cy="70" r="6" /><circle cx="190" cy="112" r="6" /></g>
+</svg>
