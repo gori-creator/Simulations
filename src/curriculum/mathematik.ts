@@ -1879,6 +1879,22 @@ export const mathematik: Subject = {
         ]),
         topic('weiterfuehrend', L('Weiterführend (Hochschule)', 'Further topics (university)'), [
           {
+            id: 'funktionen-zwei-variablen',
+            status: 'ready',
+            slug: L('funktionen-zwei-veraenderliche', 'functions-of-two-variables'),
+            title: L('Funktionen mit zwei Veränderlichen', 'Functions of two variables'),
+            summary: L(
+              'Hängt ein Wert von x und y ab, ist sein Graph eine Fläche im Raum. Schneidet man sie mit Ebenen, entstehen gewöhnliche Kurven. Ihre Steigungen sind die partiellen Ableitungen, und am Sattelpunkt geht es in eine Richtung bergauf, in die andere bergab.',
+              'If a value depends on x and y, its graph is a surface in space. Cutting it with planes gives ordinary curves. Their slopes are the partial derivatives, and at a saddle point it goes uphill in one direction and downhill in the other.',
+            ),
+            grades: [12, 13],
+            kmk: ['M-L4', 'M-L3', 'M-K4', 'M-K5'],
+            keywords: L(
+              ['Funktion mit zwei Veränderlichen', 'Fläche im Raum', 'Schnittkurve', 'partielle Ableitung', 'Gradient', 'Sattelpunkt', 'Paraboloid', 'Hochpunkt', 'Tiefpunkt', 'Tangente', '3D'],
+              ['function of two variables', 'surface in space', 'section curve', 'partial derivative', 'gradient', 'saddle point', 'paraboloid', 'maximum', 'minimum', 'tangent', '3D'],
+            ),
+          },
+          {
             id: 'taylor-polynome',
             status: 'ready',
             slug: L('taylorpolynome', 'taylor-polynomials'),

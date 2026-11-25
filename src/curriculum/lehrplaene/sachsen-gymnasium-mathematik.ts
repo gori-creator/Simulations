@@ -606,6 +606,7 @@ const OBERSTUFE_UNITS: CurriculumUnit[] = [
     code: 'LK-W4',
     title: L('Funktionen mit zwei Veränderlichen (Wahlbereich Leistungskurs)', 'Functions of two variables (optional, advanced course)'),
     summary: L('Graphen im Raum, Schnittfiguren und partielle Ableitungen.', 'Graphs in space, cross-sections and partial derivatives.'),
+    simulations: ['funktionen-zwei-variablen'],
   },
   {
     code: 'LK-W5',
