@@ -211,6 +211,7 @@ describe('Länder-Lehrpläne', () => {
       'matrix-abbildungen': 'Matrizen nicht im LehrplanPLUS',
     },
     'bayern-gymnasium-physik': {
+      sensoren: 'Sensoren und Spannungsteiler sind in den erfassten Lernbereichen nicht ausdrücklich genannt.',
       laser: 'Laser (Besetzungsinversion, stimulierte Emission) kommt in den erfassten Lernbereichen nicht ausdrücklich vor.',
       tunneleffekt: 'Tunneleffekt und Rastertunnelmikroskop kommen in den erfassten Lernbereichen nicht ausdrücklich vor.',
       baendermodell: 'Bändermodell und Supraleitung kommen in den erfassten Lernbereichen der Oberstufe nicht vor (Halbleiter nur qualitativ in der Mittelstufe).',
@@ -227,6 +228,7 @@ describe('Länder-Lehrpläne', () => {
       'fourier-reihen': 'nicht im Rahmenlehrplan (Hochschule)',
     },
     'berlin-gymnasium-physik': {
+      sensoren: 'Sensoren und Spannungsteiler sind in den erfassten Lernbereichen nicht ausdrücklich genannt.',
       solarzelle: 'Kennlinie und Schaltung von Solarzellen kommen in den erfassten Lernbereichen nicht ausdrücklich vor.',
       minkowski: 'Spezielle Relativitätstheorie mit Raum-Zeit-Diagrammen kommt in den erfassten Lernbereichen nicht vor.',
       standardmodell: 'Elementarteilchen und Standardmodell kommen in den erfassten Lernbereichen nicht vor (Kernaufbau nur bis Proton und Neutron).',
@@ -256,6 +258,7 @@ describe('Länder-Lehrpläne', () => {
       'fourier-reihen': 'nicht im Rahmenlehrplan (Hochschule)',
     },
     'brandenburg-gymnasium-physik': {
+      sensoren: 'Sensoren und Spannungsteiler sind in den erfassten Lernbereichen nicht ausdrücklich genannt.',
       solarzelle: 'Kennlinie und Schaltung von Solarzellen kommen in den erfassten Lernbereichen nicht ausdrücklich vor.',
       minkowski: 'Spezielle Relativitätstheorie mit Raum-Zeit-Diagrammen kommt in den erfassten Lernbereichen nicht vor.',
       standardmodell: 'Elementarteilchen und Standardmodell kommen in den erfassten Lernbereichen nicht vor (Kernaufbau nur bis Proton und Neutron).',
@@ -287,6 +290,7 @@ describe('Länder-Lehrpläne', () => {
       'fourier-reihen': 'nicht im Bildungsplan (Hochschule)',
     },
     'bremen-gymnasium-physik': {
+      sensoren: 'Sensoren und Spannungsteiler sind in den erfassten Lernbereichen nicht ausdrücklich genannt.',
       solarzelle: 'Kennlinie und Schaltung von Solarzellen kommen in den erfassten Lernbereichen nicht ausdrücklich vor.',
       minkowski: 'Spezielle Relativitätstheorie mit Raum-Zeit-Diagrammen kommt in den erfassten Lernbereichen nicht vor.',
       stromwirkungen: 'Wirkungen und Gefahren des Stroms sind in den erfassten Lernbereichen nicht ausdrücklich genannt (ggf. im Fach Naturwissenschaften 5/6).',
@@ -311,6 +315,7 @@ describe('Länder-Lehrpläne', () => {
       'fourier-reihen': 'nicht im Bildungsplan (Hochschule)',
     },
     'hamburg-gymnasium-physik': {
+      sensoren: 'Sensoren und Spannungsteiler sind in den erfassten Lernbereichen nicht ausdrücklich genannt.',
       solarzelle: 'Kennlinie und Schaltung von Solarzellen kommen in den erfassten Lernbereichen nicht ausdrücklich vor.',
       leistung: 'Mechanische Arbeit und Leistung sind in den erfassten Lernbereichen nicht ausdrücklich genannt.',
       stromwirkungen: 'Wirkungen und Gefahren des Stroms sind in den erfassten Lernbereichen nicht ausdrücklich genannt (ggf. im Fach Naturwissenschaften 5/6).',
@@ -338,6 +343,7 @@ describe('Länder-Lehrpläne', () => {
       'fourier-reihen': 'nicht im Kerncurriculum (Hochschule)',
     },
     'hessen-gymnasium-physik': {
+      sensoren: 'Sensoren und Spannungsteiler sind in den erfassten Lernbereichen nicht ausdrücklich genannt.',
       solarzelle: 'Kennlinie und Schaltung von Solarzellen kommen in den erfassten Lernbereichen nicht ausdrücklich vor.',
       standardmodell: 'Elementarteilchen und Standardmodell kommen in den erfassten Lernbereichen nicht vor (Kernaufbau nur bis Proton und Neutron).',
       stroemung: 'Strömungslehre (Kontinuität, Bernoulli, Tragflügel) kommt im Lehrplan nicht vor.',
@@ -354,6 +360,7 @@ describe('Länder-Lehrpläne', () => {
       'fourier-reihen': 'nicht im Kerncurriculum (Hochschule)',
     },
     'niedersachsen-gymnasium-physik': {
+      sensoren: 'Sensoren und Spannungsteiler sind in den erfassten Lernbereichen nicht ausdrücklich genannt.',
       minkowski: 'Spezielle Relativitätstheorie mit Raum-Zeit-Diagrammen kommt in den erfassten Lernbereichen nicht vor.',
       standardmodell: 'Elementarteilchen und Standardmodell kommen in den erfassten Lernbereichen nicht vor (Kernaufbau nur bis Proton und Neutron).',
       laser: 'Laser (Besetzungsinversion, stimulierte Emission) kommt in den erfassten Lernbereichen nicht ausdrücklich vor.',
@@ -384,6 +391,7 @@ describe('Länder-Lehrpläne', () => {
       'matrix-abbildungen': 'Matrizen nicht im Kernlehrplan',
     },
     'nordrhein-westfalen-gymnasium-physik': {
+      sensoren: 'Sensoren und Spannungsteiler sind in den erfassten Lernbereichen nicht ausdrücklich genannt.',
       solarzelle: 'Kennlinie und Schaltung von Solarzellen kommen in den erfassten Lernbereichen nicht ausdrücklich vor.',
       standardmodell: 'Elementarteilchen und Standardmodell kommen in den erfassten Lernbereichen nicht vor (Kernaufbau nur bis Proton und Neutron).',
       laser: 'Laser (Besetzungsinversion, stimulierte Emission) kommt in den erfassten Lernbereichen nicht ausdrücklich vor.',
@@ -412,6 +420,7 @@ describe('Länder-Lehrpläne', () => {
       'fourier-reihen': 'nicht im Lehrplan (Hochschule)',
     },
     'saarland-gymnasium-physik': {
+      sensoren: 'Sensoren und Spannungsteiler sind in den erfassten Lernbereichen nicht ausdrücklich genannt.',
       solarzelle: 'Kennlinie und Schaltung von Solarzellen kommen in den erfassten Lernbereichen nicht ausdrücklich vor.',
       minkowski: 'Spezielle Relativitätstheorie mit Raum-Zeit-Diagrammen kommt in den erfassten Lernbereichen nicht vor.',
       standardmodell: 'Elementarteilchen und Standardmodell kommen in den erfassten Lernbereichen nicht vor (Kernaufbau nur bis Proton und Neutron).',
@@ -446,6 +455,7 @@ describe('Länder-Lehrpläne', () => {
       'fourier-reihen': 'nicht im Fachlehrplan (Hochschule)',
     },
     'sachsen-anhalt-gymnasium-physik': {
+      sensoren: 'Sensoren und Spannungsteiler sind in den erfassten Lernbereichen nicht ausdrücklich genannt.',
       standardmodell: 'Elementarteilchen und Standardmodell kommen in den erfassten Lernbereichen nicht vor (Kernaufbau nur bis Proton und Neutron).',
       laser: 'Laser (Besetzungsinversion, stimulierte Emission) kommt in den erfassten Lernbereichen nicht ausdrücklich vor.',
       tunneleffekt: 'Tunneleffekt und Rastertunnelmikroskop kommen in den erfassten Lernbereichen nicht ausdrücklich vor.',
@@ -468,6 +478,7 @@ describe('Länder-Lehrpläne', () => {
       'fourier-reihen': 'nicht in den Fachanforderungen (Hochschule)',
     },
     'schleswig-holstein-gymnasium-physik': {
+      sensoren: 'Sensoren und Spannungsteiler sind in den erfassten Lernbereichen nicht ausdrücklich genannt.',
       solarzelle: 'Kennlinie und Schaltung von Solarzellen kommen in den erfassten Lernbereichen nicht ausdrücklich vor.',
       leistung: 'Mechanische Arbeit und Leistung sind in den erfassten Lernbereichen nicht ausdrücklich genannt.',
       stromwirkungen: 'Wirkungen und Gefahren des Stroms sind in den erfassten Lernbereichen nicht ausdrücklich genannt (ggf. im Fach Naturwissenschaften 5/6).',
@@ -479,6 +490,7 @@ describe('Länder-Lehrpläne', () => {
       hebelgesetz: 'Hebel und Drehmoment nicht in den Fachanforderungen (siehe docs/lehrplaene/schleswig-holstein-gymnasium-physik.md)',
     },
     'baden-wuerttemberg-gymnasium-physik': {
+      sensoren: 'Sensoren und Spannungsteiler sind in den erfassten Lernbereichen nicht ausdrücklich genannt.',
       solarzelle: 'Kennlinie und Schaltung von Solarzellen kommen in den erfassten Lernbereichen nicht ausdrücklich vor.',
       roentgen: 'Röntgenspektrum und Compton-Effekt kommen in den erfassten Lernbereichen nicht vor.',
       tunneleffekt: 'Tunneleffekt und Rastertunnelmikroskop kommen in den erfassten Lernbereichen nicht ausdrücklich vor.',

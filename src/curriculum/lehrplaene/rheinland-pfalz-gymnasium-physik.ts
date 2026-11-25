@@ -126,7 +126,7 @@ const SEK_I_UNITS: CurriculumUnit[] = [
       'Physikalische Grundprinzipien alltäglicher Technik: wie Sensoren und Signalwandler mit bekannten Wechselwirkungen Messgrößen in elektrische Signale umwandeln, etwa Mikrofon, CCD oder NTC.',
       'Basic physics of everyday technology: how sensors and transducers use known interactions to turn quantities into electrical signals, for example microphone, CCD or thermistor.',
     ),
-    simulations: ['diode-transistor'],
+    simulations: ['diode-transistor', 'sensoren'],
   },
   {
     code: '12',

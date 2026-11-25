@@ -748,6 +748,77 @@ export const physik: Subject = {
           ],
         },
         {
+          id: 'elektronik',
+          title: L('Elektronik', 'Electronics'),
+          grades: [7, 13],
+          simulations: [
+            {
+              id: 'sensoren',
+              status: 'ready',
+              slug: L('sensoren-spannungsteiler', 'sensors-voltage-divider'),
+              title: L('Sensoren: Temperatur und Licht messen', 'Sensors: measuring temperature and light'),
+              summary: L(
+                'Ein Heißleiter oder ein Fotowiderstand im Spannungsteiler macht aus Temperatur oder Helligkeit eine Spannung – und die schaltet einen Lüfter oder eine Lampe.',
+                'A thermistor or photoresistor in a voltage divider turns temperature or brightness into a voltage – which then switches a fan or a lamp.',
+              ),
+              grades: [7, 10],
+              kmk: ['P-S', 'P-E', 'P-BK-System', 'P-BK-Mathematisieren'],
+              keywords: L(
+                ['Sensor', 'Heißleiter', 'NTC', 'Thermistor', 'Fotowiderstand', 'LDR', 'Spannungsteiler', 'Reihenschaltung', 'Widerstand', 'Temperatur', 'Helligkeit', 'Lux', 'Schaltschwelle', 'Dämmerungsschalter', 'Temperaturschalter', 'Messen', 'Signal'],
+                ['sensor', 'thermistor', 'NTC', 'photoresistor', 'LDR', 'voltage divider', 'series circuit', 'resistance', 'temperature', 'brightness', 'lux', 'switching threshold', 'twilight switch', 'temperature switch', 'measuring', 'signal'],
+              ),
+            },
+            {
+              id: 'solarzelle',
+              status: 'ready',
+              slug: L('solarzelle-kennlinie-mpp', 'solar-cell-characteristic-mpp'),
+              title: L('Solarzelle: Kennlinie, Schaltung, Schatten', 'Solar cell: characteristic, circuits, shade'),
+              summary: L(
+                'Schalte Solarmodule in Reihe und parallel, kippe sie aus der Sonne und wirf einen Schatten. Die Kennlinie zeigt, bei welchem Widerstand die Anlage am meisten Leistung liefert.',
+                'Connect solar modules in series and in parallel, tilt them away from the sun and cast a shadow. The characteristic shows at which resistance the system delivers the most power.',
+              ),
+              grades: [8, 11],
+              kmk: ['P-S', 'P-E', 'P-BK-Energie', 'P-BK-System'],
+              keywords: L(
+                ['Solarzelle', 'Solarmodul', 'Photovoltaik', 'Fotovoltaik', 'Kennlinie', 'U-I-Kennlinie', 'Leerlaufspannung', 'Kurzschlussstrom', 'Punkt maximaler Leistung', 'MPP', 'Reihenschaltung', 'Parallelschaltung', 'Bestrahlungsstärke', 'Einfallswinkel', 'Neigung', 'Verschattung', 'Lastwiderstand', 'Arbeitspunkt', 'erneuerbare Energie'],
+                ['solar cell', 'solar module', 'photovoltaics', 'characteristic curve', 'I-V curve', 'open-circuit voltage', 'short-circuit current', 'maximum power point', 'MPP', 'series connection', 'parallel connection', 'irradiance', 'angle of incidence', 'tilt', 'shading', 'load resistance', 'operating point', 'renewable energy'],
+              ),
+            },
+            {
+              id: 'diode-transistor',
+              status: 'ready',
+              slug: L('diode-und-transistor', 'diode-and-transistor'),
+              title: L('Diode und Transistor', 'Diode and transistor'),
+              summary: L(
+                'Nimm die Kennlinie einer Diode auf, sieh Löcher und Elektronen am pn-Übergang, richte Wechselspannung gleich und schalte mit einem kleinen Basisstrom einen großen Kollektorstrom.',
+                'Record the characteristic of a diode, watch holes and electrons at the pn junction, rectify AC voltage and switch a large collector current with a small base current.',
+              ),
+              grades: [9, 13],
+              kmk: ['P-S', 'P-E', 'P-BK-System', 'P-BK-Materie', 'P-BK-Mathematisieren'],
+              keywords: L(
+                ['Diode', 'Halbleiter', 'pn-Übergang', 'Sperrschicht', 'Dotierung', 'Löcher', 'Kennlinie', 'Schleusenspannung', 'Durchlassrichtung', 'Sperrrichtung', 'Shockley-Gleichung', 'Leuchtdiode', 'LED', 'Gleichrichter', 'Brückengleichrichter', 'Glättungskondensator', 'Transistor', 'Stromverstärkung', 'Dämmerungsschalter', 'Fotowiderstand', 'Elektronik'],
+                ['diode', 'semiconductor', 'pn junction', 'depletion layer', 'doping', 'holes', 'characteristic', 'threshold voltage', 'forward bias', 'reverse bias', 'Shockley equation', 'light-emitting diode', 'LED', 'rectifier', 'bridge rectifier', 'smoothing capacitor', 'transistor', 'current gain', 'twilight switch', 'photoresistor', 'electronics'],
+              ),
+            },
+            {
+              id: 'baendermodell',
+              status: 'ready',
+              slug: L('baendermodell-halbleiter-supraleitung', 'band-model-semiconductors-superconductivity'),
+              title: L('Bändermodell: Leiter, Halbleiter, Supraleiter', 'Band model: conductors, semiconductors, superconductors'),
+              summary: L(
+                'Rücken viele Atome zusammen, werden aus ihren Energieniveaus Bänder. Die Lücke dazwischen entscheidet, ob ein Stoff leitet – und manche Metalle verlieren in großer Kälte jeden Widerstand.',
+                'When many atoms come close together, their energy levels become bands. The gap in between decides whether a material conducts – and some metals lose all resistance when very cold.',
+              ),
+              grades: [11, 13],
+              kmk: ['P-S', 'P-E', 'P-BK-Materie', 'P-BK-Mathematisieren'],
+              keywords: L(
+                ['Bändermodell', 'Energieband', 'Valenzband', 'Leitungsband', 'Bandlücke', 'Fermi-Energie', 'Fermi-Niveau', 'Leiter', 'Halbleiter', 'Isolator', 'Eigenleitung', 'Elektron', 'Loch', 'Silizium', 'Germanium', 'Diamant', 'Kupfer', 'Leitfähigkeit', 'Temperaturabhängigkeit', 'Supraleitung', 'Sprungtemperatur', 'Meißner-Ochsenfeld-Effekt', 'Festkörperphysik'],
+                ['band model', 'energy band', 'valence band', 'conduction band', 'band gap', 'Fermi energy', 'Fermi level', 'conductor', 'semiconductor', 'insulator', 'intrinsic conduction', 'electron', 'hole', 'silicon', 'germanium', 'diamond', 'copper', 'conductivity', 'temperature dependence', 'superconductivity', 'critical temperature', 'Meissner effect', 'solid-state physics'],
+              ),
+            },
+          ],
+        },
+        {
           id: 'felder',
           title: L('Elektrische und magnetische Felder', 'Electric and magnetic fields'),
           grades: [8, 13],
@@ -862,61 +933,6 @@ export const physik: Subject = {
               keywords: L(
                 ['Wechselstrom', 'Wechselspannung', 'Effektivwert', 'Scheitelwert', 'Zeigerdiagramm', 'induktiver Widerstand', 'kapazitiver Widerstand', 'Blindwiderstand', 'Scheinwiderstand', 'Impedanz', 'Phasenverschiebung', 'Wirkleistung', 'Blindleistung', 'Scheinleistung', 'Reihenschwingkreis', 'Resonanzfrequenz', 'RLC'],
                 ['alternating current', 'AC voltage', 'rms value', 'peak value', 'phasor diagram', 'inductive reactance', 'capacitive reactance', 'reactance', 'impedance', 'phase shift', 'real power', 'reactive power', 'apparent power', 'series RLC circuit', 'resonance frequency', 'RLC'],
-              ),
-            },
-          ],
-        },
-        {
-          id: 'elektronik',
-          title: L('Elektronik', 'Electronics'),
-          grades: [8, 13],
-          simulations: [
-            {
-              id: 'solarzelle',
-              status: 'ready',
-              slug: L('solarzelle-kennlinie-mpp', 'solar-cell-characteristic-mpp'),
-              title: L('Solarzelle: Kennlinie, Schaltung, Schatten', 'Solar cell: characteristic, circuits, shade'),
-              summary: L(
-                'Schalte Solarmodule in Reihe und parallel, kippe sie aus der Sonne und wirf einen Schatten. Die Kennlinie zeigt, bei welchem Widerstand die Anlage am meisten Leistung liefert.',
-                'Connect solar modules in series and in parallel, tilt them away from the sun and cast a shadow. The characteristic shows at which resistance the system delivers the most power.',
-              ),
-              grades: [8, 11],
-              kmk: ['P-S', 'P-E', 'P-BK-Energie', 'P-BK-System'],
-              keywords: L(
-                ['Solarzelle', 'Solarmodul', 'Photovoltaik', 'Fotovoltaik', 'Kennlinie', 'U-I-Kennlinie', 'Leerlaufspannung', 'Kurzschlussstrom', 'Punkt maximaler Leistung', 'MPP', 'Reihenschaltung', 'Parallelschaltung', 'Bestrahlungsstärke', 'Einfallswinkel', 'Neigung', 'Verschattung', 'Lastwiderstand', 'Arbeitspunkt', 'erneuerbare Energie'],
-                ['solar cell', 'solar module', 'photovoltaics', 'characteristic curve', 'I-V curve', 'open-circuit voltage', 'short-circuit current', 'maximum power point', 'MPP', 'series connection', 'parallel connection', 'irradiance', 'angle of incidence', 'tilt', 'shading', 'load resistance', 'operating point', 'renewable energy'],
-              ),
-            },
-            {
-              id: 'diode-transistor',
-              status: 'ready',
-              slug: L('diode-und-transistor', 'diode-and-transistor'),
-              title: L('Diode und Transistor', 'Diode and transistor'),
-              summary: L(
-                'Nimm die Kennlinie einer Diode auf, sieh Löcher und Elektronen am pn-Übergang, richte Wechselspannung gleich und schalte mit einem kleinen Basisstrom einen großen Kollektorstrom.',
-                'Record the characteristic of a diode, watch holes and electrons at the pn junction, rectify AC voltage and switch a large collector current with a small base current.',
-              ),
-              grades: [9, 13],
-              kmk: ['P-S', 'P-E', 'P-BK-System', 'P-BK-Materie', 'P-BK-Mathematisieren'],
-              keywords: L(
-                ['Diode', 'Halbleiter', 'pn-Übergang', 'Sperrschicht', 'Dotierung', 'Löcher', 'Kennlinie', 'Schleusenspannung', 'Durchlassrichtung', 'Sperrrichtung', 'Shockley-Gleichung', 'Leuchtdiode', 'LED', 'Gleichrichter', 'Brückengleichrichter', 'Glättungskondensator', 'Transistor', 'Stromverstärkung', 'Dämmerungsschalter', 'Fotowiderstand', 'Elektronik'],
-                ['diode', 'semiconductor', 'pn junction', 'depletion layer', 'doping', 'holes', 'characteristic', 'threshold voltage', 'forward bias', 'reverse bias', 'Shockley equation', 'light-emitting diode', 'LED', 'rectifier', 'bridge rectifier', 'smoothing capacitor', 'transistor', 'current gain', 'twilight switch', 'photoresistor', 'electronics'],
-              ),
-            },
-            {
-              id: 'baendermodell',
-              status: 'ready',
-              slug: L('baendermodell-halbleiter-supraleitung', 'band-model-semiconductors-superconductivity'),
-              title: L('Bändermodell: Leiter, Halbleiter, Supraleiter', 'Band model: conductors, semiconductors, superconductors'),
-              summary: L(
-                'Rücken viele Atome zusammen, werden aus ihren Energieniveaus Bänder. Die Lücke dazwischen entscheidet, ob ein Stoff leitet – und manche Metalle verlieren in großer Kälte jeden Widerstand.',
-                'When many atoms come close together, their energy levels become bands. The gap in between decides whether a material conducts – and some metals lose all resistance when very cold.',
-              ),
-              grades: [11, 13],
-              kmk: ['P-S', 'P-E', 'P-BK-Materie', 'P-BK-Mathematisieren'],
-              keywords: L(
-                ['Bändermodell', 'Energieband', 'Valenzband', 'Leitungsband', 'Bandlücke', 'Fermi-Energie', 'Fermi-Niveau', 'Leiter', 'Halbleiter', 'Isolator', 'Eigenleitung', 'Elektron', 'Loch', 'Silizium', 'Germanium', 'Diamant', 'Kupfer', 'Leitfähigkeit', 'Temperaturabhängigkeit', 'Supraleitung', 'Sprungtemperatur', 'Meißner-Ochsenfeld-Effekt', 'Festkörperphysik'],
-                ['band model', 'energy band', 'valence band', 'conduction band', 'band gap', 'Fermi energy', 'Fermi level', 'conductor', 'semiconductor', 'insulator', 'intrinsic conduction', 'electron', 'hole', 'silicon', 'germanium', 'diamond', 'copper', 'conductivity', 'temperature dependence', 'superconductivity', 'critical temperature', 'Meissner effect', 'solid-state physics'],
               ),
             },
           ],

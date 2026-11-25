@@ -180,6 +180,7 @@ const K8: CurriculumUnit[] = [
     code: 'W3',
     title: L('Elektrisches Messen nichtelektrischer Größen (Wahlbereich)', 'Electrical measurement of non-electrical quantities (optional)'),
     summary: L('Sensoren wandeln Größen wie Temperatur oder Licht in Spannungen um.', 'Sensors convert quantities such as temperature or light into voltages.'),
+    simulations: ['sensoren'],
   },
 ];
 
