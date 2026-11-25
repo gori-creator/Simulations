@@ -4,14 +4,14 @@ Stand der Arbeit an den 50 kleinen Simulationen. **Nur die Leitung bearbeitet di
 
 Status: **offen** · **läuft (wer)** · **PR #…** · **fertig**
 
-Stand: 25.11.2026 · 49 Aufgaben
+Stand: 26.11.2026 · 49 Aufgaben
 
 
 ## Erste Wahl
 
 | ID | Simulation | Fach | Klassen | Status | Zweig |
 | --- | --- | --- | --- | --- | --- |
-| `newtonsche-gesetze` | Newton’sche Gesetze | Physik | 7–12 | offen | `ausbau/newtonsche-gesetze` (leerer Zweig, frei – darf übernommen werden) |
+| `newtonsche-gesetze` | Newton’sche Gesetze | Physik | 7–12 | fertig (PR #307) | `ausbau/newtonsche-gesetze` |
 | `druck` | Druck und Hydraulik | Physik | 7–10 | offen | `ausbau/druck` (leerer Zweig, frei – darf übernommen werden) |
 | `waermetransport` | Wärmetransport und Klima | Physik | 5–13 | offen |  |
 | `waermeausdehnung` | Wärmeausdehnung, Anomalie des Wassers | Physik | 6–10 | offen |  |
