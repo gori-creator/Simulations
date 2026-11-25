@@ -27,7 +27,7 @@ const resultTemplateOne = t(lang, 'catalog.resultsOne', { n: '{n}' });
       <p class="lead">{t(lang, 'catalog.lead')}</p>
     </header>
 
-    <form class="catalog-filters" data-catalog-filters role="search" onsubmit="return false">
+    <form class="catalog-filters" data-catalog-filters role="search">
       <label class="field field--search">
         {t(lang, 'catalog.search')}
         <input class="input" type="search" name="q" placeholder={t(lang, 'catalog.searchPlaceholder')} autocomplete="off" />
@@ -72,6 +72,8 @@ const resultTemplateOne = t(lang, 'catalog.resultsOne', { n: '{n}' });
 
   const lang = document.documentElement.lang || 'de';
   const form = document.querySelector<HTMLFormElement>('[data-catalog-filters]');
+  // Enter im Suchfeld soll die Seite nicht neu laden (kein Inline-Handler wegen CSP)
+  form?.addEventListener('submit', (event) => event.preventDefault());
   const cards = [...document.querySelectorAll<HTMLElement>('[data-catalog] [data-sim-card]')];
   const count = document.querySelector<HTMLElement>('[data-result-count]');
   const empty = document.querySelector<HTMLElement>('[data-catalog-empty]');

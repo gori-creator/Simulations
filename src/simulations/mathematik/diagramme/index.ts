@@ -1806,7 +1806,9 @@ export default defineSimulation({
         else b.push({ k: 'p', text: `${tt('Mittelwert', 'Mean')}: ${numText(tot / Math.max(1, full.length), 1)} ${tx().sym}`, color: theme.muted, weight: 700, size: 12 });
         return { key: `r|${chartNow}|${sel}|${shown.data}|${unsuitable(shown, chartNow)}|${tot > 0}`, blocks: b };
       }
-      const trick = shown.trick!;
+      // Beim Wechsel aus der Ableseansicht ist die gezeigte Täuschung kurz noch leer
+      if (!shown.trick) return { key: 'pending', blocks: b };
+      const trick = shown.trick;
       const h = honestG.at(now) > 0.5;
       const revealed = shown.honest;
       if (mode === 'detect') {

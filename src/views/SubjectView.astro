@@ -169,7 +169,7 @@ const bandGroups = GRADE_BANDS.map((band) => ({
                     {group.first.length > 0 && (
                       <div class="card-grid">
                         {group.first.map((id) => (
-                          <SimCard lang={lang} sim={getSimulation(id)} headingLevel="h4" />
+                          <SimCard lang={lang} sim={getSimulation(id)} headingLevel="h4" region={region.id} />
                         ))}
                       </div>
                     )}
@@ -193,7 +193,7 @@ const bandGroups = GRADE_BANDS.map((band) => ({
                     <p class="muted" style="margin-bottom:12px">{t(lang, 'region.restLead', { state: region.name[lang] })}</p>
                     <div class="card-grid">
                       {grouping.rest.map((id) => (
-                        <SimCard lang={lang} sim={getSimulation(id)} headingLevel="h4" />
+                        <SimCard lang={lang} sim={getSimulation(id)} headingLevel="h4" region={region.id} />
                       ))}
                     </div>
                   </div>

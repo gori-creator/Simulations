@@ -809,7 +809,7 @@ export default defineSimulation({
 
     function dot(x: number, y: number, color: string, r: number, alpha = 1, hollow = false): void {
       const g = surface.g;
-      if (r <= 0.2 || alpha <= 0.01) return;
+      if (r <= 0.2 || alpha <= 0.01 || !Number.isFinite(x) || !Number.isFinite(y)) return;
       g.save();
       g.globalAlpha *= alpha;
       if (hollow) {
@@ -1171,6 +1171,10 @@ export default defineSimulation({
         g.save();
         g.globalAlpha *= alpha;
         const top = sign > 0 ? pl.py(rng.fy1.v) : pl.py(rng.fy0.v);
+        if (!Number.isFinite(top) || !Number.isFinite(y0)) {
+          g.restore();
+          continue;
+        }
         const grad = g.createLinearGradient(0, top, 0, y0);
         grad.addColorStop(0, withAlpha(color, dark ? 0.55 : 0.42));
         grad.addColorStop(1, withAlpha(color, dark ? 0.22 : 0.14));
@@ -1439,12 +1443,15 @@ export default defineSimulation({
       g.save();
       g.globalAlpha *= k.labels * (1 - w('diff') * 0.6);
       const bc = ix >= 0 ? col.pos() : col.neg();
-      const grad = g.createLinearGradient(0, yx, 0, y0);
-      grad.addColorStop(0, withAlpha(bc, theme.dark ? 0.75 : 0.65));
-      grad.addColorStop(1, withAlpha(bc, 0.15));
-      g.fillStyle = grad;
-      roundRect(g, plotB.px(V.xs) - 3, Math.min(yx, y0), 6, Math.abs(y0 - yx), 3);
-      g.fill();
+      // Beim Überblenden (z. B. 1/x mit a gegen 0) kann I(x) kurz unendlich werden
+      if (Number.isFinite(yx) && Number.isFinite(y0)) {
+        const grad = g.createLinearGradient(0, yx, 0, y0);
+        grad.addColorStop(0, withAlpha(bc, theme.dark ? 0.75 : 0.65));
+        grad.addColorStop(1, withAlpha(bc, 0.15));
+        g.fillStyle = grad;
+        roundRect(g, plotB.px(V.xs) - 3, Math.min(yx, y0), 6, Math.abs(y0 - yx), 3);
+        g.fill();
+      }
       g.restore();
       // Sekante und Tangente
       const kd = w('diff') * kTan.v * k.labels;
@@ -1842,7 +1849,8 @@ export default defineSimulation({
         g.globalAlpha *= ease.outCubic(k.stagger);
         let y = R.y + 36;
         const D = V.fn.x;
-        const top = rangeOf((t) => Math.abs(V.I(t)), D[0], D[1], 120).hi || 1;
+        const hiI = rangeOf((t) => Math.abs(V.I(t)), D[0], D[1], 120).hi;
+        const top = Number.isFinite(hiI) && hiI > 0 ? hiI : 1;
         const frac = clamp01(Math.abs(iv) / top);
         const x0 = R.x + pad;
         const x1 = R.x + R.w - pad;
