@@ -737,6 +737,22 @@ export const physik: Subject = {
               ),
             },
             {
+              id: 'teilchen-felder',
+              status: 'ready',
+              slug: L('geladene-teilchen-in-feldern', 'charged-particles-in-fields'),
+              title: L('Geladene Teilchen in Feldern: Ablenkung, Millikan, Zyklotron, Hall-Effekt', 'Charged particles in fields: deflection, Millikan, cyclotron, Hall effect'),
+              summary: L(
+                'Elektronen werden beschleunigt und zwischen Platten abgelenkt, ein Öltröpfchen schwebt im Kondensator, Protonen kreisen im Zyklotron, und im Hall-Plättchen drückt das Magnetfeld die Ladungen zur Seite.',
+                'Electrons are accelerated and deflected between plates, an oil droplet hovers in a capacitor, protons circle in a cyclotron, and in a Hall plate the magnetic field pushes the charges sideways.',
+              ),
+              grades: [10, 13],
+              kmk: ['P-S', 'P-E', 'P-BK-Wechselwirkung', 'P-BK-Energie', 'P-BK-Mathematisieren'],
+              keywords: L(
+                ['geladene Teilchen', 'Elektronenkanone', 'Beschleunigungsspannung', 'Längsfeld', 'Querfeld', 'Ablenkung', 'Braunsche Röhre', 'Parabelbahn', 'Millikan', 'Öltröpfchen', 'Elementarladung', 'Zyklotron', 'Teilchenbeschleuniger', 'Hall-Effekt', 'Hall-Sonde', 'Hall-Spannung', 'Lorentzkraft'],
+                ['charged particles', 'electron gun', 'accelerating voltage', 'longitudinal field', 'transverse field', 'deflection', 'cathode-ray tube', 'parabolic path', 'Millikan', 'oil drop', 'elementary charge', 'cyclotron', 'particle accelerator', 'Hall effect', 'Hall probe', 'Hall voltage', 'Lorentz force'],
+              ),
+            },
+            {
               id: 'feldlinien',
               status: 'ready',
               slug: L('feldlinien-punktladungen', 'field-lines-point-charges'),

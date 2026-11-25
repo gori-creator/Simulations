@@ -627,7 +627,7 @@ const Q_UNITS: CurriculumUnit[] = [
           'Geladene Teilchen in elektrischen Längs- und Querfeldern, Lorentzkraft und gekreuzte Felder.',
           'Charged particles in longitudinal and transverse electric fields, the Lorentz force and crossed fields.',
         ),
-        simulations: ['lorentzkraft'],
+        simulations: ['lorentzkraft', 'teilchen-felder'],
       },
       {
         code: 'LK-1.3',

@@ -605,6 +605,7 @@ export const bayernGymnasiumPhysik: StateCurriculum = {
             "resonanz",
             "doppelspalt",
             "messunsicherheit",
+            'teilchen-felder',
           ],
         },
       ],

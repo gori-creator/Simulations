@@ -116,7 +116,7 @@ const QP_UNITS: CurriculumUnit[] = [
       'Magnetische Feldlinienbilder und Flussdichte, Lorentzkraft und Kreisbahnen, Teilchen in senkrecht zueinander stehenden Feldern, Induktionsgesetz; LK: differenzielle Form und Selbstinduktion.',
       'Magnetic field line patterns and flux density, the Lorentz force and circular paths, particles in perpendicular fields, the law of induction; LK: differential form and self-induction.',
     ),
-    simulations: ['induktion', 'lorentzkraft', 'magnetfeld-spule'],
+    simulations: ['induktion', 'lorentzkraft', 'magnetfeld-spule', 'teilchen-felder'],
   },
   {
     code: '3',

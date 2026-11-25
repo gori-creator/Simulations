@@ -1,0 +1,88 @@
+## Worum geht es?
+
+Elektrische und magnetische Felder üben Kräfte auf geladene Teilchen aus. Damit kann man Teilchen beschleunigen, ablenken, wiegen und sogar ihre Ladung bestimmen.
+
+### Beschleunigung im Längsfeld
+
+In einer **Elektronenkanone** treten Elektronen aus einer Glühkathode aus und werden zur Anode hin beschleunigt. Die elektrische Energie wird zu Bewegungsenergie:
+
+$$
+e \cdot U_B = \frac{1}{2} m v^2 \qquad\Rightarrow\qquad v = \sqrt{\frac{2 e U_B}{m}}
+$$
+
+Schon 1000 V machen Elektronen etwa 19 000 km pro Sekunde schnell.
+
+### Ablenkung im Querfeld
+
+Fliegt der Strahl zwischen zwei geladenen Platten hindurch, wirkt eine konstante Kraft quer zur Flugrichtung. Die Bahn ist – wie beim waagrechten Wurf – eine **Parabel**:
+
+$$
+y = \frac{U_y}{4 \, d \, U_B} \cdot x^2
+$$
+
+Nach den Platten fliegt das Elektron geradeaus weiter zum Schirm. So funktionierte die Braun’sche Röhre in alten Fernsehern und Oszilloskopen.
+
+### Millikan-Versuch
+
+Ein winziges geladenes Öltröpfchen schwebt im Kondensator, wenn die elektrische Kraft genau die Gewichtskraft ausgleicht: $q \cdot \frac{U}{d} = m \cdot g$. Robert Millikan fand 1910 heraus, dass die Ladung immer ein **ganzzahliges Vielfaches** der **Elementarladung** $e = 1{,}602 \cdot 10^{-19}\,\text{C}$ ist.
+
+### Zyklotron
+
+Im Magnetfeld bewegen sich geladene Teilchen auf Kreisbahnen, denn die Lorentzkraft wirkt senkrecht zur Bewegung: $r = \frac{m v}{q B}$. Im **Zyklotron** werden Protonen bei jedem Durchgang durch den Spalt zwischen den beiden „Duanten“ beschleunigt, ihre Bahn wird größer. Die Umlauffrequenz $f = \frac{q B}{2\pi m}$ hängt nicht von der Geschwindigkeit ab – darum kann man mit einer festen Wechselspannung beschleunigen.
+
+### Hall-Effekt
+
+Fließt Strom durch ein Plättchen im Magnetfeld, werden die Ladungsträger zur Seite gedrückt. Dort sammeln sie sich, und es entsteht quer zum Strom die **Hall-Spannung**
+
+$$
+U_H = \frac{B \cdot I}{n \cdot e \cdot d}
+$$
+
+In Metallen gibt es sehr viele freie Elektronen ($n$ groß), die Spannung ist winzig. In Halbleitern ist sie viel größer – deshalb bestehen **Hall-Sonden** zur Messung von Magnetfeldern aus Halbleitern.
+
+## Ausprobieren
+
+- [Elektronenkanone](?mode=laengs&Ua=1000): Wie hängt die Geschwindigkeit von der Spannung ab?
+- [Ablenkung](?mode=quer&Ua=1000&Ud=100): Verdopple $U_y$, dann $U_B$.
+- [Millikan](?mode=millikan&n=3): Finde die Schwebespannung.
+- [Zyklotron](?mode=zyklotron&B=1&Uz=20) und [Hall-Sonde](?mode=hall&stoff=hl&B=0.5&I=1).
+
+## Aufgaben
+
+**1. Elektronengeschwindigkeit.** Wie schnell ist ein Elektron nach 1000 V ($m_e = 9{,}11 \cdot 10^{-31}\,\text{kg}$)? [Aufgabe laden](?mode=laengs&Ua=1000&_hide=1)
+
+<details><summary>Lösung anzeigen</summary>
+
+$v = \sqrt{\frac{2 \cdot 1{,}6 \cdot 10^{-19} \cdot 1000}{9{,}11 \cdot 10^{-31}}}\,\tfrac{\text{m}}{\text{s}} \approx 1{,}9 \cdot 10^7\,\tfrac{\text{m}}{\text{s}}$ – etwa 6 % der Lichtgeschwindigkeit.
+
+</details>
+
+**2. Ablenkung.** Plattenlänge 5 cm, Abstand 2 cm, $U_B = 1000\,\text{V}$, $U_y = 100\,\text{V}$. Wie weit wird der Strahl am Ende der Platten abgelenkt? [Aufgabe laden](?mode=quer&Ua=1000&Ud=100&_hide=1)
+
+<details><summary>Lösung anzeigen</summary>
+
+$y = \frac{100 \cdot 0{,}05^2}{4 \cdot 0{,}02 \cdot 1000}\,\text{m} \approx 3{,}1\,\text{mm}$. Die Ablenkung hängt nicht von Masse und Ladung ab – nur von den Spannungen.
+
+</details>
+
+**3. Millikan.** Ein Tröpfchen mit $m = 1{,}88 \cdot 10^{-15}\,\text{kg}$ schwebt bei 192 V zwischen Platten im Abstand 5 mm. Wie viele Elementarladungen trägt es? [Aufgabe laden](?mode=millikan&n=3&_hide=1)
+
+<details><summary>Lösung anzeigen</summary>
+
+$q = \frac{m g d}{U} = \frac{1{,}88 \cdot 10^{-15} \cdot 9{,}81 \cdot 0{,}005}{192}\,\text{C} \approx 4{,}8 \cdot 10^{-19}\,\text{C} = 3e$.
+
+</details>
+
+**4. Hall-Sonde.** Warum ist die Hall-Spannung in Kupfer viel kleiner als in einem Halbleiter? [Aufgabe laden](?mode=hall&stoff=cu&_hide=1)
+
+<details><summary>Lösung anzeigen</summary>
+
+Kupfer hat etwa $10^{29}$ freie Elektronen pro m³, der Halbleiter nur etwa $10^{22}$. Bei gleichem Strom müssen sich die wenigen Ladungsträger im Halbleiter viel schneller bewegen; die Lorentzkraft und damit $U_H$ sind entsprechend größer.
+
+</details>
+
+## Ideen für den Unterricht
+
+- **Versuch:** Elektronenstrahl im Fadenstrahlrohr oder in der Ablenkröhre beobachten; mit einer Hall-Sonde das Feld einer Spule ausmessen.
+- **Geschichte:** Millikans Messung der Elementarladung und die Kontroversen um seine Daten.
+- **Vernetzung:** Lorentzkraft und Kreisbahn in der Simulation „Lorentzkraft und Fadenstrahlrohr“.

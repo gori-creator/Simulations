@@ -403,7 +403,7 @@ const J11: CurriculumUnit[] = [
       'Lorentzkraft, spezifische Ladung des Elektrons, Hall-Effekt, Wien-Filter, Beschleuniger und Massenspektrometer.',
       'The Lorentz force, the specific charge of the electron, the Hall effect, the Wien filter, accelerators and mass spectrometers.',
     ),
-    simulations: ['lorentzkraft'],
+    simulations: ['lorentzkraft', 'teilchen-felder'],
   },
   {
     code: 'LK-8',
