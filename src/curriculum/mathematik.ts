@@ -830,6 +830,22 @@ export const mathematik: Subject = {
               ['conic sections', 'locus', 'ellipse', 'parabola', 'hyperbola', 'circle', 'focus', 'directrix', 'gardener’s method', 'string construction', 'semi-axis', 'eccentricity', 'asymptote', 'double cone', 'Dandelin', 'sum of distances', 'difference of distances'],
             ),
           },
+          {
+            id: 'kreisgleichung',
+            status: 'ready',
+            slug: L('kreisgleichung-lage-tangenten', 'equation-of-a-circle-position-tangents'),
+            title: L('Kreisgleichung, Lagebeziehungen und Tangenten', 'Equation of a circle, relative positions and tangents'),
+            summary: L(
+              'Alle Punkte mit Abstand r von M erfüllen (x − a)² + (y − b)² = r². Damit lässt sich prüfen, wo ein Punkt liegt, ob eine Gerade schneidet oder berührt und wie sich zwei Kreise treffen. Tangenten von außen findet der Thaleskreis.',
+              'All points at distance r from M satisfy (x − a)² + (y − b)² = r². With it you can check where a point lies, whether a line cuts or touches and how two circles meet. The Thales circle finds tangents from outside.',
+            ),
+            grades: [10, 13],
+            kmk: ['M-L3', 'M-L4', 'M-K5', 'M-K1'],
+            keywords: L(
+              ['Kreisgleichung', 'Mittelpunktsform', 'allgemeine Form', 'Kreis und Gerade', 'Sekante', 'Tangente', 'Passante', 'Abstand Punkt Gerade', 'zwei Kreise', 'Schnittpunkte', 'Berührpunkt', 'Thaleskreis', 'analytische Geometrie'],
+              ['equation of a circle', 'centre-radius form', 'general form', 'circle and line', 'secant', 'tangent', 'non-intersecting line', 'distance point line', 'two circles', 'intersection points', 'point of contact', 'Thales circle', 'analytic geometry'],
+            ),
+          },
         ]),
       ],
     }),

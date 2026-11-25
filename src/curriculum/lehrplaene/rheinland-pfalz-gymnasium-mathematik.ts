@@ -830,7 +830,7 @@ const MSS_UNITS: CurriculumUnit[] = [
           'Geraden und Ebenen in Parameter- und Normalenform, Lagebeziehungen mit Begründung, Hessesche Normalenform, Winkel und Abstände, Kreis- und Kugelgleichung sowie Vektorprodukt.',
           'Lines and planes in parametric and normal form, relative positions with justification, the Hesse normal form, angles and distances, equations of circles and spheres, and the cross product.',
         ),
-        simulations: ['koordinaten-3d', 'vektoren-3d', 'skalar-vektorprodukt', 'geraden-ebenen', 'lage-abstaende', 'kugeln', 'gauss-verfahren'],
+        simulations: ['koordinaten-3d', 'vektoren-3d', 'skalar-vektorprodukt', 'geraden-ebenen', 'lage-abstaende', 'kugeln', 'gauss-verfahren', 'kreisgleichung'],
       },
     ],
   },

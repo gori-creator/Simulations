@@ -196,6 +196,7 @@ describe('Länder-Lehrpläne', () => {
     },
     'baden-wuerttemberg-gymnasium-mathematik': {
       'folgen-reihen': 'Folgen, Reihen und Grenzwerte von Folgen kommen im Lehrplan nicht eigens vor.',
+      kreisgleichung: 'Kreisgleichung und Lage von Gerade und Kreis kommen im Lehrplan nicht vor (Kreis nur als Figur bzw. Kugeln im Raum).',
       verteilungen: 'Poisson-, hypergeometrische und Exponentialverteilung kommen im Lehrplan nicht vor.',
       uebergangsmatrizen: 'Übergangsmatrizen und Markov-Ketten nicht im Lehrplan',
       richtungsfeld: 'Differenzialgleichungen und Richtungsfelder nicht im Lehrplan',
@@ -205,6 +206,7 @@ describe('Länder-Lehrpläne', () => {
     },
     'bayern-gymnasium-mathematik': {
       'folgen-reihen': 'Folgen, Reihen und Grenzwerte von Folgen kommen im Lehrplan nicht eigens vor.',
+      kreisgleichung: 'Kreisgleichung und Lage von Gerade und Kreis kommen im Lehrplan nicht vor (Kreis nur als Figur bzw. Kugeln im Raum).',
       verteilungen: 'Poisson-, hypergeometrische und Exponentialverteilung kommen im Lehrplan nicht vor.',
       uebergangsmatrizen: 'Übergangsmatrizen und Markov-Ketten nicht im Lehrplan',
       richtungsfeld: 'Differenzialgleichungen und Richtungsfelder nicht im Lehrplan',
@@ -224,6 +226,7 @@ describe('Länder-Lehrpläne', () => {
     },
     'berlin-gymnasium-mathematik': {
       'folgen-reihen': 'Folgen, Reihen und Grenzwerte von Folgen kommen im Lehrplan nicht eigens vor.',
+      kreisgleichung: 'Kreisgleichung und Lage von Gerade und Kreis kommen im Lehrplan nicht vor (Kreis nur als Figur bzw. Kugeln im Raum).',
       ungleichungen: 'Ungleichungen werden im Lehrplan nicht eigens genannt (nur Gleichungen).',
       verteilungen: 'Poisson-, hypergeometrische und Exponentialverteilung kommen im Lehrplan nicht vor.',
       uebergangsmatrizen: 'Übergangsmatrizen und Markov-Ketten nicht im Lehrplan',
@@ -258,6 +261,7 @@ describe('Länder-Lehrpläne', () => {
     },
     'brandenburg-gymnasium-mathematik': {
       'folgen-reihen': 'Folgen, Reihen und Grenzwerte von Folgen kommen im Lehrplan nicht eigens vor.',
+      kreisgleichung: 'Kreisgleichung und Lage von Gerade und Kreis kommen im Lehrplan nicht vor (Kreis nur als Figur bzw. Kugeln im Raum).',
       ungleichungen: 'Ungleichungen werden im Lehrplan nicht eigens genannt (nur Gleichungen).',
       verteilungen: 'Poisson-, hypergeometrische und Exponentialverteilung kommen im Lehrplan nicht vor.',
       uebergangsmatrizen: 'Übergangsmatrizen und Markov-Ketten nicht im Lehrplan',
@@ -292,6 +296,7 @@ describe('Länder-Lehrpläne', () => {
     },
     'bremen-gymnasium-mathematik': {
       'folgen-reihen': 'Folgen, Reihen und Grenzwerte von Folgen kommen im Lehrplan nicht eigens vor.',
+      kreisgleichung: 'Kreisgleichung und Lage von Gerade und Kreis kommen im Lehrplan nicht vor (Kreis nur als Figur bzw. Kugeln im Raum).',
       ungleichungen: 'Ungleichungen werden im Lehrplan nicht eigens genannt (nur Gleichungen).',
       verteilungen: 'Poisson-, hypergeometrische und Exponentialverteilung kommen im Lehrplan nicht vor.',
       richtungsfeld: 'Differenzialgleichungen und Richtungsfelder nicht im Lehrplan',
@@ -324,6 +329,7 @@ describe('Länder-Lehrpläne', () => {
     },
     'hamburg-gymnasium-mathematik': {
       'folgen-reihen': 'Folgen, Reihen und Grenzwerte von Folgen kommen im Lehrplan nicht eigens vor.',
+      kreisgleichung: 'Kreisgleichung und Lage von Gerade und Kreis kommen im Lehrplan nicht vor (Kreis nur als Figur bzw. Kugeln im Raum).',
       verteilungen: 'Poisson-, hypergeometrische und Exponentialverteilung kommen im Lehrplan nicht vor.',
       richtungsfeld: 'Differenzialgleichungen und Richtungsfelder nicht im Lehrplan',
       'komplexe-zahlen': 'Komplexe Zahlen nicht im Lehrplan',
@@ -354,6 +360,7 @@ describe('Länder-Lehrpläne', () => {
       gasgesetze: 'Gasgesetze nicht im Bildungsplan (Sek. I nur Temperatur im Teilchenmodell)',
     },
     'hessen-gymnasium-mathematik': {
+      kreisgleichung: 'Kreisgleichung und Lage von Gerade und Kreis kommen im Lehrplan nicht vor (Kreis nur als Figur bzw. Kugeln im Raum).',
       kegelschnitte: 'Kegelschnitte und Ortslinien von Ellipse/Parabel/Hyperbel nicht im Lehrplan',
       ziegenproblem: 'kein passender Schwerpunkt',
       'monte-carlo-pi': 'kein passender Schwerpunkt',
@@ -401,6 +408,7 @@ describe('Länder-Lehrpläne', () => {
     },
     'nordrhein-westfalen-gymnasium-mathematik': {
       'folgen-reihen': 'Folgen, Reihen und Grenzwerte von Folgen kommen im Lehrplan nicht eigens vor.',
+      kreisgleichung: 'Kreisgleichung und Lage von Gerade und Kreis kommen im Lehrplan nicht vor (Kreis nur als Figur bzw. Kugeln im Raum).',
       ungleichungen: 'Ungleichungen werden im Lehrplan nicht eigens genannt (nur Gleichungen).',
       verteilungen: 'Poisson-, hypergeometrische und Exponentialverteilung kommen im Lehrplan nicht vor.',
       uebergangsmatrizen: 'Übergangsmatrizen und Markov-Ketten nicht im Lehrplan',
@@ -439,6 +447,7 @@ describe('Länder-Lehrpläne', () => {
     },
     'saarland-gymnasium-mathematik': {
       'folgen-reihen': 'Folgen, Reihen und Grenzwerte von Folgen kommen im Lehrplan nicht eigens vor.',
+      kreisgleichung: 'Kreisgleichung und Lage von Gerade und Kreis kommen im Lehrplan nicht vor (Kreis nur als Figur bzw. Kugeln im Raum).',
       verteilungen: 'Poisson-, hypergeometrische und Exponentialverteilung kommen im Lehrplan nicht vor.',
       uebergangsmatrizen: 'Übergangsmatrizen und Markov-Ketten nicht im Lehrplan',
       richtungsfeld: 'Differenzialgleichungen und Richtungsfelder nicht im Lehrplan',
@@ -467,6 +476,7 @@ describe('Länder-Lehrpläne', () => {
     },
     'sachsen-gymnasium-mathematik': {
       'folgen-reihen': 'Folgen, Reihen und Grenzwerte von Folgen kommen im Lehrplan nicht eigens vor.',
+      kreisgleichung: 'Kreisgleichung und Lage von Gerade und Kreis kommen im Lehrplan nicht vor (Kreis nur als Figur bzw. Kugeln im Raum).',
       verteilungen: 'Poisson-, hypergeometrische und Exponentialverteilung kommen im Lehrplan nicht vor.',
       uebergangsmatrizen: 'Übergangsmatrizen und Markov-Ketten nicht im Lehrplan',
       'taylor-polynome': 'nicht im Lehrplan (Hochschule; siehe docs/lehrplaene/sachsen-gymnasium-mathematik.md)',
@@ -501,6 +511,7 @@ describe('Länder-Lehrpläne', () => {
     },
     'schleswig-holstein-gymnasium-mathematik': {
       'folgen-reihen': 'Folgen, Reihen und Grenzwerte von Folgen kommen im Lehrplan nicht eigens vor.',
+      kreisgleichung: 'Kreisgleichung und Lage von Gerade und Kreis kommen im Lehrplan nicht vor (Kreis nur als Figur bzw. Kugeln im Raum).',
       uebergangsmatrizen: 'Übergangsmatrizen und Markov-Ketten nicht im Lehrplan',
       richtungsfeld: 'Differenzialgleichungen und Richtungsfelder nicht im Lehrplan',
       'komplexe-zahlen': 'Komplexe Zahlen nicht im Lehrplan',
