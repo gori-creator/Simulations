@@ -507,7 +507,7 @@ export const badenWuerttembergGymnasiumPhysik: StateCurriculum = {
             "Kenngrößen von Wellen, Längs- und Querwellen, Beugung, Reflexion, Brechung und Interferenz, stehende Wellen und Huygens’sches Prinzip sowie das elektromagnetische Spektrum im Alltag.",
             "Wave quantities, longitudinal and transverse waves, diffraction, reflection, refraction and interference, standing waves and Huygens’ principle, and the electromagnetic spectrum in everyday life.",
           ),
-          simulations: ["wellen-ausbreitung", "stehende-wellen", "interferenz"],
+          simulations: ["wellen-ausbreitung", "stehende-wellen", "interferenz", 'polarisation'],
         },
         {
           code: "3.4.5",
@@ -607,6 +607,7 @@ export const badenWuerttembergGymnasiumPhysik: StateCurriculum = {
             "interferenz",
             "doppler-effekt",
             'em-spektrum',
+            'polarisation',
           ],
         },
         {
@@ -719,7 +720,7 @@ export const badenWuerttembergGymnasiumPhysik: StateCurriculum = {
             "Wellen mit Kenngrößen und der Wellengleichung beschreiben, stehende Wellen, Überlagerung zweidimensionaler Wellen mit dem Gangunterschied, Huygens’sches Prinzip und elektromagnetisches Spektrum.",
             "Describing waves with their quantities and the wave equation, standing waves, superposition of two-dimensional waves using path difference, Huygens’ principle and the electromagnetic spectrum.",
           ),
-          simulations: ["wellen-ausbreitung", "stehende-wellen", "interferenz", 'em-spektrum'],
+          simulations: ["wellen-ausbreitung", "stehende-wellen", "interferenz", 'em-spektrum', 'polarisation'],
         },
         {
           code: "3.6.5",
@@ -834,7 +835,7 @@ export const badenWuerttembergGymnasiumPhysik: StateCurriculum = {
             "Kenngrößen von Wellen, Längs- und Querwellen, Beugung, Reflexion, Brechung und Interferenz, stehende Wellen und Huygens’sches Prinzip sowie das elektromagnetische Spektrum im Alltag.",
             "Wave quantities, longitudinal and transverse waves, diffraction, reflection, refraction and interference, standing waves and Huygens’ principle, and the electromagnetic spectrum in everyday life.",
           ),
-          simulations: ["stehende-wellen", "interferenz"],
+          simulations: ["stehende-wellen", "interferenz", 'polarisation'],
         },
         {
           code: "3.4.5",
@@ -927,7 +928,7 @@ export const badenWuerttembergGymnasiumPhysik: StateCurriculum = {
             "Kenngrößen von Wellen, Längs- und Querwellen, Beugung, Interferenz und stehende Wellen, Huygens’sches Prinzip; dazu Doppler-Effekt, elektromagnetisches Spektrum und der Vergleich mit Gravitationswellen.",
             "Wave quantities, longitudinal and transverse waves, diffraction, interference and standing waves, Huygens’ principle; plus the Doppler effect, the electromagnetic spectrum and a comparison with gravitational waves.",
           ),
-          simulations: ["stehende-wellen", "interferenz", 'em-spektrum'],
+          simulations: ["stehende-wellen", "interferenz", 'em-spektrum', 'polarisation'],
         },
         {
           code: "3.5.5",
@@ -1038,7 +1039,7 @@ export const badenWuerttembergGymnasiumPhysik: StateCurriculum = {
             "Wellen mit Kenngrößen und der Wellengleichung beschreiben, stehende Wellen, Überlagerung zweidimensionaler Wellen mit dem Gangunterschied, Huygens’sches Prinzip und elektromagnetisches Spektrum.",
             "Describing waves with their quantities and the wave equation, standing waves, superposition of two-dimensional waves using path difference, Huygens’ principle and the electromagnetic spectrum.",
           ),
-          simulations: ["stehende-wellen", "interferenz", 'em-spektrum'],
+          simulations: ["stehende-wellen", "interferenz", 'em-spektrum', 'polarisation'],
         },
         {
           code: "3.6.5",

@@ -978,6 +978,22 @@ export const physik: Subject = {
                 ['double slit', 'grating', 'multiple slit', 'single slit', 'interference', 'diffraction', 'grating constant', 'path difference', 'maximum', 'order', 'secondary maximum', 'laser', 'wavelength', 'Huygens', 'intensity distribution', 'wave model of light'],
               ),
             },
+            {
+              id: 'polarisation',
+              status: 'ready',
+              slug: L('polarisation-huygens-brechung', 'polarisation-huygens-refraction'),
+              title: L('Polarisation und Brechung im Wellenmodell', 'Polarisation and refraction in the wave model'),
+              summary: L(
+                'Zwei Polarisationsfilter lassen je nach Winkel viel, wenig oder gar kein Licht durch – ein drittes dazwischen macht es wieder hell. Im Wellenmodell erklären Elementarwellen, warum Licht an einer Grenzfläche abknickt.',
+                'Two polarising filters let through a lot, a little or no light at all depending on their angle – a third one in between makes it bright again. In the wave model, wavelets explain why light bends at a boundary.',
+              ),
+              grades: [10, 13],
+              kmk: ['P-S', 'P-E', 'P-BK-Wechselwirkung', 'P-BK-Mathematisieren'],
+              keywords: L(
+                ['Polarisation', 'linear polarisiert', 'Polarisationsfilter', 'Polarisator', 'Analysator', 'Gesetz von Malus', 'Transversalwelle', 'elektrisches Feld', 'Huygens', 'Huygens-Prinzip', 'Elementarwelle', 'Wellenfront', 'Brechung', 'Brechungsgesetz', 'Brechzahl', 'Ausbreitungsgeschwindigkeit', 'Totalreflexion', 'Grenzwinkel', 'Glasfaser', 'LCD', 'Sonnenbrille'],
+                ['polarisation', 'linearly polarised', 'polarising filter', 'polariser', 'analyser', 'Malus’s law', 'transverse wave', 'electric field', 'Huygens', 'Huygens’ principle', 'wavelet', 'wave front', 'refraction', 'Snell’s law', 'refractive index', 'wave speed', 'total internal reflection', 'critical angle', 'optical fibre', 'LCD', 'sunglasses'],
+              ),
+            },
           ],
         },
       ],
