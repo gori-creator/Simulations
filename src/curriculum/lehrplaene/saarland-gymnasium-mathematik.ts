@@ -223,6 +223,7 @@ const KS_8_UNITS: CurriculumUnit[] = [
   },
   {
     code: '8',
+    method: true,
     title: L('Vertiefung der regulären Themenfelder (nur Informatik-Zweig)', 'Deepening the regular topic fields (computer science branch only)'),
     summary: L('Vertiefungen zu den Themenfeldern 1 bis 5, zum Beispiel Mittelwerte, Parkettierungen und Füllgraphen.', 'Deepening topic fields 1 to 5, for example means, tilings and filling graphs.'),
   },

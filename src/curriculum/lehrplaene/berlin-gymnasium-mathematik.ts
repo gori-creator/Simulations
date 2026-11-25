@@ -611,6 +611,7 @@ const Q34_UNITS: CurriculumUnit[] = [
       },
       {
         code: 'Q4.3',
+        method: true,
         title: L('Komplexe Aufgabenstellungen aus allen drei Sachgebieten', 'Complex tasks from all three areas'),
         summary: L('Aufgaben, die Analysis, analytische Geometrie und Stochastik verknüpfen.', 'Tasks that link calculus, analytic geometry and probability.'),
       },

@@ -186,6 +186,7 @@ const OS_UNITS: CurriculumUnit[] = [
   },
   {
     code: '6',
+    method: true,
     title: L('Funktionaler Zusammenhang', 'Functional relationships'),
     summary: L(
       'Wird in der Orientierungsstufe nicht eigens unterrichtet: Zahlenfolgen, Terme, Operatormodell, Formeln, Maßstab und Datendarstellungen bereiten die funktionale Sichtweise in den anderen Leitideen vor.',
