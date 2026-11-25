@@ -186,6 +186,7 @@ describe('Länder-Lehrpläne', () => {
       hubble: 'Kosmologie, Rotverschiebung und Hubble-Beziehung kommen im Lehrplan nicht vor.',
     },
     'rheinland-pfalz-gymnasium-physik': {
+      stromwirkungen: 'Wirkungen und Gefahren des Stroms sind in den erfassten Lernbereichen nicht ausdrücklich genannt (ggf. im Fach Naturwissenschaften 5/6).',
       tunneleffekt: 'Tunneleffekt und Rastertunnelmikroskop kommen in den erfassten Lernbereichen nicht ausdrücklich vor.',
       magnete: 'In den erfassten Lernbereichen kommen Dauermagnete nicht vor (bitte am Lehrplan prüfen).',
       schall: 'Akustik erst als Wahlthema in 12/13; die Simulation ist für Klasse 5 bis 11 gedacht.',
@@ -280,6 +281,7 @@ describe('Länder-Lehrpläne', () => {
       'fourier-reihen': 'nicht im Bildungsplan (Hochschule)',
     },
     'bremen-gymnasium-physik': {
+      stromwirkungen: 'Wirkungen und Gefahren des Stroms sind in den erfassten Lernbereichen nicht ausdrücklich genannt (ggf. im Fach Naturwissenschaften 5/6).',
       roentgen: 'Röntgenspektrum und Compton-Effekt kommen in den erfassten Lernbereichen nicht vor.',
       laser: 'Laser (Besetzungsinversion, stimulierte Emission) kommt in den erfassten Lernbereichen nicht ausdrücklich vor.',
       tunneleffekt: 'Tunneleffekt und Rastertunnelmikroskop kommen in den erfassten Lernbereichen nicht ausdrücklich vor.',
@@ -301,6 +303,7 @@ describe('Länder-Lehrpläne', () => {
       'fourier-reihen': 'nicht im Bildungsplan (Hochschule)',
     },
     'hamburg-gymnasium-physik': {
+      stromwirkungen: 'Wirkungen und Gefahren des Stroms sind in den erfassten Lernbereichen nicht ausdrücklich genannt (ggf. im Fach Naturwissenschaften 5/6).',
       standardmodell: 'Elementarteilchen und Standardmodell kommen in den erfassten Lernbereichen nicht vor (Kernaufbau nur bis Proton und Neutron).',
       laser: 'Laser (Besetzungsinversion, stimulierte Emission) kommt in den erfassten Lernbereichen nicht ausdrücklich vor.',
       tunneleffekt: 'Tunneleffekt und Rastertunnelmikroskop kommen in den erfassten Lernbereichen nicht ausdrücklich vor.',
@@ -450,6 +453,7 @@ describe('Länder-Lehrpläne', () => {
       'fourier-reihen': 'nicht in den Fachanforderungen (Hochschule)',
     },
     'schleswig-holstein-gymnasium-physik': {
+      stromwirkungen: 'Wirkungen und Gefahren des Stroms sind in den erfassten Lernbereichen nicht ausdrücklich genannt (ggf. im Fach Naturwissenschaften 5/6).',
       laser: 'Laser (Besetzungsinversion, stimulierte Emission) kommt in den erfassten Lernbereichen nicht ausdrücklich vor.',
       tunneleffekt: 'Tunneleffekt und Rastertunnelmikroskop kommen in den erfassten Lernbereichen nicht ausdrücklich vor.',
       baendermodell: 'Bändermodell und Supraleitung kommen in den erfassten Lernbereichen der Oberstufe nicht vor (Halbleiter nur qualitativ in der Mittelstufe).',

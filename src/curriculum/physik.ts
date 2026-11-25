@@ -624,8 +624,24 @@ export const physik: Subject = {
         {
           id: 'stromkreise',
           title: L('Stromkreise', 'Circuits'),
-          grades: [6, 9],
+          grades: [5, 9],
           simulations: [
+            {
+              id: 'stromwirkungen',
+              status: 'ready',
+              slug: L('wirkungen-und-gefahren-des-stroms', 'effects-and-dangers-of-current'),
+              title: L('Wirkungen und Gefahren des Stroms', 'Effects and dangers of electric current'),
+              summary: L(
+                'Strom bringt eine Lampe zum Leuchten, macht einen Draht heiß, einen Nagel magnetisch und lässt Gasbläschen aufsteigen. Eine Sicherung schützt vor dem Kurzschluss – und schon wenige Milliampere durch den Körper sind gefährlich.',
+                'Current makes a lamp glow, heats a wire, turns a nail into a magnet and makes gas bubbles rise. A fuse protects against short circuits – and just a few milliamperes through the body are dangerous.',
+              ),
+              grades: [5, 9],
+              kmk: ['P-S', 'P-B', 'P-BK-Energie', 'P-BK-Wechselwirkung'],
+              keywords: L(
+                ['Wirkungen des Stroms', 'Wärmewirkung', 'Lichtwirkung', 'magnetische Wirkung', 'chemische Wirkung', 'Elektrolyse', 'Glühlampe', 'Heizdraht', 'Elektromagnet', 'Sicherung', 'Schmelzsicherung', 'Kurzschluss', 'Gefahren', 'Stromunfall', 'Körperwiderstand', 'FI-Schutzschalter', 'Steckdose', 'Sicherheit', 'Schutzleiter'],
+                ['effects of current', 'heating effect', 'lighting effect', 'magnetic effect', 'chemical effect', 'electrolysis', 'light bulb', 'heating wire', 'electromagnet', 'fuse', 'short circuit', 'dangers', 'electric shock', 'body resistance', 'residual-current device', 'RCD', 'socket', 'safety', 'earth wire'],
+              ),
+            },
             {
               id: 'einfacher-stromkreis',
               status: 'ready',

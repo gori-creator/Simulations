@@ -2,7 +2,7 @@
 
 <!-- Automatisch erzeugt mit `npm run lehrplan:luecken` aus src/curriculum/lehrplaene/ – nicht von Hand bearbeiten. -->
 
-Lernbereiche der Länder-Lehrpläne, zu denen es noch **keine** Simulation gibt – Vorrat für neue Simulationen (Anleitung: `docs/NEUE-SIMULATION.md`). Insgesamt **70 von 1773** Lernbereichen ohne Simulation.
+Lernbereiche der Länder-Lehrpläne, zu denen es noch **keine** Simulation gibt – Vorrat für neue Simulationen (Anleitung: `docs/NEUE-SIMULATION.md`). Insgesamt **68 von 1773** Lernbereichen ohne Simulation.
 
 Nicht jeder Lernbereich eignet sich für eine Simulation. Reine Methoden-, Praktikums- und Projektthemen sind im Lehrplan mit `method: true` gekennzeichnet und zählen nicht als Lücke. Kommt ein Thema in mehreren Ländern vor, lohnt es sich besonders.
 
@@ -136,7 +136,7 @@ Alle Lernbereiche haben eine Simulation.
 | 7–9 | 2.4 | Größen und Messen › Sachaufgaben | Größen in Sachzusammenhängen bestimmen und Ergebnisse und Lösungsweg bewerten. |
 | 12 | S.3 | Stochastik › Hypergeometrische Verteilung | Ziehen ohne Zurücklegen mit der hypergeometrischen Verteilung beschreiben. |
 
-## Physik (9)
+## Physik (7)
 
 ### Baden-Württemberg · Gymnasium (0)
 
@@ -166,11 +166,10 @@ Alle Lernbereiche haben eine Simulation.
 
 Alle Lernbereiche haben eine Simulation.
 
-### Hessen · Gymnasium (3)
+### Hessen · Gymnasium (2)
 
 | Stufe | Nr. | Lernbereich | Kurz |
 | --- | --- | --- | --- |
-| 6–8 | 4.3 | Elektrizität im Alltag › Gefahren beim Umgang mit Elektrizität im Alltag | Gefahren erkennen und sicheres Verhalten begründen. |
 | 9/10 | 6.4 | Fortbewegung und Mobilität › Menschliche und technische Leistungen und deren Vergleich | Eigene körperliche Leistung bestimmen und mit Maschinen vergleichen. |
 | 13 | Q4.4.3 | Spezielle Relativitätstheorie › Lorentztransformation und Addition von Geschwindigkeiten (nur LK) | Umrechnung zwischen bewegten Bezugssystemen. |
 
@@ -178,11 +177,9 @@ Alle Lernbereiche haben eine Simulation.
 
 Alle Lernbereiche haben eine Simulation.
 
-### Nordrhein-Westfalen · Gymnasium (1)
+### Nordrhein-Westfalen · Gymnasium (0)
 
-| Stufe | Nr. | Lernbereich | Kurz |
-| --- | --- | --- | --- |
-| 5/6 | 2.2 | Elektrischer Strom und Magnetismus › Wirkungen des elektrischen Stroms | Wärme-, Licht- und magnetische Wirkung, Sicherungen und Gefahren durch Elektrizität. |
+Alle Lernbereiche haben eine Simulation.
 
 ### Rheinland-Pfalz · Gymnasium (1)
 
