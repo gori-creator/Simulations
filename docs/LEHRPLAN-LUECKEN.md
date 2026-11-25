@@ -2,11 +2,11 @@
 
 <!-- Automatisch erzeugt mit `npm run lehrplan:luecken` aus src/curriculum/lehrplaene/ – nicht von Hand bearbeiten. -->
 
-Lernbereiche der Länder-Lehrpläne, zu denen es noch **keine** Simulation gibt – Vorrat für neue Simulationen (Anleitung: `docs/NEUE-SIMULATION.md`). Insgesamt **5 von 1773** Lernbereichen ohne Simulation.
+Lernbereiche der Länder-Lehrpläne, zu denen es noch **keine** Simulation gibt – Vorrat für neue Simulationen (Anleitung: `docs/NEUE-SIMULATION.md`). Insgesamt **4 von 1773** Lernbereichen ohne Simulation.
 
 Nicht jeder Lernbereich eignet sich für eine Simulation. Reine Methoden-, Praktikums- und Projektthemen sind im Lehrplan mit `method: true` gekennzeichnet und zählen nicht als Lücke. Kommt ein Thema in mehreren Ländern vor, lohnt es sich besonders.
 
-## Mathematik (5)
+## Mathematik (4)
 
 ### Baden-Württemberg · Gymnasium (0)
 
@@ -48,11 +48,9 @@ Alle Lernbereiche haben eine Simulation.
 
 Alle Lernbereiche haben eine Simulation.
 
-### Saarland · Gymnasium (1)
+### Saarland · Gymnasium (0)
 
-| Stufe | Nr. | Lernbereich | Kurz |
-| --- | --- | --- | --- |
-| 8 | 7 | Aussagenlogik (nur Informatik-Zweig) | Aussagen und Wahrheitswerte, Verknüpfungen wie Konjunktion, Disjunktion, NAND und NOR, Wahrheitstafeln. |
+Alle Lernbereiche haben eine Simulation.
 
 ### Sachsen · Gymnasium (4)
 

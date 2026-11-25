@@ -1,0 +1,10 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 320 180">
+  <g fill="none" stroke="currentColor" stroke-linecap="round">
+    <path d="M30 60H130M30 120H130M210 90H250" stroke-width="4" />
+    <rect x="130" y="40" width="80" height="100" stroke-width="5" />
+  </g>
+  <rect x="130" y="40" width="80" height="100" fill="currentColor" fill-opacity="0.12" />
+  <circle cx="275" cy="90" r="22" fill="currentColor" fill-opacity="0.85" />
+  <circle cx="30" cy="60" r="9" fill="currentColor" />
+  <circle cx="30" cy="120" r="9" fill="currentColor" fill-opacity="0.4" />
+</svg>

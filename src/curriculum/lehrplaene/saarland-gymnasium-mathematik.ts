@@ -221,6 +221,7 @@ const KS_8_UNITS: CurriculumUnit[] = [
     code: '7',
     title: L('Aussagenlogik (nur Informatik-Zweig)', 'Propositional logic (computer science branch only)'),
     summary: L('Aussagen und Wahrheitswerte, Verknüpfungen wie Konjunktion, Disjunktion, NAND und NOR, Wahrheitstafeln.', 'Statements and truth values, connectives such as conjunction, disjunction, NAND and NOR, truth tables.'),
+    simulations: ['aussagenlogik'],
   },
   {
     code: '8',

@@ -311,6 +311,22 @@ export const mathematik: Subject = {
             ),
             thumb: 'binomial',
           },
+          {
+            id: 'aussagenlogik',
+            status: 'ready',
+            slug: L('aussagenlogik-wahrheitstafeln', 'propositional-logic-truth-tables'),
+            title: L('Aussagenlogik und Wahrheitstafeln', 'Propositional logic and truth tables'),
+            summary: L(
+              'Und, oder, nicht, wenn … dann: Schalter und Lampe zeigen, wann eine verknüpfte Aussage wahr ist. Die Wahrheitstafel prüft, ob zwei Formeln dasselbe bedeuten – etwa bei den Regeln von De Morgan.',
+              'And, or, not, if … then: switches and a lamp show when a combined statement is true. The truth table checks whether two formulas mean the same – as in De Morgan’s laws.',
+            ),
+            grades: [7, 10],
+            kmk: ['M-K1', 'M-K5', 'M-L1'],
+            keywords: L(
+              ['Aussagenlogik', 'Aussage', 'Wahrheitswert', 'Wahrheitstafel', 'Konjunktion', 'Disjunktion', 'Negation', 'Implikation', 'Äquivalenz', 'NAND', 'NOR', 'XOR', 'De Morgan', 'Schaltung', 'Logikgatter', 'Tautologie'],
+              ['propositional logic', 'statement', 'truth value', 'truth table', 'conjunction', 'disjunction', 'negation', 'implication', 'equivalence', 'NAND', 'NOR', 'XOR', 'De Morgan', 'circuit', 'logic gate', 'tautology'],
+            ),
+          },
         ]),
         topic('gleichungen', L('Gleichungen und Gleichungssysteme', 'Equations and systems of equations'), [
           {
