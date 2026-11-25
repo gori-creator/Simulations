@@ -1,0 +1,59 @@
+# Löscht alte Zweige, die vollständig in "main" übernommen sind – nur von Hand
+# (Actions → „Zweige aufräumen“ → Run workflow).
+#
+# Gelöscht wird ein Zweig nur, wenn ALLES zutrifft:
+#   - sein letzter Commit ist vollständig in main enthalten (nichts geht verloren),
+#   - er hat keinen offenen Pull Request,
+#   - sein letzter Commit ist älter als die eingestellte Zahl von Tagen,
+#   - er ist nicht main.
+# Mit „Nur anzeigen“ (Standard) wird nichts gelöscht, nur aufgelistet.
+name: Zweige aufräumen
+
+on:
+  workflow_dispatch:
+    inputs:
+      nur_anzeigen:
+        description: 'Nur anzeigen, nichts löschen'
+        type: boolean
+        default: true
+      tage:
+        description: 'Nur Zweige, deren letzter Commit älter ist als so viele Tage'
+        type: number
+        default: 2
+
+permissions:
+  contents: write
+  pull-requests: read
+
+jobs:
+  aufraeumen:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v7
+        with:
+          fetch-depth: 0
+      - name: Zweige prüfen und löschen
+        env:
+          GH_TOKEN: ${{ github.token }}
+          NUR_ANZEIGEN: ${{ inputs.nur_anzeigen }}
+          TAGE: ${{ inputs.tage }}
+        run: |
+          set -euo pipefail
+          git fetch --prune origin '+refs/heads/*:refs/remotes/origin/*'
+          offen=$(gh api "repos/${GITHUB_REPOSITORY}/pulls?state=open&per_page=100" --jq '.[].head.ref')
+          grenze=$(date -u -d "${TAGE} days ago" +%s)
+          geloescht=0; behalten=0
+          for ref in $(git for-each-ref --format='%(refname:short)' refs/remotes/origin); do
+            b=${ref#origin/}
+            case "$b" in HEAD|main|origin) continue ;; esac
+            if ! git merge-base --is-ancestor "origin/$b" origin/main; then behalten=$((behalten+1)); continue; fi
+            if printf '%s\n' "$offen" | grep -qx "$b"; then behalten=$((behalten+1)); continue; fi
+            if [ "$(git log -1 --format=%ct "origin/$b")" -ge "$grenze" ]; then behalten=$((behalten+1)); continue; fi
+            if [ "$NUR_ANZEIGEN" = "true" ]; then
+              echo "würde löschen: $b"
+            else
+              git push origin --delete "$b" && echo "gelöscht: $b"
+            fi
+            geloescht=$((geloescht+1))
+          done
+          echo "Zusammenfassung: $geloescht Zweige $( [ "$NUR_ANZEIGEN" = "true" ] && echo 'würden gelöscht' || echo 'gelöscht' ), $behalten behalten." | tee -a "$GITHUB_STEP_SUMMARY"
