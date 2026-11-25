@@ -729,7 +729,7 @@ const Q2_UNITS: CurriculumUnit[] = [
         code: 'A.2',
         title: L('Vertiefung der Differenzial- und Integralrechnung', 'further differential and integral calculus'),
         summary: L('Anwendungen der Analysis in Sachzusammenhängen, uneigentliche Integrale und Rotationskörper.', 'Applications of calculus in real contexts, improper integrals and solids of revolution.'),
-        simulations: ['extremwertprobleme', 'hauptsatz', 'stammfunktion-grafisch', 'rotationskoerper'],
+        simulations: ['extremwertprobleme', 'hauptsatz', 'stammfunktion-grafisch', 'rotationskoerper', 'uneigentliche-integrale'],
       },
     ],
   },

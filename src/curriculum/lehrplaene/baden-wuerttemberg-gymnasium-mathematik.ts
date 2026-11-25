@@ -1431,7 +1431,7 @@ export const badenWuerttembergGymnasiumMathematik: StateCurriculum = {
                 "Stammfunktionen mit Potenz-, Faktor- und Summenregel und linearer Substitution bestimmen, bestimmte Integrale mit dem Hauptsatz berechnen und uneigentliche Integrale untersuchen.",
                 "Finding antiderivatives with the power, constant-factor and sum rules and linear substitution, calculating definite integrals with the fundamental theorem and investigating improper integrals.",
               ),
-              simulations: ["hauptsatz", "integrationsregeln"],
+              simulations: ["hauptsatz", "integrationsregeln", 'uneigentliche-integrale'],
             },
             {
               code: "3.5.1 (9)–(10)",
@@ -1941,7 +1941,7 @@ export const badenWuerttembergGymnasiumMathematik: StateCurriculum = {
                 "Stammfunktionen mit Potenz-, Faktor- und Summenregel und linearer Substitution bestimmen, bestimmte Integrale mit dem Hauptsatz berechnen und uneigentliche Integrale untersuchen.",
                 "Finding antiderivatives with the power, constant-factor and sum rules and linear substitution, calculating definite integrals with the fundamental theorem and investigating improper integrals.",
               ),
-              simulations: ["hauptsatz", "integrationsregeln"],
+              simulations: ["hauptsatz", "integrationsregeln", 'uneigentliche-integrale'],
             },
             {
               code: "3.5.1 (9)–(10)",

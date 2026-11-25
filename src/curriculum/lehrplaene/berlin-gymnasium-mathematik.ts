@@ -538,7 +538,7 @@ const Q12_UNITS: CurriculumUnit[] = [
           'Bestände aus Änderungsraten rekonstruieren, Flächen mit bestimmten Integralen, Hauptsatz geometrisch begründen, Stammfunktionen; LK: ln als Stammfunktion von 1/x, uneigentliche Integrale und Rotationskörper.',
           'Reconstructing totals from rates of change, areas with definite integrals, justifying the fundamental theorem geometrically, antiderivatives; LK: ln as an antiderivative of 1/x, improper integrals and solids of revolution.',
         ),
-        simulations: ['ober-untersummen', 'hauptsatz', 'stammfunktion-grafisch', 'aenderungsrate', 'logarithmus', 'umkehrfunktion', 'integrationsregeln'],
+        simulations: ['ober-untersummen', 'hauptsatz', 'stammfunktion-grafisch', 'aenderungsrate', 'logarithmus', 'umkehrfunktion', 'integrationsregeln', 'uneigentliche-integrale'],
       },
       {
         code: 'Q2.2',
@@ -598,7 +598,7 @@ const Q34_UNITS: CurriculumUnit[] = [
           'Vertiefen und Verknüpfen der Differential- und Integralrechnung; LK: Rotationskörper und uneigentliche Integrale.',
           'Deepening and linking differential and integral calculus; LK: solids of revolution and improper integrals.',
         ),
-        simulations: ['extremwertprobleme', 'rotationskoerper', 'funktionenscharen', 'hauptsatz'],
+        simulations: ['extremwertprobleme', 'rotationskoerper', 'funktionenscharen', 'hauptsatz', 'uneigentliche-integrale'],
       },
       {
         code: 'Q4.2',

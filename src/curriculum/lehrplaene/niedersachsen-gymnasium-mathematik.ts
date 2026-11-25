@@ -956,7 +956,7 @@ const Q_UNITS: CurriculumUnit[] = [
         code: 'eA-1.3',
         title: L('Vertiefungen', 'Further topics'),
         summary: L('Volumen von Rotationskörpern um die x-Achse, uneigentliche Integrale.', 'Volumes of solids of revolution about the x-axis, improper integrals.'),
-        simulations: ['rotationskoerper'],
+        simulations: ['rotationskoerper', 'uneigentliche-integrale'],
       },
     ],
   },

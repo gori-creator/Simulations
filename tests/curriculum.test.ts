@@ -303,6 +303,7 @@ describe('Länder-Lehrpläne', () => {
       zeitdilatation: 'Spezielle Relativitätstheorie nicht im Rahmenlehrplan der Oberstufe',
     },
     'bremen-gymnasium-mathematik': {
+      'uneigentliche-integrale': 'Uneigentliche Integrale werden im Lehrplan nicht genannt.',
       parameterkurven: 'Kurven in Parameterdarstellung und Polarkoordinaten kommen im Lehrplan nicht vor (Parameterform nur für Geraden und Ebenen).',
       zahlensysteme: 'Andere Stellenwertsysteme (Zweier-, Hexadezimalsystem) und Zahlschriften anderer Kulturen kommen im Lehrplan nicht vor.',
       'folgen-reihen': 'Folgen, Reihen und Grenzwerte von Folgen kommen im Lehrplan nicht eigens vor.',
@@ -338,6 +339,7 @@ describe('Länder-Lehrpläne', () => {
       zeitdilatation: 'Spezielle Relativitätstheorie nicht im Bildungsplan der Oberstufe',
     },
     'hamburg-gymnasium-mathematik': {
+      'uneigentliche-integrale': 'Uneigentliche Integrale werden im Lehrplan nicht genannt.',
       parameterkurven: 'Kurven in Parameterdarstellung und Polarkoordinaten kommen im Lehrplan nicht vor (Parameterform nur für Geraden und Ebenen).',
       zahlensysteme: 'Andere Stellenwertsysteme (Zweier-, Hexadezimalsystem) und Zahlschriften anderer Kulturen kommen im Lehrplan nicht vor.',
       'folgen-reihen': 'Folgen, Reihen und Grenzwerte von Folgen kommen im Lehrplan nicht eigens vor.',
@@ -455,6 +457,7 @@ describe('Länder-Lehrpläne', () => {
       'doppler-effekt': 'Doppler-Effekt nicht im Kernlehrplan (siehe docs/lehrplaene/nordrhein-westfalen-gymnasium-physik.md)',
     },
     'rheinland-pfalz-gymnasium-mathematik': {
+      'uneigentliche-integrale': 'Uneigentliche Integrale werden im Lehrplan nicht genannt.',
       parameterkurven: 'Kurven in Parameterdarstellung und Polarkoordinaten kommen im Lehrplan nicht vor (Parameterform nur für Geraden und Ebenen).',
       verteilungen: 'Poisson-, hypergeometrische und Exponentialverteilung kommen im Lehrplan nicht vor.',
       uebergangsmatrizen: 'Übergangsmatrizen und Markov-Ketten nicht im Lehrplan',
@@ -464,6 +467,7 @@ describe('Länder-Lehrpläne', () => {
       'fourier-reihen': 'nicht im Lehrplan (Hochschule)',
     },
     'saarland-gymnasium-mathematik': {
+      'uneigentliche-integrale': 'Uneigentliche Integrale werden im Lehrplan nicht genannt.',
       parameterkurven: 'Kurven in Parameterdarstellung und Polarkoordinaten kommen im Lehrplan nicht vor (Parameterform nur für Geraden und Ebenen).',
       'folgen-reihen': 'Folgen, Reihen und Grenzwerte von Folgen kommen im Lehrplan nicht eigens vor.',
       kreisgleichung: 'Kreisgleichung und Lage von Gerade und Kreis kommen im Lehrplan nicht vor (Kreis nur als Figur bzw. Kugeln im Raum).',
@@ -494,6 +498,7 @@ describe('Länder-Lehrpläne', () => {
       zeitdilatation: 'Spezielle Relativitätstheorie nicht im Lehrplan der Oberstufe',
     },
     'sachsen-gymnasium-mathematik': {
+      'uneigentliche-integrale': 'Uneigentliche Integrale werden im Lehrplan nicht genannt.',
       'folgen-reihen': 'Folgen, Reihen und Grenzwerte von Folgen kommen im Lehrplan nicht eigens vor.',
       kreisgleichung: 'Kreisgleichung und Lage von Gerade und Kreis kommen im Lehrplan nicht vor (Kreis nur als Figur bzw. Kugeln im Raum).',
       verteilungen: 'Poisson-, hypergeometrische und Exponentialverteilung kommen im Lehrplan nicht vor.',
@@ -504,6 +509,7 @@ describe('Länder-Lehrpläne', () => {
       cavalieri: 'Prinzip von Cavalieri nicht im Lehrplan',
     },
     'sachsen-anhalt-gymnasium-mathematik': {
+      'uneigentliche-integrale': 'Uneigentliche Integrale werden im Lehrplan nicht genannt.',
       parameterkurven: 'Kurven in Parameterdarstellung und Polarkoordinaten kommen im Lehrplan nicht vor (Parameterform nur für Geraden und Ebenen).',
       zahlensysteme: 'Andere Stellenwertsysteme (Zweier-, Hexadezimalsystem) und Zahlschriften anderer Kulturen kommen im Lehrplan nicht vor.',
       'folgen-reihen': 'Folgen, Reihen und Grenzwerte von Folgen kommen im Lehrplan nicht eigens vor.',

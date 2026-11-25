@@ -666,7 +666,7 @@ const Q_UNITS: CurriculumUnit[] = [
           'Produktsumme, orientierte Fläche, Bestands-, Integral- und Stammfunktion, bestimmtes Integral und Hauptsatz; nur LK: uneigentliche Integrale und Rotationsvolumen.',
           'Riemann sums, signed area, accumulation, integral and antiderivative functions, definite integral and the fundamental theorem; advanced course only: improper integrals and volumes of revolution.',
         ),
-        simulations: ['ober-untersummen', 'aenderungsrate', 'stammfunktion-grafisch', 'hauptsatz', 'rotationskoerper', 'integrationsregeln'],
+        simulations: ['ober-untersummen', 'aenderungsrate', 'stammfunktion-grafisch', 'hauptsatz', 'rotationskoerper', 'integrationsregeln', 'uneigentliche-integrale'],
       },
     ],
   },

@@ -1762,6 +1762,22 @@ export const mathematik: Subject = {
               ['solid of revolution', 'volume of revolution', 'integral', 'disc method', 'cross-section', 'sphere', 'cone', 'paraboloid', 'Gabriel’s horn', 'volume'],
             ),
           },
+          {
+            id: 'uneigentliche-integrale',
+            status: 'ready',
+            slug: L('uneigentliche-integrale', 'improper-integrals'),
+            title: L('Uneigentliche Integrale', 'Improper integrals'),
+            summary: L(
+              'Eine Fläche, die nach rechts nie endet, kann trotzdem einen endlichen Inhalt haben – unter 1/x² ist es genau 1. Unter 1/x dagegen wächst die Fläche immer weiter. Ein zweites Diagramm zeigt, ob der Integralwert einen Grenzwert hat.',
+              'An area that never ends to the right can still have a finite size – under 1/x² it is exactly 1. Under 1/x, by contrast, the area keeps growing. A second chart shows whether the integral value has a limit.',
+            ),
+            grades: [12, 13],
+            kmk: ['M-L2', 'M-L4', 'M-K2', 'M-K5'],
+            keywords: L(
+              ['uneigentliches Integral', 'unbeschränktes Intervall', 'Polstelle', 'Grenzwert', 'konvergent', 'divergent', 'Fläche ins Unendliche', '1/x²', '1/x', 'Exponentialfunktion', 'Stammfunktion'],
+              ['improper integral', 'unbounded interval', 'pole', 'limit', 'convergent', 'divergent', 'area to infinity', '1/x²', '1/x', 'exponential function', 'antiderivative'],
+            ),
+          },
         ]),
         topic('differenzialgleichungen', L('Differenzialgleichungen', 'Differential equations'), [
           {

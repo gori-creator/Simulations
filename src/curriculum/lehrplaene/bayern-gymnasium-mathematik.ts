@@ -671,7 +671,7 @@ export const bayernGymnasiumMathematik: StateCurriculum = {
             'Integral als Flächenbilanz, Integralfunktion und Hauptsatz, Flächen zwischen Graphen, uneigentliche Integrale, Gesamtänderung und Rotationskörper.',
             'The integral as signed area, integral functions and the fundamental theorem, areas between graphs, improper integrals, total change and solids of revolution.',
           ),
-          simulations: ['ober-untersummen', 'hauptsatz', 'aenderungsrate', 'rotationskoerper', 'integrationsregeln'],
+          simulations: ['ober-untersummen', 'hauptsatz', 'aenderungsrate', 'rotationskoerper', 'integrationsregeln', 'uneigentliche-integrale'],
         },
         {
           code: '2',

@@ -2713,6 +2713,7 @@ export const hessenGymnasiumMathematik: StateCurriculum = {
               code: 'Q1.2.5',
               title: L('Uneigentliche Integrale (nur LK)', 'Improper integrals (advanced course only)'),
               summary: L('Unendlich ausgedehnte Flächen auf endlichen Inhalt untersuchen.', 'Examining infinitely extended regions for finite area.'),
+              simulations: ['uneigentliche-integrale'],
             },
           ],
         },
