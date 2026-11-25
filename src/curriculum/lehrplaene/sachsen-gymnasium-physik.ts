@@ -462,7 +462,7 @@ const J12: CurriculumUnit[] = [
     code: 'GK-W1',
     title: L('Anwendungen der Physik (Wahlbereich Grundkurs)', 'Applications of physics (optional, basic course)'),
     summary: L('Doppler-Effekt beim Schall, Ultraschall in der Medizin und Röntgenstrahlung.', 'The Doppler effect for sound, ultrasound in medicine and X-rays.'),
-    simulations: ['doppler-effekt'],
+    simulations: ['doppler-effekt', 'roentgen'],
   },
   {
     code: 'GK-W2',
@@ -510,7 +510,7 @@ const J12: CurriculumUnit[] = [
       'Atommodelle, Energieniveaus und Spektren, Potentialtopf, Lumineszenz, Laser und Röntgenspektrum.',
       'Atomic models, energy levels and spectra, the potential well, luminescence, lasers and the X-ray spectrum.',
     ),
-    simulations: ['linienspektren', 'laser'],
+    simulations: ['linienspektren', 'laser', 'roentgen'],
   },
   {
     code: 'LK-6',

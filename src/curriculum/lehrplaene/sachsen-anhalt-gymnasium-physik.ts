@@ -382,7 +382,7 @@ const QPHASE_UNITS: CurriculumUnit[] = [
           'Wie im grundlegenden Niveau, zusätzlich Interferometer, Röntgenstrahlung und Spektralanalyse.',
           'As at the basic level, plus interferometers, X-rays and spectral analysis.',
         ),
-        simulations: ['doppelspalt'],
+        simulations: ['doppelspalt', 'roentgen'],
       },
       {
         code: 'eA-1.4',
@@ -465,7 +465,7 @@ const QPHASE_UNITS: CurriculumUnit[] = [
           'Wie im grundlegenden Niveau, zusätzlich Photonenimpuls, Elektronenbeugungsröhre, Compton-Effekt, Unbestimmtheitsrelation und Wellenfunktion.',
           'As at the basic level, plus photon momentum, the electron diffraction tube, the Compton effect, the uncertainty principle and the wave function.',
         ),
-        simulations: ['photoeffekt', 'elektronenbeugung', 'potentialtopf', 'mach-zehnder'],
+        simulations: ['photoeffekt', 'elektronenbeugung', 'potentialtopf', 'mach-zehnder', 'roentgen'],
       },
       {
         code: 'eA-3.3',
@@ -474,7 +474,7 @@ const QPHASE_UNITS: CurriculumUnit[] = [
           'Potenzialtopf, Energiestufen und Orbitale des Wasserstoffatoms, Franck-Hertz-Versuch, Linien- und Röntgenspektren.',
           'The potential well, energy levels and orbitals of the hydrogen atom, the Franck–Hertz experiment, line spectra and X-ray spectra.',
         ),
-        simulations: ['linienspektren'],
+        simulations: ['linienspektren', 'roentgen'],
       },
     ],
   },

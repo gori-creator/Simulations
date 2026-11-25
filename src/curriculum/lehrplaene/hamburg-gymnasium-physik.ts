@@ -200,7 +200,7 @@ const S_UNITS: CurriculumUnit[] = [
       'Energiestufenmodell, Emission und Absorption von Photonen, Linienspektren, Röntgenspektrum, Orbitale und Nachweiswahrscheinlichkeiten.',
       'The energy level model, emission and absorption of photons, line spectra, the X-ray spectrum, orbitals and detection probabilities.',
     ),
-    simulations: ['linienspektren'],
+    simulations: ['linienspektren', 'roentgen'],
   },
   {
     code: '4.1',

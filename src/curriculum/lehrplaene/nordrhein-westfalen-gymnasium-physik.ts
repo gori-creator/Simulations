@@ -592,7 +592,7 @@ const Q_UNITS: CurriculumUnit[] = [
           'Linienspektren, Energieniveauschema, Franck-Hertz-Versuch, Kern-Hülle-Modell und Röntgenstrahlung.',
           'Line spectra, energy level diagrams, the Franck–Hertz experiment, the nuclear model of the atom and X-rays.',
         ),
-        simulations: ['linienspektren'],
+        simulations: ['linienspektren', 'roentgen'],
       },
       {
         code: 'GK-4.3',
@@ -691,7 +691,7 @@ const Q_UNITS: CurriculumUnit[] = [
           'Doppelspaltexperiment, Bragg-Reflexion, Elektronenbeugung, Wahrscheinlichkeitsdeutung, Delayed-Choice-Experiment und Kopenhagener Deutung.',
           'Double-slit experiment, Bragg reflection, electron diffraction, probability interpretation, the delayed-choice experiment and the Copenhagen interpretation.',
         ),
-        simulations: ['elektronenbeugung', 'potentialtopf', 'mach-zehnder'],
+        simulations: ['elektronenbeugung', 'potentialtopf', 'mach-zehnder', 'roentgen'],
       },
     ],
   },
@@ -710,7 +710,7 @@ const Q_UNITS: CurriculumUnit[] = [
           'Atommodelle, eindimensionaler Potentialtopf, Energieniveauschema, Linienspektren, Franck-Hertz-Versuch und Röntgenstrahlung.',
           'Atomic models, the one-dimensional potential well, energy level diagrams, line spectra, the Franck–Hertz experiment and X-rays.',
         ),
-        simulations: ['linienspektren'],
+        simulations: ['linienspektren', 'roentgen'],
       },
       {
         code: 'LK-4.2',

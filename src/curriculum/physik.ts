@@ -1318,6 +1318,22 @@ export const physik: Subject = {
               ),
             },
             {
+              id: 'roentgen',
+              status: 'ready',
+              slug: L('roentgenstrahlung-spektrum-compton', 'x-rays-spectrum-compton'),
+              title: L('Röntgenstrahlung: Spektrum, Bragg und Compton', 'X-rays: spectrum, Bragg and Compton'),
+              summary: L(
+                'Schnelle Elektronen prallen auf eine Metallplatte und erzeugen Röntgenstrahlung. Ein drehbarer Kristall zerlegt sie in ein Spektrum mit scharfer Grenze und hellen Linien – und an Elektronen verlieren Röntgenphotonen Energie.',
+                'Fast electrons hit a metal plate and produce X-rays. A rotatable crystal splits them into a spectrum with a sharp limit and bright lines – and X-ray photons lose energy to electrons.',
+              ),
+              grades: [11, 13],
+              kmk: ['P-S', 'P-E', 'P-BK-Materie', 'P-BK-Mathematisieren'],
+              keywords: L(
+                ['Röntgenstrahlung', 'Röntgenröhre', 'Bremsstrahlung', 'Bremsspektrum', 'Duane-Hunt', 'Grenzwellenlänge', 'charakteristische Strahlung', 'K-alpha', 'Moseley-Gesetz', 'Bragg-Reflexion', 'Bragg-Bedingung', 'Drehkristall', 'Glanzwinkel', 'Zählrohr', 'Compton-Effekt', 'Compton-Wellenlänge', 'Photonenimpuls', 'Streuung'],
+                ['X-rays', 'X-ray tube', 'bremsstrahlung', 'continuous spectrum', 'Duane–Hunt law', 'cut-off wavelength', 'characteristic radiation', 'K-alpha', 'Moseley’s law', 'Bragg reflection', 'Bragg condition', 'rotating crystal', 'glancing angle', 'Geiger counter', 'Compton effect', 'Compton wavelength', 'photon momentum', 'scattering'],
+              ),
+            },
+            {
               id: 'photoeffekt',
               status: 'ready',
               slug: L('photoeffekt-gegenfeldmethode', 'photoelectric-effect-retarding-field'),

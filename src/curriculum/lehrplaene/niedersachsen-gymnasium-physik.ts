@@ -341,7 +341,7 @@ const Q_UNITS: CurriculumUnit[] = [
           'h mit Leuchtdioden bestimmen; nur eA: Photoeffekt mit der Vakuum-Fotozelle und Röntgenbremsspektrum.',
           'Determining h with LEDs; higher level only: photoelectric effect with a vacuum photocell and the X-ray bremsstrahlung spectrum.',
         ),
-        simulations: ['photoeffekt'],
+        simulations: ['photoeffekt', 'roentgen'],
       },
     ],
   },

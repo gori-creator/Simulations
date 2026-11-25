@@ -600,7 +600,7 @@ const QP_UNITS: CurriculumUnit[] = [
           'Quantisierte Absorption und Emission, Röntgenspektrum, Energiestufenmodell, Potentialtopf, Orbitalmodell und Ausblick auf Mehrelektronensysteme.',
           'Quantised absorption and emission, the X-ray spectrum, the energy level model, the potential well, the orbital model and an outlook on many-electron systems.',
         ),
-        simulations: ['linienspektren'],
+        simulations: ['linienspektren', 'roentgen'],
       },
       {
         code: 'LF-P.10',
@@ -687,7 +687,7 @@ const QP_UNITS: CurriculumUnit[] = [
         code: 'LF-W.10',
         title: L('Wechselwirkung von Quantenobjekten', 'Interaction of quantum objects'),
         summary: L('Compton- und Hallwachs-Effekt, Paarerzeugung, Elektronenbeugung, Bragg-Reflexion und Entstehung der Röntgenstrahlung.', 'Compton and Hallwachs effects, pair production, electron diffraction, Bragg reflection and how X-rays arise.'),
-        simulations: ['photoeffekt', 'elektronenbeugung', 'potentialtopf', 'mach-zehnder'],
+        simulations: ['photoeffekt', 'elektronenbeugung', 'potentialtopf', 'mach-zehnder', 'roentgen'],
       },
       {
         code: 'LF-W.11',
