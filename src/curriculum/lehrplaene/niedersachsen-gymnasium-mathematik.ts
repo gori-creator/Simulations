@@ -287,6 +287,7 @@ const DJ_7_8: CurriculumUnit[] = [
         code: '8.3',
         title: L('Multiplizieren und dividieren', 'Multiplying and dividing'),
         summary: L('Schuldenmodell, Permanenzprinzip und Vorzeichenregeln.', 'Debt model, permanence principle and sign rules.'),
+        simulations: ['vorzeichenregeln'],
       },
       {
         code: '8.4',

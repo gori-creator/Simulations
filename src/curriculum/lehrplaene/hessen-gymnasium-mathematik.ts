@@ -1058,6 +1058,7 @@ export const hessenGymnasiumMathematik: StateCurriculum = {
                 'Calculation methods, arithmetic laws and their combination for rational and real numbers',
               ),
               summary: L('Vorzeichenregeln und Rechengesetze sicher anwenden.', 'Applying sign rules and arithmetic laws confidently.'),
+              simulations: ['vorzeichenregeln'],
             },
             {
               code: '1.2.2',
@@ -1503,6 +1504,7 @@ export const hessenGymnasiumMathematik: StateCurriculum = {
                 'Calculation methods, arithmetic laws and their combination for rational and real numbers',
               ),
               summary: L('Vorzeichenregeln und Rechengesetze sicher anwenden.', 'Applying sign rules and arithmetic laws confidently.'),
+              simulations: ['vorzeichenregeln'],
             },
             {
               code: '1.2.2',

@@ -95,6 +95,22 @@ export const mathematik: Subject = {
               ['power', 'power of ten', 'base', 'exponent', 'order of magnitude', 'scale', 'million', 'billion', 'scientific notation', 'standard form', 'units of length', 'kilometre', 'millimetre'],
             ),
           },
+          {
+            id: 'vorzeichenregeln',
+            status: 'ready',
+            slug: L('vorzeichenregeln-multiplizieren-dividieren', 'sign-rules-multiplying-dividing'),
+            title: L('Vorzeichenregeln beim Multiplizieren und Dividieren', 'Sign rules for multiplying and dividing'),
+            summary: L(
+              'Warum ist minus mal minus plus? Sprünge am Zahlenstrahl, ein Muster, das über die Null weiterläuft, und gestrichene Schuldscheine liefern drei Antworten. Beim Teilen gilt dieselbe Regel.',
+              'Why is minus times minus plus? Jumps on the number line, a pattern that runs on past zero and cancelled IOUs give three answers. The same rule holds for dividing.',
+            ),
+            grades: [5, 8],
+            kmk: ['M-L1', 'M-K1', 'M-K4'],
+            keywords: L(
+              ['Vorzeichenregel', 'minus mal minus', 'negative Zahlen', 'ganze Zahlen', 'rationale Zahlen', 'Multiplikation', 'Division', 'Permanenzprinzip', 'Schuldenmodell', 'Gegenzahl', 'Zahlenstrahl'],
+              ['sign rules', 'minus times minus', 'negative numbers', 'integers', 'rational numbers', 'multiplication', 'division', 'permanence principle', 'debt model', 'opposite number', 'number line'],
+            ),
+          },
         ]),
         topic('brueche', L('Brüche und Dezimalbrüche', 'Fractions and decimals'), [
           {
