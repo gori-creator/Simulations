@@ -197,7 +197,7 @@ const K9: CurriculumUnit[] = [
       'Kraftwerke, elektromagnetische Induktion, Generator und Transformator, Energieübertragung mit Hochspannung sowie Atomkern, Radioaktivität und Kernreaktor.',
       'Power stations, electromagnetic induction, generator and transformer, high-voltage transmission, and the atomic nucleus, radioactivity and nuclear reactors.',
     ),
-    simulations: ['induktion', 'radioaktiver-zerfall', 'energieversorgung'],
+    simulations: ['induktion', 'radioaktiver-zerfall', 'energieversorgung', 'strahlenschutz'],
   },
   {
     code: '3',

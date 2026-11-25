@@ -131,7 +131,7 @@ const KS_9_10_UNITS: CurriculumUnit[] = [
       'Arten radioaktiver Strahlung, Nachweis und Absorption, Aktivität und Halbwertszeit, Strahlung in der Umwelt, biologische Wirkung und Kernspaltung.',
       'Types of radiation, detection and absorption, activity and half-life, radiation in the environment, biological effects and nuclear fission.',
     ),
-    simulations: ['radioaktiver-zerfall', 'kernspaltung'],
+    simulations: ['radioaktiver-zerfall', 'kernspaltung', 'strahlenschutz'],
   },
   {
     code: '3.11',

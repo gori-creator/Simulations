@@ -117,7 +117,7 @@ const DJ_9_10: CurriculumUnit[] = [
       'Kern-Hülle-Modell und Isotope, Kernstrahlung und ihre Wirkung, Zählrohr, Alpha-, Beta- und Gammastrahlung, Strahlenschutz, Halbwertszeit sowie Kernspaltung und Kettenreaktion.',
       'The nuclear model of the atom and isotopes, nuclear radiation and its effects, the Geiger counter, alpha, beta and gamma radiation, radiation protection, half-life, and nuclear fission and chain reactions.',
     ),
-    simulations: ['radioaktiver-zerfall', 'kernspaltung'],
+    simulations: ['radioaktiver-zerfall', 'kernspaltung', 'strahlenschutz'],
   },
   {
     code: '10',

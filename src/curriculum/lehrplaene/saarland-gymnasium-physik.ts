@@ -154,7 +154,7 @@ const KS_10_UNITS: CurriculumUnit[] = [
     code: '4',
     title: L('Ionisierende Strahlung', 'Ionising radiation'),
     summary: L('Strahlungsarten, Nachweis, Halbwertszeit und Wirkung ionisierender Strahlung.', 'Types of radiation, detection, half-life and effects of ionising radiation.'),
-    simulations: ['radioaktiver-zerfall'],
+    simulations: ['radioaktiver-zerfall', 'strahlenschutz'],
   },
   {
     code: '5',

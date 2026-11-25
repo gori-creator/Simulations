@@ -1221,7 +1221,7 @@ export const hessenGymnasiumPhysik: StateCurriculum = {
                 'Zerfall mit Atommodellen beschreiben und Zerfallsdaten auswerten.',
                 'Describing decay with atomic models and evaluating decay data.',
               ),
-              simulations: ['radioaktiver-zerfall'],
+              simulations: ['radioaktiver-zerfall', 'strahlenschutz'],
             },
             {
               code: '9.2',

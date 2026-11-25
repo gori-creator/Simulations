@@ -72,7 +72,7 @@ const SEK_I_UNITS: CurriculumUnit[] = [
       'Radioaktivität im Basiskonzept Materie: Kern-Hülle-Modell, elektrische Ladung, radioaktiver Zerfall und Halbwertszeit, Kernspaltung, Nutzen, Gefahren und Strahlenschutz.',
       'Radioactivity and matter: the nucleus–shell model, electric charge, radioactive decay and half-life, nuclear fission, benefits, risks and radiation protection.',
     ),
-    simulations: ['radioaktiver-zerfall', 'kernspaltung'],
+    simulations: ['radioaktiver-zerfall', 'kernspaltung', 'strahlenschutz'],
   },
   {
     code: '6',
@@ -437,6 +437,7 @@ const QP_UNITS: CurriculumUnit[] = [
         code: 'GF-W.12',
         title: L('Strahlenbiophysik', 'Radiation biophysics'),
         summary: L('Dosis, biologische Wirkung, Strahlenschutz und medizinische Anwendungen.', 'Dose, biological effects, radiation protection and medical uses.'),
+        simulations: ['strahlenschutz'],
       },
       {
         code: 'GF-W.13',

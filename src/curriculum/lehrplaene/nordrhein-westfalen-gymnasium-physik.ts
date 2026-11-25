@@ -364,6 +364,7 @@ const SEK_I_UNITS: CurriculumUnit[] = [
           'Nachweis und Absorption von Strahlung, biologische Wirkung, Medizin und Strahlenschutz.',
           'Detection and absorption of radiation, biological effects, medicine and radiation protection.',
         ),
+        simulations: ['strahlenschutz'],
       },
       {
         code: '10.3',

@@ -2,7 +2,7 @@
 
 <!-- Automatisch erzeugt mit `npm run lehrplan:luecken` aus src/curriculum/lehrplaene/ – nicht von Hand bearbeiten. -->
 
-Lernbereiche der Länder-Lehrpläne, zu denen es noch **keine** Simulation gibt – Vorrat für neue Simulationen (Anleitung: `docs/NEUE-SIMULATION.md`). Insgesamt **92 von 1773** Lernbereichen ohne Simulation.
+Lernbereiche der Länder-Lehrpläne, zu denen es noch **keine** Simulation gibt – Vorrat für neue Simulationen (Anleitung: `docs/NEUE-SIMULATION.md`). Insgesamt **90 von 1773** Lernbereichen ohne Simulation.
 
 Nicht jeder Lernbereich eignet sich für eine Simulation. Reine Methoden-, Praktikums- und Projektthemen sind im Lehrplan mit `method: true` gekennzeichnet und zählen nicht als Lücke. Kommt ein Thema in mehreren Ländern vor, lohnt es sich besonders.
 
@@ -136,7 +136,7 @@ Alle Lernbereiche haben eine Simulation.
 | 7–9 | 2.4 | Größen und Messen › Sachaufgaben | Größen in Sachzusammenhängen bestimmen und Ergebnisse und Lösungsweg bewerten. |
 | 12 | S.3 | Stochastik › Hypergeometrische Verteilung | Ziehen ohne Zurücklegen mit der hypergeometrischen Verteilung beschreiben. |
 
-## Physik (31)
+## Physik (29)
 
 ### Baden-Württemberg · Gymnasium (0)
 
@@ -189,19 +189,17 @@ Alle Lernbereiche haben eine Simulation.
 
 Alle Lernbereiche haben eine Simulation.
 
-### Nordrhein-Westfalen · Gymnasium (2)
+### Nordrhein-Westfalen · Gymnasium (1)
 
 | Stufe | Nr. | Lernbereich | Kurz |
 | --- | --- | --- | --- |
 | 5/6 | 2.2 | Elektrischer Strom und Magnetismus › Wirkungen des elektrischen Stroms | Wärme-, Licht- und magnetische Wirkung, Sicherungen und Gefahren durch Elektrizität. |
-| 7–10 | 10.2 | Ionisierende Strahlung und Kernenergie › Wechselwirkung von Strahlung mit Materie | Nachweis und Absorption von Strahlung, biologische Wirkung, Medizin und Strahlenschutz. |
 
-### Rheinland-Pfalz · Gymnasium (10)
+### Rheinland-Pfalz · Gymnasium (9)
 
 | Stufe | Nr. | Lernbereich | Kurz |
 | --- | --- | --- | --- |
 | 12/13 | GF-W.8 | Wahlpflichtbausteine (Grundfach, fünf zu wählen) › Festkörperphysik | Bändermodell und Eigenschaften von Festkörpern. |
-| 12/13 | GF-W.12 | Wahlpflichtbausteine (Grundfach, fünf zu wählen) › Strahlenbiophysik | Dosis, biologische Wirkung, Strahlenschutz und medizinische Anwendungen. |
 | 12/13 | GF-W.13 | Wahlpflichtbausteine (Grundfach, fünf zu wählen) › Elementarteilchenphysik | Fundamentalteilchen und Wechselwirkungen, Standardmodell und offene Fragen. |
 | 12/13 | GF-W.21 | Wahlpflichtbausteine (Grundfach, fünf zu wählen) › Chaos und Fraktale – Nichtlineare dynamische Systeme | Chaosphänomene, Merkmale chaotischer Systeme und fraktale Strukturen. |
 | 12/13 | GF-W.22 | Wahlpflichtbausteine (Grundfach, fünf zu wählen) › Strömungsphysik | Strömungsarten, Kontinuitätsgleichung, Bernoulli-Gleichung und dynamischer Auftrieb. |

@@ -192,7 +192,7 @@ const SEK_I_UNITS: CurriculumUnit[] = [
         code: '5.1',
         title: L('Ionisierende Strahlung (Block II)', 'Ionising radiation (block II)'),
         summary: L('α-, β- und γ-Strahlung, Nachweis, Abschirmung, Nutzung und biologische Wirkung.', 'Alpha, beta and gamma radiation, detection, shielding, uses and biological effects.'),
-        simulations: ['radioaktiver-zerfall'],
+        simulations: ['radioaktiver-zerfall', 'strahlenschutz'],
       },
       {
         code: '5.2',

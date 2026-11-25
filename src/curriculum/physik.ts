@@ -1137,6 +1137,22 @@ export const physik: Subject = {
               ),
             },
             {
+              id: 'strahlenschutz',
+              status: 'ready',
+              slug: L('ionisierende-strahlung-strahlenschutz', 'ionising-radiation-protection'),
+              title: L('Ionisierende Strahlung und Strahlenschutz', 'Ionising radiation and radiation protection'),
+              summary: L(
+                'Alphastrahlung bleibt im Papier stecken, Betastrahlung in Aluminium, Gammastrahlung kommt selbst durch Blei noch teilweise durch. Abstand halten hilft am meisten.',
+                'Alpha radiation stops in paper, beta in aluminium, while gamma still partly gets through lead. Keeping your distance helps most.',
+              ),
+              grades: [8, 13],
+              kmk: ['P-S', 'P-E', 'P-BK-Wechselwirkung', 'P-BK-Mathematisieren', 'P-B'],
+              keywords: L(
+                ['ionisierende Strahlung', 'Alphastrahlung', 'Betastrahlung', 'Gammastrahlung', 'Absorption', 'Reichweite', 'Halbwertsdicke', 'Abstandsgesetz', 'Zählrohr', 'Geiger-Müller-Zählrohr', 'Nullrate', 'Strahlenschutz', 'Abschirmung', 'Dosis', 'Äquivalentdosis', 'Sievert', 'Strahlenbiophysik'],
+                ['ionising radiation', 'alpha radiation', 'beta radiation', 'gamma radiation', 'absorption', 'range', 'half-value thickness', 'inverse-square law', 'Geiger counter', 'Geiger–Müller tube', 'background count', 'radiation protection', 'shielding', 'dose', 'equivalent dose', 'sievert', 'radiation biophysics'],
+              ),
+            },
+            {
               id: 'kernspaltung',
               status: 'ready',
               slug: L('kernspaltung-kernfusion', 'nuclear-fission-fusion'),

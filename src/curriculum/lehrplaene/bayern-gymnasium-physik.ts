@@ -305,7 +305,7 @@ export const bayernGymnasiumPhysik: StateCurriculum = {
             "Alpha-, Beta- und Gammastrahlung, Aufbau des Kerns bis zu den Quarks, Masse-Energie-Äquivalenz, Halbwertszeit sowie Strahlenwirkung und Strahlenschutz.",
             "Alpha, beta and gamma radiation, the structure of the nucleus down to quarks, mass–energy equivalence, half-life, and biological effects of radiation and protection.",
           ),
-          simulations: ["radioaktiver-zerfall"],
+          simulations: ["radioaktiver-zerfall", 'strahlenschutz'],
         },
         {
           code: "5",
