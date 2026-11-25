@@ -157,6 +157,7 @@ export const hessenGymnasiumPhysik: StateCurriculum = {
                 'Energie als Größe, die in vielen Formen vorkommt und Vorgänge antreibt.',
                 'Energy as a quantity that occurs in many forms and drives processes.',
               ),
+              simulations: ['energieerhaltung'],
             },
             {
               code: '3.2',
@@ -438,6 +439,7 @@ export const hessenGymnasiumPhysik: StateCurriculum = {
                 'Energie als Größe, die in vielen Formen vorkommt und Vorgänge antreibt.',
                 'Energy as a quantity that occurs in many forms and drives processes.',
               ),
+              simulations: ['energieerhaltung'],
             },
             {
               code: '3.2',
@@ -725,6 +727,7 @@ export const hessenGymnasiumPhysik: StateCurriculum = {
                 'Energie als Größe, die in vielen Formen vorkommt und Vorgänge antreibt.',
                 'Energy as a quantity that occurs in many forms and drives processes.',
               ),
+              simulations: ['energieerhaltung'],
             },
             {
               code: '3.2',
@@ -2241,6 +2244,7 @@ export const hessenGymnasiumPhysik: StateCurriculum = {
               code: 'Q3.1.5',
               title: L('Überlagerung von elektromagnetischen Wellen (nur LK)', 'Superposition of electromagnetic waves (advanced course only)'),
               summary: L('Einzelspalt und Interferometer.', 'Single slit and interferometer.'),
+              simulations: ['doppelspalt', 'mach-zehnder'],
             },
           ],
         },
@@ -2393,6 +2397,7 @@ export const hessenGymnasiumPhysik: StateCurriculum = {
               code: 'Q4.1.6',
               title: L('Orts-Impuls-Unbestimmtheit (nur LK)', 'Position–momentum uncertainty (advanced course only)'),
               summary: L('Ort und Impuls können nicht gleichzeitig scharf sein.', 'Position and momentum cannot both be sharply defined.'),
+              simulations: ['doppelspalt', 'elektronenbeugung'],
             },
             {
               code: 'Q4.1.7',

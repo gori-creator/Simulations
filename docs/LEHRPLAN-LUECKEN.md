@@ -2,7 +2,7 @@
 
 <!-- Automatisch erzeugt mit `npm run lehrplan:luecken` aus src/curriculum/lehrplaene/ – nicht von Hand bearbeiten. -->
 
-Lernbereiche der Länder-Lehrpläne, zu denen es noch **keine** Simulation gibt – Vorrat für neue Simulationen (Anleitung: `docs/NEUE-SIMULATION.md`). Insgesamt **169 von 1773** Lernbereichen ohne Simulation.
+Lernbereiche der Länder-Lehrpläne, zu denen es noch **keine** Simulation gibt – Vorrat für neue Simulationen (Anleitung: `docs/NEUE-SIMULATION.md`). Insgesamt **165 von 1773** Lernbereichen ohne Simulation.
 
 Nicht jeder Lernbereich eignet sich für eine Simulation. Reine Methoden-, Praktikums- und Projektthemen sind im Lehrplan mit `method: true` gekennzeichnet und zählen nicht als Lücke. Kommt ein Thema in mehreren Ländern vor, lohnt es sich besonders.
 
@@ -136,7 +136,7 @@ Alle Lernbereiche haben eine Simulation.
 | 7–9 | 2.4 | Größen und Messen › Sachaufgaben | Größen in Sachzusammenhängen bestimmen und Ergebnisse und Lösungsweg bewerten. |
 | 12 | S.3 | Stochastik › Hypergeometrische Verteilung | Ziehen ohne Zurücklegen mit der hypergeometrischen Verteilung beschreiben. |
 
-## Physik (108)
+## Physik (104)
 
 ### Baden-Württemberg · Gymnasium (1)
 
@@ -179,11 +179,10 @@ Alle Lernbereiche haben eine Simulation.
 
 Alle Lernbereiche haben eine Simulation.
 
-### Hessen · Gymnasium (49)
+### Hessen · Gymnasium (46)
 
 | Stufe | Nr. | Lernbereich | Kurz |
 | --- | --- | --- | --- |
-| 6–8 | 3.1 | Energie in Umwelt und Technik › Anschaulicher Energiebegriff | Energie als Größe, die in vielen Formen vorkommt und Vorgänge antreibt. |
 | 6–8 | 3.2 | Energie in Umwelt und Technik › Energietransport | Wege, auf denen Energie von einem Ort zum anderen gelangt. |
 | 6–8 | 4.3 | Elektrizität im Alltag › Gefahren beim Umgang mit Elektrizität im Alltag | Gefahren erkennen und sicheres Verhalten begründen. |
 | 6–8 | 5.4 | Wettererscheinungen und Klima › Stoffe bei Temperaturänderung | Ausdehnung von festen, flüssigen und gasförmigen Stoffen untersuchen. |
@@ -216,14 +215,12 @@ Alle Lernbereiche haben eine Simulation.
 | 13 | Q3.1.1 | Elektromagnetische Wellen › Spektrum elektromagnetischer Wellen | Frequenzbereiche und technische Anwendungen im Überblick. |
 | 13 | Q3.1.2 | Elektromagnetische Wellen › Charakteristische Wellenphänomene | Lineare Polarisation von Licht und Totalreflexion (Glasfaser). |
 | 13 | Q3.1.4 | Elektromagnetische Wellen › Brechung, Reflexion, Beugung bei elektromagnetischen Wellen (nur LK) | Brechungsgesetz mit Wellenmodell. |
-| 13 | Q3.1.5 | Elektromagnetische Wellen › Überlagerung von elektromagnetischen Wellen (nur LK) | Einzelspalt und Interferometer. |
 | 13 | Q3.2.3 | Welle-Teilchen-Dualismus › Compton-Effekt (nur LK) | Streuung von Photonen an Elektronen. |
 | 13 | Q3.3.4 | Atomvorstellungen › Röntgenstrahlung (nur LK) | Kontinuierliches und charakteristisches Röntgenspektrum, Röntgenröhre, Moseley-Gesetz. |
 | 13 | Q4.1.1 | Quantenobjekte › Qualitative Betrachtung eines quantenmechanischen Atommodells | Orbitale als Aufenthaltswahrscheinlichkeit; Elektron als stehende Welle im Potenzialtopf. |
 | 13 | Q4.1.3 | Quantenobjekte › Quantenphysikalisches Weltbild hinsichtlich der Begriffe Realität, Lokalität, Kausalität, Determinismus | Grenzen klassischer Begriffe in der Quantenphysik diskutieren. |
 | 13 | Q4.1.4 | Quantenobjekte › Quantitative Betrachtung eines quantenmechanischen Atommodells (nur LK) | Energiewerte und Wellenfunktionen im unendlich tiefen Potenzialtopf. |
 | 13 | Q4.1.5 | Quantenobjekte › Stochastische Deutung mittels des Quadrats der quantenmechanischen Wellenfunktion (qualitativ) (nur LK) | Betragsquadrat als Wahrscheinlichkeitsmaß; Delayed-choice-Experiment. |
-| 13 | Q4.1.6 | Quantenobjekte › Orts-Impuls-Unbestimmtheit (nur LK) | Ort und Impuls können nicht gleichzeitig scharf sein. |
 | 13 | Q4.1.7 | Quantenobjekte › Koinzidenzmethode zum Nachweis einzelner Photonen anhand eines Beispiels (nur LK) | Unteilbarkeit von Photonen, z. B. am Mach-Zehnder-Interferometer. |
 | 13 | Q4.2.1 | Technische Anwendungen der Quantenphysik › Laser | Metastabile Niveaus, Besetzungsinversion, stimulierte Emission, Aufbau und Anwendungen. |
 | 13 | Q4.2.2 | Technische Anwendungen der Quantenphysik › Rastertunnelmikroskop (nur LK) | Tunneleffekt sowie Aufbau und Anwendungen. |
@@ -233,11 +230,10 @@ Alle Lernbereiche haben eine Simulation.
 | 13 | Q4.5.3 | Festkörperphysik › Quantenphysikalische Erklärung der Energiebänder (nur LK) | Fermienergie (qualitativ). |
 | 13 | Q4.5.5 | Festkörperphysik › Supraleitung (nur qualitativ) (nur LK) | Phänomen der Supraleitung. |
 
-### Niedersachsen · Gymnasium (5)
+### Niedersachsen · Gymnasium (4)
 
 | Stufe | Nr. | Lernbereich | Kurz |
 | --- | --- | --- | --- |
-| 7/8 | 4 | Einführung des Energiebegriffs | Energie in Übertragungsketten und Flussdiagrammen beschreiben, Einheit Joule, qualitative Energiebilanzen und Energieerhaltung mit dem Energiestrom in die Umgebung. |
 | 11 | EF-1.2 | Dynamik › Grundgleichung der Mechanik und newtonsche Axiome | F = m · a, Krafteinheit und die drei Axiome. |
 | 11 | EF-2.4 | Wahlmodule (Vorschläge) › Strahlungsphysik | Strahlungsgesetze, Strahlungsgleichgewicht, selektive Absorption und der Treibhauseffekt. |
 | 12/13 | Q-3.2 | Quantenobjekte › Komplementarität und Unbestimmtheit | Nur eA: Mach-Zehnder-Interferometer, Delayed-Choice-Experiment, Zustand, Präparation, Superposition und Unbestimmtheit. |
