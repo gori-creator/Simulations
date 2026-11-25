@@ -1808,11 +1808,13 @@ export const hessenGymnasiumPhysik: StateCurriculum = {
               code: 'E.7.2',
               title: L('Drehimpuls', 'Angular momentum'),
               summary: L('Drehimpuls als Erhaltungsgröße; Präzession.', 'Angular momentum as a conserved quantity; precession.'),
+              simulations: ['drehimpuls'],
             },
             {
               code: 'E.7.3',
               title: L('Trägheitsmoment', 'Moment of inertia'),
               summary: L('Anwendungsbeispiele wie die Pirouette.', 'Applications such as a pirouette.'),
+              simulations: ['drehimpuls'],
             },
           ],
         },

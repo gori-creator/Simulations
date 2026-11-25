@@ -391,7 +391,7 @@ const QPHASE_UNITS: CurriculumUnit[] = [
           'Kräfte an der geneigten Ebene mit Reibung, Bewegungsgesetze mit Infinitesimalrechnung, Würfe, Energie- und Impulsbilanzen bei elastischen und unelastischen Stößen.',
           'Forces on an inclined plane with friction, laws of motion using calculus, projectile motion, energy and momentum balances in elastic and inelastic collisions.',
         ),
-        simulations: ['bewegungsdiagramme', 'freier-fall', 'kraefteaddition', 'schiefe-ebene', 'schiefer-wurf', 'energieerhaltung', 'stoesse', 'kleine-schritte'],
+        simulations: ['bewegungsdiagramme', 'freier-fall', 'kraefteaddition', 'schiefe-ebene', 'schiefer-wurf', 'energieerhaltung', 'stoesse', 'kleine-schritte', 'drehimpuls'],
       },
     ],
   },

@@ -332,7 +332,7 @@ const EP_UNITS: CurriculumUnit[] = [
         code: 'M.3',
         title: L('Impuls und Impulserhaltung', 'Momentum and its conservation'),
         summary: L('Impuls als Erhaltungsgröße bei Stößen und Wechselwirkungen.', 'Momentum as a conserved quantity in collisions and interactions.'),
-        simulations: ['stoesse'],
+        simulations: ['stoesse', 'drehimpuls'],
       },
     ],
   },

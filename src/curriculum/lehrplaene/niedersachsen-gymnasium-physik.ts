@@ -161,7 +161,7 @@ const EF_UNITS: CurriculumUnit[] = [
           'Umlaufdauer, Bahngeschwindigkeit, Zentripetalbeschleunigung und Zentripetalkraft.',
           'Period, orbital speed, centripetal acceleration and centripetal force.',
         ),
-        simulations: ['kreisbewegung'],
+        simulations: ['kreisbewegung', 'drehimpuls'],
       },
       {
         code: 'EF-1.4',

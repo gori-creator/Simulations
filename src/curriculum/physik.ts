@@ -270,6 +270,22 @@ export const physik: Subject = {
                 ['collision', 'elastic collision', 'inelastic collision', 'partially elastic collision', 'momentum', 'conservation of momentum', 'conservation of energy', 'kinetic energy', 'internal energy', 'coefficient of restitution', 'centre of mass', 'air track', 'glider', 'Velcro'],
               ),
             },
+            {
+              id: 'drehimpuls',
+              status: 'ready',
+              slug: L('drehimpuls-traegheitsmoment', 'angular-momentum-moment-of-inertia'),
+              title: L('Drehimpuls und Trägheitsmoment', 'Angular momentum and moment of inertia'),
+              summary: L(
+                'Eine Eiskunstläuferin zieht die Arme an und dreht sich plötzlich viel schneller. Und beim Wettrollen gewinnt nicht der schwerste Körper, sondern der mit der Masse nah an der Achse.',
+                'A figure skater pulls in her arms and suddenly spins much faster. And in a rolling race the winner is not the heaviest body but the one with its mass close to the axis.',
+              ),
+              grades: [10, 13],
+              kmk: ['P-S', 'P-E', 'P-BK-Erhaltung', 'P-BK-Energie', 'P-BK-Mathematisieren'],
+              keywords: L(
+                ['Drehimpuls', 'Drehimpulserhaltung', 'Trägheitsmoment', 'Winkelgeschwindigkeit', 'Drehzahl', 'Rotationsenergie', 'Pirouette', 'Eiskunstlauf', 'Rollen', 'schiefe Ebene', 'Vollkugel', 'Hohlzylinder', 'Drehbewegung', 'Kreisel'],
+                ['angular momentum', 'conservation of angular momentum', 'moment of inertia', 'angular velocity', 'rotation rate', 'rotational energy', 'pirouette', 'figure skating', 'rolling', 'inclined plane', 'solid sphere', 'hoop', 'rotation', 'gyroscope'],
+              ),
+            },
           ],
         },
         {

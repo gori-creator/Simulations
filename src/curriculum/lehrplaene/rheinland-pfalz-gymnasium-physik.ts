@@ -261,7 +261,7 @@ const EP_UNITS: CurriculumUnit[] = [
           'Trägheitsmoment, Drehimpuls, Drehmoment und Rotationsenergie in Analogie zur Translation.',
           'Moment of inertia, angular momentum, torque and rotational energy by analogy with translation.',
         ),
-        simulations: ['hebelgesetz'],
+        simulations: ['hebelgesetz', 'drehimpuls'],
       },
     ],
   },

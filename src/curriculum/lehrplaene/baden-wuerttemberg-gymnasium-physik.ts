@@ -425,7 +425,7 @@ export const badenWuerttembergGymnasiumPhysik: StateCurriculum = {
                 "Kinetische, potenzielle und Spannenergie berechnen, Energiebilanzen mit dem Energieerhaltungssatz aufstellen und Stöße und Rückstoß mit dem Impulserhaltungssatz rechnen.",
                 "Calculating kinetic, potential and elastic energy, setting up energy balances with conservation of energy, and calculating collisions and recoil with conservation of momentum.",
               ),
-              simulations: ["stoesse", "energieerhaltung"],
+              simulations: ["stoesse", "energieerhaltung", 'drehimpuls'],
             },
           ],
         },

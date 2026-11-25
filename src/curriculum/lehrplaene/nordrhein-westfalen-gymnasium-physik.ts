@@ -436,7 +436,7 @@ const EF_UNITS: CurriculumUnit[] = [
           'Impuls und mechanische Energie (Lage-, Bewegungs-, Spannenergie), Energiebilanzen und eindimensionale Stöße.',
           'Momentum and mechanical energy (potential, kinetic, elastic), energy balances and one-dimensional collisions.',
         ),
-        simulations: ['energieerhaltung', 'stoesse'],
+        simulations: ['energieerhaltung', 'stoesse', 'drehimpuls'],
       },
     ],
   },
