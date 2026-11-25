@@ -179,6 +179,7 @@ export const hessenGymnasiumMathematik: StateCurriculum = {
                 'Rechnungen geschickt umstellen und zusammenfassen, um einfacher zu rechnen.',
                 'Rearranging and grouping calculations cleverly to make them easier.',
               ),
+              simulations: ['termbaum'],
             },
             {
               code: '1.2.3',
@@ -389,11 +390,13 @@ export const hessenGymnasiumMathematik: StateCurriculum = {
               code: '3.2.3',
               title: L('Währung/Geld', 'Currency/money'),
               summary: L('Mit Geldbeträgen in Euro und Cent rechnen.', 'Calculating with amounts of money in euros and cents.'),
+              simulations: ['einheiten'],
             },
             {
               code: '3.2.4',
               title: L('Zeitspanne', 'Time span'),
               summary: L('Zeitpunkte und Zeitspannen unterscheiden und berechnen.', 'Distinguishing and calculating points in time and time spans.'),
+              simulations: ['einheiten'],
             },
             {
               code: '3.2.5',
@@ -646,6 +649,7 @@ export const hessenGymnasiumMathematik: StateCurriculum = {
                 'Rechnungen geschickt umstellen und zusammenfassen, um einfacher zu rechnen.',
                 'Rearranging and grouping calculations cleverly to make them easier.',
               ),
+              simulations: ['termbaum'],
             },
             {
               code: '1.2.3',
@@ -850,11 +854,13 @@ export const hessenGymnasiumMathematik: StateCurriculum = {
               code: '3.2.3',
               title: L('Währung/Geld', 'Currency/money'),
               summary: L('Mit Geldbeträgen in Euro und Cent rechnen.', 'Calculating with amounts of money in euros and cents.'),
+              simulations: ['einheiten'],
             },
             {
               code: '3.2.4',
               title: L('Zeitspanne', 'Time span'),
               summary: L('Zeitpunkte und Zeitspannen unterscheiden und berechnen.', 'Distinguishing and calculating points in time and time spans.'),
+              simulations: ['einheiten'],
             },
             {
               code: '3.2.5',
@@ -1254,6 +1260,7 @@ export const hessenGymnasiumMathematik: StateCurriculum = {
               code: '3.1.2',
               title: L('Größen von Winkeln (Minuten, Sekunden)', 'Sizes of angles (minutes, seconds)'),
               summary: L('Winkel genauer in Grad, Minuten und Sekunden angeben.', 'Stating angles more precisely in degrees, minutes and seconds.'),
+              simulations: ['einheiten'],
             },
             {
               code: '3.1.3',
@@ -1692,6 +1699,7 @@ export const hessenGymnasiumMathematik: StateCurriculum = {
               code: '3.1.2',
               title: L('Größen von Winkeln (Minuten, Sekunden)', 'Sizes of angles (minutes, seconds)'),
               summary: L('Winkel genauer in Grad, Minuten und Sekunden angeben.', 'Stating angles more precisely in degrees, minutes and seconds.'),
+              simulations: ['einheiten'],
             },
             {
               code: '3.1.3',
@@ -1893,6 +1901,7 @@ export const hessenGymnasiumMathematik: StateCurriculum = {
                 'Reale Gegenstände als Kombination von Grundkörpern modellieren.',
                 'Modelling real objects as combinations of basic solids.',
               ),
+              simulations: ['pyramide-kegel-kugel', 'prisma-zylinder'],
             },
             {
               code: '2.2.3',
@@ -2113,6 +2122,7 @@ export const hessenGymnasiumMathematik: StateCurriculum = {
                 'Reale Gegenstände als Kombination von Grundkörpern modellieren.',
                 'Modelling real objects as combinations of basic solids.',
               ),
+              simulations: ['pyramide-kegel-kugel', 'prisma-zylinder'],
             },
             {
               code: '2.2.3',
@@ -2348,6 +2358,7 @@ export const hessenGymnasiumMathematik: StateCurriculum = {
                 'Sachsituationen vor allem mit linearen und quadratischen Funktionen beschreiben.',
                 'Describing real situations mainly with linear and quadratic functions.',
               ),
+              simulations: ['funktionsplotter', 'transformationen'],
             },
           ],
         },
@@ -2663,6 +2674,7 @@ export const hessenGymnasiumMathematik: StateCurriculum = {
                 'Flächen zwischen Graphen und Achsenparallelen berechnen, auch rückwärts (Grenze oder Parameter gesucht).',
                 'Calculating areas between graphs and lines parallel to the axes, also backwards (unknown bound or parameter).',
               ),
+              simulations: ['ober-untersummen', 'hauptsatz'],
             },
             {
               code: 'Q1.2.2',
@@ -2680,6 +2692,7 @@ export const hessenGymnasiumMathematik: StateCurriculum = {
                 'Integralausdrücke im Sachzusammenhang deuten und Aussagen begründen.',
                 'Interpreting integral expressions in context and justifying statements.',
               ),
+              simulations: ['ober-untersummen', 'hauptsatz'],
             },
             {
               code: 'Q1.2.4',
@@ -3029,6 +3042,7 @@ export const hessenGymnasiumMathematik: StateCurriculum = {
                 'Investigating angles (especially orthogonality and parallelism) and the relative positions mentioned, each depending on an (additional) parameter',
               ),
               summary: L('Lage und Winkel abhängig von einem Parameter untersuchen.', 'Investigating positions and angles depending on a parameter.'),
+              simulations: ['lage-abstaende'],
             },
             {
               code: 'Q2.3.10',
@@ -3046,6 +3060,7 @@ export const hessenGymnasiumMathematik: StateCurriculum = {
                 'Schattenwürfe, Projektionen auf Koordinatenebenen und Flächenberechnungen.',
                 'Shadows, projections onto coordinate planes and area calculations.',
               ),
+              simulations: ['geraden-ebenen'],
             },
             {
               code: 'Q2.3.12',
@@ -3075,6 +3090,7 @@ export const hessenGymnasiumMathematik: StateCurriculum = {
               code: 'Q2.3.15',
               title: L('Geradenscharen (nur LK)', 'Families of lines (advanced course only)'),
               summary: L('Geraden mit Parameter untersuchen.', 'Investigating lines with a parameter.'),
+              simulations: ['lage-abstaende', 'geraden-ebenen'],
             },
             {
               code: 'Q2.3.16',
@@ -3083,6 +3099,7 @@ export const hessenGymnasiumMathematik: StateCurriculum = {
                 'Families of planes, especially in coordinate form (advanced course only)',
               ),
               summary: L('Ebenen mit Parameter untersuchen.', 'Investigating planes with a parameter.'),
+              simulations: ['lage-abstaende', 'geraden-ebenen'],
             },
             {
               code: 'Q2.3.17',
@@ -3378,6 +3395,7 @@ export const hessenGymnasiumMathematik: StateCurriculum = {
                 'Operationscharakteristik bzw. Gütefunktion darstellen und deuten.',
                 'Plotting and interpreting the operating characteristic or power function.',
               ),
+              simulations: ['signifikanztest'],
             },
           ],
         },
@@ -3538,11 +3556,13 @@ export const hessenGymnasiumMathematik: StateCurriculum = {
           parts: [
             {
               code: 'Q4.2.1',
+              method: true,
               title: L('Erkennen und Formulieren mathematischer Probleme', 'Recognising and formulating mathematical problems'),
               summary: L('Fragestellungen mathematisch fassen.', 'Framing questions mathematically.'),
             },
             {
               code: 'Q4.2.2',
+              method: true,
               title: L(
                 'Anwenden heuristischer Strategien und Prinzipien zur Lösung mathematischer Probleme',
                 'Applying heuristic strategies and principles to solve mathematical problems',
@@ -3554,6 +3574,7 @@ export const hessenGymnasiumMathematik: StateCurriculum = {
             },
             {
               code: 'Q4.2.3',
+              method: true,
               title: L(
                 'Beurteilen vorgegebener Aussagen oder Stellung nehmen zu vorgegebenen Aussagen',
                 'Assessing given statements or commenting on them',
@@ -3562,6 +3583,7 @@ export const hessenGymnasiumMathematik: StateCurriculum = {
             },
             {
               code: 'Q4.2.4',
+              method: true,
               title: L(
                 'Nachvollziehen, Erläutern und Entwickeln von Argumentationen und logischen Schlussfolgerungen',
                 'Following, explaining and developing arguments and logical conclusions',
@@ -3570,6 +3592,7 @@ export const hessenGymnasiumMathematik: StateCurriculum = {
             },
             {
               code: 'Q4.2.5',
+              method: true,
               title: L(
                 'Anwendung auf exemplarisch durch die Lehrkraft ausgewählte Themenfelder',
                 'Application to topic areas chosen by the teacher as examples',

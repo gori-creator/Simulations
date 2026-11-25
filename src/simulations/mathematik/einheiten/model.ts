@@ -10,7 +10,7 @@ export type Lang = 'de' | 'en';
 type Loc = { de: string; en: string };
 const L = (de: string, en: string): Loc => ({ de, en });
 
-export type QuantityId = 'len' | 'mass' | 'time' | 'area' | 'vol';
+export type QuantityId = 'len' | 'mass' | 'time' | 'area' | 'vol' | 'money' | 'angle';
 
 /** Eine Einheit eines Größenbereichs. */
 export interface UnitDef {
@@ -106,9 +106,35 @@ export const QUANTITIES: Record<QuantityId, QuantityDef> = {
       { id: 'm3', sym: 'm³', name: L('Kubikmeter', 'cubic metre'), exp: 9 },
     ],
   },
+  money: {
+    id: 'money',
+    name: L('Geld', 'Money'),
+    decimal: true,
+    topCols: 3,
+    units: [
+      { id: 'ct', sym: 'ct', name: L('Cent', 'cent'), exp: 0 },
+      { id: 'eur', sym: '€', name: L('Euro', 'euro'), exp: 2 },
+    ],
+  },
+  angle: {
+    id: 'angle',
+    name: L('Winkel', 'Angle'),
+    decimal: false,
+    topCols: 1,
+    units: [
+      { id: 'as', sym: '″', name: L('Sekunde', 'second'), exp: 1 },
+      { id: 'am', sym: '′', name: L('Minute', 'minute'), exp: 60 },
+      { id: 'deg', sym: '°', name: L('Grad', 'degree'), exp: 3600 },
+    ],
+  },
 };
 
-export const QUANTITY_IDS: QuantityId[] = ['len', 'mass', 'time', 'area', 'vol'];
+/** Winkelzeichen (°, ′, ″) stehen ohne Leerzeichen direkt an der Zahl. */
+export function withSym(value: string, u: UnitDef): string {
+  return /^[°′″]$/.test(u.sym) ? `${value}${u.sym}` : `${value} ${u.sym}`;
+}
+
+export const QUANTITY_IDS: QuantityId[] = ['len', 'mass', 'time', 'area', 'vol', 'money', 'angle'];
 
 export function unitOf(q: QuantityId, id: string): UnitDef | null {
   return QUANTITIES[q].units.find((u) => u.id === id) ?? null;
@@ -329,12 +355,12 @@ export function relationText(q: QuantityId, a: UnitDef, b: UnitDef, lang: Lang):
   const big = a.exp >= b.exp ? a : b;
   const small = big === a ? b : a;
   const f = QUANTITIES[q].decimal ? pow10(big.exp - small.exp) : BigInt(big.exp / small.exp);
-  return `1 ${big.sym} = ${groupInt(f.toString(), lang)} ${small.sym}`;
+  return `${withSym('1', big)} = ${withSym(groupInt(f.toString(), lang), small)}`;
 }
 
 /** Ganze Umrechnung als Text: „3,5 km = 3 500 m“ (gerundete Zeitangaben mit „≈“). */
 export function conversionText(c: Conversion, lang: Lang): string {
-  return `${formatDec(c.value, lang)} ${c.from.sym} ${c.exact ? '=' : '≈'} ${formatDec(c.result, lang)} ${c.to.sym}`;
+  return `${withSym(formatDec(c.value, lang), c.from)} ${c.exact ? '=' : '≈'} ${withSym(formatDec(c.result, lang), c.to)}`;
 }
 
 /* ------------------------------------------------------------------ */
@@ -352,8 +378,8 @@ export interface ChainStep {
 }
 
 /** Die Schritte von einer Zeiteinheit zur anderen über die Nachbareinheiten. */
-export function timeChain(value: Dec, fromId: string, toId: string): ChainStep[] {
-  const units = QUANTITIES.time.units;
+export function timeChain(value: Dec, fromId: string, toId: string, q: QuantityId = 'time'): ChainStep[] {
+  const units = QUANTITIES[q].units;
   const i = units.findIndex((u) => u.id === fromId);
   const j = units.findIndex((u) => u.id === toId);
   if (i < 0 || j < 0) return [];
@@ -381,10 +407,10 @@ export interface MixedPart {
  * bis zur kleineren; Teile mit 0 entfallen (außer alles ist 0). Nur die
  * kleinste Einheit darf eine Dezimalzahl haben (2 h 15,5 min).
  */
-export function mixedTime(value: Dec, fromId: string, toId: string): MixedPart[] {
-  const units = QUANTITIES.time.units;
-  const from = unitOf('time', fromId);
-  const to = unitOf('time', toId);
+export function mixedTime(value: Dec, fromId: string, toId: string, q: QuantityId = 'time'): MixedPart[] {
+  const units = QUANTITIES[q].units;
+  const from = unitOf(q, fromId);
+  const to = unitOf(q, toId);
   if (!from || !to) return [];
   const big = from.exp >= to.exp ? from : to;
   const small = big === from ? to : from;
@@ -410,7 +436,7 @@ export function mixedTime(value: Dec, fromId: string, toId: string): MixedPart[]
 
 /** „2 h 15 min“. */
 export function mixedText(parts: MixedPart[], lang: Lang): string {
-  return parts.map((p) => `${formatDec(p.value, lang)} ${p.unit.sym}`).join(' ');
+  return parts.map((p) => withSym(formatDec(p.value, lang), p.unit)).join(' ');
 }
 
 /* ------------------------------------------------------------------ */
@@ -546,7 +572,7 @@ export function randomTask(q: QuantityId, rnd: () => number): Task {
       if (!c || !c.exact || !fits(value) || !fits(c.result) || value.k > 2) continue;
       return { value, from: from.id, to: to.id };
     }
-    return { value: { n: BigInt(135), k: 0 }, from: 'min', to: 'h' };
+    return { value: { n: BigInt(135), k: 0 }, from: units[1]!.id, to: units[2]!.id };
   }
   const units = def.units.filter((u) => !u.aliasOf || rnd() < 0.5);
   for (let tries = 0; tries < 80; tries++) {
@@ -578,7 +604,7 @@ export function randomTask(q: QuantityId, rnd: () => number): Task {
  * kleineren Einheit.
  */
 export function illustrationPair(q: QuantityId, fromId: string, toId: string): { big: UnitDef; small: UnitDef; factor: number } {
-  const list = q === 'time' ? QUANTITIES.time.units : tableUnitList(q);
+  const list = !QUANTITIES[q].decimal ? QUANTITIES[q].units : tableUnitList(q);
   const a = columnUnit(q, unitOf(q, fromId) ?? list[0]!);
   const b = columnUnit(q, unitOf(q, toId) ?? list[1]!);
   let small = a.exp <= b.exp ? a : b;
@@ -586,7 +612,7 @@ export function illustrationPair(q: QuantityId, fromId: string, toId: string): {
   const idx = list.findIndex((u) => u.id === small.id);
   const limit = q === 'area' ? 10000 : 1000;
   const ratioOf = (x: UnitDef, y: UnitDef) => (QUANTITIES[q].decimal ? 10 ** (x.exp - y.exp) : x.exp / y.exp);
-  if (big.id === small.id || q === 'time' || ratioOf(big, small) > limit) {
+  if (big.id === small.id || !QUANTITIES[q].decimal || ratioOf(big, small) > limit) {
     if (idx < list.length - 1) big = list[idx + 1]!;
     else {
       big = small;

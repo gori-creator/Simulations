@@ -68,6 +68,7 @@ const DJ_7_8: CurriculumUnit[] = [
       'Energie in Übertragungsketten und Flussdiagrammen beschreiben, Einheit Joule, qualitative Energiebilanzen und Energieerhaltung mit dem Energiestrom in die Umgebung.',
       'Describing energy in transfer chains and flow diagrams, the joule, qualitative energy balances and conservation of energy including the flow to the surroundings.',
     ),
+    simulations: ['energieerhaltung'],
   },
   {
     code: '5',

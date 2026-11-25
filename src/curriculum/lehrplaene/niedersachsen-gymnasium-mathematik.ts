@@ -323,6 +323,7 @@ const DJ_7_8: CurriculumUnit[] = [
         code: '9.3',
         title: L('Additions- und Komplementärregel', 'Addition and complement rules'),
         summary: L('Regeln begründen und anwenden.', 'Justifying and applying the rules.'),
+        simulations: ['vierfeldertafel', 'baumdiagramm'],
       },
     ],
   },

@@ -495,7 +495,7 @@ const SJ_10_UNITS: CurriculumUnit[] = [
           'Ereignisse mit Zufallsgrößen beschreiben, Wahrscheinlichkeitsverteilungen aufstellen, Erwartungswert und Standardabweichung berechnen und deuten.',
           'Describing events with random variables, setting up probability distributions, calculating and interpreting expected value and standard deviation.',
         ),
-        simulations: ['binomialverteilung'],
+        simulations: ['binomialverteilung', 'galtonbrett'],
       },
     ],
   },
