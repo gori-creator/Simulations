@@ -220,7 +220,7 @@ const Q34_UNITS: CurriculumUnit[] = [
       'Fotoeffekt mit Einfluss von Intensität und Frequenz, Photonen, Elektronenbeugung, stochastische Vorhersagbarkeit am Doppelspalt und Grundaspekte der Quantenphysik.',
       'The photoelectric effect with the influence of intensity and frequency, photons, electron diffraction, stochastic predictability at the double slit and basic aspects of quantum physics.',
     ),
-    simulations: ['photoeffekt', 'elektronenbeugung', 'doppelspalt'],
+    simulations: ['photoeffekt', 'elektronenbeugung', 'doppelspalt', 'potentialtopf'],
   },
   {
     code: '3.2.7',

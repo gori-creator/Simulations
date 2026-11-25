@@ -682,7 +682,7 @@ const QP_UNITS: CurriculumUnit[] = [
         code: 'LF-W.10',
         title: L('Wechselwirkung von Quantenobjekten', 'Interaction of quantum objects'),
         summary: L('Compton- und Hallwachs-Effekt, Paarerzeugung, Elektronenbeugung, Bragg-Reflexion und Entstehung der Röntgenstrahlung.', 'Compton and Hallwachs effects, pair production, electron diffraction, Bragg reflection and how X-rays arise.'),
-        simulations: ['photoeffekt', 'elektronenbeugung'],
+        simulations: ['photoeffekt', 'elektronenbeugung', 'potentialtopf'],
       },
       {
         code: 'LF-W.11',

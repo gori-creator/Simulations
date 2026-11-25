@@ -689,6 +689,7 @@ export const bayernGymnasiumPhysik: StateCurriculum = {
                 "Bindungsenergie je Nukleon, Potentialtopfmodell des Kerns, Entstehung der Strahlungsarten und Energiebilanzen bei Zerfällen und Kernreaktionen.",
                 "Binding energy per nucleon, the potential-well model of the nucleus, the origin of the types of radiation, and energy balances in decays and nuclear reactions.",
               ),
+              simulations: ['potentialtopf'],
             },
             {
               code: "4.2",
@@ -829,6 +830,7 @@ export const bayernGymnasiumPhysik: StateCurriculum = {
                 "Bindungsenergie, Potentialtopfmodell, Entstehung der Strahlungsarten, Energie- und Impulsbilanzen, Zerfallsreihen und Nuklidkarte.",
                 "Binding energy, potential-well model, origin of the types of radiation, energy and momentum balances, decay chains and the chart of nuclides.",
               ),
+              simulations: ['potentialtopf'],
             },
             {
               code: "E4.2",
@@ -854,7 +856,7 @@ export const bayernGymnasiumPhysik: StateCurriculum = {
             "Pflichtexperimente mit Fehlerbetrachtung, etwa Polarisation, Elektronenbeugung, Gegenfeldmethode zum Photoeffekt, Spektrometerbau und Absorption radioaktiver Strahlung.",
             "Compulsory experiments with uncertainty analysis, e.g. polarisation, electron diffraction, the retarding-field method for the photoelectric effect, building a spectrometer and absorption of radiation.",
           ),
-          simulations: ["elektronenbeugung", "photoeffekt", "linienspektren", "messunsicherheit"],
+          simulations: ["elektronenbeugung", "photoeffekt", "linienspektren", "messunsicherheit", 'potentialtopf'],
         },
       ],
     },

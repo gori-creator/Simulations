@@ -2383,6 +2383,7 @@ export const hessenGymnasiumPhysik: StateCurriculum = {
                 'Orbitale als Aufenthaltswahrscheinlichkeit; Elektron als stehende Welle im Potenzialtopf.',
                 'Orbitals as probability of presence; electron as standing wave in a potential well.',
               ),
+              simulations: ['potentialtopf'],
             },
             {
               code: 'Q4.1.2',
@@ -2417,6 +2418,7 @@ export const hessenGymnasiumPhysik: StateCurriculum = {
                 'Energiewerte und Wellenfunktionen im unendlich tiefen Potenzialtopf.',
                 'Energy values and wave functions in the infinitely deep potential well.',
               ),
+              simulations: ['potentialtopf'],
             },
             {
               code: 'Q4.1.5',
@@ -2428,6 +2430,7 @@ export const hessenGymnasiumPhysik: StateCurriculum = {
                 'Betragsquadrat als Wahrscheinlichkeitsmaß; Delayed-choice-Experiment.',
                 'Squared magnitude as probability measure; delayed-choice experiment.',
               ),
+              simulations: ['potentialtopf'],
             },
             {
               code: 'Q4.1.6',
@@ -2514,6 +2517,7 @@ export const hessenGymnasiumPhysik: StateCurriculum = {
                 'Getrennte Töpfe für Protonen und Neutronen; Alpha-Zerfall durch Tunneln.',
                 'Separate wells for protons and neutrons; alpha decay by tunnelling.',
               ),
+              simulations: ['potentialtopf'],
             },
           ],
         },

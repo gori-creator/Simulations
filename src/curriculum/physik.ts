@@ -1238,6 +1238,22 @@ export const physik: Subject = {
                 ['electron diffraction', 'electron diffraction tube', 'de Broglie wavelength', 'matter wave', 'wave–particle duality', 'graphite', 'Bragg condition', 'lattice spacing', 'diffraction ring', 'accelerating voltage', 'momentum', 'Planck constant', 'fluorescent screen', 'linearisation', 'quantum object'],
               ),
             },
+            {
+              id: 'potentialtopf',
+              status: 'ready',
+              slug: L('potentialtopf', 'particle-in-a-box'),
+              title: L('Potentialtopf: Energiestufen und Aufenthaltswahrscheinlichkeit', 'Particle in a box: energy levels and probability'),
+              summary: L(
+                'Ein Elektron, eingesperrt in einen engen Kasten, darf nur bestimmte Energien haben – wie eine schwingende Saite nur bestimmte Töne. Wo es sich aufhält, sagt nur eine Wahrscheinlichkeit.',
+                'An electron locked in a narrow box may only have certain energies – just as a vibrating string has only certain notes. Where it is can only be given as a probability.',
+              ),
+              grades: [12, 14],
+              kmk: ['P-S', 'P-E', 'P-BK-Wechselwirkung', 'P-BK-Mathematisieren'],
+              keywords: L(
+                ['Potentialtopf', 'Potenzialtopf', 'unendlich hoher Potentialtopf', 'Energiestufen', 'Energieniveaus', 'Quantenzahl', 'Wellenfunktion', 'Betragsquadrat', 'Aufenthaltswahrscheinlichkeit', 'stehende Welle', 'de-Broglie-Wellenlänge', 'Grundzustand', 'Farbstoffmolekül', 'Kernmodell', 'Nukleon'],
+                ['potential well', 'particle in a box', 'infinite square well', 'energy levels', 'quantum number', 'wave function', 'squared magnitude', 'probability of presence', 'standing wave', 'de Broglie wavelength', 'ground state', 'dye molecule', 'nuclear model', 'nucleon'],
+              ),
+            },
           ],
         },
       ],

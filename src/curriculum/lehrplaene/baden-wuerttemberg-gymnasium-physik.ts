@@ -1062,7 +1062,7 @@ export const badenWuerttembergGymnasiumPhysik: StateCurriculum = {
             "Fotoeffekt, Photonen und Materiewellen, Quantenobjekte am Doppelspalt mit Wahrscheinlichkeitsdichte, Unbestimmtheit und Verschränkung; Linienspektren, Röntgenspektrum, Potenzialtopf und Atommodelle mit Pauli-Prinzip.",
             "Photoelectric effect, photons and matter waves, quantum objects at the double slit with probability density, uncertainty and entanglement; line spectra, X-ray spectrum, the particle in a box and atomic models with the Pauli principle.",
           ),
-          simulations: ["photoeffekt", "linienspektren", "elektronenbeugung"],
+          simulations: ["photoeffekt", "linienspektren", "elektronenbeugung", 'potentialtopf'],
         },
         {
           code: "3.6.7",

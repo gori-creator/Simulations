@@ -465,7 +465,7 @@ const QPHASE_UNITS: CurriculumUnit[] = [
           'Wie im grundlegenden Niveau, zusätzlich Photonenimpuls, Elektronenbeugungsröhre, Compton-Effekt, Unbestimmtheitsrelation und Wellenfunktion.',
           'As at the basic level, plus photon momentum, the electron diffraction tube, the Compton effect, the uncertainty principle and the wave function.',
         ),
-        simulations: ['photoeffekt', 'elektronenbeugung'],
+        simulations: ['photoeffekt', 'elektronenbeugung', 'potentialtopf'],
       },
       {
         code: 'eA-3.3',

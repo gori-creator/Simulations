@@ -322,7 +322,7 @@ const Q_UNITS: CurriculumUnit[] = [
           'Doppelspalt mit Quantenobjekten, De-Broglie-Gleichung, Elektronenbeugungsröhre und Doppelspalt mit einzelnen Photonen und Elektronen.',
           'Double slit with quantum objects, the de Broglie equation, the electron diffraction tube and double slits with single photons and electrons.',
         ),
-        simulations: ['elektronenbeugung'],
+        simulations: ['elektronenbeugung', 'potentialtopf'],
       },
       {
         code: 'Q-3.2',
@@ -395,6 +395,7 @@ const Q_UNITS: CurriculumUnit[] = [
           'Halbleiterdetektor, Alpha-Spektrum einer Zerfallsreihe, Bragg-Kurve; nur eA: Nukleonen im Potenzialtopf.',
           'Semiconductor detectors, the alpha spectrum of a decay series, the Bragg curve; higher level only: nucleons in a potential well.',
         ),
+        simulations: ['potentialtopf'],
       },
     ],
   },
