@@ -276,7 +276,7 @@ export const badenWuerttembergGymnasiumPhysik: StateCurriculum = {
             "Erwärmungsenergie mit der spezifischen Wärmekapazität berechnen und den natürlichen und menschengemachten Treibhauseffekt, Kippelemente und Wege der Energieversorgung beurteilen.",
             "Calculating heating energy with specific heat capacity and evaluating the natural and man-made greenhouse effect, tipping elements and ways of supplying energy.",
           ),
-          simulations: ["energieversorgung"],
+          simulations: ["energieversorgung", 'treibhauseffekt'],
         },
         {
           code: "3.2.7",
@@ -357,7 +357,7 @@ export const badenWuerttembergGymnasiumPhysik: StateCurriculum = {
             "Erwärmungsenergie mit der spezifischen Wärmekapazität berechnen und den natürlichen und menschengemachten Treibhauseffekt, Kippelemente und Wege der Energieversorgung beurteilen.",
             "Calculating heating energy with specific heat capacity and evaluating the natural and man-made greenhouse effect, tipping elements and ways of supplying energy.",
           ),
-          simulations: ["energieversorgung"],
+          simulations: ["energieversorgung", 'treibhauseffekt'],
         },
         {
           code: "3.2.7",

@@ -148,6 +148,7 @@ const SEK_I_UNITS: CurriculumUnit[] = [
         code: '3.5',
         title: L('Klimaphysik (Block II)', 'Climate physics (block II)'),
         summary: L('Strahlungshaushalt der Erde, Albedo, natürlicher und anthropogener Treibhauseffekt und Rückkopplungen.', 'The Earth’s radiation budget, albedo, the natural and anthropogenic greenhouse effect and feedbacks.'),
+        simulations: ['treibhauseffekt'],
       },
     ],
   },

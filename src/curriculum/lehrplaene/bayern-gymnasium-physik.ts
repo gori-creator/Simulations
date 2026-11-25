@@ -223,7 +223,7 @@ export const bayernGymnasiumPhysik: StateCurriculum = {
                 "Spezifische Wärmekapazität, Wärme als Prozessgröße, Wärmeleitung, Konvektion und Wärmestrahlung sowie Treibhauseffekt und Strahlungsgleichgewicht der Erde.",
                 "Specific heat capacity, heat as a process quantity, conduction, convection and thermal radiation, and the greenhouse effect and the Earth’s radiation balance.",
               ),
-              simulations: ['waermetransport'],
+              simulations: ['waermetransport', 'treibhauseffekt'],
             },
           ],
         },
@@ -241,6 +241,7 @@ export const bayernGymnasiumPhysik: StateCurriculum = {
                 "Weitere Aspekte des Klimasystems wie Meeresspiegelanstieg, Rückkopplungen und Kippelemente; alternative Erklärungen für die Erderwärmung physikalisch prüfen.",
                 "Further aspects of the climate system such as sea-level rise, feedbacks and tipping points; checking alternative explanations of global warming with physics.",
               ),
+              simulations: ['treibhauseffekt'],
             },
             {
               code: "4.2",

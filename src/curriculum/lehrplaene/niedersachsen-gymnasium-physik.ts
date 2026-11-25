@@ -215,6 +215,7 @@ const EF_UNITS: CurriculumUnit[] = [
           'Strahlungsgesetze, Strahlungsgleichgewicht, selektive Absorption und der Treibhauseffekt.',
           'Radiation laws, radiative equilibrium, selective absorption and the greenhouse effect.',
         ),
+        simulations: ['treibhauseffekt'],
       },
     ],
   },

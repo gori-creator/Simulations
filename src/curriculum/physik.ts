@@ -867,8 +867,8 @@ export const physik: Subject = {
       topics: [
         {
           id: 'waermetransport',
-          title: L('Wärmetransport', 'Heat transfer'),
-          grades: [5, 10],
+          title: L('Wärmetransport und Klima', 'Heat transfer and climate'),
+          grades: [5, 13],
           simulations: [
             {
               id: 'waermetransport',
@@ -884,6 +884,22 @@ export const physik: Subject = {
               keywords: L(
                 ['Wärmetransport', 'Wärmeleitung', 'Wärmeleitfähigkeit', 'Wärmeströmung', 'Konvektion', 'Wärmestrahlung', 'Stefan-Boltzmann-Gesetz', 'Emissionsgrad', 'Wärmedämmung', 'U-Wert', 'Wärmedurchgangskoeffizient', 'Temperaturgefälle', 'Isolator', 'Styropor', 'Kupfer', 'Energiesparen'],
                 ['heat transfer', 'conduction', 'thermal conductivity', 'convection', 'thermal radiation', 'Stefan–Boltzmann law', 'emissivity', 'insulation', 'U-value', 'thermal transmittance', 'temperature gradient', 'insulator', 'polystyrene', 'copper', 'saving energy'],
+              ),
+            },
+            {
+              id: 'treibhauseffekt',
+              status: 'ready',
+              slug: L('treibhauseffekt-strahlungshaushalt', 'greenhouse-effect-radiation-budget'),
+              title: L('Treibhauseffekt und Strahlungshaushalt der Erde', 'Greenhouse effect and the Earth’s radiation budget'),
+              summary: L(
+                'Ohne Lufthülle wäre die Erde im Mittel −18 °C kalt. Treibhausgase halten einen Teil der Wärmestrahlung zurück – und schon wenige Prozent mehr machen sie spürbar wärmer.',
+                'Without its atmosphere the Earth would average −18 °C. Greenhouse gases hold back part of the thermal radiation – and just a few percent more make it noticeably warmer.',
+              ),
+              grades: [8, 13],
+              kmk: ['P-S', 'P-E', 'P-BK-Energie', 'P-BK-Mathematisieren', 'P-B'],
+              keywords: L(
+                ['Treibhauseffekt', 'Strahlungshaushalt', 'Strahlungsgleichgewicht', 'Klima', 'Klimawandel', 'Albedo', 'Treibhausgase', 'Kohlenstoffdioxid', 'CO2', 'Methan', 'Wasserdampf', 'Gegenstrahlung', 'Infrarot', 'Stefan-Boltzmann-Gesetz', 'Solarkonstante', 'Eis-Albedo-Rückkopplung'],
+                ['greenhouse effect', 'radiation budget', 'radiative equilibrium', 'climate', 'climate change', 'albedo', 'greenhouse gases', 'carbon dioxide', 'CO2', 'methane', 'water vapour', 'back radiation', 'infrared', 'Stefan–Boltzmann law', 'solar constant', 'ice–albedo feedback'],
               ),
             },
           ],

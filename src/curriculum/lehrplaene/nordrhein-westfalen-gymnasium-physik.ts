@@ -394,7 +394,7 @@ const SEK_I_UNITS: CurriculumUnit[] = [
           'Kraftwerke und regenerative Anlagen, Energieübertragung mit Hochspannung, Entwertung, Wirkungsgrad, Speicherung und Nachhaltigkeit.',
           'Power stations and renewable plants, high-voltage transmission, energy dissipation, efficiency, storage and sustainability.',
         ),
-        simulations: ['energieversorgung'],
+        simulations: ['energieversorgung', 'treibhauseffekt'],
       },
     ],
   },

@@ -36,7 +36,7 @@ const KS_7_9_UNITS: CurriculumUnit[] = [
       'Modell Lichtstrahl, Sehvorgang, Mondphasen und Finsternisse, Reflexion und Brechung, Linsen und Linsengleichung, Auge, Farben, Wärmestrahlung und Wärmetransport im Teilchenmodell.',
       'The light-ray model, how we see, phases of the moon and eclipses, reflection and refraction, lenses and the lens equation, the eye, colours, thermal radiation and heat transfer in the particle model.',
     ),
-    simulations: ['licht-schatten', 'reflexion', 'brechung', 'linsen', 'teilchenmodell', 'farben', 'waermetransport'],
+    simulations: ['licht-schatten', 'reflexion', 'brechung', 'linsen', 'teilchenmodell', 'farben', 'waermetransport', 'treibhauseffekt'],
   },
   {
     code: '2',

@@ -1060,7 +1060,7 @@ export const hessenGymnasiumPhysik: StateCurriculum = {
               code: '5.1',
               title: L('Übertragung thermischer Energie', 'Transfer of thermal energy'),
               summary: L('Wärmeleitung, Wärmeströmung und Wärmestrahlung untersuchen.', 'Investigating conduction, convection and radiation.'),
-              simulations: ['waermetransport'],
+              simulations: ['waermetransport', 'treibhauseffekt'],
             },
             {
               code: '5.2',
@@ -1375,7 +1375,7 @@ export const hessenGymnasiumPhysik: StateCurriculum = {
               code: '5.1',
               title: L('Übertragung thermischer Energie', 'Transfer of thermal energy'),
               summary: L('Wärmeleitung, Wärmeströmung und Wärmestrahlung untersuchen.', 'Investigating conduction, convection and radiation.'),
-              simulations: ['waermetransport'],
+              simulations: ['waermetransport', 'treibhauseffekt'],
             },
             {
               code: '5.2',

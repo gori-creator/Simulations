@@ -143,7 +143,7 @@ const K8: CurriculumUnit[] = [
       'Thermische Energie im Teilchenbild, Wärme und Aggregatzustandsänderungen, Wärmeübertragung sowie Strahlungshaushalt der Erde und Treibhauseffekt.',
       'Thermal energy in the particle model, heat and changes of state, heat transfer, and the Earth’s radiation budget and the greenhouse effect.',
     ),
-    simulations: ['teilchenmodell', 'waermetransport'],
+    simulations: ['teilchenmodell', 'waermetransport', 'treibhauseffekt'],
   },
   {
     code: '3',

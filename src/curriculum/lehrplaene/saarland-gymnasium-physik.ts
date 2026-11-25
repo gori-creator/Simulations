@@ -148,7 +148,7 @@ const KS_10_UNITS: CurriculumUnit[] = [
     code: '3',
     title: L('Thermodynamik und Klimaphysik', 'Thermodynamics and climate physics'),
     summary: L('Zustandsänderungen von Gasen, Kreisprozesse, Klimaphysik.', 'Changes of state of gases, thermodynamic cycles, climate physics.'),
-    simulations: ['gasgesetze'],
+    simulations: ['gasgesetze', 'treibhauseffekt'],
   },
   {
     code: '4',
