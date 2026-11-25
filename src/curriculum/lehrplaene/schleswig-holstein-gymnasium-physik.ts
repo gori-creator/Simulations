@@ -204,6 +204,7 @@ const SEK_I_UNITS: CurriculumUnit[] = [
         code: '5.3',
         title: L('Kernenergie (Block II)', 'Nuclear energy (block II)'),
         summary: L('Kernspaltung und Kettenreaktion, Kernfusion in Reaktoren und Sonne, Chancen und Risiken.', 'Nuclear fission and chain reactions, fusion in reactors and the Sun, opportunities and risks.'),
+        simulations: ['kernspaltung'],
       },
     ],
   },

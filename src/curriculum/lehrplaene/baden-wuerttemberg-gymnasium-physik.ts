@@ -285,7 +285,7 @@ export const badenWuerttembergGymnasiumPhysik: StateCurriculum = {
             "Aufbau des Atoms und Isotope, Radioaktivität mit α-, β- und γ-Strahlung und Halbwertszeit, Kernspaltung und Kernfusion sowie Nutzen, Risiken und Strahlenschutz.",
             "Structure of the atom and isotopes, radioactivity with alpha, beta and gamma radiation and half-life, nuclear fission and fusion, and benefits, risks and radiation protection.",
           ),
-          simulations: ["radioaktiver-zerfall"],
+          simulations: ["radioaktiver-zerfall", 'kernspaltung'],
         },
       ],
     },

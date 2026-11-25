@@ -72,7 +72,7 @@ const SEK_I_UNITS: CurriculumUnit[] = [
       'Radioaktivität im Basiskonzept Materie: Kern-Hülle-Modell, elektrische Ladung, radioaktiver Zerfall und Halbwertszeit, Kernspaltung, Nutzen, Gefahren und Strahlenschutz.',
       'Radioactivity and matter: the nucleus–shell model, electric charge, radioactive decay and half-life, nuclear fission, benefits, risks and radiation protection.',
     ),
-    simulations: ['radioaktiver-zerfall'],
+    simulations: ['radioaktiver-zerfall', 'kernspaltung'],
   },
   {
     code: '6',
