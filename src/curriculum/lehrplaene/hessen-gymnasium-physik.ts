@@ -2151,7 +2151,7 @@ export const hessenGymnasiumPhysik: StateCurriculum = {
                 'Forced oscillations, resonance (qualitative) (advanced course only)',
               ),
               summary: L('Resonanz im elektromagnetischen Schwingkreis.', 'Resonance in the electromagnetic circuit.'),
-              simulations: ['resonanz'],
+              simulations: ['resonanz', 'doppelpendel'],
             },
           ],
         },

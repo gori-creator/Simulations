@@ -286,7 +286,7 @@ const Q_UNITS: CurriculumUnit[] = [
           'Auslenkung, Amplitude, Periodendauer und Frequenz, Feder-Masse-Pendel und Fadenpendel; nur eA: lineares Kraftgesetz, Dämpfung und Resonanz.',
           'Displacement, amplitude, period and frequency, spring–mass and simple pendulum; higher level only: linear force law, damping and resonance.',
         ),
-        simulations: ['federpendel', 'fadenpendel', 'resonanz'],
+        simulations: ['federpendel', 'fadenpendel', 'resonanz', 'doppelpendel'],
       },
       {
         code: 'Q-2.2',

@@ -441,6 +441,22 @@ export const physik: Subject = {
                 ['resonance', 'driven oscillation', 'forced oscillation', 'Pohl’s wheel', 'torsion pendulum', 'driver', 'driving frequency', 'natural frequency', 'resonance frequency', 'resonance curve', 'phase shift', 'transient', 'damping', 'eddy-current brake', 'resonance disaster', 'phasor diagram'],
               ),
             },
+            {
+              id: 'doppelpendel',
+              status: 'ready',
+              slug: L('doppelpendel-chaos', 'double-pendulum-chaos'),
+              title: L('Doppelpendel und deterministisches Chaos', 'Double pendulum and deterministic chaos'),
+              summary: L(
+                'Zwei Doppelpendel starten fast genau gleich – und schwingen nach wenigen Sekunden völlig verschieden. Obwohl alles nach festen Gesetzen abläuft, lässt sich die Bewegung nicht vorhersagen.',
+                'Two double pendulums start almost exactly the same – and after a few seconds swing completely differently. Although everything follows fixed laws, the motion cannot be predicted.',
+              ),
+              grades: [11, 14],
+              kmk: ['P-S', 'P-E', 'P-BK-Mathematisieren', 'P-B'],
+              keywords: L(
+                ['Doppelpendel', 'Chaos', 'deterministisches Chaos', 'Schmetterlingseffekt', 'Anfangsbedingungen', 'Vorhersagbarkeit', 'nichtlinear', 'nichtlineare Dynamik', 'Lyapunov-Exponent', 'exponentielles Wachstum', 'Energieerhaltung', 'Runge-Kutta', 'Wettervorhersage'],
+                ['double pendulum', 'chaos', 'deterministic chaos', 'butterfly effect', 'initial conditions', 'predictability', 'nonlinear', 'nonlinear dynamics', 'Lyapunov exponent', 'exponential growth', 'conservation of energy', 'Runge–Kutta', 'weather forecast'],
+              ),
+            },
           ],
         },
         {

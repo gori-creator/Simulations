@@ -490,6 +490,7 @@ const QP_UNITS: CurriculumUnit[] = [
         code: 'GF-W.21',
         title: L('Chaos und Fraktale – Nichtlineare dynamische Systeme', 'Chaos and fractals – non-linear dynamical systems'),
         summary: L('Chaosphänomene, Merkmale chaotischer Systeme und fraktale Strukturen.', 'Chaotic phenomena, features of chaotic systems and fractal structures.'),
+        simulations: ['doppelpendel'],
       },
       {
         code: 'GF-W.22',
@@ -736,6 +737,7 @@ const QP_UNITS: CurriculumUnit[] = [
         code: 'LF-W.19',
         title: L('Chaos und Fraktale – Nichtlineare dynamische Systeme', 'Chaos and fractals – non-linear dynamical systems'),
         summary: L('Chaosphänomene, Merkmale chaotischer Systeme und fraktale Strukturen.', 'Chaotic phenomena, features of chaotic systems and fractal structures.'),
+        simulations: ['doppelpendel'],
       },
       {
         code: 'LF-W.20',

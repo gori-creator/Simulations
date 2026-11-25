@@ -364,7 +364,7 @@ const QPHASE_UNITS: CurriculumUnit[] = [
           'Harmonischer Oszillator mit linearem Kraftgesetz, Faden- und Federpendel, gedämpfte Schwingungen, Eigenfrequenz, erzwungene Schwingungen und Resonanzkurve.',
           'The harmonic oscillator with a linear restoring force, simple pendulum and spring oscillator, damped oscillations, natural frequency, forced oscillations and the resonance curve.',
         ),
-        simulations: ['fadenpendel', 'federpendel', 'resonanz'],
+        simulations: ['fadenpendel', 'federpendel', 'resonanz', 'doppelpendel'],
       },
       {
         code: 'eA-1.2',

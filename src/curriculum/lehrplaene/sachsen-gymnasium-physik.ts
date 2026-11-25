@@ -530,6 +530,7 @@ const J12: CurriculumUnit[] = [
     code: 'LK-W2',
     title: L('Deterministisches Chaos (Wahlbereich Leistungskurs)', 'Deterministic chaos (optional, advanced course)'),
     summary: L('Nichtlineare Systeme, Attraktoren und begrenzte Vorhersagbarkeit.', 'Non-linear systems, attractors and limited predictability.'),
+    simulations: ['doppelpendel'],
   },
 ];
 
