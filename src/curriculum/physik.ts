@@ -1222,7 +1222,7 @@ export const physik: Subject = {
       topics: [
         {
           id: 'sterne',
-          title: L('Sterne', 'Stars'),
+          title: L('Himmel und Sterne', 'Sky and stars'),
           grades: [7, 13],
           simulations: [
             {
@@ -1239,6 +1239,22 @@ export const physik: Subject = {
               keywords: L(
                 ['Stern', 'Sterne', 'Hertzsprung-Russell-Diagramm', 'HR-Diagramm', 'Hauptreihe', 'Roter Riese', 'Überriese', 'Weißer Zwerg', 'Leuchtkraft', 'Oberflächentemperatur', 'Spektralklasse', 'Stefan-Boltzmann-Gesetz', 'Wiensches Verschiebungsgesetz', 'Planck', 'Schwarzer Körper', 'Sternentwicklung', 'Supernova', 'Neutronenstern', 'Schwarzes Loch', 'Planetarischer Nebel', 'Parallaxe', 'Parsec', 'Lichtjahr', 'absolute Helligkeit', 'Sonne', 'Beteigeuze', 'Sirius'],
                 ['star', 'stars', 'Hertzsprung–Russell diagram', 'HR diagram', 'main sequence', 'red giant', 'supergiant', 'white dwarf', 'luminosity', 'surface temperature', 'spectral class', 'Stefan–Boltzmann law', 'Wien’s displacement law', 'Planck', 'black body', 'stellar evolution', 'supernova', 'neutron star', 'black hole', 'planetary nebula', 'parallax', 'parsec', 'light year', 'absolute magnitude', 'Sun', 'Betelgeuse', 'Sirius'],
+              ),
+            },
+            {
+              id: 'schleifenbahn',
+              status: 'ready',
+              slug: L('schleifenbahn-planeten-himmel', 'planetary-retrograde-loop'),
+              title: L('Schleifenbahnen der Planeten', 'Retrograde loops of the planets'),
+              summary: L(
+                'Mars läuft vor den Sternen eine Weile rückwärts und zieht eine Schleife. Von oben betrachtet ist der Grund einfach: Die Erde überholt ihn auf der Innenbahn. Dabei ist er die ganze Nacht zu sehen.',
+                'For a while Mars moves backwards against the stars and traces a loop. Seen from above the reason is simple: Earth overtakes it on the inside track. Meanwhile it is visible all night.',
+              ),
+              grades: [9, 13],
+              kmk: ['P-S', 'P-E', 'P-BK-System', 'P-BK-Wechselwirkung'],
+              keywords: L(
+                ['Schleifenbahn', 'rückläufig', 'rechtläufig', 'Opposition', 'Konjunktion', 'Elongation', 'Sichtbarkeit', 'Abendhimmel', 'Morgenhimmel', 'Planet', 'Mars', 'Venus', 'Jupiter', 'Saturn', 'Ekliptik', 'heliozentrisch', 'geozentrisch', 'Weltbild', 'synodische Umlaufzeit', 'Sternhimmel', 'Orientierung am Himmel'],
+                ['retrograde loop', 'retrograde', 'prograde', 'opposition', 'conjunction', 'elongation', 'visibility', 'evening sky', 'morning sky', 'planet', 'Mars', 'Venus', 'Jupiter', 'Saturn', 'ecliptic', 'heliocentric', 'geocentric', 'world view', 'synodic period', 'night sky', 'orientation in the sky'],
               ),
             },
           ],

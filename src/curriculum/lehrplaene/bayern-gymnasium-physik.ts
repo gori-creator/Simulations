@@ -387,7 +387,7 @@ export const bayernGymnasiumPhysik: StateCurriculum = {
                 "Vom geozentrischen zum heliozentrischen Weltbild mit den Kepler’schen Gesetzen und ein Blick auf das moderne Bild des Universums.",
                 "From the geocentric to the heliocentric world view with Kepler’s laws, and a look at the modern picture of the universe.",
               ),
-              simulations: ["planetenbahnen"],
+              simulations: ["planetenbahnen", 'schleifenbahn'],
             },
             {
               code: "3.2",
@@ -719,6 +719,7 @@ export const bayernGymnasiumPhysik: StateCurriculum = {
             "Sternbilder und Objekte am Nachthimmel mit Sternkarte oder Software finden, Sichtbarkeit beurteilen und Schleifenbahnen der Planeten erklären.",
             "Finding constellations and objects in the night sky with a star chart or software, judging visibility and explaining the retrograde loops of planets.",
           ),
+          simulations: ['schleifenbahn'],
         },
         {
           code: "A2",

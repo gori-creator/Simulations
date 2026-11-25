@@ -209,7 +209,7 @@ const S_UNITS: CurriculumUnit[] = [
       'Gravitationskraft und Gravitationsfeld, Keplersche Gesetze, Bahnen, Umlaufzeiten und Zentralkörpermassen; eA: Gravitationspotenzial und Fluchtgeschwindigkeiten.',
       'Gravitational force and field, Kepler’s laws, orbits, periods and central masses; eA: gravitational potential and escape velocities.',
     ),
-    simulations: ['planetenbahnen'],
+    simulations: ['planetenbahnen', 'schleifenbahn'],
   },
   {
     code: '4.2',

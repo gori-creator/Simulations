@@ -186,6 +186,7 @@ describe('Länder-Lehrpläne', () => {
       hubble: 'Kosmologie, Rotverschiebung und Hubble-Beziehung kommen im Lehrplan nicht vor.',
     },
     'rheinland-pfalz-gymnasium-physik': {
+      schleifenbahn: 'Scheinbare Planetenbewegung und Schleifenbahnen kommen in den erfassten Lernbereichen der passenden Stufen nicht vor.',
       solarzelle: 'Kennlinie und Schaltung von Solarzellen kommen in den erfassten Lernbereichen nicht ausdrücklich vor.',
       leistung: 'Mechanische Arbeit und Leistung sind in den erfassten Lernbereichen nicht ausdrücklich genannt.',
       stromwirkungen: 'Wirkungen und Gefahren des Stroms sind in den erfassten Lernbereichen nicht ausdrücklich genannt (ggf. im Fach Naturwissenschaften 5/6).',
@@ -228,6 +229,7 @@ describe('Länder-Lehrpläne', () => {
       'fourier-reihen': 'nicht im Rahmenlehrplan (Hochschule)',
     },
     'berlin-gymnasium-physik': {
+      schleifenbahn: 'Scheinbare Planetenbewegung und Schleifenbahnen kommen in den erfassten Lernbereichen der passenden Stufen nicht vor.',
       sensoren: 'Sensoren und Spannungsteiler sind in den erfassten Lernbereichen nicht ausdrücklich genannt.',
       solarzelle: 'Kennlinie und Schaltung von Solarzellen kommen in den erfassten Lernbereichen nicht ausdrücklich vor.',
       minkowski: 'Spezielle Relativitätstheorie mit Raum-Zeit-Diagrammen kommt in den erfassten Lernbereichen nicht vor.',
@@ -258,6 +260,7 @@ describe('Länder-Lehrpläne', () => {
       'fourier-reihen': 'nicht im Rahmenlehrplan (Hochschule)',
     },
     'brandenburg-gymnasium-physik': {
+      schleifenbahn: 'Scheinbare Planetenbewegung und Schleifenbahnen kommen in den erfassten Lernbereichen der passenden Stufen nicht vor.',
       sensoren: 'Sensoren und Spannungsteiler sind in den erfassten Lernbereichen nicht ausdrücklich genannt.',
       solarzelle: 'Kennlinie und Schaltung von Solarzellen kommen in den erfassten Lernbereichen nicht ausdrücklich vor.',
       minkowski: 'Spezielle Relativitätstheorie mit Raum-Zeit-Diagrammen kommt in den erfassten Lernbereichen nicht vor.',
@@ -290,6 +293,7 @@ describe('Länder-Lehrpläne', () => {
       'fourier-reihen': 'nicht im Bildungsplan (Hochschule)',
     },
     'bremen-gymnasium-physik': {
+      schleifenbahn: 'Scheinbare Planetenbewegung und Schleifenbahnen kommen in den erfassten Lernbereichen der passenden Stufen nicht vor.',
       sensoren: 'Sensoren und Spannungsteiler sind in den erfassten Lernbereichen nicht ausdrücklich genannt.',
       solarzelle: 'Kennlinie und Schaltung von Solarzellen kommen in den erfassten Lernbereichen nicht ausdrücklich vor.',
       minkowski: 'Spezielle Relativitätstheorie mit Raum-Zeit-Diagrammen kommt in den erfassten Lernbereichen nicht vor.',
@@ -360,6 +364,7 @@ describe('Länder-Lehrpläne', () => {
       'fourier-reihen': 'nicht im Kerncurriculum (Hochschule)',
     },
     'niedersachsen-gymnasium-physik': {
+      schleifenbahn: 'Scheinbare Planetenbewegung und Schleifenbahnen kommen in den erfassten Lernbereichen der passenden Stufen nicht vor.',
       sensoren: 'Sensoren und Spannungsteiler sind in den erfassten Lernbereichen nicht ausdrücklich genannt.',
       minkowski: 'Spezielle Relativitätstheorie mit Raum-Zeit-Diagrammen kommt in den erfassten Lernbereichen nicht vor.',
       standardmodell: 'Elementarteilchen und Standardmodell kommen in den erfassten Lernbereichen nicht vor (Kernaufbau nur bis Proton und Neutron).',
@@ -391,6 +396,7 @@ describe('Länder-Lehrpläne', () => {
       'matrix-abbildungen': 'Matrizen nicht im Kernlehrplan',
     },
     'nordrhein-westfalen-gymnasium-physik': {
+      schleifenbahn: 'Scheinbare Planetenbewegung und Schleifenbahnen kommen in den erfassten Lernbereichen der passenden Stufen nicht vor.',
       sensoren: 'Sensoren und Spannungsteiler sind in den erfassten Lernbereichen nicht ausdrücklich genannt.',
       solarzelle: 'Kennlinie und Schaltung von Solarzellen kommen in den erfassten Lernbereichen nicht ausdrücklich vor.',
       standardmodell: 'Elementarteilchen und Standardmodell kommen in den erfassten Lernbereichen nicht vor (Kernaufbau nur bis Proton und Neutron).',
@@ -490,6 +496,7 @@ describe('Länder-Lehrpläne', () => {
       hebelgesetz: 'Hebel und Drehmoment nicht in den Fachanforderungen (siehe docs/lehrplaene/schleswig-holstein-gymnasium-physik.md)',
     },
     'baden-wuerttemberg-gymnasium-physik': {
+      schleifenbahn: 'Scheinbare Planetenbewegung und Schleifenbahnen kommen in den erfassten Lernbereichen der passenden Stufen nicht vor.',
       sensoren: 'Sensoren und Spannungsteiler sind in den erfassten Lernbereichen nicht ausdrücklich genannt.',
       solarzelle: 'Kennlinie und Schaltung von Solarzellen kommen in den erfassten Lernbereichen nicht ausdrücklich vor.',
       roentgen: 'Röntgenspektrum und Compton-Effekt kommen in den erfassten Lernbereichen nicht vor.',

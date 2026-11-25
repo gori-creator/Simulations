@@ -1756,7 +1756,7 @@ export const hessenGymnasiumPhysik: StateCurriculum = {
                 'Kepler’sche Gesetze und Entwicklung des astronomischen Weltbilds.',
                 'Kepler\'s laws and the development of the astronomical world view.',
               ),
-              simulations: ['planetenbahnen'],
+              simulations: ['planetenbahnen', 'schleifenbahn'],
             },
           ],
         },
@@ -2641,7 +2641,7 @@ export const hessenGymnasiumPhysik: StateCurriculum = {
                 'Sonne, Planeten, Kometen, Gravitationsgesetz, Kepler’sche Gesetze, Gezeiten.',
                 'Sun, planets, comets, law of gravitation, Kepler\'s laws, tides.',
               ),
-              simulations: ['planetenbahnen'],
+              simulations: ['planetenbahnen', 'schleifenbahn'],
             },
             {
               code: 'Q4.6.2',

@@ -195,7 +195,7 @@ const SJ_10_UNITS: CurriculumUnit[] = [
       'Gravitationsfeld und Gravitationsgesetz, Kepler’sche Gesetze, Bahnen von Satelliten und Planeten, erste kosmische Geschwindigkeit.',
       'Gravitational field and the law of gravitation, Kepler’s laws, orbits of satellites and planets, the first cosmic velocity.',
     ),
-    simulations: ['planetenbahnen'],
+    simulations: ['planetenbahnen', 'schleifenbahn'],
   },
   {
     code: '4',
