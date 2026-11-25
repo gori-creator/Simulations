@@ -179,7 +179,7 @@ export const bayernGymnasiumPhysik: StateCurriculum = {
                 "Höhen-, Bewegungs- und Spannenergie ineinander umwandeln und mit dem Energieerhaltungssatz bilanzieren; Arbeit und Leistung unterscheiden und messen.",
                 "Converting potential, kinetic and elastic energy and balancing them with the conservation of energy; distinguishing and measuring work and power.",
               ),
-              simulations: ["energieerhaltung"],
+              simulations: ["energieerhaltung", 'leistung'],
             },
             {
               code: "1.2",

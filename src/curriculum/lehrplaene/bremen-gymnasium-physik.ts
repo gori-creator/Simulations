@@ -45,7 +45,7 @@ const KS_7_9_UNITS: CurriculumUnit[] = [
       'Geschwindigkeit und Zeit-Weg-Diagramme, Masse und Gewichtskraft, Kräfte als Pfeile, Kraft als Ursache von Bewegungsänderung und Verformung, Trägheit und Reibung, Energie, Arbeit und Leistung.',
       'Velocity and distance–time graphs, mass and weight, forces as arrows, force as the cause of change in motion and deformation, inertia and friction, energy, work and power.',
     ),
-    simulations: ['bewegungsdiagramme', 'hookesches-gesetz', 'kraefteaddition', 'energieerhaltung', 'dichte-auftrieb', 'newtonsche-gesetze', 'druck'],
+    simulations: ['bewegungsdiagramme', 'hookesches-gesetz', 'kraefteaddition', 'energieerhaltung', 'dichte-auftrieb', 'newtonsche-gesetze', 'druck', 'leistung'],
   },
   {
     code: '3',

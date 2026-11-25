@@ -271,6 +271,22 @@ export const physik: Subject = {
               ),
             },
             {
+              id: 'leistung',
+              status: 'ready',
+              slug: L('arbeit-und-leistung-treppe', 'work-and-power-stairs'),
+              title: L('Arbeit und Leistung: Wie stark bist du?', 'Work and power: how powerful are you?'),
+              summary: L(
+                'Wer eine Treppe hinaufrennt, hebt sein ganzes Gewicht – und leistet kurzzeitig so viel wie ein Wasserkocher. Miss deine eigene Leistung und vergleiche sie mit Geräten, Pferd und Auto.',
+                'Running up the stairs means lifting your whole weight – for a short time you deliver as much power as a kettle. Measure your own power and compare it with devices, a horse and a car.',
+              ),
+              grades: [7, 11],
+              kmk: ['P-S', 'P-E', 'P-BK-Energie', 'P-BK-Mathematisieren'],
+              keywords: L(
+                ['Arbeit', 'Hubarbeit', 'Leistung', 'Watt', 'Joule', 'Pferdestärke', 'PS', 'Treppe', 'Körperleistung', 'Energie', 'Lageenergie', 'Zeit', 'Vergleich', 'Gerät', 'Maschine'],
+                ['work', 'work done lifting', 'power', 'watt', 'joule', 'horsepower', 'stairs', 'human power', 'energy', 'potential energy', 'time', 'comparison', 'device', 'machine'],
+              ),
+            },
+            {
               id: 'stoesse',
               status: 'ready',
               slug: L('elastische-und-unelastische-stoesse', 'elastic-and-inelastic-collisions'),
