@@ -140,7 +140,7 @@ const KS_9_10_UNITS: CurriculumUnit[] = [
       'Potenzielle und kinetische Energie berechnen, Wärme und spezifische Wärmekapazität, Wirkungsgrad und Energieflussschemen.',
       'Calculating potential and kinetic energy, heat and specific heat capacity, efficiency and energy flow diagrams.',
     ),
-    simulations: ['energieerhaltung', 'energieversorgung'],
+    simulations: ['energieerhaltung', 'energieversorgung', 'waermekraftmaschine'],
   },
   {
     code: '3.12',

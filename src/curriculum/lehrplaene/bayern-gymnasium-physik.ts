@@ -407,7 +407,7 @@ export const bayernGymnasiumPhysik: StateCurriculum = {
                 "Umkehrbare und nicht umkehrbare Vorgänge, Energieentwertung und Wirkungsgrad sowie Fragen der heutigen und künftigen Energieversorgung.",
                 "Reversible and irreversible processes, energy degradation and efficiency, and questions about today’s and future energy supply.",
               ),
-              simulations: ["energieversorgung"],
+              simulations: ["energieversorgung", 'waermekraftmaschine'],
             },
           ],
         },

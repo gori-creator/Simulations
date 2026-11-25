@@ -234,7 +234,7 @@ export const badenWuerttembergGymnasiumPhysik: StateCurriculum = {
             "Energieformen, Energieübertragung und Energieentwertung; Lageenergie, Leistung und Wirkungsgrad berechnen und sorgsamen Umgang mit Energie bewerten.",
             "Forms of energy, energy transfer and dissipation; calculating potential energy, power and efficiency and evaluating careful use of energy.",
           ),
-          simulations: ["energieerhaltung"],
+          simulations: ["energieerhaltung", 'waermekraftmaschine'],
         },
         {
           code: "3.2.3",
@@ -316,7 +316,7 @@ export const badenWuerttembergGymnasiumPhysik: StateCurriculum = {
             "Energieformen, Energieübertragung und Energieentwertung; Lageenergie, Leistung und Wirkungsgrad berechnen und sorgsamen Umgang mit Energie bewerten.",
             "Forms of energy, energy transfer and dissipation; calculating potential energy, power and efficiency and evaluating careful use of energy.",
           ),
-          simulations: ["energieerhaltung"],
+          simulations: ["energieerhaltung", 'waermekraftmaschine'],
         },
         {
           code: "3.2.3",

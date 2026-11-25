@@ -2,7 +2,7 @@
 
 <!-- Automatisch erzeugt mit `npm run lehrplan:luecken` aus src/curriculum/lehrplaene/ – nicht von Hand bearbeiten. -->
 
-Lernbereiche der Länder-Lehrpläne, zu denen es noch **keine** Simulation gibt – Vorrat für neue Simulationen (Anleitung: `docs/NEUE-SIMULATION.md`). Insgesamt **135 von 1773** Lernbereichen ohne Simulation.
+Lernbereiche der Länder-Lehrpläne, zu denen es noch **keine** Simulation gibt – Vorrat für neue Simulationen (Anleitung: `docs/NEUE-SIMULATION.md`). Insgesamt **129 von 1773** Lernbereichen ohne Simulation.
 
 Nicht jeder Lernbereich eignet sich für eine Simulation. Reine Methoden-, Praktikums- und Projektthemen sind im Lehrplan mit `method: true` gekennzeichnet und zählen nicht als Lücke. Kommt ein Thema in mehreren Ländern vor, lohnt es sich besonders.
 
@@ -136,7 +136,7 @@ Alle Lernbereiche haben eine Simulation.
 | 7–9 | 2.4 | Größen und Messen › Sachaufgaben | Größen in Sachzusammenhängen bestimmen und Ergebnisse und Lösungsweg bewerten. |
 | 12 | S.3 | Stochastik › Hypergeometrische Verteilung | Ziehen ohne Zurücklegen mit der hypergeometrischen Verteilung beschreiben. |
 
-## Physik (74)
+## Physik (68)
 
 ### Baden-Württemberg · Gymnasium (0)
 
@@ -174,7 +174,7 @@ Alle Lernbereiche haben eine Simulation.
 
 Alle Lernbereiche haben eine Simulation.
 
-### Hessen · Gymnasium (37)
+### Hessen · Gymnasium (33)
 
 | Stufe | Nr. | Lernbereich | Kurz |
 | --- | --- | --- | --- |
@@ -186,10 +186,6 @@ Alle Lernbereiche haben eine Simulation.
 | 9/10 | 5.3 | Wettererscheinungen und Klima › Druck- und Temperaturunterschiede | Wettererscheinungen als Ausgleich von Unterschieden erklären. |
 | 9/10 | 6.4 | Fortbewegung und Mobilität › Menschliche und technische Leistungen und deren Vergleich | Eigene körperliche Leistung bestimmen und mit Maschinen vergleichen. |
 | 11 | E.4.3 | Weitere Bewegungen › Numerische Simulation | Bewegungen schrittweise mit Differenzenquotienten (z. B. Tabellenkalkulation) berechnen. |
-| 11 | E.6.1 | Grundlagen der Thermodynamik › Wärmeenergie als innere Energie | Begriff der inneren Energie und sein historischer Hintergrund. |
-| 11 | E.6.2 | Grundlagen der Thermodynamik › Reversible und irreversible Vorgänge | Umkehrbare und nicht umkehrbare Prozesse unterscheiden. |
-| 11 | E.6.3 | Grundlagen der Thermodynamik › Erster und zweiter Hauptsatz der Thermodynamik | Energieerhaltung und Richtung von Wärmeprozessen. |
-| 11 | E.6.4 | Grundlagen der Thermodynamik › Entropieerzeugung und Wirkungsgrad | Entropie als Maß für die Richtung natürlicher Abläufe; Grenzen des Wirkungsgrads. |
 | 11 | E.7.2 | Drehbewegungen › Drehimpuls | Drehimpuls als Erhaltungsgröße; Präzession. |
 | 11 | E.7.3 | Drehbewegungen › Trägheitsmoment | Anwendungsbeispiele wie die Pirouette. |
 | 12 | Q1.1.4 | Elektrisches Feld › Coulomb’sches Gesetz | Kraft zwischen Punktladungen. |
@@ -235,14 +231,13 @@ Alle Lernbereiche haben eine Simulation.
 | 7–10 | 10.3 | Ionisierende Strahlung und Kernenergie › Kernenergie | Kernspaltung, Kernfusion, Kernkraftwerke und Endlagerung. |
 | 12/13 | LK-4.4 | Atom- und Kernphysik (Leistungskurs) › Kernspaltung und -fusion | Bindungsenergien, Massendefekt und Kettenreaktion. |
 
-### Rheinland-Pfalz · Gymnasium (11)
+### Rheinland-Pfalz · Gymnasium (10)
 
 | Stufe | Nr. | Lernbereich | Kurz |
 | --- | --- | --- | --- |
 | 12/13 | GF-W.8 | Wahlpflichtbausteine (Grundfach, fünf zu wählen) › Festkörperphysik | Bändermodell und Eigenschaften von Festkörpern. |
 | 12/13 | GF-W.12 | Wahlpflichtbausteine (Grundfach, fünf zu wählen) › Strahlenbiophysik | Dosis, biologische Wirkung, Strahlenschutz und medizinische Anwendungen. |
 | 12/13 | GF-W.13 | Wahlpflichtbausteine (Grundfach, fünf zu wählen) › Elementarteilchenphysik | Fundamentalteilchen und Wechselwirkungen, Standardmodell und offene Fragen. |
-| 12/13 | GF-W.14 | Wahlpflichtbausteine (Grundfach, fünf zu wählen) › Entropie | Entropie als Energieträger, Entropieerzeugung und Carnot-Wirkungsgrad. |
 | 12/13 | GF-W.21 | Wahlpflichtbausteine (Grundfach, fünf zu wählen) › Chaos und Fraktale – Nichtlineare dynamische Systeme | Chaosphänomene, Merkmale chaotischer Systeme und fraktale Strukturen. |
 | 12/13 | GF-W.22 | Wahlpflichtbausteine (Grundfach, fünf zu wählen) › Strömungsphysik | Strömungsarten, Kontinuitätsgleichung, Bernoulli-Gleichung und dynamischer Auftrieb. |
 | 12/13 | LF-W.2 | Wahlpflichtbausteine (Leistungsfach, sieben zu wählen) › Veränderliche elektromagnetische Felder II | Maxwell-Gleichungen, Felder und Bezugssysteme, Lorentz-Transformation. |
@@ -255,12 +250,11 @@ Alle Lernbereiche haben eine Simulation.
 
 Alle Lernbereiche haben eine Simulation.
 
-### Sachsen · Gymnasium (6)
+### Sachsen · Gymnasium (5)
 
 | Stufe | Nr. | Lernbereich | Kurz |
 | --- | --- | --- | --- |
 | 7 | W3 | Vom Fliegen (Wahlbereich) | Geschichte des Fliegens und dynamischer Auftrieb am Tragflügel. |
-| 8 | W2 | Kühlschrank und Wärmepumpe (Wahlbereich) | Wärmeübertragung gegen das Temperaturgefälle mit Energieaufwand. |
 | 8 | W3 | Elektrisches Messen nichtelektrischer Größen (Wahlbereich) | Sensoren wandeln Größen wie Temperatur oder Licht in Spannungen um. |
 | 11 | GK-W2 | Messen und Modellieren (Wahlbereich Grundkurs) | Messreihen mit Videoanalyse und Messschnittstellen erfassen und mit Modellen vergleichen. |
 | 11 | LK-4 | Modellbildung und Simulation (Leistungskurs) | Bewegungen numerisch modellieren, Parameter variieren und mit dem Experiment vergleichen. |

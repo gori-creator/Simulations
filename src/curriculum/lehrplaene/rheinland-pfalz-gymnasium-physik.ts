@@ -447,12 +447,13 @@ const QP_UNITS: CurriculumUnit[] = [
         code: 'GF-W.14',
         title: L('Entropie', 'Entropy'),
         summary: L('Entropie als Energieträger, Entropieerzeugung und Carnot-Wirkungsgrad.', 'Entropy as an energy carrier, entropy production and Carnot efficiency.'),
+        simulations: ['waermekraftmaschine'],
       },
       {
         code: 'GF-W.15',
         title: L('Thermodynamische Maschinen', 'Thermodynamic machines'),
         summary: L('Gesetze des idealen Gases, Wärmepumpe und Stirlingmotor, Carnot-Wirkungsgrad.', 'Ideal gas laws, heat pump and Stirling engine, Carnot efficiency.'),
-        simulations: ['gasgesetze'],
+        simulations: ['gasgesetze', 'waermekraftmaschine'],
       },
       {
         code: 'GF-W.16',

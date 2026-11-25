@@ -1754,16 +1754,19 @@ export const hessenGymnasiumPhysik: StateCurriculum = {
                 'Begriff der inneren Energie und sein historischer Hintergrund.',
                 'Concept of internal energy and its historical background.',
               ),
+              simulations: ['waermekraftmaschine'],
             },
             {
               code: 'E.6.2',
               title: L('Reversible und irreversible Vorgänge', 'Reversible and irreversible processes'),
               summary: L('Umkehrbare und nicht umkehrbare Prozesse unterscheiden.', 'Distinguishing reversible and irreversible processes.'),
+              simulations: ['waermekraftmaschine'],
             },
             {
               code: 'E.6.3',
               title: L('Erster und zweiter Hauptsatz der Thermodynamik', 'First and second law of thermodynamics'),
               summary: L('Energieerhaltung und Richtung von Wärmeprozessen.', 'Conservation of energy and the direction of heat processes.'),
+              simulations: ['waermekraftmaschine'],
             },
             {
               code: 'E.6.4',
@@ -1772,6 +1775,7 @@ export const hessenGymnasiumPhysik: StateCurriculum = {
                 'Entropie als Maß für die Richtung natürlicher Abläufe; Grenzen des Wirkungsgrads.',
                 'Entropy as a measure of the direction of natural processes; limits of efficiency.',
               ),
+              simulations: ['waermekraftmaschine'],
             },
           ],
         },

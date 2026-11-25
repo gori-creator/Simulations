@@ -965,6 +965,22 @@ export const physik: Subject = {
                 ['gas laws', 'ideal gas', 'ideal gas law', 'Boyle’s law', 'Charles’s law', 'Gay-Lussac', 'Amontons', 'isothermal', 'isobaric', 'isochoric', 'pressure', 'volume', 'temperature', 'kelvin', 'absolute zero', 'amount of substance', 'gas constant', 'pressure gauge', 'particle model', 'linearisation'],
               ),
             },
+            {
+              id: 'waermekraftmaschine',
+              status: 'ready',
+              slug: L('waermekraftmaschine-waermepumpe', 'heat-engine-heat-pump'),
+              title: L('Wärmekraftmaschine, Wärmepumpe und Entropie', 'Heat engine, heat pump and entropy'),
+              summary: L(
+                'Ein Gas im Zylinder nimmt Wärme auf, schiebt den Kolben und gibt den Rest ans Kalte ab. Rückwärts betrieben pumpt dieselbe Maschine Wärme ins Haus. Warum nie die ganze Wärme zu Arbeit wird, zeigt die Entropie.',
+                'A gas in a cylinder takes in heat, pushes the piston and gives the rest to the cold side. Run backwards, the same machine pumps heat into the house. Entropy shows why heat never turns entirely into work.',
+              ),
+              grades: [8, 13],
+              kmk: ['P-S', 'P-E', 'P-BK-Energie', 'P-BK-Mathematisieren', 'P-B'],
+              keywords: L(
+                ['Wärmekraftmaschine', 'Carnot', 'Carnot-Prozess', 'Kreisprozess', 'p-V-Diagramm', 'Wirkungsgrad', 'Wärmepumpe', 'Kühlschrank', 'Leistungszahl', 'Entropie', 'Hauptsatz der Thermodynamik', 'reversibel', 'irreversibel', 'isotherm', 'adiabatisch', 'innere Energie', 'Kraftwerk', 'Motor'],
+                ['heat engine', 'Carnot', 'Carnot cycle', 'thermodynamic cycle', 'p-V diagram', 'efficiency', 'heat pump', 'refrigerator', 'coefficient of performance', 'entropy', 'law of thermodynamics', 'reversible', 'irreversible', 'isothermal', 'adiabatic', 'internal energy', 'power plant', 'engine'],
+              ),
+            },
           ],
         },
       ],

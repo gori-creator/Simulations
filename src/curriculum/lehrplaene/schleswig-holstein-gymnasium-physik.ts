@@ -53,7 +53,7 @@ const SEK_I_UNITS: CurriculumUnit[] = [
           'Potenzielle, kinetische, elektrische und thermische Energie berechnen, Energieerhaltung, Wirkungsgrad und Leistung.',
           'Calculating potential, kinetic, electrical and thermal energy, conservation of energy, efficiency and power.',
         ),
-        simulations: ['energieerhaltung', 'energieversorgung'],
+        simulations: ['energieerhaltung', 'energieversorgung', 'waermekraftmaschine'],
       },
       {
         code: '1.3',

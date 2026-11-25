@@ -133,7 +133,7 @@ const SJ_7_8_UNITS: CurriculumUnit[] = [
       'Druck, Volumen und Temperatur eines Gases bei konstant gehaltener Größe, Volumenarbeit, erster Hauptsatz; Verbrennungsmotor, Kühlschrank oder Wärmepumpe.',
       'Pressure, volume and temperature of a gas with one quantity held constant, work done by a gas, the first law of thermodynamics; combustion engines, refrigerators or heat pumps.',
     ),
-    simulations: ['gasgesetze'],
+    simulations: ['gasgesetze', 'waermekraftmaschine'],
   },
   {
     code: '6',

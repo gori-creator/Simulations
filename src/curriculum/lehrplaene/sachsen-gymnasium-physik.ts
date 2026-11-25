@@ -173,6 +173,7 @@ const K8: CurriculumUnit[] = [
     code: 'W2',
     title: L('Kühlschrank und Wärmepumpe (Wahlbereich)', 'Refrigerator and heat pump (optional)'),
     summary: L('Wärmeübertragung gegen das Temperaturgefälle mit Energieaufwand.', 'Transferring heat against the temperature gradient using energy.'),
+    simulations: ['waermekraftmaschine'],
   },
   {
     code: 'W3',
@@ -515,7 +516,7 @@ const J12: CurriculumUnit[] = [
       'Allgemeine Gasgleichung, isochore, isobare und isotherme Zustandsänderungen, Hauptsätze, Carnot- und Stirling-Prozess und Wirkungsgrad.',
       'The ideal gas law, isochoric, isobaric and isothermal changes, the laws of thermodynamics, Carnot and Stirling cycles and efficiency.',
     ),
-    simulations: ['gasgesetze'],
+    simulations: ['gasgesetze', 'waermekraftmaschine'],
   },
   {
     code: 'LK-W1',

@@ -94,7 +94,7 @@ const EP_UNITS: CurriculumUnit[] = [
       'Energieerhaltung und Energieentwertung mit den Hauptsätzen der Thermodynamik, Wärme und Arbeit, Wirkungsgrad von Wärmekraftmaschinen und Wärmepumpen, Verfahren der Energiegewinnung.',
       'Conservation and dissipation of energy with the laws of thermodynamics, heat and work, efficiency of heat engines and heat pumps, ways of generating energy.',
     ),
-    simulations: ['energieerhaltung', 'gasgesetze', 'energieversorgung'],
+    simulations: ['energieerhaltung', 'gasgesetze', 'energieversorgung', 'waermekraftmaschine'],
   },
 ];
 
