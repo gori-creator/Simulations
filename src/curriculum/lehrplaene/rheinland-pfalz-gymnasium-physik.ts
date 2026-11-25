@@ -651,12 +651,13 @@ const QP_UNITS: CurriculumUnit[] = [
         code: 'LF-W.5',
         title: L('Elektromagnetische Wellen', 'Electromagnetic waves'),
         summary: L('Rückkopplung, offener Schwingkreis, Ausbreitung und Modulation, Anwendungen und Spektrum.', 'Feedback, the open oscillating circuit, propagation and modulation, applications and the spectrum.'),
-              },
+        simulations: ['em-spektrum'],
+      },
       {
         code: 'LF-W.6',
         title: L('Wechselstromkreise', 'AC circuits'),
         summary: L('Effektivwerte, Impedanz und Phasenverschiebung, Wirk- und Blindleistung.', 'RMS values, impedance and phase shift, real and reactive power.'),
-        simulations: ['wechselstrom', 'em-spektrum'],
+        simulations: ['wechselstrom'],
       },
       {
         code: 'LF-W.7',
