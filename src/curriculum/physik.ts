@@ -1366,6 +1366,22 @@ export const physik: Subject = {
                 ['potential well', 'particle in a box', 'infinite square well', 'energy levels', 'quantum number', 'wave function', 'squared magnitude', 'probability of presence', 'standing wave', 'de Broglie wavelength', 'ground state', 'dye molecule', 'nuclear model', 'nucleon'],
               ),
             },
+            {
+              id: 'tunneleffekt',
+              status: 'ready',
+              slug: L('tunneleffekt-rastertunnelmikroskop', 'tunnelling-scanning-tunnelling-microscope'),
+              title: L('Tunneleffekt und Rastertunnelmikroskop', 'Tunnelling and the scanning tunnelling microscope'),
+              summary: L(
+                'Ein Elektron kommt durch eine Wand, die es nach klassischer Physik nie überwinden könnte. Das Rastertunnelmikroskop nutzt genau das, um einzelne Atome sichtbar zu machen.',
+                'An electron gets through a wall that classical physics says it could never cross. The scanning tunnelling microscope uses exactly this to make single atoms visible.',
+              ),
+              grades: [12, 14],
+              kmk: ['P-S', 'P-E', 'P-BK-Materie', 'P-BK-Mathematisieren'],
+              keywords: L(
+                ['Tunneleffekt', 'Tunneln', 'Potentialbarriere', 'Energiebarriere', 'Wellenfunktion', 'Schrödinger-Gleichung', 'Transmission', 'Durchlasswahrscheinlichkeit', 'Abklingkonstante', 'exponentiell', 'Rastertunnelmikroskop', 'Tunnelstrom', 'Austrittsarbeit', 'Alpha-Zerfall', 'Flash-Speicher', 'Quantenphysik'],
+                ['tunnelling', 'tunneling', 'potential barrier', 'energy barrier', 'wave function', 'Schrödinger equation', 'transmission', 'transmission probability', 'decay constant', 'exponential', 'scanning tunnelling microscope', 'tunnelling current', 'work function', 'alpha decay', 'flash memory', 'quantum physics'],
+              ),
+            },
           ],
         },
       ],

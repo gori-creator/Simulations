@@ -1,0 +1,9 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 320 180">
+  <g fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round">
+    <path d="M20 160H140V40H180V160H300" stroke-width="3" />
+    <path d="M20 100C30 70 40 70 50 100S70 130 80 100S100 70 110 100S130 130 140 100C150 96 160 104 180 103" stroke-width="3" />
+    <path d="M180 103C190 98 195 108 205 103S220 98 230 103S245 108 255 103S270 98 280 103S295 108 300 103" stroke-width="3" />
+    <path d="M20 103H300" stroke-width="1.5" stroke-opacity="0.4" stroke-dasharray="5 5" />
+  </g>
+  <rect x="140" y="40" width="40" height="120" fill="currentColor" fill-opacity="0.15" />
+</svg>
