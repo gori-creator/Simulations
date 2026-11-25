@@ -48,7 +48,7 @@ const KS_5_6_UNITS: CurriculumUnit[] = [
       'Daten und Diagramme, Dezimalsystem mit Stellenwerttafel und Runden, Dualsystem und römische Zahlen, Mengen, Zahlenstrahl und Anordnung.',
       'Data and charts, the decimal system with place value table and rounding, the binary system and Roman numerals, sets, the number line and order.',
     ),
-    simulations: ['stellenwerte', 'zahlengerade', 'diagramme'],
+    simulations: ['stellenwerte', 'zahlengerade', 'diagramme', 'zahlensysteme'],
   },
   {
     code: '2',
@@ -215,6 +215,7 @@ const KS_8_UNITS: CurriculumUnit[] = [
     code: '6',
     title: L('Rechnen in anderen Zahlensystemen (nur Informatik-Zweig)', 'Calculating in other number systems (computer science branch only)'),
     summary: L('Binär- und Hexadezimalsystem, Umrechnen und Rechnen, geometrische Summenformel.', 'Binary and hexadecimal systems, converting and calculating, the geometric series formula.'),
+    simulations: ['zahlensysteme'],
   },
   {
     code: '7',

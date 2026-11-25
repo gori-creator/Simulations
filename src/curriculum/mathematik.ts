@@ -48,6 +48,22 @@ export const mathematik: Subject = {
             ),
           },
           {
+            id: 'zahlensysteme',
+            status: 'ready',
+            slug: L('zahlensysteme-binaer-hexadezimal', 'number-systems-binary-hexadecimal'),
+            title: L('Zahlensysteme: binär, hexadezimal und andere Kulturen', 'Number systems: binary, hexadecimal and other cultures'),
+            summary: L(
+              'Im Zweiersystem wird schon bei zwei gebündelt, im Hexadezimalsystem erst bei sechzehn. Die Stellenwerttafel zeigt jede Zahl zu jeder Basis, das Divisionsverfahren rechnet um. Daneben stehen römische, Maya- und babylonische Zahlzeichen.',
+              'In binary you regroup at two, in hexadecimal only at sixteen. The place value table shows any number in any base, and repeated division converts between them. Roman, Maya and Babylonian numerals sit alongside.',
+            ),
+            grades: [5, 8],
+            kmk: ['M-L1', 'M-K5', 'M-K6'],
+            keywords: L(
+              ['Zahlensystem', 'Stellenwertsystem', 'Basis', 'Dualsystem', 'Binärsystem', 'Zweiersystem', 'Hexadezimalsystem', 'Bit', 'Byte', 'Divisionsverfahren', 'Umrechnen', 'römische Zahlen', 'Maya', 'Babylonier', 'Sechzigersystem'],
+              ['number system', 'place value system', 'base', 'binary', 'base two', 'hexadecimal', 'bit', 'byte', 'repeated division', 'converting', 'Roman numerals', 'Maya', 'Babylonians', 'sexagesimal'],
+            ),
+          },
+          {
             id: 'zahlengerade',
             status: 'ready',
             slug: L('ganze-zahlen-zahlengerade', 'integers-number-line'),

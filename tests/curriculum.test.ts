@@ -195,6 +195,7 @@ describe('Länder-Lehrpläne', () => {
       schall: 'Akustik erst als Wahlthema in 12/13; die Simulation ist für Klasse 5 bis 11 gedacht.',
     },
     'baden-wuerttemberg-gymnasium-mathematik': {
+      zahlensysteme: 'Andere Stellenwertsysteme (Zweier-, Hexadezimalsystem) und Zahlschriften anderer Kulturen kommen im Lehrplan nicht vor.',
       'folgen-reihen': 'Folgen, Reihen und Grenzwerte von Folgen kommen im Lehrplan nicht eigens vor.',
       kreisgleichung: 'Kreisgleichung und Lage von Gerade und Kreis kommen im Lehrplan nicht vor (Kreis nur als Figur bzw. Kugeln im Raum).',
       verteilungen: 'Poisson-, hypergeometrische und Exponentialverteilung kommen im Lehrplan nicht vor.',
@@ -205,6 +206,7 @@ describe('Länder-Lehrpläne', () => {
       kegelschnitte: 'Kegelschnitte nicht im Lehrplan (Ortslinien nur in Klasse 7/8 mit Kreis und Mittelsenkrechte)',
     },
     'bayern-gymnasium-mathematik': {
+      zahlensysteme: 'Andere Stellenwertsysteme (Zweier-, Hexadezimalsystem) und Zahlschriften anderer Kulturen kommen im Lehrplan nicht vor.',
       'folgen-reihen': 'Folgen, Reihen und Grenzwerte von Folgen kommen im Lehrplan nicht eigens vor.',
       kreisgleichung: 'Kreisgleichung und Lage von Gerade und Kreis kommen im Lehrplan nicht vor (Kreis nur als Figur bzw. Kugeln im Raum).',
       verteilungen: 'Poisson-, hypergeometrische und Exponentialverteilung kommen im Lehrplan nicht vor.',
@@ -225,6 +227,7 @@ describe('Länder-Lehrpläne', () => {
       'doppler-effekt': 'nur in der Lehrplanalternative Astrophysik (Jgst. 13), die nicht abgebildet ist',
     },
     'berlin-gymnasium-mathematik': {
+      zahlensysteme: 'Andere Stellenwertsysteme (Zweier-, Hexadezimalsystem) und Zahlschriften anderer Kulturen kommen im Lehrplan nicht vor.',
       'folgen-reihen': 'Folgen, Reihen und Grenzwerte von Folgen kommen im Lehrplan nicht eigens vor.',
       kreisgleichung: 'Kreisgleichung und Lage von Gerade und Kreis kommen im Lehrplan nicht vor (Kreis nur als Figur bzw. Kugeln im Raum).',
       ungleichungen: 'Ungleichungen werden im Lehrplan nicht eigens genannt (nur Gleichungen).',
@@ -260,6 +263,7 @@ describe('Länder-Lehrpläne', () => {
       zeitdilatation: 'Spezielle Relativitätstheorie nicht im Rahmenlehrplan der Oberstufe',
     },
     'brandenburg-gymnasium-mathematik': {
+      zahlensysteme: 'Andere Stellenwertsysteme (Zweier-, Hexadezimalsystem) und Zahlschriften anderer Kulturen kommen im Lehrplan nicht vor.',
       'folgen-reihen': 'Folgen, Reihen und Grenzwerte von Folgen kommen im Lehrplan nicht eigens vor.',
       kreisgleichung: 'Kreisgleichung und Lage von Gerade und Kreis kommen im Lehrplan nicht vor (Kreis nur als Figur bzw. Kugeln im Raum).',
       ungleichungen: 'Ungleichungen werden im Lehrplan nicht eigens genannt (nur Gleichungen).',
@@ -295,6 +299,7 @@ describe('Länder-Lehrpläne', () => {
       zeitdilatation: 'Spezielle Relativitätstheorie nicht im Rahmenlehrplan der Oberstufe',
     },
     'bremen-gymnasium-mathematik': {
+      zahlensysteme: 'Andere Stellenwertsysteme (Zweier-, Hexadezimalsystem) und Zahlschriften anderer Kulturen kommen im Lehrplan nicht vor.',
       'folgen-reihen': 'Folgen, Reihen und Grenzwerte von Folgen kommen im Lehrplan nicht eigens vor.',
       kreisgleichung: 'Kreisgleichung und Lage von Gerade und Kreis kommen im Lehrplan nicht vor (Kreis nur als Figur bzw. Kugeln im Raum).',
       ungleichungen: 'Ungleichungen werden im Lehrplan nicht eigens genannt (nur Gleichungen).',
@@ -328,6 +333,7 @@ describe('Länder-Lehrpläne', () => {
       zeitdilatation: 'Spezielle Relativitätstheorie nicht im Bildungsplan der Oberstufe',
     },
     'hamburg-gymnasium-mathematik': {
+      zahlensysteme: 'Andere Stellenwertsysteme (Zweier-, Hexadezimalsystem) und Zahlschriften anderer Kulturen kommen im Lehrplan nicht vor.',
       'folgen-reihen': 'Folgen, Reihen und Grenzwerte von Folgen kommen im Lehrplan nicht eigens vor.',
       kreisgleichung: 'Kreisgleichung und Lage von Gerade und Kreis kommen im Lehrplan nicht vor (Kreis nur als Figur bzw. Kugeln im Raum).',
       verteilungen: 'Poisson-, hypergeometrische und Exponentialverteilung kommen im Lehrplan nicht vor.',
@@ -360,6 +366,7 @@ describe('Länder-Lehrpläne', () => {
       gasgesetze: 'Gasgesetze nicht im Bildungsplan (Sek. I nur Temperatur im Teilchenmodell)',
     },
     'hessen-gymnasium-mathematik': {
+      zahlensysteme: 'Andere Stellenwertsysteme (Zweier-, Hexadezimalsystem) und Zahlschriften anderer Kulturen kommen im Lehrplan nicht vor.',
       kreisgleichung: 'Kreisgleichung und Lage von Gerade und Kreis kommen im Lehrplan nicht vor (Kreis nur als Figur bzw. Kugeln im Raum).',
       kegelschnitte: 'Kegelschnitte und Ortslinien von Ellipse/Parabel/Hyperbel nicht im Lehrplan',
       ziegenproblem: 'kein passender Schwerpunkt',
@@ -376,6 +383,7 @@ describe('Länder-Lehrpläne', () => {
       'doppler-effekt': 'kein passender Schwerpunkt (siehe docs/lehrplaene/hessen-gymnasium-physik.md)',
     },
     'niedersachsen-gymnasium-mathematik': {
+      zahlensysteme: 'Andere Stellenwertsysteme (Zweier-, Hexadezimalsystem) und Zahlschriften anderer Kulturen kommen im Lehrplan nicht vor.',
       'folgen-reihen': 'Folgen, Reihen und Grenzwerte von Folgen kommen im Lehrplan nicht eigens vor.',
       ungleichungen: 'Ungleichungen werden im Lehrplan nicht eigens genannt (nur Gleichungen).',
       verteilungen: 'Poisson-, hypergeometrische und Exponentialverteilung kommen im Lehrplan nicht vor.',
@@ -407,6 +415,7 @@ describe('Länder-Lehrpläne', () => {
       zeitdilatation: 'Spezielle Relativitätstheorie nicht im Kerncurriculum',
     },
     'nordrhein-westfalen-gymnasium-mathematik': {
+      zahlensysteme: 'Andere Stellenwertsysteme (Zweier-, Hexadezimalsystem) und Zahlschriften anderer Kulturen kommen im Lehrplan nicht vor.',
       'folgen-reihen': 'Folgen, Reihen und Grenzwerte von Folgen kommen im Lehrplan nicht eigens vor.',
       kreisgleichung: 'Kreisgleichung und Lage von Gerade und Kreis kommen im Lehrplan nicht vor (Kreis nur als Figur bzw. Kugeln im Raum).',
       ungleichungen: 'Ungleichungen werden im Lehrplan nicht eigens genannt (nur Gleichungen).',
@@ -485,6 +494,7 @@ describe('Länder-Lehrpläne', () => {
       cavalieri: 'Prinzip von Cavalieri nicht im Lehrplan',
     },
     'sachsen-anhalt-gymnasium-mathematik': {
+      zahlensysteme: 'Andere Stellenwertsysteme (Zweier-, Hexadezimalsystem) und Zahlschriften anderer Kulturen kommen im Lehrplan nicht vor.',
       'folgen-reihen': 'Folgen, Reihen und Grenzwerte von Folgen kommen im Lehrplan nicht eigens vor.',
       verteilungen: 'Poisson-, hypergeometrische und Exponentialverteilung kommen im Lehrplan nicht vor.',
       uebergangsmatrizen: 'Übergangsmatrizen und Markov-Ketten nicht im Lehrplan',
@@ -510,6 +520,7 @@ describe('Länder-Lehrpläne', () => {
       'doppler-effekt': 'Doppler-Effekt nicht im Fachlehrplan (siehe docs/lehrplaene/sachsen-anhalt-gymnasium-physik.md)',
     },
     'schleswig-holstein-gymnasium-mathematik': {
+      zahlensysteme: 'Andere Stellenwertsysteme (Zweier-, Hexadezimalsystem) und Zahlschriften anderer Kulturen kommen im Lehrplan nicht vor.',
       'folgen-reihen': 'Folgen, Reihen und Grenzwerte von Folgen kommen im Lehrplan nicht eigens vor.',
       kreisgleichung: 'Kreisgleichung und Lage von Gerade und Kreis kommen im Lehrplan nicht vor (Kreis nur als Figur bzw. Kugeln im Raum).',
       uebergangsmatrizen: 'Übergangsmatrizen und Markov-Ketten nicht im Lehrplan',

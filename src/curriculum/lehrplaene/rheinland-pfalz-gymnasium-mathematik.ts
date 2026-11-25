@@ -50,7 +50,7 @@ const OS_UNITS: CurriculumUnit[] = [
           'Große Zahlen lesen und schreiben, das Stellenwertsystem erklären, Zahlen ordnen, runden und am Zahlenstrahl zeigen; Binärsystem als Additum.',
           'Reading and writing large numbers, explaining the place-value system, ordering, rounding and showing numbers on the number line; the binary system as an optional extra.',
         ),
-        simulations: ['stellenwerte'],
+        simulations: ['stellenwerte', 'zahlensysteme'],
       },
       {
         code: '1.2',

@@ -2,11 +2,11 @@
 
 <!-- Automatisch erzeugt mit `npm run lehrplan:luecken` aus src/curriculum/lehrplaene/ – nicht von Hand bearbeiten. -->
 
-Lernbereiche der Länder-Lehrpläne, zu denen es noch **keine** Simulation gibt – Vorrat für neue Simulationen (Anleitung: `docs/NEUE-SIMULATION.md`). Insgesamt **17 von 1773** Lernbereichen ohne Simulation.
+Lernbereiche der Länder-Lehrpläne, zu denen es noch **keine** Simulation gibt – Vorrat für neue Simulationen (Anleitung: `docs/NEUE-SIMULATION.md`). Insgesamt **15 von 1773** Lernbereichen ohne Simulation.
 
 Nicht jeder Lernbereich eignet sich für eine Simulation. Reine Methoden-, Praktikums- und Projektthemen sind im Lehrplan mit `method: true` gekennzeichnet und zählen nicht als Lücke. Kommt ein Thema in mehreren Ländern vor, lohnt es sich besonders.
 
-## Mathematik (17)
+## Mathematik (15)
 
 ### Baden-Württemberg · Gymnasium (0)
 
@@ -53,19 +53,17 @@ Alle Lernbereiche haben eine Simulation.
 
 Alle Lernbereiche haben eine Simulation.
 
-### Saarland · Gymnasium (2)
+### Saarland · Gymnasium (1)
 
 | Stufe | Nr. | Lernbereich | Kurz |
 | --- | --- | --- | --- |
-| 8 | 6 | Rechnen in anderen Zahlensystemen (nur Informatik-Zweig) | Binär- und Hexadezimalsystem, Umrechnen und Rechnen, geometrische Summenformel. |
 | 8 | 7 | Aussagenlogik (nur Informatik-Zweig) | Aussagen und Wahrheitswerte, Verknüpfungen wie Konjunktion, Disjunktion, NAND und NOR, Wahrheitstafeln. |
 
-### Sachsen · Gymnasium (11)
+### Sachsen · Gymnasium (10)
 
 | Stufe | Nr. | Lernbereich | Kurz |
 | --- | --- | --- | --- |
 | 5 | W2 | Mathematische Puzzles und Spiele (Wahlbereich) | Lege-, Strategie- und Zufallsspiele untersuchen. |
-| 5 | W3 | Zählen und Rechnen – einst und jetzt (Wahlbereich) | Zahlschreibweisen anderer Kulturen und Rechnen in anderen Stellenwertsystemen. |
 | 6 | W2 | Unterhaltsame Geometrie (Wahlbereich) | Optische Täuschungen, „unmögliche Figuren“ und Legespiele. |
 | 7 | W3 | Platonische Körper (Wahlbereich) | Reguläre Polyeder und der Euler’sche Polyedersatz. |
 | 8 | W2 | Lineare Optimierung (Wahlbereich) | Optimierungsprobleme grafisch mit einer Zielfunktion lösen. |

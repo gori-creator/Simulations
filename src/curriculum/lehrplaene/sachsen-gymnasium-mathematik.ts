@@ -83,6 +83,7 @@ const K5: CurriculumUnit[] = [
     code: 'W3',
     title: L('Zählen und Rechnen – einst und jetzt (Wahlbereich)', 'Counting and calculating – then and now (optional)'),
     summary: L('Zahlschreibweisen anderer Kulturen und Rechnen in anderen Stellenwertsystemen.', 'Number systems of other cultures and calculating in other bases.'),
+    simulations: ['zahlensysteme'],
   },
 ];
 
