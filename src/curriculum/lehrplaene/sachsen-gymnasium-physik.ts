@@ -49,7 +49,7 @@ const K6: CurriculumUnit[] = [
       'Temperatur messen und mit der Teilchenbewegung deuten, Wärmeausdehnung, Thermometer und die Übergänge zwischen den Aggregatzuständen.',
       'Measuring temperature and interpreting it with particle motion, thermal expansion, thermometers and changes of state.',
     ),
-    simulations: ['teilchenmodell'],
+    simulations: ['teilchenmodell', 'waermeausdehnung'],
   },
   {
     code: '4',
