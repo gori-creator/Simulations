@@ -689,7 +689,7 @@ const Q_UNITS: CurriculumUnit[] = [
           'Doppelspaltexperiment, Bragg-Reflexion, Elektronenbeugung, Wahrscheinlichkeitsdeutung, Delayed-Choice-Experiment und Kopenhagener Deutung.',
           'Double-slit experiment, Bragg reflection, electron diffraction, probability interpretation, the delayed-choice experiment and the Copenhagen interpretation.',
         ),
-        simulations: ['elektronenbeugung', 'potentialtopf'],
+        simulations: ['elektronenbeugung', 'potentialtopf', 'mach-zehnder'],
       },
     ],
   },

@@ -295,7 +295,7 @@ const QUANTEN: CurriculumUnit = {
         'Grundaspekte der Quantentheorie, Doppelspalt mit Photonen und Elektronen, Photoeffekt, de-Broglie-Wellenlänge, Röntgenbremsspektrum, Bragg-Reflexion, Compton-Effekt und Unbestimmtheit.',
         'Basic aspects of quantum theory, the double slit with photons and electrons, the photoelectric effect, the de Broglie wavelength, the X-ray bremsstrahlung spectrum, Bragg reflection, the Compton effect and uncertainty.',
       ),
-      simulations: ['photoeffekt', 'elektronenbeugung', 'doppelspalt', 'potentialtopf'],
+      simulations: ['photoeffekt', 'elektronenbeugung', 'doppelspalt', 'potentialtopf', 'mach-zehnder'],
     },
     {
       code: 'Q.2',

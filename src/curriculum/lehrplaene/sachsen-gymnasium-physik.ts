@@ -500,7 +500,7 @@ const J12: CurriculumUnit[] = [
       'Photoeffekt, Photonenimpuls, Elektronenbeugung, Wellenfunktion, Unschärferelation und Delayed-Choice-Experiment.',
       'The photoelectric effect, photon momentum, electron diffraction, the wave function, the uncertainty principle and the delayed-choice experiment.',
     ),
-    simulations: ['photoeffekt', 'elektronenbeugung', 'potentialtopf'],
+    simulations: ['photoeffekt', 'elektronenbeugung', 'potentialtopf', 'mach-zehnder'],
   },
   {
     code: 'LK-5',

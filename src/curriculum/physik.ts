@@ -1239,6 +1239,22 @@ export const physik: Subject = {
               ),
             },
             {
+              id: 'mach-zehnder',
+              status: 'ready',
+              slug: L('mach-zehnder-interferometer', 'mach-zehnder-interferometer'),
+              title: L('Mach-Zehnder-Interferometer mit einzelnen Photonen', 'Mach-Zehnder interferometer with single photons'),
+              summary: L(
+                'Ein einzelnes Photon trifft auf einen Strahlteiler – und nimmt scheinbar beide Wege zugleich. Sobald man den Weg herausfinden könnte, verschwindet die Interferenz.',
+                'A single photon meets a beam splitter – and seems to take both paths at once. As soon as the path could be found out, the interference disappears.',
+              ),
+              grades: [12, 14],
+              kmk: ['P-S', 'P-E', 'P-BK-Wechselwirkung', 'P-B'],
+              keywords: L(
+                ['Mach-Zehnder-Interferometer', 'Interferometer', 'Strahlteiler', 'einzelne Photonen', 'Einzelphotonen', 'Interferenz', 'Welcher-Weg-Information', 'Komplementarität', 'Superposition', 'Quantenobjekt', 'Wahrscheinlichkeit', 'Delayed Choice', 'Polarisation', 'Quantenphysik', 'Weltbild'],
+                ['Mach-Zehnder interferometer', 'interferometer', 'beam splitter', 'single photons', 'interference', 'which-path information', 'complementarity', 'superposition', 'quantum object', 'probability', 'delayed choice', 'polarisation', 'quantum physics', 'world view'],
+              ),
+            },
+            {
               id: 'potentialtopf',
               status: 'ready',
               slug: L('potentialtopf', 'particle-in-a-box'),

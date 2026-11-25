@@ -2407,6 +2407,7 @@ export const hessenGymnasiumPhysik: StateCurriculum = {
                 'Grenzen klassischer Begriffe in der Quantenphysik diskutieren.',
                 'Discussing the limits of classical concepts in quantum physics.',
               ),
+              simulations: ['mach-zehnder'],
             },
             {
               code: 'Q4.1.4',
@@ -2447,6 +2448,7 @@ export const hessenGymnasiumPhysik: StateCurriculum = {
                 'Unteilbarkeit von Photonen, z. B. am Mach-Zehnder-Interferometer.',
                 'Indivisibility of photons, e.g. with a Mach–Zehnder interferometer.',
               ),
+              simulations: ['mach-zehnder'],
             },
           ],
         },

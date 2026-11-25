@@ -256,7 +256,7 @@ const HP_13_UNITS: CurriculumUnit[] = [
       'Photoeffekt und Photonenmodell, Materiewellen, Wahrscheinlichkeitsverhalten von Quantenobjekten, Emission und Absorption, quantenmechanisches Atommodell; LK: Röntgenstrahlung, Unbestimmtheitsrelation, Potenzialtopf.',
       'The photoelectric effect and the photon model, matter waves, probabilistic behaviour of quantum objects, emission and absorption, the quantum model of the atom; LK: X-rays, the uncertainty relation, the potential well.',
     ),
-    simulations: ['photoeffekt', 'elektronenbeugung', 'doppelspalt', 'linienspektren', 'potentialtopf'],
+    simulations: ['photoeffekt', 'elektronenbeugung', 'doppelspalt', 'linienspektren', 'potentialtopf', 'mach-zehnder'],
   },
 ];
 

@@ -143,7 +143,7 @@ const QP_UNITS: CurriculumUnit[] = [
     code: '6',
     title: L('Quantenobjekte', 'Quantum objects'),
     summary: L('Fotoeffekt, Photonen und Elektronen als Quantenobjekte, Elektronenbeugung, Doppelspalt mit Elektronen.', 'The photoelectric effect, photons and electrons as quantum objects, electron diffraction, the double slit with electrons.'),
-    simulations: ['doppelspalt', 'photoeffekt', 'elektronenbeugung', 'potentialtopf'],
+    simulations: ['doppelspalt', 'photoeffekt', 'elektronenbeugung', 'potentialtopf', 'mach-zehnder'],
   },
   {
     code: '7',

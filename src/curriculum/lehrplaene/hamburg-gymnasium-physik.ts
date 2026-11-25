@@ -191,7 +191,7 @@ const S_UNITS: CurriculumUnit[] = [
       'Elektron und Photon als Quantenobjekte, stochastische Vorhersagbarkeit, Fotoeffekt und h-Bestimmung, De-Broglie-Beziehung, Unbestimmtheit; eA: Verschränkung.',
       'Electron and photon as quantum objects, stochastic predictability, the photoelectric effect and measuring h, the de Broglie relation, uncertainty; eA: entanglement.',
     ),
-    simulations: ['doppelspalt', 'photoeffekt', 'elektronenbeugung', 'potentialtopf'],
+    simulations: ['doppelspalt', 'photoeffekt', 'elektronenbeugung', 'potentialtopf', 'mach-zehnder'],
   },
   {
     code: '3.2',

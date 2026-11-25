@@ -331,6 +331,7 @@ const Q_UNITS: CurriculumUnit[] = [
           'Nur eA: Mach-Zehnder-Interferometer, Delayed-Choice-Experiment, Zustand, Präparation, Superposition und Unbestimmtheit.',
           'Higher level only: the Mach–Zehnder interferometer, delayed-choice experiment, state, preparation, superposition and uncertainty.',
         ),
+        simulations: ['mach-zehnder'],
       },
       {
         code: 'Q-3.3',
