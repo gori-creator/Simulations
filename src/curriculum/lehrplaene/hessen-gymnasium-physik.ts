@@ -2244,7 +2244,7 @@ export const hessenGymnasiumPhysik: StateCurriculum = {
               code: 'Q3.1.5',
               title: L('Überlagerung von elektromagnetischen Wellen (nur LK)', 'Superposition of electromagnetic waves (advanced course only)'),
               summary: L('Einzelspalt und Interferometer.', 'Single slit and interferometer.'),
-              simulations: ['doppelspalt', 'mach-zehnder'],
+              simulations: ['doppelspalt'],
             },
           ],
         },
