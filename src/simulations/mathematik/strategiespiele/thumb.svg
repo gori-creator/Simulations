@@ -1,0 +1,16 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 320 180">
+  <g fill="none" stroke="currentColor" stroke-width="7" stroke-linecap="round">
+    <path d="M40 150V60M75 150V60M110 150V60M145 150V60M180 150V60" />
+    <path d="M215 150V60M250 150V60M285 150V60" stroke-opacity="0.25" />
+  </g>
+  <g fill="currentColor">
+    <ellipse cx="40" cy="50" rx="7" ry="11" />
+    <ellipse cx="75" cy="50" rx="7" ry="11" />
+    <ellipse cx="110" cy="50" rx="7" ry="11" />
+    <ellipse cx="145" cy="50" rx="7" ry="11" />
+    <ellipse cx="180" cy="50" rx="7" ry="11" />
+    <ellipse cx="215" cy="50" rx="7" ry="11" fill-opacity="0.25" />
+    <ellipse cx="250" cy="50" rx="7" ry="11" fill-opacity="0.25" />
+    <ellipse cx="285" cy="50" rx="7" ry="11" fill-opacity="0.25" />
+  </g>
+</svg>

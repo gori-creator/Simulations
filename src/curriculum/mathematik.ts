@@ -96,6 +96,22 @@ export const mathematik: Subject = {
             ),
           },
           {
+            id: 'strategiespiele',
+            status: 'ready',
+            slug: L('strategiespiele-nimm-spiel', 'strategy-games-nim'),
+            title: L('Strategiespiele: Wer nimmt das letzte Holz?', 'Strategy games: who takes the last stick?'),
+            summary: L(
+              'Zwei nehmen abwechselnd Hölzer, wer das letzte nimmt, gewinnt. Der Computer gewinnt fast immer – bis man sein Geheimnis kennt: Vielfache einer bestimmten Zahl. Bei mehreren Haufen hilft das Zweiersystem.',
+              'Two players take sticks in turn, and whoever takes the last one wins. The computer almost always wins – until you know its secret: multiples of a certain number. With several piles, binary numbers help.',
+            ),
+            grades: [5, 7],
+            kmk: ['M-K1', 'M-K2', 'M-L1'],
+            keywords: L(
+              ['Strategiespiel', 'Nimm-Spiel', 'Nim', 'Streichholzspiel', 'Gewinnstrategie', 'Verlustposition', 'Vielfache', 'Teilbarkeit', 'Rest', 'Zweiersystem', 'Problemlösen', 'Rückwärtsarbeiten'],
+              ['strategy game', 'take-away game', 'Nim', 'matchstick game', 'winning strategy', 'losing position', 'multiples', 'divisibility', 'remainder', 'binary', 'problem solving', 'working backwards'],
+            ),
+          },
+          {
             id: 'zehnerpotenzen',
             status: 'ready',
             slug: L('zehnerpotenzen-groessenordnungen', 'powers-of-ten-orders-of-magnitude'),

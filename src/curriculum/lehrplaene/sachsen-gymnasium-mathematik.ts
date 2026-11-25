@@ -78,6 +78,7 @@ const K5: CurriculumUnit[] = [
     code: 'W2',
     title: L('Mathematische Puzzles und Spiele (Wahlbereich)', 'Mathematical puzzles and games (optional)'),
     summary: L('Lege-, Strategie- und Zufallsspiele untersuchen.', 'Investigating puzzles, strategy games and games of chance.'),
+    simulations: ['strategiespiele'],
   },
   {
     code: 'W3',
