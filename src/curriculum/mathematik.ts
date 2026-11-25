@@ -1406,6 +1406,22 @@ export const mathematik: Subject = {
             ),
           },
           {
+            id: 'verteilungen',
+            status: 'ready',
+            slug: L('poisson-hypergeometrische-exponentialverteilung', 'poisson-hypergeometric-exponential'),
+            title: L('Weitere Verteilungen: Poisson, hypergeometrisch, exponentiell', 'More distributions: Poisson, hypergeometric, exponential'),
+            summary: L(
+              'Wie viele Anrufe kommen in einer Minute? Wie oft hat man drei Richtige im Lotto? Wie lange wartet man auf den nächsten Bus? Drei Verteilungen für drei typische Fragen – im Vergleich zur Binomialverteilung.',
+              'How many calls arrive in a minute? How often do you get three right in the lottery? How long do you wait for the next bus? Three distributions for three typical questions – compared with the binomial distribution.',
+            ),
+            grades: [12, 13],
+            kmk: ['M-L5', 'M-K3', 'M-K4', 'M-K5'],
+            keywords: L(
+              ['Poisson-Verteilung', 'seltene Ereignisse', 'Näherung', 'Binomialverteilung', 'hypergeometrische Verteilung', 'Ziehen ohne Zurücklegen', 'Lotto', 'Qualitätskontrolle', 'Exponentialverteilung', 'Wartezeit', 'Lebensdauer', 'Dichte', 'Verteilungsfunktion', 'Erwartungswert', 'stetige Zufallsgröße', 'Gedächtnislosigkeit'],
+              ['Poisson distribution', 'rare events', 'approximation', 'binomial distribution', 'hypergeometric distribution', 'drawing without replacement', 'lottery', 'quality control', 'exponential distribution', 'waiting time', 'lifetime', 'density', 'distribution function', 'expected value', 'continuous random variable', 'memorylessness'],
+            ),
+          },
+          {
             id: 'konfidenzintervall',
             status: 'ready',
             slug: L('prognose-konfidenzintervall', 'prediction-confidence-interval'),

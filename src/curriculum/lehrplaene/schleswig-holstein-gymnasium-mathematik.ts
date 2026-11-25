@@ -700,6 +700,7 @@ const Q1_UNITS: CurriculumUnit[] = [
         code: 'S.3',
         title: L('Hypergeometrische Verteilung', 'hypergeometric distribution'),
         summary: L('Ziehen ohne Zurücklegen mit der hypergeometrischen Verteilung beschreiben.', 'Describing sampling without replacement with the hypergeometric distribution.'),
+        simulations: ['verteilungen'],
       },
       {
         code: 'S.4',

@@ -2,11 +2,11 @@
 
 <!-- Automatisch erzeugt mit `npm run lehrplan:luecken` aus src/curriculum/lehrplaene/ – nicht von Hand bearbeiten. -->
 
-Lernbereiche der Länder-Lehrpläne, zu denen es noch **keine** Simulation gibt – Vorrat für neue Simulationen (Anleitung: `docs/NEUE-SIMULATION.md`). Insgesamt **29 von 1773** Lernbereichen ohne Simulation.
+Lernbereiche der Länder-Lehrpläne, zu denen es noch **keine** Simulation gibt – Vorrat für neue Simulationen (Anleitung: `docs/NEUE-SIMULATION.md`). Insgesamt **25 von 1773** Lernbereichen ohne Simulation.
 
 Nicht jeder Lernbereich eignet sich für eine Simulation. Reine Methoden-, Praktikums- und Projektthemen sind im Lehrplan mit `method: true` gekennzeichnet und zählen nicht als Lücke. Kommt ein Thema in mehreren Ländern vor, lohnt es sich besonders.
 
-## Mathematik (29)
+## Mathematik (25)
 
 ### Baden-Württemberg · Gymnasium (0)
 
@@ -32,7 +32,7 @@ Alle Lernbereiche haben eine Simulation.
 
 Alle Lernbereiche haben eine Simulation.
 
-### Hessen · Gymnasium (11)
+### Hessen · Gymnasium (8)
 
 | Stufe | Nr. | Lernbereich | Kurz |
 | --- | --- | --- | --- |
@@ -44,9 +44,6 @@ Alle Lernbereiche haben eine Simulation.
 | 11 | E.7.2 | Folgen und Reihen › Reihen | Arithmetische und geometrische Reihen und ihre Grenzwerte untersuchen. |
 | 12 | Q1.2.5 | Anwendungen der Integralrechnung › Uneigentliche Integrale (nur LK) | Unendlich ausgedehnte Flächen auf endlichen Inhalt untersuchen. |
 | 12 | Q2.3.17 | Geraden und Ebenen im Raum › Darstellung von Parabelbahnen mithilfe von Parametern (nur LK) | Flugbahnen (z. B. eines Balls) parametrisch beschreiben. |
-| 13 | Q3.5.3 | Statistik und weitere Wahrscheinlichkeitsverteilungen › Poisson-Verteilung | Seltene Ereignisse mit der Poisson-Verteilung berechnen. |
-| 13 | Q3.5.5 | Statistik und weitere Wahrscheinlichkeitsverteilungen › Poisson-Verteilung als Näherung der Binomialverteilung bei konstantem Erwartungswert (nur LK) | Grenzübergang für n → ∞ beweisen. |
-| 13 | Q3.5.6 | Statistik und weitere Wahrscheinlichkeitsverteilungen › Weitere stetige Verteilungen (nur LK) | Z. B. die Exponentialverteilung. |
 
 ### Niedersachsen · Gymnasium (1)
 
@@ -93,11 +90,9 @@ Alle Lernbereiche haben eine Simulation.
 | 11/12 | gA-2.2 | Analytische Geometrie (grundlegendes Anforderungsniveau) › Kreise | Kreise in der Ebene durch Gleichungen beschreiben und die Lage von Punkt oder Gerade zum Kreis untersuchen. |
 | 11/12 | eA-2.2 | Analytische Geometrie (erhöhtes Anforderungsniveau) › Kreise | Wie im grundlegenden Niveau, zusätzlich die Lage zweier Kreise und Tangenten an einen Kreis, auch von einem Punkt außerhalb. |
 
-### Schleswig-Holstein · Gymnasium (1)
+### Schleswig-Holstein · Gymnasium (0)
 
-| Stufe | Nr. | Lernbereich | Kurz |
-| --- | --- | --- | --- |
-| 12 | S.3 | Stochastik › Hypergeometrische Verteilung | Ziehen ohne Zurücklegen mit der hypergeometrischen Verteilung beschreiben. |
+Alle Lernbereiche haben eine Simulation.
 
 ## Physik (0)
 

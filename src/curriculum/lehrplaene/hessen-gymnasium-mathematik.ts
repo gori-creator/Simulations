@@ -3465,6 +3465,7 @@ export const hessenGymnasiumMathematik: StateCurriculum = {
               code: 'Q3.5.3',
               title: L('Poisson-Verteilung', 'Poisson distribution'),
               summary: L('Seltene Ereignisse mit der Poisson-Verteilung berechnen.', 'Calculating rare events with the Poisson distribution.'),
+              simulations: ['verteilungen'],
             },
             {
               code: 'Q3.5.4',
@@ -3485,11 +3486,13 @@ export const hessenGymnasiumMathematik: StateCurriculum = {
                 'Poisson distribution as approximation of the binomial distribution with constant expected value (advanced course only)',
               ),
               summary: L('Grenzübergang für n → ∞ beweisen.', 'Proving the limit as n → ∞.'),
+              simulations: ['verteilungen'],
             },
             {
               code: 'Q3.5.6',
               title: L('Weitere stetige Verteilungen (nur LK)', 'Further continuous distributions (advanced course only)'),
               summary: L('Z. B. die Exponentialverteilung.', 'E.g. the exponential distribution.'),
+              simulations: ['verteilungen'],
             },
           ],
         },

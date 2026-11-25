@@ -195,6 +195,7 @@ describe('Länder-Lehrpläne', () => {
       schall: 'Akustik erst als Wahlthema in 12/13; die Simulation ist für Klasse 5 bis 11 gedacht.',
     },
     'baden-wuerttemberg-gymnasium-mathematik': {
+      verteilungen: 'Poisson-, hypergeometrische und Exponentialverteilung kommen im Lehrplan nicht vor.',
       uebergangsmatrizen: 'Übergangsmatrizen und Markov-Ketten nicht im Lehrplan',
       richtungsfeld: 'Differenzialgleichungen und Richtungsfelder nicht im Lehrplan',
       konfidenzintervall: 'Prognose- und Konfidenzintervalle nicht im Lehrplan (nur Hypothesentests bzw. Sigma-Regeln der Normalverteilung)',
@@ -202,6 +203,7 @@ describe('Länder-Lehrpläne', () => {
       kegelschnitte: 'Kegelschnitte nicht im Lehrplan (Ortslinien nur in Klasse 7/8 mit Kreis und Mittelsenkrechte)',
     },
     'bayern-gymnasium-mathematik': {
+      verteilungen: 'Poisson-, hypergeometrische und Exponentialverteilung kommen im Lehrplan nicht vor.',
       uebergangsmatrizen: 'Übergangsmatrizen und Markov-Ketten nicht im Lehrplan',
       richtungsfeld: 'Differenzialgleichungen und Richtungsfelder nicht im Lehrplan',
       konfidenzintervall: 'Prognose- und Konfidenzintervalle nicht im Lehrplan (nur Hypothesentests bzw. Sigma-Regeln der Normalverteilung)',
@@ -219,6 +221,7 @@ describe('Länder-Lehrpläne', () => {
       'doppler-effekt': 'nur in der Lehrplanalternative Astrophysik (Jgst. 13), die nicht abgebildet ist',
     },
     'berlin-gymnasium-mathematik': {
+      verteilungen: 'Poisson-, hypergeometrische und Exponentialverteilung kommen im Lehrplan nicht vor.',
       uebergangsmatrizen: 'Übergangsmatrizen und Markov-Ketten nicht im Lehrplan',
       'komplexe-zahlen': 'Komplexe Zahlen nicht im Lehrplan',
       kegelschnitte: 'Kegelschnitte und Ortslinien von Ellipse/Parabel/Hyperbel nicht im Lehrplan',
@@ -250,6 +253,7 @@ describe('Länder-Lehrpläne', () => {
       zeitdilatation: 'Spezielle Relativitätstheorie nicht im Rahmenlehrplan der Oberstufe',
     },
     'brandenburg-gymnasium-mathematik': {
+      verteilungen: 'Poisson-, hypergeometrische und Exponentialverteilung kommen im Lehrplan nicht vor.',
       uebergangsmatrizen: 'Übergangsmatrizen und Markov-Ketten nicht im Lehrplan',
       'komplexe-zahlen': 'Komplexe Zahlen nicht im Lehrplan',
       kegelschnitte: 'Kegelschnitte und Ortslinien von Ellipse/Parabel/Hyperbel nicht im Lehrplan',
@@ -281,6 +285,7 @@ describe('Länder-Lehrpläne', () => {
       zeitdilatation: 'Spezielle Relativitätstheorie nicht im Rahmenlehrplan der Oberstufe',
     },
     'bremen-gymnasium-mathematik': {
+      verteilungen: 'Poisson-, hypergeometrische und Exponentialverteilung kommen im Lehrplan nicht vor.',
       richtungsfeld: 'Differenzialgleichungen und Richtungsfelder nicht im Lehrplan',
       'komplexe-zahlen': 'Komplexe Zahlen nicht im Lehrplan',
       kegelschnitte: 'Kegelschnitte und Ortslinien von Ellipse/Parabel/Hyperbel nicht im Lehrplan',
@@ -310,6 +315,7 @@ describe('Länder-Lehrpläne', () => {
       zeitdilatation: 'Spezielle Relativitätstheorie nicht im Bildungsplan der Oberstufe',
     },
     'hamburg-gymnasium-mathematik': {
+      verteilungen: 'Poisson-, hypergeometrische und Exponentialverteilung kommen im Lehrplan nicht vor.',
       richtungsfeld: 'Differenzialgleichungen und Richtungsfelder nicht im Lehrplan',
       'komplexe-zahlen': 'Komplexe Zahlen nicht im Lehrplan',
       kegelschnitte: 'Kegelschnitte und Ortslinien von Ellipse/Parabel/Hyperbel nicht im Lehrplan',
@@ -354,6 +360,7 @@ describe('Länder-Lehrpläne', () => {
       'doppler-effekt': 'kein passender Schwerpunkt (siehe docs/lehrplaene/hessen-gymnasium-physik.md)',
     },
     'niedersachsen-gymnasium-mathematik': {
+      verteilungen: 'Poisson-, hypergeometrische und Exponentialverteilung kommen im Lehrplan nicht vor.',
       uebergangsmatrizen: 'Übergangsmatrizen und Markov-Ketten nicht im Lehrplan',
       'komplexe-zahlen': 'Komplexe Zahlen nicht im Lehrplan',
       'polstellen-asymptoten': 'gebrochenrationale Funktionen mit Polstellen nicht im Kerncurriculum (siehe docs/lehrplaene/niedersachsen-gymnasium-mathematik.md)',
@@ -382,6 +389,7 @@ describe('Länder-Lehrpläne', () => {
       zeitdilatation: 'Spezielle Relativitätstheorie nicht im Kerncurriculum',
     },
     'nordrhein-westfalen-gymnasium-mathematik': {
+      verteilungen: 'Poisson-, hypergeometrische und Exponentialverteilung kommen im Lehrplan nicht vor.',
       uebergangsmatrizen: 'Übergangsmatrizen und Markov-Ketten nicht im Lehrplan',
       richtungsfeld: 'Differenzialgleichungen und Richtungsfelder nicht im Lehrplan',
       'komplexe-zahlen': 'Komplexe Zahlen nicht im Lehrplan',
@@ -409,6 +417,7 @@ describe('Länder-Lehrpläne', () => {
       'doppler-effekt': 'Doppler-Effekt nicht im Kernlehrplan (siehe docs/lehrplaene/nordrhein-westfalen-gymnasium-physik.md)',
     },
     'rheinland-pfalz-gymnasium-mathematik': {
+      verteilungen: 'Poisson-, hypergeometrische und Exponentialverteilung kommen im Lehrplan nicht vor.',
       uebergangsmatrizen: 'Übergangsmatrizen und Markov-Ketten nicht im Lehrplan',
       'komplexe-zahlen': 'Komplexe Zahlen nicht im Lehrplan',
       kegelschnitte: 'Kegelschnitte und Ortslinien von Ellipse/Parabel/Hyperbel nicht im Lehrplan',
@@ -416,6 +425,7 @@ describe('Länder-Lehrpläne', () => {
       'fourier-reihen': 'nicht im Lehrplan (Hochschule)',
     },
     'saarland-gymnasium-mathematik': {
+      verteilungen: 'Poisson-, hypergeometrische und Exponentialverteilung kommen im Lehrplan nicht vor.',
       uebergangsmatrizen: 'Übergangsmatrizen und Markov-Ketten nicht im Lehrplan',
       richtungsfeld: 'Differenzialgleichungen und Richtungsfelder nicht im Lehrplan',
       konfidenzintervall: 'Prognose- und Konfidenzintervalle nicht im Lehrplan (nur Hypothesentests bzw. Sigma-Regeln der Normalverteilung)',
@@ -442,6 +452,7 @@ describe('Länder-Lehrpläne', () => {
       zeitdilatation: 'Spezielle Relativitätstheorie nicht im Lehrplan der Oberstufe',
     },
     'sachsen-gymnasium-mathematik': {
+      verteilungen: 'Poisson-, hypergeometrische und Exponentialverteilung kommen im Lehrplan nicht vor.',
       uebergangsmatrizen: 'Übergangsmatrizen und Markov-Ketten nicht im Lehrplan',
       'taylor-polynome': 'nicht im Lehrplan (Hochschule; siehe docs/lehrplaene/sachsen-gymnasium-mathematik.md)',
       'fourier-reihen': 'nicht im Lehrplan (Hochschule)',
@@ -449,6 +460,7 @@ describe('Länder-Lehrpläne', () => {
       cavalieri: 'Prinzip von Cavalieri nicht im Lehrplan',
     },
     'sachsen-anhalt-gymnasium-mathematik': {
+      verteilungen: 'Poisson-, hypergeometrische und Exponentialverteilung kommen im Lehrplan nicht vor.',
       uebergangsmatrizen: 'Übergangsmatrizen und Markov-Ketten nicht im Lehrplan',
       richtungsfeld: 'Differenzialgleichungen und Richtungsfelder nicht im Lehrplan',
       'komplexe-zahlen': 'Komplexe Zahlen nicht im Lehrplan',
