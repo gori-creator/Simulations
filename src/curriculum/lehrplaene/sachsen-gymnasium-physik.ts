@@ -189,7 +189,7 @@ const K9: CurriculumUnit[] = [
     code: '1',
     title: L('Grundlagen der Elektronik', 'Basics of electronics'),
     summary: L('Halbleiterbauelemente wie Diode und Solarzelle, Leitungsmechanismen in Halbleitern und einfache Schaltungen.', 'Semiconductor components such as diodes and solar cells, conduction in semiconductors and simple circuits.'),
-    simulations: ['diode-transistor'],
+    simulations: ['diode-transistor', 'solarzelle'],
   },
   {
     code: '2',
@@ -228,7 +228,7 @@ const K9: CurriculumUnit[] = [
     code: 'W2',
     title: L('Energie von Wind und Sonne (Wahlbereich)', 'Wind and solar energy (optional)'),
     summary: L('Windkraftanlagen, Solarthermie und Fotovoltaik.', 'Wind turbines, solar thermal energy and photovoltaics.'),
-    simulations: ['energieversorgung'],
+    simulations: ['energieversorgung', 'solarzelle'],
   },
   {
     code: 'W3',

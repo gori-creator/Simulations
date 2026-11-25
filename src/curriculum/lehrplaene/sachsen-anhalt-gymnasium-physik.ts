@@ -155,7 +155,7 @@ const SJ_9_UNITS: CurriculumUnit[] = [
       'Induktion durch Bewegung oder veränderliches Magnetfeld, Lenz’sches Gesetz, Generator und Transformator; Leitung in Metallen und Halbleitern mit Diode, LED und Solarzelle.',
       'Induction by motion or a changing magnetic field, Lenz’s law, generator and transformer; conduction in metals and semiconductors with diodes, LEDs and solar cells.',
     ),
-    simulations: ['induktion', 'energieversorgung', 'diode-transistor'],
+    simulations: ['induktion', 'energieversorgung', 'diode-transistor', 'solarzelle'],
   },
   {
     code: '2',

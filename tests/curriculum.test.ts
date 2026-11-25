@@ -186,6 +186,7 @@ describe('Länder-Lehrpläne', () => {
       hubble: 'Kosmologie, Rotverschiebung und Hubble-Beziehung kommen im Lehrplan nicht vor.',
     },
     'rheinland-pfalz-gymnasium-physik': {
+      solarzelle: 'Kennlinie und Schaltung von Solarzellen kommen in den erfassten Lernbereichen nicht ausdrücklich vor.',
       leistung: 'Mechanische Arbeit und Leistung sind in den erfassten Lernbereichen nicht ausdrücklich genannt.',
       stromwirkungen: 'Wirkungen und Gefahren des Stroms sind in den erfassten Lernbereichen nicht ausdrücklich genannt (ggf. im Fach Naturwissenschaften 5/6).',
       tunneleffekt: 'Tunneleffekt und Rastertunnelmikroskop kommen in den erfassten Lernbereichen nicht ausdrücklich vor.',
@@ -226,6 +227,7 @@ describe('Länder-Lehrpläne', () => {
       'fourier-reihen': 'nicht im Rahmenlehrplan (Hochschule)',
     },
     'berlin-gymnasium-physik': {
+      solarzelle: 'Kennlinie und Schaltung von Solarzellen kommen in den erfassten Lernbereichen nicht ausdrücklich vor.',
       minkowski: 'Spezielle Relativitätstheorie mit Raum-Zeit-Diagrammen kommt in den erfassten Lernbereichen nicht vor.',
       standardmodell: 'Elementarteilchen und Standardmodell kommen in den erfassten Lernbereichen nicht vor (Kernaufbau nur bis Proton und Neutron).',
       roentgen: 'Röntgenspektrum und Compton-Effekt kommen in den erfassten Lernbereichen nicht vor.',
@@ -254,6 +256,7 @@ describe('Länder-Lehrpläne', () => {
       'fourier-reihen': 'nicht im Rahmenlehrplan (Hochschule)',
     },
     'brandenburg-gymnasium-physik': {
+      solarzelle: 'Kennlinie und Schaltung von Solarzellen kommen in den erfassten Lernbereichen nicht ausdrücklich vor.',
       minkowski: 'Spezielle Relativitätstheorie mit Raum-Zeit-Diagrammen kommt in den erfassten Lernbereichen nicht vor.',
       standardmodell: 'Elementarteilchen und Standardmodell kommen in den erfassten Lernbereichen nicht vor (Kernaufbau nur bis Proton und Neutron).',
       roentgen: 'Röntgenspektrum und Compton-Effekt kommen in den erfassten Lernbereichen nicht vor.',
@@ -284,6 +287,7 @@ describe('Länder-Lehrpläne', () => {
       'fourier-reihen': 'nicht im Bildungsplan (Hochschule)',
     },
     'bremen-gymnasium-physik': {
+      solarzelle: 'Kennlinie und Schaltung von Solarzellen kommen in den erfassten Lernbereichen nicht ausdrücklich vor.',
       minkowski: 'Spezielle Relativitätstheorie mit Raum-Zeit-Diagrammen kommt in den erfassten Lernbereichen nicht vor.',
       stromwirkungen: 'Wirkungen und Gefahren des Stroms sind in den erfassten Lernbereichen nicht ausdrücklich genannt (ggf. im Fach Naturwissenschaften 5/6).',
       roentgen: 'Röntgenspektrum und Compton-Effekt kommen in den erfassten Lernbereichen nicht vor.',
@@ -307,6 +311,7 @@ describe('Länder-Lehrpläne', () => {
       'fourier-reihen': 'nicht im Bildungsplan (Hochschule)',
     },
     'hamburg-gymnasium-physik': {
+      solarzelle: 'Kennlinie und Schaltung von Solarzellen kommen in den erfassten Lernbereichen nicht ausdrücklich vor.',
       leistung: 'Mechanische Arbeit und Leistung sind in den erfassten Lernbereichen nicht ausdrücklich genannt.',
       stromwirkungen: 'Wirkungen und Gefahren des Stroms sind in den erfassten Lernbereichen nicht ausdrücklich genannt (ggf. im Fach Naturwissenschaften 5/6).',
       standardmodell: 'Elementarteilchen und Standardmodell kommen in den erfassten Lernbereichen nicht vor (Kernaufbau nur bis Proton und Neutron).',
@@ -333,6 +338,7 @@ describe('Länder-Lehrpläne', () => {
       'fourier-reihen': 'nicht im Kerncurriculum (Hochschule)',
     },
     'hessen-gymnasium-physik': {
+      solarzelle: 'Kennlinie und Schaltung von Solarzellen kommen in den erfassten Lernbereichen nicht ausdrücklich vor.',
       standardmodell: 'Elementarteilchen und Standardmodell kommen in den erfassten Lernbereichen nicht vor (Kernaufbau nur bis Proton und Neutron).',
       stroemung: 'Strömungslehre (Kontinuität, Bernoulli, Tragflügel) kommt im Lehrplan nicht vor.',
       'doppler-effekt': 'kein passender Schwerpunkt (siehe docs/lehrplaene/hessen-gymnasium-physik.md)',
@@ -378,6 +384,7 @@ describe('Länder-Lehrpläne', () => {
       'matrix-abbildungen': 'Matrizen nicht im Kernlehrplan',
     },
     'nordrhein-westfalen-gymnasium-physik': {
+      solarzelle: 'Kennlinie und Schaltung von Solarzellen kommen in den erfassten Lernbereichen nicht ausdrücklich vor.',
       standardmodell: 'Elementarteilchen und Standardmodell kommen in den erfassten Lernbereichen nicht vor (Kernaufbau nur bis Proton und Neutron).',
       laser: 'Laser (Besetzungsinversion, stimulierte Emission) kommt in den erfassten Lernbereichen nicht ausdrücklich vor.',
       tunneleffekt: 'Tunneleffekt und Rastertunnelmikroskop kommen in den erfassten Lernbereichen nicht ausdrücklich vor.',
@@ -405,6 +412,7 @@ describe('Länder-Lehrpläne', () => {
       'fourier-reihen': 'nicht im Lehrplan (Hochschule)',
     },
     'saarland-gymnasium-physik': {
+      solarzelle: 'Kennlinie und Schaltung von Solarzellen kommen in den erfassten Lernbereichen nicht ausdrücklich vor.',
       minkowski: 'Spezielle Relativitätstheorie mit Raum-Zeit-Diagrammen kommt in den erfassten Lernbereichen nicht vor.',
       standardmodell: 'Elementarteilchen und Standardmodell kommen in den erfassten Lernbereichen nicht vor (Kernaufbau nur bis Proton und Neutron).',
       roentgen: 'Röntgenspektrum und Compton-Effekt kommen in den erfassten Lernbereichen nicht vor.',
@@ -460,6 +468,7 @@ describe('Länder-Lehrpläne', () => {
       'fourier-reihen': 'nicht in den Fachanforderungen (Hochschule)',
     },
     'schleswig-holstein-gymnasium-physik': {
+      solarzelle: 'Kennlinie und Schaltung von Solarzellen kommen in den erfassten Lernbereichen nicht ausdrücklich vor.',
       leistung: 'Mechanische Arbeit und Leistung sind in den erfassten Lernbereichen nicht ausdrücklich genannt.',
       stromwirkungen: 'Wirkungen und Gefahren des Stroms sind in den erfassten Lernbereichen nicht ausdrücklich genannt (ggf. im Fach Naturwissenschaften 5/6).',
       laser: 'Laser (Besetzungsinversion, stimulierte Emission) kommt in den erfassten Lernbereichen nicht ausdrücklich vor.',
@@ -470,6 +479,7 @@ describe('Länder-Lehrpläne', () => {
       hebelgesetz: 'Hebel und Drehmoment nicht in den Fachanforderungen (siehe docs/lehrplaene/schleswig-holstein-gymnasium-physik.md)',
     },
     'baden-wuerttemberg-gymnasium-physik': {
+      solarzelle: 'Kennlinie und Schaltung von Solarzellen kommen in den erfassten Lernbereichen nicht ausdrücklich vor.',
       roentgen: 'Röntgenspektrum und Compton-Effekt kommen in den erfassten Lernbereichen nicht vor.',
       tunneleffekt: 'Tunneleffekt und Rastertunnelmikroskop kommen in den erfassten Lernbereichen nicht ausdrücklich vor.',
       baendermodell: 'Bändermodell und Supraleitung kommen in den erfassten Lernbereichen der Oberstufe nicht vor (Halbleiter nur qualitativ in der Mittelstufe).',

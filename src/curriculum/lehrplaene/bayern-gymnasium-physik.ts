@@ -143,6 +143,7 @@ export const bayernGymnasiumPhysik: StateCurriculum = {
                 "Solarmodule in Reihe und parallel messen und äußere Einflüsse wie Neigung und Schatten untersuchen; weitere Quellen wie galvanische Elemente oder Netzgeräte erkunden.",
                 "Measuring solar modules in series and parallel and investigating external influences such as tilt and shade; exploring other sources such as galvanic cells or power supplies.",
               ),
+              simulations: ['solarzelle'],
             },
             {
               code: "4.2",
@@ -440,6 +441,7 @@ export const bayernGymnasiumPhysik: StateCurriculum = {
                 "U-I-Kennlinie einer Solarzelle und den Punkt maximaler Leistung bestimmen, Komponenten von Photovoltaikanlagen kennen und ihren Nutzen bewerten.",
                 "Determining the U–I curve of a solar cell and its maximum power point, knowing the components of photovoltaic systems and assessing their benefit.",
               ),
+              simulations: ['solarzelle'],
             },
             {
               code: "4.3",

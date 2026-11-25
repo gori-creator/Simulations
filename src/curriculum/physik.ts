@@ -869,8 +869,24 @@ export const physik: Subject = {
         {
           id: 'elektronik',
           title: L('Elektronik', 'Electronics'),
-          grades: [9, 13],
+          grades: [8, 13],
           simulations: [
+            {
+              id: 'solarzelle',
+              status: 'ready',
+              slug: L('solarzelle-kennlinie-mpp', 'solar-cell-characteristic-mpp'),
+              title: L('Solarzelle: Kennlinie, Schaltung, Schatten', 'Solar cell: characteristic, circuits, shade'),
+              summary: L(
+                'Schalte Solarmodule in Reihe und parallel, kippe sie aus der Sonne und wirf einen Schatten. Die Kennlinie zeigt, bei welchem Widerstand die Anlage am meisten Leistung liefert.',
+                'Connect solar modules in series and in parallel, tilt them away from the sun and cast a shadow. The characteristic shows at which resistance the system delivers the most power.',
+              ),
+              grades: [8, 11],
+              kmk: ['P-S', 'P-E', 'P-BK-Energie', 'P-BK-System'],
+              keywords: L(
+                ['Solarzelle', 'Solarmodul', 'Photovoltaik', 'Fotovoltaik', 'Kennlinie', 'U-I-Kennlinie', 'Leerlaufspannung', 'Kurzschlussstrom', 'Punkt maximaler Leistung', 'MPP', 'Reihenschaltung', 'Parallelschaltung', 'Bestrahlungsstärke', 'Einfallswinkel', 'Neigung', 'Verschattung', 'Lastwiderstand', 'Arbeitspunkt', 'erneuerbare Energie'],
+                ['solar cell', 'solar module', 'photovoltaics', 'characteristic curve', 'I-V curve', 'open-circuit voltage', 'short-circuit current', 'maximum power point', 'MPP', 'series connection', 'parallel connection', 'irradiance', 'angle of incidence', 'tilt', 'shading', 'load resistance', 'operating point', 'renewable energy'],
+              ),
+            },
             {
               id: 'diode-transistor',
               status: 'ready',

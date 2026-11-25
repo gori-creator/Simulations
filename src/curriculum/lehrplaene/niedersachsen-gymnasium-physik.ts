@@ -108,7 +108,7 @@ const DJ_9_10: CurriculumUnit[] = [
       'Leiter und Halbleiter, pn-Übergang, Leuchtdiode und Solarzelle, Motor, Generator und Transformator als Energiewandler sowie Gleich- und Wechselstrom.',
       'Conductors and semiconductors, the pn junction, LEDs and solar cells, motor, generator and transformer as energy converters, and direct and alternating current.',
     ),
-    simulations: ['induktion', 'energieversorgung', 'diode-transistor'],
+    simulations: ['induktion', 'energieversorgung', 'diode-transistor', 'solarzelle'],
   },
   {
     code: '9',
