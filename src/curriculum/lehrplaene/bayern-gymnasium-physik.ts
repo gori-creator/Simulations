@@ -55,7 +55,7 @@ export const bayernGymnasiumPhysik: StateCurriculum = {
                 "Lichtquellen, Sehvorgang und die Farbe von Gegenständen; geradlinige Lichtausbreitung erklärt Kern-, Halb- und Übergangsschatten sowie Mondphasen und Finsternisse.",
                 "Light sources, how we see and the colour of objects; straight-line propagation of light explains umbra, penumbra and partial shadows as well as moon phases and eclipses.",
               ),
-              simulations: ["licht-schatten"],
+              simulations: ["licht-schatten", 'farben'],
             },
             {
               code: "1.3",
@@ -153,7 +153,7 @@ export const bayernGymnasiumPhysik: StateCurriculum = {
                 "Wahlthemen zum selbstständigen Experimentieren und Auswerten, etwa Lupe und optische Instrumente, Farbmischung oder Bewegungsanalysen im Sport.",
                 "Optional topics for independent experimenting and evaluating, for example magnifying glasses and optical instruments, colour mixing or motion analysis in sport.",
               ),
-              simulations: ["linsen"],
+              simulations: ["linsen", 'farben'],
             },
           ],
         },

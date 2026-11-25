@@ -2,7 +2,7 @@
 
 <!-- Automatisch erzeugt mit `npm run lehrplan:luecken` aus src/curriculum/lehrplaene/ – nicht von Hand bearbeiten. -->
 
-Lernbereiche der Länder-Lehrpläne, zu denen es noch **keine** Simulation gibt – Vorrat für neue Simulationen (Anleitung: `docs/NEUE-SIMULATION.md`). Insgesamt **153 von 1773** Lernbereichen ohne Simulation.
+Lernbereiche der Länder-Lehrpläne, zu denen es noch **keine** Simulation gibt – Vorrat für neue Simulationen (Anleitung: `docs/NEUE-SIMULATION.md`). Insgesamt **149 von 1773** Lernbereichen ohne Simulation.
 
 Nicht jeder Lernbereich eignet sich für eine Simulation. Reine Methoden-, Praktikums- und Projektthemen sind im Lehrplan mit `method: true` gekennzeichnet und zählen nicht als Lücke. Kommt ein Thema in mehreren Ländern vor, lohnt es sich besonders.
 
@@ -136,7 +136,7 @@ Alle Lernbereiche haben eine Simulation.
 | 7–9 | 2.4 | Größen und Messen › Sachaufgaben | Größen in Sachzusammenhängen bestimmen und Ergebnisse und Lösungsweg bewerten. |
 | 12 | S.3 | Stochastik › Hypergeometrische Verteilung | Ziehen ohne Zurücklegen mit der hypergeometrischen Verteilung beschreiben. |
 
-## Physik (92)
+## Physik (88)
 
 ### Baden-Württemberg · Gymnasium (1)
 
@@ -235,13 +235,12 @@ Alle Lernbereiche haben eine Simulation.
 | 12/13 | Q-3.2 | Quantenobjekte › Komplementarität und Unbestimmtheit | Nur eA: Mach-Zehnder-Interferometer, Delayed-Choice-Experiment, Zustand, Präparation, Superposition und Unbestimmtheit. |
 | 12/13 | Q-5.2 | Atomkern › Energiespektren und Anwendungen | Halbleiterdetektor, Alpha-Spektrum einer Zerfallsreihe, Bragg-Kurve; nur eA: Nukleonen im Potenzialtopf. |
 
-### Nordrhein-Westfalen · Gymnasium (8)
+### Nordrhein-Westfalen · Gymnasium (7)
 
 | Stufe | Nr. | Lernbereich | Kurz |
 | --- | --- | --- | --- |
 | 5/6 | 1.2 | Temperatur und Wärme › Wärmetransport | Wärmemitführung, Wärmeleitung und Wärmestrahlung, Temperaturausgleich und Wärmedämmung. |
 | 5/6 | 2.2 | Elektrischer Strom und Magnetismus › Wirkungen des elektrischen Stroms | Wärme-, Licht- und magnetische Wirkung, Sicherungen und Gefahren durch Elektrizität. |
-| 7–10 | 5.3 | Optische Instrumente › Licht und Farben | Zerlegung von Licht am Prisma, Infrarot und Ultraviolett, Absorption und Farbmischung (RGB, CMYK). |
 | 7–10 | 8.2 | Druck und Auftrieb › Druckmessung | Druck und Kraftwirkungen, Druck in Pascal angeben und messen. |
 | 7–10 | 9.1 | Elektrizität › Elektrostatik | Elektrische Ladungen und Felder, Elektroskop, Spannung durch Ladungstrennung. |
 | 7–10 | 10.2 | Ionisierende Strahlung und Kernenergie › Wechselwirkung von Strahlung mit Materie | Nachweis und Absorption von Strahlung, biologische Wirkung, Medizin und Strahlenschutz. |
@@ -269,16 +268,14 @@ Alle Lernbereiche haben eine Simulation.
 
 Alle Lernbereiche haben eine Simulation.
 
-### Sachsen · Gymnasium (9)
+### Sachsen · Gymnasium (7)
 
 | Stufe | Nr. | Lernbereich | Kurz |
 | --- | --- | --- | --- |
 | 6 | W2 | Wärmedämmung (Wahlbereich) | Wärmeverluste am Haus finden und Dämmung untersuchen. |
-| 6 | W3 | Farben (Wahlbereich) | Zerlegung weißen Lichts, additive und subtraktive Farbmischung. |
 | 7 | W3 | Vom Fliegen (Wahlbereich) | Geschichte des Fliegens und dynamischer Auftrieb am Tragflügel. |
 | 8 | W2 | Kühlschrank und Wärmepumpe (Wahlbereich) | Wärmeübertragung gegen das Temperaturgefälle mit Energieaufwand. |
 | 8 | W3 | Elektrisches Messen nichtelektrischer Größen (Wahlbereich) | Sensoren wandeln Größen wie Temperatur oder Licht in Spannungen um. |
-| 10 | W3 | Fernsehbildtechnik (Wahlbereich) | Aufbau des Fernsehbilds und Funktionsweise von Bildschirmen. |
 | 11 | GK-W2 | Messen und Modellieren (Wahlbereich Grundkurs) | Messreihen mit Videoanalyse und Messschnittstellen erfassen und mit Modellen vergleichen. |
 | 11 | LK-4 | Modellbildung und Simulation (Leistungskurs) | Bewegungen numerisch modellieren, Parameter variieren und mit dem Experiment vergleichen. |
 | 12 | LK-W2 | Deterministisches Chaos (Wahlbereich Leistungskurs) | Nichtlineare Systeme, Attraktoren und begrenzte Vorhersagbarkeit. |
@@ -287,11 +284,10 @@ Alle Lernbereiche haben eine Simulation.
 
 Alle Lernbereiche haben eine Simulation.
 
-### Schleswig-Holstein · Gymnasium (3)
+### Schleswig-Holstein · Gymnasium (2)
 
 | Stufe | Nr. | Lernbereich | Kurz |
 | --- | --- | --- | --- |
-| 7–10 | 3.4 | Elektromagnetische Strahlung › Spektrum und Wellenlänge (Block II) | Spektralfarben, Farbaddition und -subtraktion, Absorption und Transmission, nicht sichtbare Bereiche und Sensoren. |
 | 7–10 | 3.5 | Elektromagnetische Strahlung › Klimaphysik (Block II) | Strahlungshaushalt der Erde, Albedo, natürlicher und anthropogener Treibhauseffekt und Rückkopplungen. |
 | 7–10 | 5.3 | Radioaktivität und ionisierende Strahlung › Kernenergie (Block II) | Kernspaltung und Kettenreaktion, Kernfusion in Reaktoren und Sonne, Chancen und Risiken. |
 

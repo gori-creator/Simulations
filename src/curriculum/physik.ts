@@ -796,6 +796,22 @@ export const physik: Subject = {
               ),
             },
             {
+              id: 'farben',
+              status: 'ready',
+              slug: L('farben-prisma-farbmischung', 'colours-prism-colour-mixing'),
+              title: L('Farben: Prisma und Farbmischung', 'Colours: prism and colour mixing'),
+              summary: L(
+                'Ein Prisma fächert weißes Licht in alle Regenbogenfarben auf. Drei farbige Lampen ergeben zusammen wieder Weiß, drei Farbfilter zusammen Schwarz.',
+                'A prism fans white light out into all the colours of the rainbow. Three coloured lamps together make white again, three colour filters together make black.',
+              ),
+              grades: [6, 10],
+              kmk: ['P-S', 'P-E', 'P-BK-Wechselwirkung'],
+              keywords: L(
+                ['Farben', 'Prisma', 'Spektrum', 'Spektralfarben', 'Dispersion', 'Regenbogen', 'weißes Licht', 'additive Farbmischung', 'subtraktive Farbmischung', 'RGB', 'CMY', 'CMYK', 'Farbfilter', 'Absorption', 'Transmission', 'Komplementärfarbe', 'Bildschirm', 'Pixel', 'Infrarot', 'Ultraviolett'],
+                ['colours', 'prism', 'spectrum', 'spectral colours', 'dispersion', 'rainbow', 'white light', 'additive colour mixing', 'subtractive colour mixing', 'RGB', 'CMY', 'CMYK', 'colour filter', 'absorption', 'transmission', 'complementary colour', 'screen', 'pixel', 'infrared', 'ultraviolet'],
+              ),
+            },
+            {
               id: 'linsen',
               status: 'ready',
               slug: L('linsen-bildentstehung', 'lenses-image-formation'),
