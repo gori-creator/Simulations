@@ -5,7 +5,9 @@
 #   - sein letzter Commit ist vollständig in main enthalten (nichts geht verloren),
 #   - er hat keinen offenen Pull Request,
 #   - sein letzter Commit ist älter als die eingestellte Zahl von Tagen,
-#   - er ist nicht main.
+#   - er ist nicht main,
+#   - er steht nicht als laufende Aufgabe im Ausbau-Brett (docs/agenten/AUSBAU-BRETT.md;
+#     eine frische Reservierung zeigt noch genau auf main).
 # Mit „Nur anzeigen“ (Standard) wird nichts gelöscht, nur aufgelistet.
 name: Zweige aufräumen
 
@@ -40,12 +42,14 @@ jobs:
         run: |
           set -euo pipefail
           git fetch --prune origin '+refs/heads/*:refs/remotes/origin/*'
+          reserviert=$(grep -o 'ausbau/[a-z0-9-]*' docs/agenten/AUSBAU-BRETT.md 2>/dev/null || true)
           offen=$(gh api "repos/${GITHUB_REPOSITORY}/pulls?state=open&per_page=100" --jq '.[].head.ref')
           grenze=$(date -u -d "${TAGE} days ago" +%s)
           geloescht=0; behalten=0
           for ref in $(git for-each-ref --format='%(refname:short)' refs/remotes/origin); do
             b=${ref#origin/}
             case "$b" in HEAD|main|origin) continue ;; esac
+            if printf '%s\n' "$reserviert" | grep -qx "$b"; then behalten=$((behalten+1)); continue; fi
             if ! git merge-base --is-ancestor "origin/$b" origin/main; then behalten=$((behalten+1)); continue; fi
             if printf '%s\n' "$offen" | grep -qx "$b"; then behalten=$((behalten+1)); continue; fi
             if [ "$(git log -1 --format=%ct "origin/$b")" -ge "$grenze" ]; then behalten=$((behalten+1)); continue; fi
