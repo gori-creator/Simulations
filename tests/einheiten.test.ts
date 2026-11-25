@@ -215,7 +215,7 @@ describe('Modell: Einheiten – Plausibilität', () => {
         const a = units[Math.floor(rnd() * units.length)]!;
         const b = units[Math.floor(rnd() * units.length)]!;
         const there = convert(q, v, a.id, b.id)!;
-        if (q === 'time') {
+        if (!QUANTITIES[q].decimal) {
           // Rückweg über den exakten Bruch
           const back = (there.ratio.num * BigInt(b.exp)) * BigInt(10 ** v.k);
           expect(back, `${plain(v)} ${a.id} → ${b.id}`).toBe(v.n * BigInt(a.exp) * there.ratio.den);
@@ -317,5 +317,26 @@ describe('Modell: Einheiten – Prüfrunde (Prüfwerte und Aufgaben im Lernmater
     expect(conv('time', '3', 'h', 's')).toBe('10800');
     expect(conv('area', '3,5', 'm2', 'dm2')).toBe('350');
     expect(conv('time', '2', 'd', 's')).toBe('172800');
+  });
+});
+
+describe('Modell: Einheiten – Geld und Winkel', () => {
+  it('rechnet Euro und Cent um', () => {
+    expect(conv('money', '3,05', 'eur', 'ct')).toBe('305');
+    expect(conv('money', '45', 'ct', 'eur')).toBe('0.45');
+    expect(relationText('money', QUANTITIES.money.units[1]!, QUANTITIES.money.units[0]!, 'de')).toBe('1 € = 100 ct');
+    expect(conversionText(convert('money', d('3,5'), 'eur', 'ct')!, 'de')).toBe('3,5 € = 350 ct');
+  });
+
+  it('rechnet Grad, Winkelminuten und Winkelsekunden um', () => {
+    expect(conv('angle', '1', 'deg', 'am')).toBe('60');
+    expect(conv('angle', '1', 'deg', 'as')).toBe('3600');
+    expect(conv('angle', '37,5', 'deg', 'am')).toBe('2250');
+    expect(conv('angle', '90', 'am', 'deg')).toBe('1.5');
+    expect(timeChain(d('1'), 'deg', 'as', 'angle').map((s) => s.factor)).toEqual([60, 60]);
+    expect(mixedText(mixedTime(d('37,5'), 'deg', 'am', 'angle'), 'de')).toBe('37° 30′');
+    expect(mixedText(mixedTime(d('3725'), 'as', 'deg', 'angle'), 'de')).toBe('1° 2′ 5″');
+    expect(relationText('angle', QUANTITIES.angle.units[2]!, QUANTITIES.angle.units[1]!, 'de')).toBe('1° = 60′');
+    expect(illustrationPair('angle', 'deg', 'as').big.id).toBe('am');
   });
 });

@@ -2,11 +2,11 @@
 
 <!-- Automatisch erzeugt mit `npm run lehrplan:luecken` aus src/curriculum/lehrplaene/ – nicht von Hand bearbeiten. -->
 
-Lernbereiche der Länder-Lehrpläne, zu denen es noch **keine** Simulation gibt – Vorrat für neue Simulationen (Anleitung: `docs/NEUE-SIMULATION.md`). Insgesamt **15 von 1773** Lernbereichen ohne Simulation.
+Lernbereiche der Länder-Lehrpläne, zu denen es noch **keine** Simulation gibt – Vorrat für neue Simulationen (Anleitung: `docs/NEUE-SIMULATION.md`). Insgesamt **13 von 1773** Lernbereichen ohne Simulation.
 
 Nicht jeder Lernbereich eignet sich für eine Simulation. Reine Methoden-, Praktikums- und Projektthemen sind im Lehrplan mit `method: true` gekennzeichnet und zählen nicht als Lücke. Kommt ein Thema in mehreren Ländern vor, lohnt es sich besonders.
 
-## Mathematik (15)
+## Mathematik (13)
 
 ### Baden-Württemberg · Gymnasium (0)
 
@@ -32,12 +32,10 @@ Alle Lernbereiche haben eine Simulation.
 
 Alle Lernbereiche haben eine Simulation.
 
-### Hessen · Gymnasium (4)
+### Hessen · Gymnasium (2)
 
 | Stufe | Nr. | Lernbereich | Kurz |
 | --- | --- | --- | --- |
-| 5/6 | 3.2.3 | Messvorgänge › Währung/Geld | Mit Geldbeträgen in Euro und Cent rechnen. |
-| 7/8 | 3.1.2 | Umgang mit Größen › Größen von Winkeln (Minuten, Sekunden) | Winkel genauer in Grad, Minuten und Sekunden angeben. |
 | 12 | Q1.2.5 | Anwendungen der Integralrechnung › Uneigentliche Integrale (nur LK) | Unendlich ausgedehnte Flächen auf endlichen Inhalt untersuchen. |
 | 12 | Q2.3.17 | Geraden und Ebenen im Raum › Darstellung von Parabelbahnen mithilfe von Parametern (nur LK) | Flugbahnen (z. B. eines Balls) parametrisch beschreiben. |
 

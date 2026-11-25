@@ -390,6 +390,7 @@ export const hessenGymnasiumMathematik: StateCurriculum = {
               code: '3.2.3',
               title: L('Währung/Geld', 'Currency/money'),
               summary: L('Mit Geldbeträgen in Euro und Cent rechnen.', 'Calculating with amounts of money in euros and cents.'),
+              simulations: ['einheiten'],
             },
             {
               code: '3.2.4',
@@ -853,6 +854,7 @@ export const hessenGymnasiumMathematik: StateCurriculum = {
               code: '3.2.3',
               title: L('Währung/Geld', 'Currency/money'),
               summary: L('Mit Geldbeträgen in Euro und Cent rechnen.', 'Calculating with amounts of money in euros and cents.'),
+              simulations: ['einheiten'],
             },
             {
               code: '3.2.4',
@@ -1259,6 +1261,7 @@ export const hessenGymnasiumMathematik: StateCurriculum = {
               code: '3.1.2',
               title: L('Größen von Winkeln (Minuten, Sekunden)', 'Sizes of angles (minutes, seconds)'),
               summary: L('Winkel genauer in Grad, Minuten und Sekunden angeben.', 'Stating angles more precisely in degrees, minutes and seconds.'),
+              simulations: ['einheiten'],
             },
             {
               code: '3.1.3',
@@ -1699,6 +1702,7 @@ export const hessenGymnasiumMathematik: StateCurriculum = {
               code: '3.1.2',
               title: L('Größen von Winkeln (Minuten, Sekunden)', 'Sizes of angles (minutes, seconds)'),
               summary: L('Winkel genauer in Grad, Minuten und Sekunden angeben.', 'Stating angles more precisely in degrees, minutes and seconds.'),
+              simulations: ['einheiten'],
             },
             {
               code: '3.1.3',

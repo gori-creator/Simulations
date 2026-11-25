@@ -665,14 +665,14 @@ export const mathematik: Subject = {
             slug: L('einheiten-umrechnen-einheitentafel', 'converting-units-chart'),
             title: L('Einheiten umrechnen mit der Einheitentafel', 'Converting units with a place-value chart'),
             summary: L(
-              '3,5 km sind 3500 m, aber 3,5 m² sind 35 000 cm². In der Einheitentafel sieht man, warum das Komma bei Flächen doppelt so weit springt.',
-              '3.5 km is 3500 m, but 3.5 m² is 35,000 cm². The unit table shows why the decimal point jumps twice as far for areas.',
+              '3,5 km sind 3500 m, aber 3,5 m² sind 35 000 cm². In der Einheitentafel sieht man, warum das Komma bei Flächen doppelt so weit springt – und warum Zeit und Winkel mit 60 statt mit 10 rechnen. Auch Euro und Cent sind dabei.',
+              '3.5 km is 3500 m, but 3.5 m² is 35,000 cm². The unit table shows why the decimal point jumps twice as far for areas – and why time and angles work in sixties rather than tens. Euros and cents are included too.',
             ),
             grades: [5, 8],
             kmk: ['M-L2', 'M-L1', 'M-K4', 'M-K5'],
             keywords: L(
-              ['Einheiten', 'umrechnen', 'Einheitentafel', 'Umrechnungszahl', 'Komma verschieben', 'Länge', 'Masse', 'Gewicht', 'Zeit', 'Flächeninhalt', 'Volumen', 'Liter', 'Milliliter', 'km', 'm', 'cm', 'mm', 'kg', 'g', 't', 'm²', 'cm²', 'Ar', 'Hektar', 'cm³', 'dm³', 'Stunde', 'Minute', 'Sekunde', 'Größen'],
-              ['units', 'convert', 'unit conversion chart', 'conversion factor', 'move the decimal point', 'length', 'mass', 'weight', 'time', 'area', 'volume', 'litre', 'millilitre', 'km', 'm', 'cm', 'mm', 'kg', 'g', 'tonne', 'm²', 'cm²', 'are', 'hectare', 'cm³', 'dm³', 'hour', 'minute', 'second', 'measures'],
+              ['Einheiten', 'umrechnen', 'Einheitentafel', 'Umrechnungszahl', 'Komma verschieben', 'Länge', 'Masse', 'Gewicht', 'Zeit', 'Flächeninhalt', 'Volumen', 'Liter', 'Milliliter', 'km', 'm', 'cm', 'mm', 'kg', 'g', 't', 'm²', 'cm²', 'Ar', 'Hektar', 'cm³', 'dm³', 'Stunde', 'Minute', 'Sekunde', 'Größen', 'Geld', 'Euro', 'Cent', 'Winkelminute', 'Winkelsekunde', 'Grad'],
+              ['units', 'convert', 'unit conversion chart', 'conversion factor', 'move the decimal point', 'length', 'mass', 'weight', 'time', 'area', 'volume', 'litre', 'millilitre', 'km', 'm', 'cm', 'mm', 'kg', 'g', 'tonne', 'm²', 'cm²', 'are', 'hectare', 'cm³', 'dm³', 'hour', 'minute', 'second', 'measures', 'money', 'euro', 'cent', 'minute of arc', 'second of arc', 'degree'],
             ),
           },
           {
