@@ -170,7 +170,7 @@ const K7: CurriculumUnit[] = [
       'Negative Zahlen darstellen und ordnen, mit rationalen Zahlen rechnen, potenzieren und Quadratwurzeln ziehen, lineare Gleichungen lösen und Prozentrechnung.',
       'Representing and ordering negative numbers, calculating with rational numbers, powers and square roots, solving linear equations and percentages.',
     ),
-    simulations: ['zahlengerade', 'termbaum', 'waagemodell', 'quadratwurzel', 'prozentstreifen', 'diagramme'],
+    simulations: ['zahlengerade', 'termbaum', 'waagemodell', 'quadratwurzel', 'prozentstreifen', 'diagramme', 'vorzeichenregeln'],
   },
   {
     code: '3',
@@ -215,7 +215,7 @@ const K8: CurriculumUnit[] = [
       'Struktur von Termen erkennen, Terme und lineare Gleichungen ohne Hilfsmittel umformen, binomische Formeln und ein Einblick in Ungleichungen.',
       'Recognising the structure of terms, transforming terms and linear equations by hand, binomial formulas and an introduction to inequalities.',
     ),
-    simulations: ['binomische-formeln'],
+    simulations: ['binomische-formeln', 'ungleichungen'],
   },
   {
     code: '2',

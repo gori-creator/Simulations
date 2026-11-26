@@ -73,7 +73,7 @@ export const bayernGymnasiumMathematik: StateCurriculum = {
                 'Schriftliche Verfahren, Primfaktorzerlegung und Teilbarkeitsregeln, Zählprinzip mit Baumdiagrammen, Vorzeichenregeln sowie Potenzen und Zehnerpotenzen.',
                 'Written methods, prime factorisation and divisibility rules, the counting principle with tree diagrams, sign rules, powers and powers of ten.',
               ),
-              simulations: ['primfaktoren', 'zaehlprinzip', 'zehnerpotenzen'],
+              simulations: ['primfaktoren', 'zaehlprinzip', 'zehnerpotenzen', 'vorzeichenregeln'],
             },
             {
               code: '3.2',
@@ -303,7 +303,7 @@ export const bayernGymnasiumMathematik: StateCurriculum = {
             'Geraden y = m · x + t, Bedeutung von m und t, Geradengleichungen aufstellen, Nullstellen und Schnittpunkte, lineare Ungleichungen, direkte Proportionalität.',
             'Lines y = m · x + t, the meaning of m and t, finding equations of lines, zeros and intersections, linear inequalities, direct proportion.',
           ),
-          simulations: ['lineare-funktion', 'proportional'],
+          simulations: ['lineare-funktion', 'proportional', 'ungleichungen'],
         },
         {
           code: '3',

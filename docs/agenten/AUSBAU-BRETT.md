@@ -12,14 +12,14 @@ Stand: 26.11.2026 · 49 Aufgaben
 | ID | Simulation | Fach | Klassen | Status | Zweig |
 | --- | --- | --- | --- | --- | --- |
 | `newtonsche-gesetze` | Newton’sche Gesetze | Physik | 7–12 | fertig (PR #307) | `ausbau/newtonsche-gesetze` |
-| `druck` | Druck und Hydraulik | Physik | 7–10 | offen | `ausbau/druck` (leerer Zweig, frei – darf übernommen werden) |
-| `waermetransport` | Wärmetransport und Klima | Physik | 5–13 | offen |  |
-| `waermeausdehnung` | Wärmeausdehnung, Anomalie des Wassers | Physik | 6–10 | offen |  |
-| `ladungen-coulomb` | Ladung und Coulomb’sches Gesetz | Physik | 6–12 | offen |  |
-| `vorzeichenregeln` | Vorzeichenregeln (Mathe) | Mathe | 5–8 | offen |  |
-| `farben` | Farben: Prisma und Farbmischung | Physik | 6–10 | offen |  |
-| `stromwirkungen` | Wirkungen und Gefahren des Stroms | Physik | 5–9 | offen |  |
-| `ungleichungen` | Lineare Ungleichungen (Mathe) | Mathe | 6–9 | offen |  |
+| `druck` | Druck und Hydraulik | Physik | 7–10 | fertig (PR #309) | `ausbau/druck` |
+| `waermetransport` | Wärmetransport und Klima | Physik | 5–13 | fertig (PR #310) | `ausbau/waermetransport` |
+| `waermeausdehnung` | Wärmeausdehnung, Anomalie des Wassers | Physik | 6–10 | fertig (PR #311) | `ausbau/waermeausdehnung` |
+| `ladungen-coulomb` | Ladung und Coulomb’sches Gesetz | Physik | 6–12 | fertig (PR #312) | `ausbau/ladungen-coulomb` |
+| `vorzeichenregeln` | Vorzeichenregeln (Mathe) | Mathe | 5–8 | fertig (PR #313) | `ausbau/vorzeichenregeln` |
+| `farben` | Farben: Prisma und Farbmischung | Physik | 6–10 | fertig (PR #314) | `ausbau/farben` |
+| `stromwirkungen` | Wirkungen und Gefahren des Stroms | Physik | 5–9 | fertig (PR #315) | `ausbau/stromwirkungen` |
+| `ungleichungen` | Lineare Ungleichungen (Mathe) | Mathe | 6–9 | fertig (PR #316) | `ausbau/ungleichungen` |
 | `leistung` | Arbeit und Leistung | Physik | 7–11 | offen |  |
 | `polarisation` | Polarisation und Brechung | Physik | 10–13 | offen |  |
 | `em-spektrum` | Elektromagnetisches Spektrum | Physik | 10–13 | offen |  |

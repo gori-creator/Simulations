@@ -46,7 +46,7 @@ const DJ_5_6: CurriculumUnit[] = [
       'Einfache Stromkreise nach Schaltplan aufbauen, Reihen- und Parallelschaltung unterscheiden, Leiter und Isolatoren, Spannungsangaben, Gefahren der Elektrizität und der Elektromagnet.',
       'Building simple circuits from a diagram, telling series and parallel circuits apart, conductors and insulators, voltage ratings, dangers of electricity and the electromagnet.',
     ),
-    simulations: ['einfacher-stromkreis'],
+    simulations: ['einfacher-stromkreis', 'stromwirkungen'],
   },
   {
     code: '3',
@@ -55,7 +55,7 @@ const DJ_5_6: CurriculumUnit[] = [
       'Sehen mit dem Sender-Empfänger-Modell, geradlinige Ausbreitung, Schatten, Finsternisse und Mondphasen; Reflexion, Streuung und Brechung; Bilder an Spiegel, Lochblende und Sammellinse; weißes Licht als Farbgemisch.',
       'Seeing with the sender–receiver model, straight-line propagation, shadows, eclipses and lunar phases; reflection, scattering and refraction; images in mirrors, pinholes and converging lenses; white light as a mixture of colours.',
     ),
-    simulations: ['licht-schatten', 'reflexion', 'brechung', 'linsen'],
+    simulations: ['licht-schatten', 'reflexion', 'brechung', 'linsen', 'farben'],
   },
 ];
 
@@ -239,7 +239,7 @@ const Q_UNITS: CurriculumUnit[] = [
           'Feldlinienbilder, Feldstärke, faradayscher Käfig, Spannung als Energie pro Ladung; nur eA: coulombsches Gesetz und Potenzial.',
           'Field-line patterns, field strength, the Faraday cage, voltage as energy per charge; higher level only: Coulomb’s law and potential.',
         ),
-        simulations: ['feldlinien'],
+        simulations: ['feldlinien', 'ladungen-coulomb'],
       },
       {
         code: 'Q-1.2',

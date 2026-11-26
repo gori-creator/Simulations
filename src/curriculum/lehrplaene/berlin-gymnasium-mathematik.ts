@@ -107,7 +107,7 @@ export const D_PARTS: Record<string, PartSpec> = {
       'Große natürliche Zahlen in der Stellenwerttafel, Teilbarkeitsregeln, Primzahlen, Vielfache und Teiler; Brüche als Anteile, erweitern, kürzen, vergleichen und am Zahlenstrahl ordnen; Dezimalzahlen.',
       'Large natural numbers in the place-value chart, divisibility rules, primes, multiples and divisors; fractions as parts, expanding, simplifying, comparing and ordering them on the number line; decimals.',
     ),
-    simulations: ['stellenwerte', 'primfaktoren', 'bruchteile', 'brueche-vergleichen', 'dezimalbrueche'],
+    simulations: ['stellenwerte', 'primfaktoren', 'bruchteile', 'brueche-vergleichen', 'dezimalbrueche', 'vorzeichenregeln'],
   },
   '1.2': {
     summary: L(

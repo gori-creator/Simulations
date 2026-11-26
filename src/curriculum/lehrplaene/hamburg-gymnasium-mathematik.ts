@@ -194,7 +194,7 @@ const KS_7_8_UNITS: CurriculumUnit[] = [
       'Negative Zahlen im Alltag und am Zahlenstrahl, Vorzeichen und Betrag, ordnen, die vier Grundrechenarten mit Vorzeichenregeln.',
       'Negative numbers in everyday life and on the number line, sign and absolute value, ordering, the four operations with sign rules.',
     ),
-    simulations: ['zahlengerade'],
+    simulations: ['zahlengerade', 'vorzeichenregeln'],
   },
   {
     code: '2',
@@ -275,7 +275,7 @@ const KS_7_8_UNITS: CurriculumUnit[] = [
       'Lineare Gleichungen aufstellen und mit Äquivalenzumformungen lösen, nichtlineare Gleichungen und Ungleichungen, Terme umformen, binomische Formeln.',
       'Setting up linear equations and solving them by equivalent transformations, non-linear equations and inequalities, rearranging terms, binomial formulas.',
     ),
-    simulations: ['waagemodell', 'binomische-formeln', 'gleichungen-grafisch'],
+    simulations: ['waagemodell', 'binomische-formeln', 'gleichungen-grafisch', 'ungleichungen'],
   },
   {
     code: '11',

@@ -236,7 +236,7 @@ const ERSTE_STUFE_UNITS: CurriculumUnit[] = [
           'Vorzeichenregeln, Rechengesetze für rationale Zahlen und binomische Formeln.',
           'Sign rules, laws of arithmetic for rational numbers and binomial formulas.',
         ),
-        simulations: ['zahlengerade', 'binomische-formeln', 'termbaum'],
+        simulations: ['zahlengerade', 'binomische-formeln', 'termbaum', 'vorzeichenregeln'],
       },
       {
         code: '5.4',

@@ -98,6 +98,22 @@ export const mathematik: Subject = {
         ]),
         topic('brueche', L('Brüche und Dezimalbrüche', 'Fractions and decimals'), [
           {
+            id: 'vorzeichenregeln',
+            status: 'ready',
+            slug: L('vorzeichenregeln-multiplizieren-dividieren', 'sign-rules-multiplying-dividing'),
+            title: L('Vorzeichenregeln beim Multiplizieren und Dividieren', 'Sign rules for multiplying and dividing'),
+            summary: L(
+              'Warum ist minus mal minus plus? Sprünge am Zahlenstrahl, ein Muster, das über die Null weiterläuft, gestrichene Schuldscheine und ein Blick zurück auf die Temperatur liefern Antworten. Mit Einmaleins-Tafel, vielen Faktoren, Potenzen und Kopfrechentraining.',
+              'Why is minus times minus plus? Jumps on the number line, a pattern that runs on past zero, cancelled IOUs and a look back at the temperature give answers. With a times table, many factors, powers and mental arithmetic practice.',
+            ),
+            grades: [5, 8],
+            kmk: ['M-L1', 'M-K1', 'M-K4'],
+            keywords: L(
+              ['Vorzeichenregel', 'minus mal minus', 'negative Zahlen', 'ganze Zahlen', 'rationale Zahlen', 'Multiplikation', 'Division', 'Permanenzprinzip', 'Schuldenmodell', 'Gegenzahl', 'Zahlenstrahl'],
+              ['sign rules', 'minus times minus', 'negative numbers', 'integers', 'rational numbers', 'multiplication', 'division', 'permanence principle', 'debt model', 'opposite number', 'number line'],
+            ),
+          },
+          {
             id: 'bruchteile',
             status: 'ready',
             slug: L('bruchteile', 'fractions'),
@@ -281,6 +297,22 @@ export const mathematik: Subject = {
           },
         ]),
         topic('gleichungen', L('Gleichungen und Gleichungssysteme', 'Equations and systems of equations'), [
+          {
+            id: 'ungleichungen',
+            status: 'ready',
+            slug: L('lineare-ungleichungen', 'linear-inequalities'),
+            title: L('Lineare Ungleichungen lösen', 'Solving linear inequalities'),
+            summary: L(
+              'Wann ist 2x + 1 kleiner als 7? Zwei Geraden, eine Waage und der Zahlenstrahl zeigen alle Lösungen, die Umformungen samt umgedrehtem Zeichen stehen daneben. Außerdem: Bedingungen mit „und“ und „oder“, Tarife und Aufzüge aus dem Alltag, Halbebenen und ein Übungsmodus.',
+              'When is 2x + 1 less than 7? Two lines, a balance and the number line show all solutions, with the transformation steps including the reversed sign. Also: conditions with “and” and “or”, plans and lifts from everyday life, half-planes and a practice mode.',
+            ),
+            grades: [6, 9],
+            kmk: ['M-L4', 'M-L1', 'M-K5'],
+            keywords: L(
+              ['Ungleichung', 'lineare Ungleichung', 'Lösungsmenge', 'Äquivalenzumformung', 'Relationszeichen', 'kleiner', 'größer', 'Zeichen umdrehen', 'Zahlenstrahl', 'Intervall', 'Probe', 'Tarifvergleich', 'Doppelungleichung', 'Intervall', 'Halbebene', 'und', 'oder', 'Waage'],
+              ['inequality', 'linear inequality', 'solution set', 'equivalent transformation', 'inequality sign', 'less than', 'greater than', 'reverse the sign', 'number line', 'interval', 'check', 'comparing tariffs', 'compound inequality', 'interval', 'half-plane', 'and', 'or', 'balance'],
+            ),
+          },
           {
             id: 'waagemodell',
             status: 'ready',

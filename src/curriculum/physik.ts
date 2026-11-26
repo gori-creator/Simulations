@@ -354,6 +354,22 @@ export const physik: Subject = {
           grades: [6, 9],
           simulations: [
             {
+              id: 'stromwirkungen',
+              status: 'ready',
+              slug: L('wirkungen-und-gefahren-des-stroms', 'effects-and-dangers-of-current'),
+              title: L('Wirkungen und Gefahren des Stroms', 'Effects and dangers of electric current'),
+              summary: L(
+                'Strom bringt eine Lampe zum Leuchten, macht einen Draht heiß, einen Nagel magnetisch und lässt Gasbläschen aufsteigen. Sicherung, Schutzleiter und FI-Schalter schützen – im Haushalt, wo sich die Ströme an der Mehrfachsteckdose addieren. Und warum sitzt ein Vogel gefahrlos auf der Hochspannungsleitung?',
+                'Current makes a lamp glow, heats a wire, turns a nail into a magnet and makes gas bubbles rise. Fuse, protective earth and RCD keep us safe – at home, where currents add up at the power strip. And why can a bird sit safely on a high-voltage line?',
+              ),
+              grades: [5, 9],
+              kmk: ['P-S', 'P-B', 'P-BK-Energie', 'P-BK-Wechselwirkung'],
+              keywords: L(
+                ['Wirkungen des Stroms', 'Wärmewirkung', 'Lichtwirkung', 'magnetische Wirkung', 'chemische Wirkung', 'Elektrolyse', 'Glühlampe', 'Heizdraht', 'Elektromagnet', 'Sicherung', 'Schmelzsicherung', 'Kurzschluss', 'Gefahren', 'Stromunfall', 'Körperwiderstand', 'FI-Schutzschalter', 'Steckdose', 'Sicherheit', 'Schutzleiter'],
+                ['effects of current', 'heating effect', 'lighting effect', 'magnetic effect', 'chemical effect', 'electrolysis', 'light bulb', 'heating wire', 'electromagnet', 'fuse', 'short circuit', 'dangers', 'electric shock', 'body resistance', 'residual-current device', 'RCD', 'socket', 'safety', 'earth wire'],
+              ),
+            },
+            {
               id: 'einfacher-stromkreis',
               status: 'ready',
               slug: L('einfacher-stromkreis', 'simple-circuit'),
@@ -367,6 +383,22 @@ export const physik: Subject = {
               keywords: L(
                 ['Stromkreis', 'geschlossener Stromkreis', 'offener Stromkreis', 'Schalter', 'Glühlampe', 'Batterie', 'Elektronen', 'technische Stromrichtung', 'Schaltplan', 'Schaltzeichen', 'Kurzschluss', 'Sicherung', 'Leiter', 'Nichtleiter', 'Isolator'],
                 ['electric circuit', 'closed circuit', 'open circuit', 'switch', 'light bulb', 'battery', 'electrons', 'conventional current', 'circuit diagram', 'circuit symbols', 'short circuit', 'fuse', 'conductor', 'insulator'],
+              ),
+            },
+            {
+              id: 'ladungen-coulomb',
+              status: 'ready',
+              slug: L('elektrische-ladung-coulomb', 'electric-charge-coulomb'),
+              title: L('Elektrische Ladung und Coulomb’sches Gesetz', 'Electric charge and Coulomb’s law'),
+              summary: L(
+                'Reibt man einen Kunststoffstab an Wolle, wandern Elektronen – Stab und Tuch ziehen sich danach an. Ein Elektroskop zeigt die Ladung, Influenz lädt ohne Berührung, Feldlinien zeigen das Feld, und das Coulomb’sche Gesetz sagt, wie stark die Kraft ist – bis hinein ins Atom.',
+                'Rub a plastic rod with wool and electrons move – afterwards rod and cloth attract. An electroscope shows the charge, induction charges without touching, field lines show the field, and Coulomb’s law tells how strong the force is – right down to the atom.',
+              ),
+              grades: [6, 12],
+              kmk: ['P-S', 'P-E', 'P-BK-Wechselwirkung', 'P-BK-Mathematisieren'],
+              keywords: L(
+                ['elektrische Ladung', 'Elektrostatik', 'Reibungselektrizität', 'Elektron', 'positiv', 'negativ', 'Anziehung', 'Abstoßung', 'Elektroskop', 'Ladungstrennung', 'Coulomb', 'Coulombsches Gesetz', 'Coulombkraft', 'Elementarladung', 'Erdung'],
+                ['electric charge', 'electrostatics', 'charging by friction', 'electron', 'positive', 'negative', 'attraction', 'repulsion', 'electroscope', 'charge separation', 'coulomb', 'Coulomb’s law', 'Coulomb force', 'elementary charge', 'earthing'],
               ),
             },
             {
@@ -924,6 +956,22 @@ export const physik: Subject = {
               keywords: L(
                 ['Brechung', 'Brechungsgesetz', 'Snellius', 'Totalreflexion', 'Grenzwinkel', 'Brechungsindex', 'Lot', 'Einfallswinkel', 'optisch dichter', 'Lichtleiter', 'Glasfaser', 'Prisma', 'Dispersion', 'Brewster-Winkel', 'scheinbare Hebung', 'Huygens'],
                 ['refraction', 'Snell’s law', 'total internal reflection', 'critical angle', 'refractive index', 'normal', 'angle of incidence', 'optical fibre', 'prism', 'dispersion', 'Brewster angle', 'apparent depth', 'Huygens'],
+              ),
+            },
+            {
+              id: 'farben',
+              status: 'ready',
+              slug: L('farben-prisma-farbmischung', 'colours-prism-colour-mixing'),
+              title: L('Farben: Prisma und Farbmischung', 'Colours: prism and colour mixing'),
+              summary: L(
+                'Ein Prisma fächert weißes Licht in alle Regenbogenfarben auf. Drei farbige Lampen ergeben zusammen wieder Weiß, drei Farbfilter zusammen Schwarz. Unter grünem Licht wird ein roter Apfel schwarz – und das Auge sieht mit nur drei Zapfenarten alle Farben.',
+                'A prism fans white light out into all the colours of the rainbow. Three coloured lamps together make white again, three colour filters together make black. Under green light a red apple turns black – and the eye sees every colour with just three kinds of cone.',
+              ),
+              grades: [6, 10],
+              kmk: ['P-S', 'P-E', 'P-BK-Wechselwirkung'],
+              keywords: L(
+                ['Farben', 'Prisma', 'Spektrum', 'Spektralfarben', 'Dispersion', 'Regenbogen', 'weißes Licht', 'additive Farbmischung', 'subtraktive Farbmischung', 'RGB', 'CMY', 'CMYK', 'Farbfilter', 'Absorption', 'Transmission', 'Komplementärfarbe', 'Bildschirm', 'Pixel', 'Infrarot', 'Ultraviolett'],
+                ['colours', 'prism', 'spectrum', 'spectral colours', 'dispersion', 'rainbow', 'white light', 'additive colour mixing', 'subtractive colour mixing', 'RGB', 'CMY', 'CMYK', 'colour filter', 'absorption', 'transmission', 'complementary colour', 'screen', 'pixel', 'infrared', 'ultraviolet'],
               ),
             },
             {

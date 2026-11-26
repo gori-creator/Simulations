@@ -57,7 +57,7 @@ const SJ_6_UNITS: CurriculumUnit[] = [
       'Licht als Strahl: Schatten und Finsternisse, Reflexionsgesetz am Spiegel, Brechung und Totalreflexion qualitativ, Bilder an Sammellinse und Lochkamera.',
       'Light as rays: shadows and eclipses, the law of reflection at a mirror, refraction and total internal reflection qualitatively, images formed by a converging lens and a pinhole camera.',
     ),
-    simulations: ['licht-schatten', 'reflexion', 'brechung', 'linsen'],
+    simulations: ['licht-schatten', 'reflexion', 'brechung', 'linsen', 'farben'],
   },
   {
     code: '3',
@@ -106,7 +106,7 @@ const SJ_7_8_UNITS: CurriculumUnit[] = [
       'Ladung und elektrisches Feld, einfache Stromkreise aufbauen, Stromstärke und Spannung messen, Wärme-, Licht- und magnetische Wirkung des Stroms.',
       'Charge and electric field, building simple circuits, measuring current and voltage, heating, lighting and magnetic effects of current.',
     ),
-    simulations: ['einfacher-stromkreis'],
+    simulations: ["einfacher-stromkreis", "stromwirkungen", "ladungen-coulomb"],
   },
   {
     code: '3',
@@ -409,7 +409,7 @@ const QPHASE_UNITS: CurriculumUnit[] = [
           'Wie im grundlegenden Niveau, zusätzlich Coulomb’sches Gesetz, Potenzial, radiales Feld, Auf- und Entladen quantitativ und Millikan-Versuch.',
           'As at the basic level, plus Coulomb’s law, potential, the radial field, charging and discharging quantitatively and Millikan’s experiment.',
         ),
-        simulations: ['feldlinien', 'kondensator'],
+        simulations: ['feldlinien', 'kondensator', 'ladungen-coulomb'],
       },
       {
         code: 'eA-2.2',

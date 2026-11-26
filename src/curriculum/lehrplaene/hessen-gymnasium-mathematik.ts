@@ -1060,6 +1060,7 @@ export const hessenGymnasiumMathematik: StateCurriculum = {
                 'Calculation methods, arithmetic laws and their combination for rational and real numbers',
               ),
               summary: L('Vorzeichenregeln und Rechengesetze sicher anwenden.', 'Applying sign rules and arithmetic laws confidently.'),
+              simulations: ['vorzeichenregeln'],
             },
             {
               code: '1.2.2',
@@ -1367,6 +1368,7 @@ export const hessenGymnasiumMathematik: StateCurriculum = {
               code: '4.2.4',
               title: L('Lösen von Ungleichungen', 'Solving inequalities'),
               summary: L('Lineare Ungleichungen lösen und Lösungsmengen angeben.', 'Solving linear inequalities and stating solution sets.'),
+              simulations: ['ungleichungen'],
             },
           ],
         },
@@ -1506,6 +1508,7 @@ export const hessenGymnasiumMathematik: StateCurriculum = {
                 'Calculation methods, arithmetic laws and their combination for rational and real numbers',
               ),
               summary: L('Vorzeichenregeln und Rechengesetze sicher anwenden.', 'Applying sign rules and arithmetic laws confidently.'),
+              simulations: ['vorzeichenregeln'],
             },
             {
               code: '1.2.2',
@@ -1805,6 +1808,7 @@ export const hessenGymnasiumMathematik: StateCurriculum = {
               code: '4.2.4',
               title: L('Lösen von Ungleichungen', 'Solving inequalities'),
               summary: L('Lineare Ungleichungen lösen und Lösungsmengen angeben.', 'Solving linear inequalities and stating solution sets.'),
+              simulations: ['ungleichungen'],
             },
           ],
         },

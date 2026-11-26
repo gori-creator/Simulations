@@ -126,7 +126,7 @@ const KS_5_6_UNITS: CurriculumUnit[] = [
     code: '11',
     title: L('Ganze Zahlen', 'Integers'),
     summary: L('Negative Zahlen im Alltag, Zahlengerade und Vorzeichen, Koordinatensystem mit vier Quadranten, Rechnen mit ganzen Zahlen.', 'Negative numbers in everyday life, the number line and signs, the coordinate system with four quadrants, calculating with integers.'),
-    simulations: ['zahlengerade', 'koordinaten-lage'],
+    simulations: ['zahlengerade', 'koordinaten-lage', 'vorzeichenregeln'],
   },
 ];
 
@@ -142,7 +142,7 @@ const KS_7_UNITS: CurriculumUnit[] = [
     code: '2',
     title: L('Terme, Gleichungen und Ungleichungen', 'Terms, equations and inequalities'),
     summary: L('Aussagen und Aussageformen, Grund- und Lösungsmenge, Äquivalenzumformungen bei Gleichungen und Ungleichungen.', 'Statements and open sentences, domain and solution set, equivalent transformations of equations and inequalities.'),
-    simulations: ['termbaum', 'waagemodell'],
+    simulations: ['termbaum', 'waagemodell', 'ungleichungen'],
   },
   {
     code: '3',

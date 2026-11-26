@@ -62,6 +62,7 @@ const SJ_5_6_UNITS: CurriculumUnit[] = [
           'Begriffe Variable, Gleichung und Lösung; einfache Gleichungen und Ungleichungen durch Überlegen oder mit Umkehroperationen lösen und die Probe machen.',
           'The terms variable, equation and solution; solving simple equations and inequalities by reasoning or with inverse operations, and checking the result.',
         ),
+        simulations: ['ungleichungen'],
       },
       {
         code: '1.3',
@@ -222,7 +223,7 @@ const SJ_7_8_UNITS: CurriculumUnit[] = [
           'Mit positiven und negativen Zahlen rechnen, Zahlenbereiche unterscheiden, Wurzeln ziehen und erkennen, dass √2 nicht rational ist.',
           'Calculating with positive and negative numbers, distinguishing number sets, taking roots and seeing that √2 is not rational.',
         ),
-        simulations: ['zahlengerade', 'quadratwurzel'],
+        simulations: ['zahlengerade', 'quadratwurzel', 'vorzeichenregeln'],
       },
       {
         code: '1.3',
@@ -231,7 +232,7 @@ const SJ_7_8_UNITS: CurriculumUnit[] = [
           'Lineare Gleichungen, Verhältnisgleichungen und Ungleichungen mit Äquivalenzumformungen lösen, Formeln umstellen und Sachaufgaben damit lösen.',
           'Solving linear equations, proportions and inequalities by equivalent transformations, rearranging formulas and applying them to word problems.',
         ),
-        simulations: ['waagemodell'],
+        simulations: ['waagemodell', 'ungleichungen'],
       },
       {
         code: '1.4',

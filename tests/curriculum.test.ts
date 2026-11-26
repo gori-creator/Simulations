@@ -185,6 +185,7 @@ describe('Länder-Lehrpläne', () => {
     },
     'rheinland-pfalz-gymnasium-physik': {
       leistung: 'Mechanische Arbeit und Leistung sind in den erfassten Lernbereichen nicht ausdrücklich genannt.',
+      stromwirkungen: 'Wirkungen und Gefahren des Stroms sind in den erfassten Lernbereichen nicht ausdrücklich genannt (ggf. im Fach Naturwissenschaften 5/6).',
       magnete: 'In den erfassten Lernbereichen kommen Dauermagnete nicht vor (bitte am Lehrplan prüfen).',
       schall: 'Akustik erst als Wahlthema in 12/13; die Simulation ist für Klasse 5 bis 11 gedacht.',
     },
@@ -209,6 +210,7 @@ describe('Länder-Lehrpläne', () => {
       'doppler-effekt': 'nur in der Lehrplanalternative Astrophysik (Jgst. 13), die nicht abgebildet ist',
     },
     'berlin-gymnasium-mathematik': {
+      ungleichungen: 'Ungleichungen werden im Lehrplan nicht eigens genannt (nur Gleichungen).',
       uebergangsmatrizen: 'Übergangsmatrizen und Markov-Ketten nicht im Lehrplan',
       'komplexe-zahlen': 'Komplexe Zahlen nicht im Lehrplan',
       kegelschnitte: 'Kegelschnitte und Ortslinien von Ellipse/Parabel/Hyperbel nicht im Lehrplan',
@@ -230,6 +232,7 @@ describe('Länder-Lehrpläne', () => {
       zeitdilatation: 'Spezielle Relativitätstheorie nicht im Rahmenlehrplan der Oberstufe',
     },
     'brandenburg-gymnasium-mathematik': {
+      ungleichungen: 'Ungleichungen werden im Lehrplan nicht eigens genannt (nur Gleichungen).',
       uebergangsmatrizen: 'Übergangsmatrizen und Markov-Ketten nicht im Lehrplan',
       'komplexe-zahlen': 'Komplexe Zahlen nicht im Lehrplan',
       kegelschnitte: 'Kegelschnitte und Ortslinien von Ellipse/Parabel/Hyperbel nicht im Lehrplan',
@@ -251,6 +254,7 @@ describe('Länder-Lehrpläne', () => {
       zeitdilatation: 'Spezielle Relativitätstheorie nicht im Rahmenlehrplan der Oberstufe',
     },
     'bremen-gymnasium-mathematik': {
+      ungleichungen: 'Ungleichungen werden im Lehrplan nicht eigens genannt (nur Gleichungen).',
       richtungsfeld: 'Differenzialgleichungen und Richtungsfelder nicht im Lehrplan',
       'komplexe-zahlen': 'Komplexe Zahlen nicht im Lehrplan',
       kegelschnitte: 'Kegelschnitte und Ortslinien von Ellipse/Parabel/Hyperbel nicht im Lehrplan',
@@ -263,6 +267,7 @@ describe('Länder-Lehrpläne', () => {
       'fourier-reihen': 'nicht im Bildungsplan (Hochschule)',
     },
     'bremen-gymnasium-physik': {
+      stromwirkungen: 'Wirkungen und Gefahren des Stroms sind in den erfassten Lernbereichen nicht ausdrücklich genannt (ggf. im Fach Naturwissenschaften 5/6).',
       hubble: 'Kosmologie, Rotverschiebung und Hubble-Beziehung kommen im Lehrplan nicht vor.',
       'hr-diagramm': 'Astrophysik und Sterne kommen in den erfassten Lernbereichen nicht vor (bitte am Lehrplan prüfen).',
       'diode-transistor': 'Halbleiter, Diode und Transistor nicht im Bildungsplan (siehe docs/lehrplaene/bremen-gymnasium-physik.md)',
@@ -280,12 +285,14 @@ describe('Länder-Lehrpläne', () => {
     },
     'hamburg-gymnasium-physik': {
       leistung: 'Mechanische Arbeit und Leistung sind in den erfassten Lernbereichen nicht ausdrücklich genannt.',
+      stromwirkungen: 'Wirkungen und Gefahren des Stroms sind in den erfassten Lernbereichen nicht ausdrücklich genannt (ggf. im Fach Naturwissenschaften 5/6).',
       magnete: 'Dauermagnete erst im Zusammenhang mit Elektromagnetismus (Jahrgang 9/10); die Simulation ist für Klasse 5–7 gedacht.',
       'diode-transistor': 'Halbleiter, Diode und Transistor nicht im Bildungsplan (siehe docs/lehrplaene/hamburg-gymnasium-physik.md)',
       'licht-schatten': 'Optik vollständig im Fach Naturwissenschaften und Technik 5/6 (siehe docs/lehrplaene/hamburg-gymnasium-physik.md)',
       reflexion: 'Strahlenoptik vollständig im Fach Naturwissenschaften und Technik 5/6',
       brechung: 'Strahlenoptik vollständig im Fach Naturwissenschaften und Technik 5/6',
       linsen: 'Strahlenoptik in NWT 5/6; Linsen in der Studienstufe nur im Wahlthema Astrophysik',
+      farben: 'Licht und Farben vollständig im Fach Naturwissenschaften und Technik 5/6',
       'doppler-effekt': 'Doppler-Effekt nicht im Bildungsplan',
       gasgesetze: 'Gasgesetze nicht im Bildungsplan (Sek. I nur Temperatur im Teilchenmodell)',
     },
@@ -301,6 +308,7 @@ describe('Länder-Lehrpläne', () => {
       'doppler-effekt': 'kein passender Schwerpunkt (siehe docs/lehrplaene/hessen-gymnasium-physik.md)',
     },
     'niedersachsen-gymnasium-mathematik': {
+      ungleichungen: 'Ungleichungen werden im Lehrplan nicht eigens genannt (nur Gleichungen).',
       uebergangsmatrizen: 'Übergangsmatrizen und Markov-Ketten nicht im Lehrplan',
       'komplexe-zahlen': 'Komplexe Zahlen nicht im Lehrplan',
       'polstellen-asymptoten': 'gebrochenrationale Funktionen mit Polstellen nicht im Kerncurriculum (siehe docs/lehrplaene/niedersachsen-gymnasium-mathematik.md)',
@@ -321,6 +329,7 @@ describe('Länder-Lehrpläne', () => {
       zeitdilatation: 'Spezielle Relativitätstheorie nicht im Kerncurriculum',
     },
     'nordrhein-westfalen-gymnasium-mathematik': {
+      ungleichungen: 'Ungleichungen werden im Lehrplan nicht eigens genannt (nur Gleichungen).',
       uebergangsmatrizen: 'Übergangsmatrizen und Markov-Ketten nicht im Lehrplan',
       richtungsfeld: 'Differenzialgleichungen und Richtungsfelder nicht im Lehrplan',
       'komplexe-zahlen': 'Komplexe Zahlen nicht im Lehrplan',
@@ -401,6 +410,7 @@ describe('Länder-Lehrpläne', () => {
     },
     'schleswig-holstein-gymnasium-physik': {
       leistung: 'Mechanische Arbeit und Leistung sind in den erfassten Lernbereichen nicht ausdrücklich genannt.',
+      stromwirkungen: 'Wirkungen und Gefahren des Stroms sind in den erfassten Lernbereichen nicht ausdrücklich genannt (ggf. im Fach Naturwissenschaften 5/6).',
       'diode-transistor': 'Halbleiter, Diode und Transistor nicht in den Fachanforderungen (siehe docs/lehrplaene/schleswig-holstein-gymnasium-physik.md)',
       hebelgesetz: 'Hebel und Drehmoment nicht in den Fachanforderungen (siehe docs/lehrplaene/schleswig-holstein-gymnasium-physik.md)',
     },
