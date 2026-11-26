@@ -44,8 +44,18 @@ Devices with a metal casing have a **protective earth** wire (green-yellow). If 
 
 A bird on **one** wire bridges only a few centimetres of cable – there is practically no voltage between its feet. It becomes dangerous when the body connects two points with a large voltage difference: two wires, or a wire and the earth.
 
+### Copper plating: using the chemical effect
+
+When current flows through a copper salt solution, the copper ions move to the negative pole and turn into copper there. That is how a key gets a copper layer. The mass grows with current times time: about 1.19 g of copper per ampere-hour, and just over 4 g for silver. Jewellery is gold-plated, steel parts nickel-plated and very pure copper for cables is made in the same way.
+
+### Scrap crane: using the magnetic effect
+
+A lifting magnet is a large coil with an iron core. More turns and more current make it stronger – twice as many turns act like twice the current. At some point the iron is “saturated” and hardly gets any stronger. Switch the current off and the scrap drops. The simulation uses a simplified model.
+
 ## Try it
 
+- [Copper-plate a key](?mode=galvanik&gmet=cu&gi=1&gt=30) and [silver-plate a spoon](?mode=galvanik&gmet=ag&gi=0.5&gt=60): how much metal is deposited?
+- [Scrap crane](?mode=kran&kn=500&ki=3&kl=600) and [too little current](?mode=kran&kn=300&ki=2&kl=1000): how many turns or how much current does the crane need for 1000 kg?
 - [Light bulb](?mode=wirkungen&geraet=lampe&U=6&sich=2&kurz=0): Raise the voltage. How do the current and brightness change?
 - [Heating wire](?mode=wirkungen&geraet=heiz&U=12&sich=5&kurz=0): What happens with a 2 A fuse?
 - [Short circuit](?mode=wirkungen&geraet=lampe&U=6&sich=2&kurz=1): Why does the fuse blow?
