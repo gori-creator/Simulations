@@ -73,6 +73,7 @@ export const badenWuerttembergGymnasiumPhysik: StateCurriculum = {
             "Grundeigenschaften der Energie und Energieketten; Wärmeleitung, Konvektion und Wärmestrahlung untersuchen, Dämmstoffe prüfen und Regeln zum Energiesparen ableiten.",
             "Basic properties of energy and energy chains; investigating conduction, convection and thermal radiation, testing insulating materials and deriving rules for saving energy.",
           ),
+          simulations: ['waermetransport'],
         },
         {
           code: "3.1.5",
@@ -166,6 +167,7 @@ export const badenWuerttembergGymnasiumPhysik: StateCurriculum = {
             "Grundeigenschaften der Energie und Energieketten; Wärmeleitung, Konvektion und Wärmestrahlung untersuchen, Dämmstoffe prüfen und Regeln zum Energiesparen ableiten.",
             "Basic properties of energy and energy chains; investigating conduction, convection and thermal radiation, testing insulating materials and deriving rules for saving energy.",
           ),
+          simulations: ['waermetransport'],
         },
         {
           code: "3.1.5",
@@ -253,7 +255,7 @@ export const badenWuerttembergGymnasiumPhysik: StateCurriculum = {
             "Wärmeausdehnung und Dichte, Celsius- und Kelvinskala mit absolutem Nullpunkt und die drei Arten des Wärmetransports mit technischen Anwendungen.",
             "Thermal expansion and density, Celsius and Kelvin scales with absolute zero, and the three types of heat transfer with technical applications.",
           ),
-          simulations: ["gasgesetze", "teilchenmodell", "dichte-auftrieb", 'druck'],
+          simulations: ["gasgesetze", "teilchenmodell", "dichte-auftrieb", "waermetransport", "druck"],
         },
         {
           code: "3.2.5",
@@ -334,7 +336,7 @@ export const badenWuerttembergGymnasiumPhysik: StateCurriculum = {
             "Wärmeausdehnung und Dichte, Celsius- und Kelvinskala mit absolutem Nullpunkt und die drei Arten des Wärmetransports mit technischen Anwendungen.",
             "Thermal expansion and density, Celsius and Kelvin scales with absolute zero, and the three types of heat transfer with technical applications.",
           ),
-          simulations: ["gasgesetze", "dichte-auftrieb"],
+          simulations: ["gasgesetze", "dichte-auftrieb", 'waermetransport'],
         },
         {
           code: "3.2.5",

@@ -87,7 +87,7 @@ const KS_7_8_UNITS: CurriculumUnit[] = [
       'Thermische Energie und Wärme, Temperaturausgleich, Schmelz- und Verdampfungswärme, Wärmeleitung, -strömung und -strahlung im Teilchenmodell.',
       'Thermal energy and heat, temperature equalisation, latent heat of melting and vaporisation, conduction, convection and radiation in the particle model.',
     ),
-    simulations: ['teilchenmodell'],
+    simulations: ['teilchenmodell', 'waermetransport'],
   },
   TF_3_5,
   TF_3_6,

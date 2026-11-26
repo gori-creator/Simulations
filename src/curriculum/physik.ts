@@ -970,6 +970,22 @@ export const physik: Subject = {
           grades: [6, 8],
           simulations: [
             {
+              id: 'waermetransport',
+              status: 'ready',
+              slug: L('waermeleitung-stroemung-strahlung', 'conduction-convection-radiation'),
+              title: L('Wärmeleitung, Wärmeströmung, Wärmestrahlung', 'Conduction, convection and radiation'),
+              summary: L(
+                'Warum wird der Löffel im Tee heiß, warum steigt warmes Wasser auf, und wie wärmt die Sonne durch das leere All? Im Alltag: Wie viel spart eine gedämmte Wand oder ein Dreifachfenster, und warum bleibt Tee in der Thermoskanne stundenlang heiß?',
+                'Why does the spoon in your tea get hot, why does warm water rise, and how does the Sun warm us through empty space? In everyday life: how much does an insulated wall or triple glazing save, and why does tea stay hot in a vacuum flask for hours?',
+              ),
+              grades: [5, 10],
+              kmk: ['P-S', 'P-E', 'P-BK-Energie', 'P-BK-Mathematisieren'],
+              keywords: L(
+                ['Wärmetransport', 'Wärmeleitung', 'Wärmeleitfähigkeit', 'Wärmeströmung', 'Konvektion', 'Wärmestrahlung', 'Stefan-Boltzmann-Gesetz', 'Emissionsgrad', 'Wärmedämmung', 'U-Wert', 'Wärmedurchgangskoeffizient', 'Temperaturgefälle', 'Isolator', 'Styropor', 'Kupfer', 'Energiesparen'],
+                ['heat transfer', 'conduction', 'thermal conductivity', 'convection', 'thermal radiation', 'Stefan–Boltzmann law', 'emissivity', 'insulation', 'U-value', 'thermal transmittance', 'temperature gradient', 'insulator', 'polystyrene', 'copper', 'saving energy'],
+              ),
+            },
+            {
               id: 'teilchenmodell',
               status: 'ready',
               slug: L('teilchenmodell-temperatur', 'particle-model-temperature'),

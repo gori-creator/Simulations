@@ -55,6 +55,7 @@ const ERPROBUNG_UNITS: CurriculumUnit[] = [
           'Wärmemitführung, Wärmeleitung und Wärmestrahlung, Temperaturausgleich und Wärmedämmung.',
           'Convection, conduction and radiation, temperature equalisation and insulation.',
         ),
+        simulations: ['waermetransport'],
       },
       {
         code: '1.3',
