@@ -198,7 +198,7 @@ const Q12_UNITS: CurriculumUnit[] = [
       'Harmonische Schwingungen von Feder- und Fadenpendel, Dämpfung, erzwungene Schwingung und Resonanz, elektromagnetischer Schwingkreis.',
       'Harmonic oscillation of spring and simple pendulums, damping, forced oscillation and resonance, the electromagnetic oscillating circuit.',
     ),
-    simulations: ['fadenpendel', 'federpendel', 'resonanz'],
+    simulations: ['fadenpendel', 'federpendel', 'resonanz', 'schwingkreis'],
   },
 ];
 
