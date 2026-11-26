@@ -54,7 +54,7 @@ const T_2_1: CurriculumUnit = {
     'Geschwindigkeit aus Tempo und Richtung, gleichförmige Bewegung, t-s- und t-v-Diagramme, Zusatzgeschwindigkeit und Kraft, Verformung und Kraftmessung, Trägheit und Wechselwirkung, einfache Maschinen, Energiebilanzen.',
     'Velocity from speed and direction, uniform motion, distance-time and velocity-time graphs, change of velocity and force, deformation and measuring force, inertia and interaction, simple machines, energy balances.',
   ),
-  simulations: ['bewegungsdiagramme', 'hookesches-gesetz', 'hebelgesetz', 'energieerhaltung', 'kraefteaddition', 'schiefe-ebene', 'messunsicherheit', 'dichte-auftrieb', 'newtonsche-gesetze'],
+  simulations: ['bewegungsdiagramme', 'hookesches-gesetz', 'hebelgesetz', 'energieerhaltung', 'kraefteaddition', 'schiefe-ebene', 'messunsicherheit', 'dichte-auftrieb', 'newtonsche-gesetze', 'druck'],
 };
 
 const T_1_2: CurriculumUnit = {
