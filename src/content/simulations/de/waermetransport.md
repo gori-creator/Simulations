@@ -48,8 +48,18 @@ $$
 - Ein **doppelwandiger** Becher hat eine Luftschicht, die schlecht leitet.
 - Die **Thermoskanne** hat zwischen ihren zwei Wänden ein **Vakuum**: Ohne Teilchen gibt es weder Leitung noch Strömung. Die Wände sind innen **verspiegelt** und werfen die Strahlung zurück. Übrig bleibt vor allem die Leitung über den Hals und den Verschluss.
 
+### Alltag: Kleidung und Wind
+
+Der Körper erzeugt in Ruhe etwa 100 W Wärme, beim zügigen Gehen deutlich mehr. Abgegeben wird sie über die Haut: durch Leitung, Strömung und Strahlung. Kleidung dämmt, weil sie Luft zwischen den Fasern festhält – wie eine Hauswand mit Dämmung. Wind bläst die warme Luftschicht an der Oberfläche weg, darum fühlt sich ein windiger Tag kälter an als ein windstiller bei gleicher Temperatur. Die Simulation rechnet ohne Schwitzen mit P = A · ΔT / (R_Kleidung + R_Luft).
+
+### Sonnenkollektor
+
+Ein Flachkollektor auf dem Dach nutzt alle drei Arten des Wärmetransports: Ein schwarzer Absorber schluckt die Sonnenstrahlung, über Wärmeleitung gelangt die Wärme ins Wasser, und eine Glasscheibe bremst die Verluste durch Strömung und Wärmestrahlung. Je heißer das Wasser im Vergleich zur Luft, desto mehr geht wieder verloren – der Wirkungsgrad sinkt.
+
 ## Ausprobieren
 
+- [Winterspaziergang mit Wind](?mode=koerper&kclo=2&kta=-5&kv=6&kakt=gehen) und [T-Shirt bei 5 °C](?mode=koerper&kclo=0.5&kta=5&kv=0&kakt=ruhe): Wie viel Kleidung brauchst du, damit dir nicht kalt wird?
+- [Kollektor im Sommer](?mode=kollektor&sg=800&stc=50&sta=20&sglas=1&sschw=1) und [ohne Glas, blankes Blech](?mode=kollektor&sg=800&stc=50&sta=20&sglas=0&sschw=0): Was bringen Glas und schwarze Farbe?
 - [Kupfer](?mode=leitung&mat=copper) und [Holz](?mode=leitung&mat=wood&raffer=10000): Wie lange dauert es, bis das rechte Ende warm wird?
 - [Wassertopf](?mode=stroemung): Wo steigt das Wasser auf, wo sinkt es ab?
 - [Herdplatte](?mode=strahlung&tk=500): Vergleiche die Oberflächen.

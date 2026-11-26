@@ -137,7 +137,41 @@ export function energyKWh(P: number, hours: number): number {
 /* ------------------------------------------------------------------ */
 
 export type Loc = { de: string; en: string };
-export type TaskKind = 'which' | 'cond' | 'loss' | 'rad4' | 'kwh' | 'which2' | 'window' | 'cool';
+/* ---------- Mensch: Kleidung und Wind ---------- */
+
+/** Hautfläche eines Erwachsenen (m²) und mittlere Hauttemperatur (°C) */
+export const BODY_AREA = 1.8;
+export const SKIN_T = 33;
+/** Wärmedämmung von 1 clo (m²·K/W) */
+export const CLO = 0.155;
+
+/** Wärmeübergang an der Luft (W/(m²·K)): Strahlung etwa 4,7, Strömung je nach Wind. */
+export function airTransfer(windMs: number): number {
+  return 4.7 + Math.max(3, 8.3 * Math.sqrt(Math.max(0, windMs)));
+}
+
+/** Wärmeabgabe des Körpers in W (ohne Schwitzen): P = A · ΔT / (R_Kleidung + R_Luft). */
+export function bodyLoss(clo: number, airT: number, windMs: number): number {
+  return (BODY_AREA * (SKIN_T - airT)) / (clo * CLO + 1 / airTransfer(windMs));
+}
+
+/** Wärme, die der Körper selbst erzeugt (W) */
+export const BODY_MAKES: Record<'ruhe' | 'gehen', number> = { ruhe: 100, gehen: 250 };
+
+/* ---------- Sonnenkollektor ---------- */
+
+/** Wirkungsgrad eines Flachkollektors: η = α · τ − U · (T_K − T_L) / G, nicht unter 0. */
+export function collectorEfficiency(G: number, tColl: number, tAir: number, glass: boolean, black: boolean): number {
+  const alpha = black ? 0.95 : 0.3;
+  const tau = glass ? 0.9 : 1;
+  const U = glass ? 4 : 12;
+  return Math.max(0, alpha * tau - (U * (tColl - tAir)) / G);
+}
+
+/** Kollektorfläche in m² */
+export const COLLECTOR_AREA = 2;
+
+export type TaskKind = 'which' | 'cond' | 'loss' | 'rad4' | 'kwh' | 'which2' | 'window' | 'cool' | 'body' | 'solar';
 
 export interface HeatTask {
   kind: TaskKind;
@@ -185,13 +219,16 @@ const KIND_NAME: Record<1 | 2 | 3, Loc> = {
 export function makeTask(n: number): HeatTask {
   const r = rng(n * 173 + 11);
   const pick = <T>(xs: readonly T[]) => xs[Math.floor(r() * xs.length)]!;
-  const kinds: TaskKind[] = ['which', 'cond', 'loss', 'which2', 'rad4', 'kwh', 'window', 'cool'];
+  const kinds: TaskKind[] = ['which', 'cond', 'loss', 'which2', 'rad4', 'kwh', 'window', 'cool', 'body', 'solar'];
   const kind = kinds[(n - 1) % kinds.length]!;
   if (kind === 'which' || kind === 'which2') {
     const it = pick(SITUATIONS);
     return {
       kind,
-      text: { de: `Welche Art des Wärmetransports ist das? „${it.de}“ (1 = Leitung, 2 = Strömung, 3 = Strahlung)`, en: `Which kind of heat transfer is this? “${it.en}” (1 = conduction, 2 = convection, 3 = radiation)` },
+      text: {
+        de: `Welche Art des Wärmetransports ist das? „${it.de}“ (1 = Leitung, 2 = Strömung, 3 = Strahlung)`,
+        en: `Which kind of heat transfer is this? “${it.en}” (1 = conduction, 2 = convection, 3 = radiation)`,
+      },
       answer: it.kind,
       unit: '',
       tol: 0,
@@ -213,7 +250,10 @@ export function makeTask(n: number): HeatTask {
       answer: P,
       unit: 'W',
       tol: 0.02,
-      solution: { de: `P = λ · A · ΔT : d = ${de(lam, 3)} · ${de(A)} · ${de(dT)} : ${de(d)} ≈ ${de(P, 1)} W`, en: `P = λ · A · ΔT / d = ${en(lam, 3)} · ${en(A)} · ${en(dT)} / ${en(d)} ≈ ${en(P, 1)} W` },
+      solution: {
+        de: `P = λ · A · ΔT : d = ${de(lam, 3)} · ${de(A)} · ${de(dT)} : ${de(d)} ≈ ${de(P, 1)} W`,
+        en: `P = λ · A · ΔT / d = ${en(lam, 3)} · ${en(A)} · ${en(dT)} / ${en(d)} ≈ ${en(P, 1)} W`,
+      },
     };
   }
   if (kind === 'loss') {
@@ -223,7 +263,10 @@ export function makeTask(n: number): HeatTask {
     const P = heatLoss(U, A, dT);
     return {
       kind,
-      text: { de: `Eine Wand (${de(A)} m², U = ${de(U)} W/(m² · K)) trennt 20 °C innen von ${de(20 - dT)} °C außen. Wie groß ist der Wärmeverlust in W?`, en: `A wall (${en(A)} m², U = ${en(U)} W/(m² · K)) separates 20 °C inside from ${en(20 - dT)} °C outside. What is the heat loss in W?` },
+      text: {
+        de: `Eine Wand (${de(A)} m², U = ${de(U)} W/(m² · K)) trennt 20 °C innen von ${de(20 - dT)} °C außen. Wie groß ist der Wärmeverlust in W?`,
+        en: `A wall (${en(A)} m², U = ${en(U)} W/(m² · K)) separates 20 °C inside from ${en(20 - dT)} °C outside. What is the heat loss in W?`,
+      },
       answer: P,
       unit: 'W',
       tol: 0.02,
@@ -234,11 +277,17 @@ export function makeTask(n: number): HeatTask {
     const f = pick([2, 3]);
     return {
       kind,
-      text: { de: `Ein Körper wird von 300 K auf ${300 * f} K erhitzt. Um welchen Faktor steigt die abgestrahlte Leistung?`, en: `A body is heated from 300 K to ${300 * f} K. By what factor does the radiated power increase?` },
+      text: {
+        de: `Ein Körper wird von 300 K auf ${300 * f} K erhitzt. Um welchen Faktor steigt die abgestrahlte Leistung?`,
+        en: `A body is heated from 300 K to ${300 * f} K. By what factor does the radiated power increase?`,
+      },
       answer: f ** 4,
       unit: '',
       tol: 0.001,
-      solution: { de: `P ~ T⁴: (${f})⁴ = ${f ** 4} – die ${f}-fache Temperatur in Kelvin bringt die ${f ** 4}-fache Strahlung.`, en: `P ∝ T⁴: (${f})⁴ = ${f ** 4} – ${f} times the kelvin temperature gives ${f ** 4} times the radiation.` },
+      solution: {
+        de: `P ~ T⁴: (${f})⁴ = ${f ** 4} – die ${f}-fache Temperatur in Kelvin bringt die ${f ** 4}-fache Strahlung.`,
+        en: `P ∝ T⁴: (${f})⁴ = ${f ** 4} – ${f} times the kelvin temperature gives ${f ** 4} times the radiation.`,
+      },
     };
   }
   if (kind === 'kwh') {
@@ -270,6 +319,39 @@ export function makeTask(n: number): HeatTask {
       solution: { de: `ΔP = (5,8 − 0,7) · ${de(A)} · ${de(dT)} W = ${de(saved, 0)} W`, en: `ΔP = (5.8 − 0.7) · ${en(A)} · ${en(dT)} W = ${en(saved, 0)} W` },
     };
   }
+  if (kind === 'body') {
+    const Ta = pick([0, 5, 10, 15]);
+    const R = pick([0.2, 0.25, 0.3, 0.4]);
+    const P = (BODY_AREA * (SKIN_T - Ta)) / R;
+    return {
+      kind,
+      text: {
+        de: `Die Haut (1,8 m², 33 °C) ist mit Kleidung und Luftschicht zusammen ${de(R)} m²·K/W gedämmt. Draußen sind es ${de(Ta)} °C. Wie viel Wärme gibt der Körper ab (in W)?`,
+        en: `The skin (1.8 m², 33 °C) is insulated by clothing and the air layer by ${en(R)} m²·K/W in total. Outside it is ${en(Ta)} °C. How much heat does the body give off (in W)?`,
+      },
+      answer: P,
+      unit: 'W',
+      tol: 0.02,
+      solution: { de: `P = A · ΔT / R = 1,8 · ${de(SKIN_T - Ta)} / ${de(R)} W ≈ ${de(P, 0)} W`, en: `P = A · ΔT / R = 1.8 · ${en(SKIN_T - Ta)} / ${en(R)} W ≈ ${en(P, 0)} W` },
+    };
+  }
+  if (kind === 'solar') {
+    const G = pick([600, 800, 1000]);
+    const dT = pick([20, 30, 40, 50]);
+    const eta = 0.85 - (4 * dT) / G;
+    const P = eta * G * COLLECTOR_AREA;
+    return {
+      kind,
+      text: {
+        de: `Ein Sonnenkollektor (2 m²) hat den Wirkungsgrad η = 0,85 − 4 · ΔT / G. Die Sonne liefert G = ${G} W/m², das Wasser ist ${dT} K wärmer als die Luft. Welche Leistung nimmt das Wasser auf (in W)?`,
+        en: `A solar collector (2 m²) has the efficiency η = 0.85 − 4 · ΔT / G. The sun delivers G = ${G} W/m², the water is ${dT} K warmer than the air. What power does the water take up (in W)?`,
+      },
+      answer: P,
+      unit: 'W',
+      tol: 0.02,
+      solution: { de: `η = 0,85 − 4 · ${dT} / ${G} ≈ ${de(eta, 3)}; P = η · G · A ≈ ${de(P, 0)} W`, en: `η = 0.85 − 4 · ${dT} / ${G} ≈ ${en(eta, 3)}; P = η · G · A ≈ ${en(P, 0)} W` },
+    };
+  }
   const T0 = pick([80, 90]);
   const k = pick([0.02, 0.025]);
   const t = pick([10, 20, 30]);
@@ -288,7 +370,12 @@ export function makeTask(n: number): HeatTask {
 }
 
 export function parseAnswer(input: string): number | null {
-  const s = input.trim().replace(/\s/g, '').replace('−', '-').replace(',', '.').replace(/[a-zA-Z/²°]+$/, '');
+  const s = input
+    .trim()
+    .replace(/\s/g, '')
+    .replace('−', '-')
+    .replace(',', '.')
+    .replace(/[a-zA-Z/²°]+$/, '');
   if (!s || !/^-?\d*\.?\d+(e-?\d+)?$/.test(s)) return null;
   return Number(s);
 }
