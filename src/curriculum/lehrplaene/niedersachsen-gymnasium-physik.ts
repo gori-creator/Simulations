@@ -46,7 +46,7 @@ const DJ_5_6: CurriculumUnit[] = [
       'Einfache Stromkreise nach Schaltplan aufbauen, Reihen- und Parallelschaltung unterscheiden, Leiter und Isolatoren, Spannungsangaben, Gefahren der Elektrizität und der Elektromagnet.',
       'Building simple circuits from a diagram, telling series and parallel circuits apart, conductors and insulators, voltage ratings, dangers of electricity and the electromagnet.',
     ),
-    simulations: ['einfacher-stromkreis'],
+    simulations: ['einfacher-stromkreis', 'stromwirkungen'],
   },
   {
     code: '3',

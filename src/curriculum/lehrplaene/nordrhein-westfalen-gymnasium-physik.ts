@@ -92,6 +92,7 @@ const ERPROBUNG_UNITS: CurriculumUnit[] = [
           'Wärme-, Licht- und magnetische Wirkung, Sicherungen und Gefahren durch Elektrizität.',
           'Heating, lighting and magnetic effects, fuses and dangers of electricity.',
         ),
+        simulations: ['stromwirkungen'],
       },
       {
         code: '2.3',

@@ -38,7 +38,7 @@ const TF_3_5: CurriculumUnit = {
     'Einfache Stromkreise mit Energiequelle, Schalter und Energiewandler, Wirkungen des Stroms, Ladung und Elektroskop, Modell der elektrischen Feldlinie, Strom als bewegte Ladung.',
     'Simple circuits with source, switch and converter, effects of current, charge and the electroscope, the model of electric field lines, current as moving charge.',
   ),
-  simulations: ['einfacher-stromkreis', 'ladungen-coulomb'],
+  simulations: ["einfacher-stromkreis", "stromwirkungen", "ladungen-coulomb"],
 };
 
 const TF_3_6: CurriculumUnit = {

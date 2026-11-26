@@ -64,7 +64,7 @@ export const bayernGymnasiumPhysik: StateCurriculum = {
                 "Elektrische Ladungen und Reibungselektrizität, Strom als bewegte Ladung, Wärme-, Licht- und Magnetwirkung; einfache Schaltungen wie die Wechselschaltung werden geplant und aufgebaut.",
                 "Electric charges and static electricity, current as moving charge, heating, lighting and magnetic effects; simple circuits such as a two-way switch are planned and built.",
               ),
-              simulations: ["einfacher-stromkreis", 'ladungen-coulomb'],
+              simulations: ["einfacher-stromkreis", "stromwirkungen", "ladungen-coulomb"],
             },
           ],
         },
