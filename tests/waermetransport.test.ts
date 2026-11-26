@@ -1,6 +1,9 @@
 import { describe, expect, it } from 'vitest';
 import {
+  airTransfer,
+  bodyLoss,
   checkTask,
+  collectorEfficiency,
   conductionPower,
   conductionStep,
   CONTAINERS,
@@ -110,6 +113,32 @@ describe('Übung Wärmetransport', () => {
     for (let n = 1; n <= 80; n++) {
       const t = makeTask(n);
       if (t.kind === 'which' || t.kind === 'which2') expect([1, 2, 3]).toContain(t.answer);
+    }
+  });
+});
+
+describe('Kleidung, Wind und Sonnenkollektor', () => {
+  it('Wind erhöht den Wärmeübergang, Kleidung senkt die Wärmeabgabe', () => {
+    expect(airTransfer(5)).toBeGreaterThan(airTransfer(0));
+    expect(bodyLoss(1, 5, 0)).toBeLessThan(bodyLoss(0.5, 5, 0));
+    expect(bodyLoss(1, 5, 8)).toBeGreaterThan(bodyLoss(1, 5, 0));
+    expect(bodyLoss(1, 33, 3)).toBeCloseTo(0, 9);
+    // 1 clo bei 20 °C ohne Wind: etwa 85 W – passt zur Ruhe-Wärme von 100 W
+    expect(bodyLoss(1, 20, 0)).toBeGreaterThan(70);
+    expect(bodyLoss(1, 20, 0)).toBeLessThan(100);
+  });
+  it('Kollektor: Glas und schwarzer Absorber helfen, heißes Wasser senkt den Wirkungsgrad', () => {
+    expect(collectorEfficiency(800, 20, 20, true, true)).toBeCloseTo(0.855, 9);
+    expect(collectorEfficiency(800, 50, 20, true, true)).toBeCloseTo(0.705, 9);
+    expect(collectorEfficiency(800, 50, 20, false, true)).toBeLessThan(collectorEfficiency(800, 50, 20, true, true));
+    expect(collectorEfficiency(800, 50, 20, true, false)).toBeLessThan(collectorEfficiency(800, 50, 20, true, true));
+    expect(collectorEfficiency(200, 90, 0, false, false)).toBe(0);
+  });
+  it('alle zehn Aufgabenarten kommen vor, neue sind lösbar', () => {
+    expect(new Set(Array.from({ length: 20 }, (_, i) => makeTask(i + 1).kind)).size).toBe(10);
+    for (let n = 1; n <= 100; n++) {
+      const t = makeTask(n);
+      if (t.kind === 'body' || t.kind === 'solar') expect(checkTask(t, String(Math.round(t.answer)))).toBe(true);
     }
   });
 });
