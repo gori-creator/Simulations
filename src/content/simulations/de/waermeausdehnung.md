@@ -46,8 +46,18 @@ Eine 100 m lange Stahlbrücke wird zwischen Winter (−20 °C) und Hochsommer (5
 
 Im Bügeleisen sitzt ein **Bimetall**: zwei fest verbundene Streifen aus Metallen, die sich verschieden stark ausdehnen. Wird es heiß, biegt es sich und öffnet einen Kontakt – die Heizung geht aus. Kühlt es ab, schließt der Kontakt wieder. So pendelt die Temperatur um den eingestellten Wert. Der Abstand zwischen Aus- und Einschalten heißt **Schaltdifferenz**.
 
+### Heißluftballon
+
+Auch Luft dehnt sich beim Erwärmen aus: Ein Kubikmeter Luft mit 100 °C ist um etwa ein Viertel leichter als einer mit 15 °C. Der Unterschied zur kühleren Außenluft trägt den Ballon – bei 2500 m³ Hülle rund 700 kg. An heißen Sommertagen ist der Unterschied kleiner, darum starten Ballone am liebsten früh am Morgen.
+
+### Eis: Wasser ist eine Ausnahme
+
+Fast alle Stoffe ziehen sich beim Erstarren zusammen, Wasser dehnt sich dagegen um etwa 9 % aus. Darum platzen volle Flaschen im Gefrierfach, Wasserleitungen frieren auf und Frost sprengt Felsen. Eis ist leichter als Wasser und schwimmt: Von einem Eisberg ragt nur gut ein Zehntel aus dem Meer.
+
 ## Ausprobieren
 
+- [Heißluftballon](?mode=ballon&bvol=2500&bto=15&bti=100&blast=600) und [heißer Sommertag](?mode=ballon&bvol=2500&bto=35&bti=80&blast=600): Wann steigt der Ballon?
+- [Volle Flasche im Gefrierfach](?mode=eis&ifill=95&isalt=1) und [mit Platz](?mode=eis&ifill=80&isalt=0): Wie viel Platz braucht das Eis?
 - [Aluminium gegen Stahl](?mode=fest&mat=aluminium&t=80): In welche Richtung biegt sich das Bimetall? Probiere auch −20 °C.
 - [Stahlbrücke](?mode=fest&mat=steel&L0=100&t=60): Wie breit muss die Dehnungsfuge sein?
 - [Gas erwärmen](?mode=gas&t=80) und [abkühlen](?mode=gas&t=-20).

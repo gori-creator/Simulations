@@ -114,11 +114,7 @@ export function bimetalDeflection(dAlpha: number, dT: number, L: number, d: numb
  * eingeschaltet ist, kühlt immer zur Umgebung hin ab. Der Bimetallschalter
  * öffnet bei set + hyst/2 und schließt bei set − hyst/2.
  */
-export function thermostatStep(
-  state: { T: number; on: boolean },
-  dt: number,
-  opts: { set: number; hyst: number; heat: number; k: number; env: number },
-): { T: number; on: boolean } {
+export function thermostatStep(state: { T: number; on: boolean }, dt: number, opts: { set: number; hyst: number; heat: number; k: number; env: number }): { T: number; on: boolean } {
   const dTdt = (state.on ? opts.heat : 0) - opts.k * (state.T - opts.env);
   const T = state.T + dTdt * dt;
   let on = state.on;
@@ -132,7 +128,7 @@ export function thermostatStep(
 /* ------------------------------------------------------------------ */
 
 export type Loc = { de: string; en: string };
-export type TaskKind = 'dL' | 'gap' | 'gas' | 'anomaly' | 'mat' | 'L0' | 'rail' | 'which';
+export type TaskKind = 'dL' | 'gap' | 'gas' | 'anomaly' | 'mat' | 'L0' | 'rail' | 'which' | 'balloon' | 'ice';
 
 export interface ExpansionTask {
   kind: TaskKind;
@@ -170,7 +166,7 @@ const NAMES: Record<SolidId, Loc> = {
 export function makeTask(n: number): ExpansionTask {
   const r = rng(n * 211 + 5);
   const pick = <T>(xs: readonly T[]) => xs[Math.floor(r() * xs.length)]!;
-  const kinds: TaskKind[] = ['dL', 'anomaly', 'gap', 'gas', 'mat', 'L0', 'rail', 'which'];
+  const kinds: TaskKind[] = ['dL', 'anomaly', 'gap', 'gas', 'mat', 'L0', 'rail', 'which', 'balloon', 'ice'];
   const kind = kinds[(n - 1) % kinds.length]!;
   if (kind === 'dL') {
     const m = pick(['aluminium', 'copper', 'steel'] as SolidId[]);
@@ -179,11 +175,17 @@ export function makeTask(n: number): ExpansionTask {
     const d = lengthChange(ALPHA[m], L, dT) * 1000;
     return {
       kind,
-      text: { de: `Ein ${de(L)} m langer Stab aus ${NAMES[m].de} (α = ${de(ALPHA[m] * 1e6)} · 10⁻⁶ 1/K) wird um ${de(dT)} K erwärmt. Um wie viele Millimeter wird er länger?`, en: `A ${en(L)} m rod of ${NAMES[m].en} (α = ${en(ALPHA[m] * 1e6)} · 10⁻⁶ 1/K) is heated by ${en(dT)} K. By how many millimetres does it get longer?` },
+      text: {
+        de: `Ein ${de(L)} m langer Stab aus ${NAMES[m].de} (α = ${de(ALPHA[m] * 1e6)} · 10⁻⁶ 1/K) wird um ${de(dT)} K erwärmt. Um wie viele Millimeter wird er länger?`,
+        en: `A ${en(L)} m rod of ${NAMES[m].en} (α = ${en(ALPHA[m] * 1e6)} · 10⁻⁶ 1/K) is heated by ${en(dT)} K. By how many millimetres does it get longer?`,
+      },
       answer: d,
       unit: 'mm',
       tol: 0.02,
-      solution: { de: `ΔL = α · L₀ · ΔT = ${de(ALPHA[m] * 1e6)} · 10⁻⁶ · ${de(L)} m · ${de(dT)} = ${de(d / 1000, 5)} m = ${de(d, 2)} mm`, en: `ΔL = α · L₀ · ΔT = ${en(ALPHA[m] * 1e6)} · 10⁻⁶ · ${en(L)} m · ${en(dT)} = ${en(d / 1000, 5)} m = ${en(d, 2)} mm` },
+      solution: {
+        de: `ΔL = α · L₀ · ΔT = ${de(ALPHA[m] * 1e6)} · 10⁻⁶ · ${de(L)} m · ${de(dT)} = ${de(d / 1000, 5)} m = ${de(d, 2)} mm`,
+        en: `ΔL = α · L₀ · ΔT = ${en(ALPHA[m] * 1e6)} · 10⁻⁶ · ${en(L)} m · ${en(dT)} = ${en(d / 1000, 5)} m = ${en(d, 2)} mm`,
+      },
     };
   }
   if (kind === 'gap') {
@@ -192,7 +194,10 @@ export function makeTask(n: number): ExpansionTask {
     const need = lengthChange(ALPHA.steel, L, t - 20) * 1000;
     return {
       kind,
-      text: { de: `Eine Stahlbrücke ist bei 20 °C ${de(L)} m lang. Wie breit (in mm) muss die Dehnungsfuge mindestens sein, damit sie bei ${de(t)} °C nicht zusammenstößt? (α = 12 · 10⁻⁶ 1/K)`, en: `A steel bridge is ${en(L)} m long at 20 °C. How wide (in mm) must the expansion joint be at least so that it does not close at ${en(t)} °C? (α = 12 · 10⁻⁶ 1/K)` },
+      text: {
+        de: `Eine Stahlbrücke ist bei 20 °C ${de(L)} m lang. Wie breit (in mm) muss die Dehnungsfuge mindestens sein, damit sie bei ${de(t)} °C nicht zusammenstößt? (α = 12 · 10⁻⁶ 1/K)`,
+        en: `A steel bridge is ${en(L)} m long at 20 °C. How wide (in mm) must the expansion joint be at least so that it does not close at ${en(t)} °C? (α = 12 · 10⁻⁶ 1/K)`,
+      },
       answer: need,
       unit: 'mm',
       tol: 0.02,
@@ -205,7 +210,10 @@ export function makeTask(n: number): ExpansionTask {
     const V = gasVolume(V0, 20, t);
     return {
       kind,
-      text: { de: `${de(V0)} L Luft (20 °C) werden bei gleichem Druck auf ${de(t)} °C gebracht. Wie groß ist das Volumen danach in L? (V ~ T in Kelvin)`, en: `${en(V0)} L of air (20 °C) are brought to ${en(t)} °C at constant pressure. What is the volume afterwards in L? (V ∝ T in kelvin)` },
+      text: {
+        de: `${de(V0)} L Luft (20 °C) werden bei gleichem Druck auf ${de(t)} °C gebracht. Wie groß ist das Volumen danach in L? (V ~ T in Kelvin)`,
+        en: `${en(V0)} L of air (20 °C) are brought to ${en(t)} °C at constant pressure. What is the volume afterwards in L? (V ∝ T in kelvin)`,
+      },
       answer: V,
       unit: 'L',
       tol: 0.01,
@@ -219,7 +227,10 @@ export function makeTask(n: number): ExpansionTask {
       answer: 4,
       unit: '°C',
       tol: 0.05,
-      solution: { de: 'Bei etwa 4 °C (genauer 3,98 °C). Darum hat der Grund eines zugefrorenen Sees 4 °C.', en: 'At about 4 °C (more precisely 3.98 °C). That is why the bottom of a frozen lake is at 4 °C.' },
+      solution: {
+        de: 'Bei etwa 4 °C (genauer 3,98 °C). Darum hat der Grund eines zugefrorenen Sees 4 °C.',
+        en: 'At about 4 °C (more precisely 3.98 °C). That is why the bottom of a frozen lake is at 4 °C.',
+      },
     };
   }
   if (kind === 'mat') {
@@ -228,7 +239,10 @@ export function makeTask(n: number): ExpansionTask {
     const ratio = ALPHA.aluminium / ALPHA.invar;
     return {
       kind,
-      text: { de: `Ein Aluminium- und ein Invarstab (je ${de(L)} m) werden um ${de(dT)} K erwärmt. Wie viele Male mehr dehnt sich der Aluminiumstab aus? (α_Al = 23 · 10⁻⁶ 1/K, α_Invar = 1,2 · 10⁻⁶ 1/K)`, en: `An aluminium rod and an Invar rod (${en(L)} m each) are heated by ${en(dT)} K. How many times more does the aluminium rod expand? (α_Al = 23 · 10⁻⁶ 1/K, α_Invar = 1.2 · 10⁻⁶ 1/K)` },
+      text: {
+        de: `Ein Aluminium- und ein Invarstab (je ${de(L)} m) werden um ${de(dT)} K erwärmt. Wie viele Male mehr dehnt sich der Aluminiumstab aus? (α_Al = 23 · 10⁻⁶ 1/K, α_Invar = 1,2 · 10⁻⁶ 1/K)`,
+        en: `An aluminium rod and an Invar rod (${en(L)} m each) are heated by ${en(dT)} K. How many times more does the aluminium rod expand? (α_Al = 23 · 10⁻⁶ 1/K, α_Invar = 1.2 · 10⁻⁶ 1/K)`,
+      },
       answer: ratio,
       unit: '',
       tol: 0.02,
@@ -241,11 +255,17 @@ export function makeTask(n: number): ExpansionTask {
     const L = d / 1000 / (ALPHA.steel * dT);
     return {
       kind,
-      text: { de: `Ein Stahlträger wird bei ${de(dT)} K Erwärmung ${de(d)} mm länger. Wie lang (in m) ist er? (α = 12 · 10⁻⁶ 1/K)`, en: `A steel girder gets ${en(d)} mm longer when heated by ${en(dT)} K. How long (in m) is it? (α = 12 · 10⁻⁶ 1/K)` },
+      text: {
+        de: `Ein Stahlträger wird bei ${de(dT)} K Erwärmung ${de(d)} mm länger. Wie lang (in m) ist er? (α = 12 · 10⁻⁶ 1/K)`,
+        en: `A steel girder gets ${en(d)} mm longer when heated by ${en(dT)} K. How long (in m) is it? (α = 12 · 10⁻⁶ 1/K)`,
+      },
       answer: L,
       unit: 'm',
       tol: 0.02,
-      solution: { de: `L₀ = ΔL : (α · ΔT) = ${de(d / 1000, 3)} m : (12 · 10⁻⁶ · ${de(dT)}) = ${de(L, 1)} m`, en: `L₀ = ΔL / (α · ΔT) = ${en(d / 1000, 3)} m / (12 · 10⁻⁶ · ${en(dT)}) = ${en(L, 1)} m` },
+      solution: {
+        de: `L₀ = ΔL : (α · ΔT) = ${de(d / 1000, 3)} m : (12 · 10⁻⁶ · ${de(dT)}) = ${de(L, 1)} m`,
+        en: `L₀ = ΔL / (α · ΔT) = ${en(d / 1000, 3)} m / (12 · 10⁻⁶ · ${en(dT)}) = ${en(L, 1)} m`,
+      },
     };
   }
   if (kind === 'rail') {
@@ -255,11 +275,17 @@ export function makeTask(n: number): ExpansionTask {
     const d = lengthChange(ALPHA.steel, L, hi - lo) * 1000;
     return {
       kind,
-      text: { de: `Eine ${de(L)} m lange Stahlschiene erlebt im Jahr Temperaturen von ${de(lo)} °C bis ${de(hi)} °C. Um wie viele Millimeter ändert sich ihre Länge zwischen Winter und Sommer? (α = 12 · 10⁻⁶ 1/K)`, en: `A ${en(L)} m steel rail sees temperatures from ${en(lo)} °C to ${en(hi)} °C during the year. By how many millimetres does its length change between winter and summer? (α = 12 · 10⁻⁶ 1/K)` },
+      text: {
+        de: `Eine ${de(L)} m lange Stahlschiene erlebt im Jahr Temperaturen von ${de(lo)} °C bis ${de(hi)} °C. Um wie viele Millimeter ändert sich ihre Länge zwischen Winter und Sommer? (α = 12 · 10⁻⁶ 1/K)`,
+        en: `A ${en(L)} m steel rail sees temperatures from ${en(lo)} °C to ${en(hi)} °C during the year. By how many millimetres does its length change between winter and summer? (α = 12 · 10⁻⁶ 1/K)`,
+      },
       answer: d,
       unit: 'mm',
       tol: 0.02,
-      solution: { de: `ΔT = ${de(hi - lo)} K; ΔL = 12 · 10⁻⁶ · ${de(L)} m · ${de(hi - lo)} K = ${de(d, 1)} mm`, en: `ΔT = ${en(hi - lo)} K; ΔL = 12 · 10⁻⁶ · ${en(L)} m · ${en(hi - lo)} K = ${en(d, 1)} mm` },
+      solution: {
+        de: `ΔT = ${de(hi - lo)} K; ΔL = 12 · 10⁻⁶ · ${de(L)} m · ${de(hi - lo)} K = ${de(d, 1)} mm`,
+        en: `ΔT = ${en(hi - lo)} K; ΔL = 12 · 10⁻⁶ · ${en(L)} m · ${en(hi - lo)} K = ${en(d, 1)} mm`,
+      },
     };
   }
   const items: { de: string; en: string; a: 1 | 2 | 3 }[] = [
@@ -270,6 +296,45 @@ export function makeTask(n: number): ExpansionTask {
     { de: 'Im Thermometer steigt der rote Alkohol.', en: 'The red alcohol in a thermometer rises.', a: 2 },
     { de: 'Ein Heißluftballon steigt, wenn die Luft darin erwärmt wird.', en: 'A hot-air balloon rises when the air inside is heated.', a: 3 },
   ];
+  if (kind === 'balloon') {
+    const tin = pick([80, 100, 120]);
+    const tout = pick([0, 10, 20]);
+    const rin = airDensity(tin);
+    const rout = airDensity(tout);
+    const kg = (rout - rin) * 1;
+    return {
+      kind,
+      text: {
+        de: `Wie viel Gramm Last kann 1 m³ Luft mit ${tin} °C in einer Umgebung mit ${tout} °C tragen? (Luftdichte: ${de(rout, 3)} kg/m³ außen, ${de(rin, 3)} kg/m³ innen)`,
+        en: `How many grams can 1 m³ of air at ${tin} °C carry in surroundings at ${tout} °C? (air density: ${en(rout, 3)} kg/m³ outside, ${en(rin, 3)} kg/m³ inside)`,
+      },
+      answer: kg * 1000,
+      unit: 'g',
+      tol: 0.03,
+      solution: {
+        de: `(${de(rout, 3)} − ${de(rin, 3)}) kg = ${de(kg * 1000, 0)} g je m³. Ein Ballon mit 2500 m³ trägt also etwa ${de(kg * 2500, 0)} kg.`,
+        en: `(${en(rout, 3)} − ${en(rin, 3)}) kg = ${en(kg * 1000, 0)} g per m³. A balloon of 2500 m³ thus carries about ${en(kg * 2500, 0)} kg.`,
+      },
+    };
+  }
+  if (kind === 'ice') {
+    const L = pick([0.5, 1, 1.5]);
+    const iceL = L * ICE_EXPANSION;
+    return {
+      kind,
+      text: {
+        de: `${de(L, 1)} Liter Wasser gefrieren. Wie viel Liter Eis entstehen? (Wasser 1000 kg/m³, Eis 917 kg/m³)`,
+        en: `${en(L, 1)} litres of water freeze. How many litres of ice are formed? (water 1000 kg/m³, ice 917 kg/m³)`,
+      },
+      answer: iceL,
+      unit: 'L',
+      tol: 0.01,
+      solution: {
+        de: `Die Masse bleibt gleich: V = ${de(L, 1)} L · 1000 : 917 ≈ ${de(iceL, 2)} L – rund 9 % mehr. Darum platzen volle Flaschen im Gefrierfach.`,
+        en: `The mass stays the same: V = ${en(L, 1)} L · 1000 / 917 ≈ ${en(iceL, 2)} L – about 9 % more. That is why full bottles burst in the freezer.`,
+      },
+    };
+  }
   const it = pick(items);
   return {
     kind: 'which',
@@ -278,14 +343,24 @@ export function makeTask(n: number): ExpansionTask {
     unit: '',
     tol: 0,
     solution: {
-      de: it.a === 1 ? 'Ein fester Körper (Metall) dehnt sich aus.' : it.a === 2 ? 'Eine Flüssigkeit dehnt sich aus – stärker als feste Stoffe.' : 'Ein Gas dehnt sich aus – viel stärker als feste und flüssige Stoffe (bzw. zieht sich bei Kälte zusammen).',
+      de:
+        it.a === 1
+          ? 'Ein fester Körper (Metall) dehnt sich aus.'
+          : it.a === 2
+            ? 'Eine Flüssigkeit dehnt sich aus – stärker als feste Stoffe.'
+            : 'Ein Gas dehnt sich aus – viel stärker als feste und flüssige Stoffe (bzw. zieht sich bei Kälte zusammen).',
       en: it.a === 1 ? 'A solid (metal) expands.' : it.a === 2 ? 'A liquid expands – more than solids.' : 'A gas expands – much more than solids and liquids (or contracts in the cold).',
     },
   };
 }
 
 export function parseAnswer(input: string): number | null {
-  const s = input.trim().replace(/\s/g, '').replace('−', '-').replace(',', '.').replace(/[a-zA-Z/²³°]+$/, '');
+  const s = input
+    .trim()
+    .replace(/\s/g, '')
+    .replace('−', '-')
+    .replace(',', '.')
+    .replace(/[a-zA-Z/²³°]+$/, '');
   if (!s || !/^-?\d*\.?\d+(e-?\d+)?$/.test(s)) return null;
   return Number(s);
 }
@@ -295,4 +370,32 @@ export function checkTask(task: ExpansionTask, input: string): boolean | null {
   if (x === null) return null;
   if (task.tol === 0) return x === task.answer;
   return Math.abs(x - task.answer) <= task.tol * Math.abs(task.answer) + 1e-9;
+}
+
+/* ------------------------------------------------------------------ */
+/* Heißluftballon                                                      */
+/* ------------------------------------------------------------------ */
+
+/** Luftdichte (kg/m³) bei Normaldruck und Temperatur t (°C): ρ = 1,293 · 273,15 / T. */
+export function airDensity(tC: number): number {
+  return (1.293 * 273.15) / (tC + 273.15);
+}
+
+/** Tragkraft (kg) eines Ballons mit Volumen V (m³): (ρ_außen − ρ_innen) · V. */
+export function balloonLift(V: number, tOut: number, tIn: number): number {
+  return (airDensity(tOut) - airDensity(tIn)) * V;
+}
+
+/* ------------------------------------------------------------------ */
+/* Eis                                                                 */
+/* ------------------------------------------------------------------ */
+
+/** Volumenfaktor beim Gefrieren: ρ_Wasser / ρ_Eis ≈ 1,09. */
+export const ICE_EXPANSION = 1000 / ICE_DENSITY;
+/** Dichte von Meerwasser (kg/m³). */
+export const SEA_DENSITY = 1025;
+
+/** Anteil eines schwimmenden Eisbergs unter Wasser: ρ_Eis / ρ_Wasser. */
+export function submergedFraction(waterDensity = 1000): number {
+  return ICE_DENSITY / waterDensity;
 }

@@ -28,8 +28,18 @@ A 100 m steel bridge gets $12 \cdot 10^{-6}\,\frac{1}{\text{K}} \cdot 100\,\text
 
 An iron contains a **bimetal**: two strips of metals that expand differently, bonded together. When hot it bends and opens a contact – the heater switches off. As it cools, the contact closes again, so the temperature swings around the set value.
 
+### Hot-air balloon
+
+Air also expands when it is heated: a cubic metre of air at 100 °C is about a quarter lighter than one at 15 °C. The difference from the cooler air outside carries the balloon – around 700 kg with a 2500 m³ envelope. On hot summer days the difference is smaller, which is why balloons prefer to take off early in the morning.
+
+### Ice: water is an exception
+
+Almost all substances contract when they solidify, but water expands by about 9 %. That is why full bottles burst in the freezer, water pipes freeze and burst and frost splits rocks. Ice is lighter than water and floats: only just over a tenth of an iceberg sticks out of the sea.
+
 ## Try it
 
+- [Hot-air balloon](?mode=ballon&bvol=2500&bto=15&bti=100&blast=600) and [hot summer day](?mode=ballon&bvol=2500&bto=35&bti=80&blast=600): when does the balloon rise?
+- [Full bottle in the freezer](?mode=eis&ifill=95&isalt=1) and [with room](?mode=eis&ifill=80&isalt=0): how much room does the ice need?
 - [Aluminium vs steel](?mode=fest&mat=aluminium&t=80), [steel bridge](?mode=fest&mat=steel&L0=100&t=60)
 - [Heat a gas](?mode=gas&t=80), [cool a gas](?mode=gas&t=-20)
 - [Thermometer at 80 °C](?mode=fluessig&t=80) and [at 2 °C](?mode=fluessig&t=2)
