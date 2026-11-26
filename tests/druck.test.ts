@@ -2,6 +2,7 @@ import { describe, expect, it } from 'vitest';
 import {
   airPressure,
   barometerHeight,
+  bloodPressureAt,
   bottomPressure,
   breeze,
   checkTask,
@@ -9,10 +10,12 @@ import {
   hydraulic,
   hydrostatic,
   makeTask,
+  MMHG,
   outflowSpeed,
   parseAnswer,
   pressure,
   pumpLift,
+  strawHeight,
   tapPressure,
 } from '../src/simulations/physik/druck/model';
 
@@ -44,7 +47,6 @@ describe('Druck', () => {
     expect(breeze(15, 15)).toBe('none');
   });
 });
-
 
 describe('Verbundene Gefäße und Wasserturm', () => {
   it('Bodendruck hängt nur von der Höhe ab (hydrostatisches Paradoxon)', () => {
@@ -107,7 +109,29 @@ describe('Übung Druck', () => {
   });
 
   it('neun Aufgabenarten reihum, gleiche Nummer gleiche Aufgabe', () => {
-    expect(new Set(Array.from({ length: 9 }, (_, i) => makeTask(i + 1).kind)).size).toBe(9);
+    expect(new Set(Array.from({ length: 11 }, (_, i) => makeTask(i + 1).kind)).size).toBe(11);
     expect(makeTask(12)).toEqual(makeTask(12));
+  });
+});
+
+describe('Strohhalm und Blutdruck', () => {
+  it('Strohhalm: 100 hPa Unterdruck heben Wasser gut einen Meter, Quecksilber nur 7,5 cm', () => {
+    expect(strawHeight(100, 1000)).toBeCloseTo(1.019, 3);
+    expect(strawHeight(100, 13546) * 100).toBeCloseTo(7.53, 2);
+    expect(strawHeight(0, 1000)).toBe(0);
+    // ganzer Luftdruck: etwa 10 m Wasser
+    expect(strawHeight(1013.25, 1000)).toBeCloseTo(10.33, 2);
+  });
+  it('Blutdruck wächst unter dem Herzen und sinkt darüber', () => {
+    expect(bloodPressureAt(120, 0)).toBe(120);
+    expect(bloodPressureAt(120, 1.3)).toBeCloseTo(120 + (1060 * 9.81 * 1.3) / MMHG, 9);
+    expect(bloodPressureAt(120, 1.3)).toBeGreaterThan(215);
+    expect(bloodPressureAt(120, -0.45)).toBeLessThan(90);
+  });
+  it('neue Übungsarten sind lösbar', () => {
+    for (let n = 1; n <= 110; n++) {
+      const t = makeTask(n);
+      if (t.kind === 'straw' || t.kind === 'blood') expect(checkTask(t, String(Math.round(t.answer)))).toBe(true);
+    }
   });
 });

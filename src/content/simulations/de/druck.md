@@ -54,8 +54,18 @@ Otto von Guericke pumpte 1656 die Luft aus zwei aufeinandergelegten Halbkugeln. 
 
 Unterschiedlich warme Flächen erwärmen die Luft verschieden stark. Über dem wärmeren Gebiet steigt Luft auf, am Boden entsteht ein **Tiefdruckgebiet**. Aus dem **Hoch** strömt Luft nach: Wind ist ein Ausgleich von Druckunterschieden. An der Küste weht deshalb tagsüber Seewind, nachts Landwind.
 
+### Alltag: Trinken mit dem Strohhalm
+
+Wer am Strohhalm „saugt“, zieht das Getränk nicht hoch. Er vergrößert den Mundraum und senkt so den Druck im Mund. Der äußere Luftdruck drückt dann die Flüssigkeit im Halm nach oben – so hoch, bis der Schweredruck der Säule den Unterdruck ausgleicht: h = Δp / (ρ · g). Mit etwa 100 hPa Unterdruck schafft man rund einen Meter Wasser. Selbst eine perfekte Pumpe hebt Wasser durch Saugen höchstens etwa 10 m.
+
+### Alltag: Blutdruck im Körper
+
+Auch das Blut in den Adern bildet eine Flüssigkeitssäule. Beim Stehen ist der Blutdruck an den Füßen um rund 100 mmHg höher als am Herzen, im Kopf etwas niedriger. Darum misst man den Blutdruck am Oberarm, etwa auf Herzhöhe. Die Einheit mmHg stammt vom Quecksilber-Barometer: 1 mmHg ≈ 133 Pa.
+
 ## Ausprobieren
 
+- [Strohhalm 25 cm](?mode=halm&hdp=40&hl=25&hfl=wasser) und [Strohhalm 2 m](?mode=halm&hdp=100&hl=200&hfl=wasser): Wie lang darf ein Strohhalm höchstens sein?
+- [Blutdruck an den Füßen](?mode=blut&bsys=120&bmh=-120&bliegt=0) und [Arm hochgestreckt](?mode=blut&bsys=120&bmh=50&bliegt=0): Wo ist der Druck am größten?
 - [Stöckelschuh](?mode=auflage&flaeche=absatz) und [Schneeschuh](?mode=auflage&flaeche=schneeschuh): Vergleiche die Drücke im Diagramm.
 - [Auto heben](?mode=hydraulik&F1=100&d1=2&d2=20): Wie ändert sich $F_2$, wenn du den großen Durchmesser verdoppelst?
 - [Tauchen](?mode=wasser&h=10): Wie groß ist der Druck in 10 m Tiefe?
