@@ -56,6 +56,18 @@ Schreibt man das Einmaleins von −6 bis 6 in eine Tafel, zerfällt sie in **vie
 
 Die Temperatur fällt um 3 °C pro Stunde. Wie warm war es **vor** 4 Stunden? Die Änderung pro Stunde ist $-3$, die Zeit $-4$ (in der Vergangenheit). Die Änderung ist $(-3) \cdot (-4) = +12$: Vor vier Stunden war es 12 °C wärmer. Minus mal minus ergibt hier ganz natürlich plus.
 
+### Punkt vor Strich mit negativen Zahlen
+
+Auch mit Vorzeichen gilt: erst Mal und Geteilt, dann Plus und Minus. Danach fasst man **Rechenzeichen und Vorzeichen** zusammen: $+\,(-3)$ wird zu $-\,3$, und $-\,(-3)$ wird zu $+\,3$. Beispiel:
+
+$6 + (-2) \cdot 3 - (-8) : 2 = 6 + (-6) - (-4) = 6 - 6 + 4 = 4$
+
+### Klammern auflösen
+
+Steht ein Faktor vor der Klammer, wird jede Zahl in der Klammer damit multipliziert. Ein **Minus vor der Klammer** ist der Faktor $-1$: Alle Vorzeichen in der Klammer drehen sich um.
+
+$-(3 - 5 + 1) = -3 + 5 - 1 \qquad -3 \cdot (2 + 4 - 6) = -6 - 12 + 18$
+
 ## Ausprobieren
 
 - [(−3) · (−4)](?mode=strahl&a=-3&b=-4): Verfolge die Sprünge und die Spiegelung.
@@ -65,7 +77,9 @@ Die Temperatur fällt um 3 °C pro Stunde. Wie warm war es **vor** 4 Stunden? Di
 - [Einmaleins-Tafel](?mode=tafel&a=-3&b=-4): Welche Viertel sind positiv, welche negativ?
 - [(−2)⁵](?mode=viele&nf=5&nn=5&fv=2) und [vier negative Faktoren](?mode=viele&nf=4&nn=4&fv=2): Drücke „Abspielen“ und verfolge, wie das Vorzeichen bei jedem negativen Faktor umspringt.
 - [Kälteeinbruch](?mode=alltag&ts=2&rt=-3&hh=-4): Wie warm war es vor 4 Stunden? Vergleiche mit [Erwärmung](?mode=alltag&ts=-6&rt=2&hh=5).
-- [Kopfrechnen](?mode=ueben&dq=1): Zehn Aufgaben mit Punktestand.
+- [Punkt vor Strich](?mode=punkt&ex=1): Drücke „Nächster Schritt“ und verfolge jeden Rechenschritt.
+- [−(3 − 5 + 1)](?mode=klammer&kf=-1&k1=3&k2=-5&k3=1) und [−3 · (2 + 4 − 6)](?mode=klammer&kf=-3&k1=2&k2=4&k3=-6): Drücke „Abspielen“ – welche Karten klappen um?
+- [Kopfrechnen](?mode=ueben&dq=1): Zehn Aufgaben mit Punktestand, jetzt auch mit Punkt vor Strich und Klammern.
 
 ## Aufgaben
 
@@ -122,6 +136,14 @@ Es sind vier Minuszeichen, also eine gerade Anzahl. Das Ergebnis ist positiv: $1
 <details><summary>Lösung anzeigen</summary>
 
 $(-3)^2 = 9$, $(-3)^3 = -27$, aber $-3^2 = -(3^2) = -9$, weil die Hochzahl nur zur 3 gehört.
+
+</details>
+
+**8. Klammer auflösen.** Löse die Klammer auf und rechne aus: $-2 \cdot (4 - 7 + 1)$. [Aufgabe laden](?mode=klammer&kf=-2&k1=4&k2=-7&k3=1&_hide=1)
+
+<details><summary>Lösung anzeigen</summary>
+
+$-8 + 14 - 2 = 4$. Probe: $-2 \cdot (-2) = 4$.
 
 </details>
 
