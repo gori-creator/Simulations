@@ -39,6 +39,14 @@ Ein Gegenstand leuchtet nicht selbst. Er wirft einen Teil des Lichts zurück und
 
 In der Netzhaut sitzen drei Arten von Zapfen. Die **L-Zapfen** sprechen am stärksten auf langwelliges (rötliches) Licht an, die **M-Zapfen** auf mittleres (grünes), die **S-Zapfen** auf kurzwelliges (blaues). Das Gehirn vergleicht die drei Reize. Gelbes Licht mit 580 nm reizt L stark und M etwas weniger – genau wie eine Mischung aus rotem und grünem Licht. Deshalb kann ein Bildschirm mit nur roten, grünen und blauen Leuchtpunkten Gelb zeigen: Das Auge merkt den Unterschied nicht.
 
+### Der Regenbogen
+
+Jeder Regentropfen wirkt wie ein kleines Prisma mit Spiegel: Das Sonnenlicht wird beim Eintritt gebrochen, an der Rückseite gespiegelt und beim Austritt noch einmal gebrochen. Rotes Licht wird etwas schwächer gebrochen als blaues. Besonders viele Strahlen kommen unter etwa 42° (Rot) bzw. 40,5° (Blau) zur Sonne zurück. Darum sieht man den Bogen immer mit der Sonne im Rücken, als Kreis um den Punkt gegenüber der Sonne – Rot außen, Blau innen.
+
+### Himmelsblau und Abendrot
+
+Die Luftmoleküle streuen kurzwelliges Licht viel stärker als langwelliges (etwa mit $1/\lambda^4$). Das gestreute Blau kommt von überall am Himmel, darum ist er blau. Steht die Sonne tief, legt ihr Licht einen viel längeren Weg durch die Luft zurück: Das Blau ist unterwegs herausgestreut, übrig bleiben Gelb, Orange und Rot – das Abendrot.
+
 ## Ausprobieren
 
 - [Prisma](?mode=prisma): Welche Farbe wird am stärksten abgelenkt?
@@ -49,7 +57,9 @@ In der Netzhaut sitzen drei Arten von Zapfen. Die **L-Zapfen** sprechen am stär
 - [Obstteller im roten Licht](?mode=koerper&light=red) und [im grünen Licht](?mode=koerper&light=green): Welche Gegenstände werden schwarz?
 - [Natriumlampe](?mode=koerper&light=sodium): Warum sehen Autos unter manchen Straßenlampen alle gleich aus?
 - [Auge: Gelb 580 nm](?mode=auge&lam=580&mixe=1): Vergleiche die Zapfenreize von Spektralfarbe und Bildschirm-Mischung.
-- [Üben](?mode=ueben&qn=1): Sechs Aufgabenarten zu allen Themen.
+- [Regenbogen](?mode=regen&rb=86): Verschiebe den Einfallspunkt. Wann kommt das Licht unter dem größten Winkel zurück?
+- [Mittags](?mode=himmel&el=60) und [abends](?mode=himmel&el=2): Drücke „Sonnenuntergang“ und beobachte die Balken.
+- [Üben](?mode=ueben&qn=1): Acht Aufgabenarten zu allen Themen.
 
 ## Aufgaben
 
@@ -90,6 +100,14 @@ Weiß: alle drei (Rot, Grün, Blau) voll. Gelb: Rot und Grün. Schwarz: keiner.
 <details><summary>Lösung anzeigen</summary>
 
 Apfel rot, Blatt schwarz (es wirft kaum Rot zurück), Papier rot (es wirft alles zurück, was ankommt – hier nur Rot).
+
+</details>
+
+**Regenbogen.** Am Nachmittag steht die Sonne im Westen. In welche Richtung musst du schauen, um einen Regenbogen zu sehen, und ist Rot innen oder außen? [Aufgabe laden](?mode=regen&rb=86&_hide=1)
+
+<details><summary>Lösung anzeigen</summary>
+
+Nach Osten, mit der Sonne im Rücken. Rot liegt außen (etwa 42°), Blau innen (etwa 40,5°).
 
 </details>
 

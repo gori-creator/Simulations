@@ -1,19 +1,25 @@
 import { describe, expect, it } from 'vitest';
 import {
   additiveMix,
+  airMass,
   checkTask,
   colorName,
   coneFromMix,
   coneResponse,
+  dropAngle,
   filterPasses,
   LIGHTS,
   makeTask,
   objectColor,
   prismDeviation,
+  rainbowAngle,
   REFLECT,
   refractiveIndex,
   spectralName,
   subtractiveMix,
+  sunAndSky,
+  transmission,
+  waterIndex,
 } from '../src/simulations/physik/farben/model';
 
 describe('Farben', () => {
@@ -103,5 +109,30 @@ describe('Übung Farben', () => {
       }
     }
     expect(checkTask(makeTask(1), 'gelb')).toBeNull();
+  });
+});
+
+describe('Regenbogen und Himmelsfarben', () => {
+  it('Regenbogenwinkel: Rot etwa 42°, Blau etwa 40,5°, Rot außen', () => {
+    expect(rainbowAngle(680)).toBeGreaterThan(41.8);
+    expect(rainbowAngle(680)).toBeLessThan(42.6);
+    expect(rainbowAngle(440)).toBeGreaterThan(40);
+    expect(rainbowAngle(440)).toBeLessThan(41.2);
+    expect(rainbowAngle(680)).toBeGreaterThan(rainbowAngle(440));
+  });
+  it('der Regenbogenwinkel ist der größte Rückstreuwinkel', () => {
+    const n = waterIndex(600);
+    const max = rainbowAngle(600);
+    for (let b = 0.05; b < 1; b += 0.05) expect(dropAngle(b, n)).toBeLessThanOrEqual(max + 1e-9);
+  });
+  it('tiefe Sonne: längerer Weg, weniger Blau, rötere Sonne', () => {
+    expect(airMass(90)).toBeCloseTo(1, 2);
+    expect(airMass(5)).toBeGreaterThan(8);
+    expect(transmission(450, airMass(2))).toBeLessThan(transmission(450, airMass(60)));
+    expect(transmission(650, airMass(2))).toBeGreaterThan(transmission(450, airMass(2)));
+    const hi = sunAndSky(60);
+    const lo = sunAndSky(2);
+    expect(lo.sun[2]).toBeLessThan(hi.sun[2]);
+    expect(hi.sky[2]).toBe(1);
   });
 });
