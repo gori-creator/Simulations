@@ -116,7 +116,7 @@ const QP_UNITS: CurriculumUnit[] = [
       'Magnetische Feldlinienbilder und Flussdichte, Lorentzkraft und Kreisbahnen, Teilchen in senkrecht zueinander stehenden Feldern, Induktionsgesetz; LK: differenzielle Form und Selbstinduktion.',
       'Magnetic field line patterns and flux density, the Lorentz force and circular paths, particles in perpendicular fields, the law of induction; LK: differential form and self-induction.',
     ),
-    simulations: ['induktion', 'lorentzkraft', 'magnetfeld-spule'],
+    simulations: ['induktion', 'lorentzkraft', 'magnetfeld-spule', 'teilchen-felder'],
   },
   {
     code: '3',
@@ -131,7 +131,7 @@ const QP_UNITS: CurriculumUnit[] = [
     code: '4',
     title: L('Elektromagnetische Schwingungen', 'Electromagnetic oscillations'),
     summary: L('Harmonische elektromagnetische Schwingungen, Schwingkreis, Ausbreitung und Spektrum elektromagnetischer Wellen.', 'Harmonic electromagnetic oscillations, the oscillating circuit, propagation and spectrum of electromagnetic waves.'),
-    simulations: ['em-spektrum'],
+    simulations: ['schwingkreis', 'em-spektrum'],
   },
   {
     code: '5',

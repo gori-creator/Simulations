@@ -207,7 +207,7 @@ const HP_12_UNITS: CurriculumUnit[] = [
     code: '1.4',
     title: L('Bewegung von Ladungsträgern in Feldern', 'Motion of charge carriers in fields'),
     summary: L('Geladene Teilchen im elektrischen und magnetischen Feld, Lorentzkraft.', 'Charged particles in electric and magnetic fields, the Lorentz force.'),
-    simulations: ['lorentzkraft'],
+    simulations: ['lorentzkraft', 'teilchen-felder'],
   },
   {
     code: '2',
@@ -235,7 +235,7 @@ const HP_13_UNITS: CurriculumUnit[] = [
     code: '3.3',
     title: L('Elektromagnetische Schwingungen', 'Electromagnetic oscillations'),
     summary: L('Elektromagnetischer Schwingkreis mit Thomsonscher Schwingungsgleichung; LK: Dämpfung, erzwungene Schwingung und Resonanz.', 'The electromagnetic oscillating circuit with Thomson’s formula; LK: damping, forced oscillation and resonance.'),
-    simulations: ['resonanz'],
+    simulations: ['resonanz', 'schwingkreis'],
   },
   {
     code: '3.4',

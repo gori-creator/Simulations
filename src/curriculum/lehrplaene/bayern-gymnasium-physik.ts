@@ -498,7 +498,7 @@ export const bayernGymnasiumPhysik: StateCurriculum = {
             "Induktionsgesetz und Wechselspannung, Selbstinduktion, technische Anwendungen sowie der elektromagnetische Schwingkreis im Vergleich zum Federpendel.",
             "Law of induction and alternating voltage, self-induction, technical applications, and the electromagnetic LC circuit compared with the spring pendulum.",
           ),
-          simulations: ["induktion", "interferenz", "resonanz", "federpendel"],
+          simulations: ["induktion", "interferenz", "resonanz", "federpendel", "schwingkreis"],
         },
         {
           code: "3",
@@ -603,6 +603,7 @@ export const bayernGymnasiumPhysik: StateCurriculum = {
             "resonanz",
             "doppelspalt",
             "messunsicherheit",
+            "teilchen-felder",
           ],
         },
       ],

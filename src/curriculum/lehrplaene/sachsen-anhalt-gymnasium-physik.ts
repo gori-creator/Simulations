@@ -437,6 +437,7 @@ const QPHASE_UNITS: CurriculumUnit[] = [
           'Effektivwerte, induktiver und kapazitiver Widerstand mit Zeigerdiagramm, Schwingkreis und Thomson’sche Gleichung.',
           'RMS values, inductive and capacitive reactance with phasor diagrams, the LC circuit and Thomson’s equation.',
         ),
+        simulations: ['schwingkreis'],
       },
     ],
   },
@@ -529,7 +530,7 @@ const QPHASE_UNITS: CurriculumUnit[] = [
           'Kräfte auf geladene Teilchen in elektrischen und magnetischen Feldern, Lorentzkraft und Bahnformen.',
           'Forces on charged particles in electric and magnetic fields, the Lorentz force and the resulting paths.',
         ),
-        simulations: ['lorentzkraft'],
+        simulations: ['lorentzkraft', 'teilchen-felder'],
       },
       {
         code: 'WPF-1.3',

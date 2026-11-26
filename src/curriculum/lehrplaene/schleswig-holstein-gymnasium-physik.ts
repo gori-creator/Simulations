@@ -234,7 +234,7 @@ const FELDER: CurriculumUnit = {
         'Ladungen im elektrischen und magnetischen Feld, Lorentzkraft und Hall-Effekt, Kreisbewegungen mit Zentripetalkraft, auch im Gravitationsfeld, e/m-Bestimmung, Beschleuniger und Massenspektrometer.',
         'Charges in electric and magnetic fields, the Lorentz force and the Hall effect, circular motion with centripetal force, also in gravitational fields, measuring e/m, accelerators and mass spectrometers.',
       ),
-      simulations: ['lorentzkraft', 'kreisbewegung', 'planetenbahnen'],
+      simulations: ['lorentzkraft', 'kreisbewegung', 'planetenbahnen', 'teilchen-felder'],
     },
     {
       code: 'F.3',
@@ -260,7 +260,7 @@ const WELLEN: CurriculumUnit = {
       code: 'W.1',
       title: L('Mechanische und elektromagnetische Schwingungen', 'Mechanical and electromagnetic oscillations'),
       summary: L('Kenngrößen, Schwingungsgleichung und lineares Kraftgesetz, gedämpfte und erzwungene Schwingungen mit Resonanz, energetischer Vergleich.', 'Parameters, the equation of oscillation and the linear force law, damped and forced oscillations with resonance, energy comparison.'),
-      simulations: ['fadenpendel', 'federpendel', 'resonanz'],
+      simulations: ['fadenpendel', 'federpendel', 'resonanz', 'schwingkreis'],
     },
     {
       code: 'W.2',

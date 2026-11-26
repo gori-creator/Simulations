@@ -180,7 +180,7 @@ const Q12_UNITS: CurriculumUnit[] = [
       'Beschleunigung und Ablenkung geladener Teilchen im elektrischen Feld, Lorentzkraft und Kreisbahnen im Magnetfeld, Teilchen in senkrecht zueinander stehenden Feldern.',
       'Acceleration and deflection of charged particles in electric fields, the Lorentz force and circular paths in magnetic fields, particles in perpendicular fields.',
     ),
-    simulations: ['lorentzkraft'],
+    simulations: ['lorentzkraft', 'teilchen-felder'],
   },
   {
     code: '3.2.3',
@@ -198,7 +198,7 @@ const Q12_UNITS: CurriculumUnit[] = [
       'Harmonische Schwingungen von Feder- und Fadenpendel, Dämpfung, erzwungene Schwingung und Resonanz, elektromagnetischer Schwingkreis.',
       'Harmonic oscillation of spring and simple pendulums, damping, forced oscillation and resonance, the electromagnetic oscillating circuit.',
     ),
-    simulations: ['fadenpendel', 'federpendel', 'resonanz'],
+    simulations: ['fadenpendel', 'federpendel', 'resonanz', 'schwingkreis'],
   },
 ];
 

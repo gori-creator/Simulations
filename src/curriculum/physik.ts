@@ -512,6 +512,22 @@ export const physik: Subject = {
               ),
             },
             {
+              id: 'teilchen-felder',
+              status: 'ready',
+              slug: L('geladene-teilchen-in-feldern', 'charged-particles-in-fields'),
+              title: L('Geladene Teilchen in Feldern: Ablenkung, Millikan, Zyklotron, Hall-Effekt', 'Charged particles in fields: deflection, Millikan, cyclotron, Hall effect'),
+              summary: L(
+                'Elektronen werden beschleunigt und zwischen Platten abgelenkt, ein Öltröpfchen schwebt im Kondensator, Protonen kreisen im Zyklotron, und im Hall-Plättchen drückt das Magnetfeld die Ladungen zur Seite. Außerdem: das Massenspektrometer trennt Isotope, Schraubenbahnen erklären das Polarlicht, und es gibt einen Übungsmodus.',
+                'Electrons are accelerated and deflected between plates, an oil droplet hovers in a capacitor, protons circle in a cyclotron, and in a Hall plate the magnetic field pushes the charges sideways. Also: the mass spectrometer separates isotopes, helical paths explain the aurora, and there is a practice mode.',
+              ),
+              grades: [10, 13],
+              kmk: ['P-S', 'P-E', 'P-BK-Wechselwirkung', 'P-BK-Energie', 'P-BK-Mathematisieren'],
+              keywords: L(
+                ['geladene Teilchen', 'Elektronenkanone', 'Beschleunigungsspannung', 'Längsfeld', 'Querfeld', 'Ablenkung', 'Braunsche Röhre', 'Parabelbahn', 'Millikan', 'Öltröpfchen', 'Elementarladung', 'Zyklotron', 'Teilchenbeschleuniger', 'Hall-Effekt', 'Hall-Sonde', 'Hall-Spannung', 'Lorentzkraft', 'Massenspektrometer', 'Isotop', 'Wien-Filter', 'Schraubenbahn', 'Polarlicht'],
+                ['charged particles', 'electron gun', 'accelerating voltage', 'longitudinal field', 'transverse field', 'deflection', 'cathode-ray tube', 'parabolic path', 'Millikan', 'oil drop', 'elementary charge', 'cyclotron', 'particle accelerator', 'Hall effect', 'Hall probe', 'Hall voltage', 'Lorentz force', 'mass spectrometer', 'isotope', 'Wien filter', 'helical path', 'aurora'],
+              ),
+            },
+            {
               id: 'feldlinien',
               status: 'ready',
               slug: L('feldlinien-punktladungen', 'field-lines-point-charges'),
@@ -656,6 +672,22 @@ export const physik: Subject = {
               keywords: L(
                 ['Resonanz', 'erzwungene Schwingung', 'Pohlsches Rad', 'Drehpendel', 'Erreger', 'Erregerfrequenz', 'Eigenfrequenz', 'Resonanzfrequenz', 'Resonanzkurve', 'Phasenverschiebung', 'Einschwingvorgang', 'Dämpfung', 'Wirbelstrombremse', 'Resonanzkatastrophe', 'Zeigerdiagramm'],
                 ['resonance', 'driven oscillation', 'forced oscillation', 'Pohl’s wheel', 'torsion pendulum', 'driver', 'driving frequency', 'natural frequency', 'resonance frequency', 'resonance curve', 'phase shift', 'transient', 'damping', 'eddy-current brake', 'resonance disaster', 'phasor diagram'],
+              ),
+            },
+            {
+              id: 'schwingkreis',
+              status: 'ready',
+              slug: L('elektromagnetischer-schwingkreis', 'lc-circuit'),
+              title: L('Elektromagnetischer Schwingkreis und Selbstinduktion', 'LC circuit and self-induction'),
+              summary: L(
+                'Die Energie pendelt zwischen Kondensator und Spule hin und her, genau wie bei einem Federpendel. Beim Ein- und Ausschalten zeigt die Spule, dass sie Strom nicht sofort ändern lässt. Außerdem: Radio abstimmen mit Resonanz, Rückkopplung für ungedämpfte Schwingungen und ein Übungsmodus.',
+                'The energy swings back and forth between capacitor and coil, just like a spring pendulum. When switching on and off, the coil shows that it does not let the current change instantly. Also: tuning a radio with resonance, feedback for undamped oscillations and a practice mode.',
+              ),
+              grades: [11, 13],
+              kmk: ['P-S', 'P-E', 'P-BK-Energie', 'P-BK-Erhaltung', 'P-BK-Mathematisieren'],
+              keywords: L(
+                ['Schwingkreis', 'Thomson-Gleichung', 'Thomsonsche Schwingungsgleichung', 'Kondensator', 'Spule', 'Induktivität', 'Kapazität', 'elektromagnetische Schwingung', 'gedämpfte Schwingung', 'aperiodischer Grenzfall', 'Kriechfall', 'Selbstinduktion', 'Einschaltvorgang', 'Ausschaltvorgang', 'Energie des Magnetfelds', 'Federpendel', 'Analogie', 'Resonanz', 'Drehkondensator', 'Radio', 'Rückkopplung', 'Meißner-Schaltung', 'Trennschärfe'],
+                ['LC circuit', 'Thomson formula', 'capacitor', 'coil', 'inductance', 'capacitance', 'electromagnetic oscillation', 'damped oscillation', 'critical damping', 'overdamping', 'self-induction', 'switching on', 'switching off', 'magnetic field energy', 'spring pendulum', 'analogy', 'resonance', 'variable capacitor', 'radio', 'feedback', 'Meissner circuit', 'selectivity'],
               ),
             },
           ],

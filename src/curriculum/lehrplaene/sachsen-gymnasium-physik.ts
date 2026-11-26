@@ -400,7 +400,7 @@ const J11: CurriculumUnit[] = [
       'Lorentzkraft, spezifische Ladung des Elektrons, Hall-Effekt, Wien-Filter, Beschleuniger und Massenspektrometer.',
       'The Lorentz force, the specific charge of the electron, the Hall effect, the Wien filter, accelerators and mass spectrometers.',
     ),
-    simulations: ['lorentzkraft'],
+    simulations: ['lorentzkraft', 'teilchen-felder'],
   },
   {
     code: 'LK-8',
@@ -431,7 +431,7 @@ const J12: CurriculumUnit[] = [
       'Harmonische Schwingungen am Federpendel, Schwingkreis, Wellen mit Reflexion, Brechung, Beugung und Interferenz, stehende Wellen und Licht als Welle am Doppelspalt und Gitter.',
       'Harmonic oscillation of a spring pendulum, the LC circuit, waves with reflection, refraction, diffraction and interference, standing waves, and light as a wave at double slits and gratings.',
     ),
-    simulations: ['federpendel', 'wellen-ausbreitung', 'interferenz', 'stehende-wellen', 'doppelspalt', 'polarisation'],
+    simulations: ['federpendel', 'wellen-ausbreitung', 'interferenz', 'stehende-wellen', 'doppelspalt', 'schwingkreis', 'polarisation'],
   },
   {
     code: 'GK-2',

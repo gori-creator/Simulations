@@ -1882,6 +1882,7 @@ export const hessenGymnasiumPhysik: StateCurriculum = {
                 'Millikan-Versuch, Beschleunigung geladener Teilchen und Ablenkung quer zum Feld.',
                 'Millikan experiment, acceleration of charged particles and deflection across the field.',
               ),
+              simulations: ['teilchen-felder'],
             },
             {
               code: 'Q1.1.6',
@@ -1923,6 +1924,7 @@ export const hessenGymnasiumPhysik: StateCurriculum = {
                 'Quantitative Ablenkung (Vergleich mit waagerechtem Wurf), Linearbeschleuniger.',
                 'Quantitative deflection (comparison with horizontal projectile), linear accelerator.',
               ),
+              simulations: ['teilchen-felder'],
             },
           ],
         },
@@ -1974,11 +1976,13 @@ export const hessenGymnasiumPhysik: StateCurriculum = {
               code: 'Q1.2.5',
               title: L('Hall-Effekt (nur LK)', 'Hall effect (advanced course only)'),
               summary: L('Spannung quer zum Strom im Magnetfeld erklären.', 'Explaining the voltage across a conductor in a magnetic field.'),
+              simulations: ['teilchen-felder'],
             },
             {
               code: 'Q1.2.6',
               title: L('Teilchenbeschleuniger (nur LK)', 'Particle accelerators (advanced course only)'),
               summary: L('Funktionsprinzip z. B. von Zyklotron und Synchrotron.', 'Working principle of e.g. cyclotron and synchrotron.'),
+              simulations: ['teilchen-felder'],
             },
           ],
         },
@@ -2079,6 +2083,7 @@ export const hessenGymnasiumPhysik: StateCurriculum = {
                 'Self-induction and inductance of a long solenoid (phenomenological)',
               ),
               summary: L('Selbstinduktion an Spulen beobachten und beschreiben.', 'Observing and describing self-induction in coils.'),
+              simulations: ['schwingkreis'],
             },
             {
               code: 'Q2.2.4',
@@ -2093,6 +2098,7 @@ export const hessenGymnasiumPhysik: StateCurriculum = {
                 'Schwingkreis: Kenngrößen, Energieumwandlung, Thomson’sche Gleichung.',
                 'LC circuit: parameters, energy conversion, Thomson\'s formula.',
               ),
+              simulations: ['schwingkreis'],
             },
             {
               code: 'Q2.2.6',
@@ -2110,6 +2116,7 @@ export const hessenGymnasiumPhysik: StateCurriculum = {
               code: 'Q2.2.7',
               title: L('Selbstinduktion und Induktivität (nur LK)', 'Self-induction and inductance (advanced course only)'),
               summary: L('Ein- und Ausschaltvorgänge, Definition der Induktivität.', 'Switch-on and switch-off processes, definition of inductance.'),
+              simulations: ['schwingkreis'],
             },
             {
               code: 'Q2.2.8',
@@ -2118,6 +2125,7 @@ export const hessenGymnasiumPhysik: StateCurriculum = {
                 'Energy of the field of a current-carrying coil (advanced course only)',
               ),
               summary: L('Magnetische Feldenergie (ohne Herleitung).', 'Magnetic field energy (without derivation).'),
+              simulations: ['schwingkreis'],
             },
             {
               code: 'Q2.2.9',
@@ -2126,11 +2134,13 @@ export const hessenGymnasiumPhysik: StateCurriculum = {
                 'Comparison of mechanical and electromagnetic oscillations in terms of energy (advanced course only)',
               ),
               summary: L('Analogien zwischen Pendel und Schwingkreis.', 'Analogies between pendulum and LC circuit.'),
+              simulations: ['schwingkreis'],
             },
             {
               code: 'Q2.2.10',
               title: L('Gedämpfte Schwingungen (nur LK)', 'Damped oscillations (advanced course only)'),
               summary: L('Dämpfung im Schwingkreis.', 'Damping in the LC circuit.'),
+              simulations: ['schwingkreis'],
             },
             {
               code: 'Q2.2.11',

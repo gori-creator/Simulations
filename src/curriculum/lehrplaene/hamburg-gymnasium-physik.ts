@@ -146,7 +146,7 @@ const S_UNITS: CurriculumUnit[] = [
       'Kräfte und Bahnen geladener Teilchen im elektrischen Feld, Lorentzkraft und Kreisbahnen im Magnetfeld, Hall-Effekt, Teilchen in senkrecht zueinander stehenden Feldern.',
       'Forces on and paths of charged particles in electric fields, the Lorentz force and circular paths in magnetic fields, the Hall effect, particles in perpendicular fields.',
     ),
-    simulations: ['lorentzkraft'],
+    simulations: ['lorentzkraft', 'teilchen-felder'],
   },
   {
     code: '1.3',
@@ -164,7 +164,7 @@ const S_UNITS: CurriculumUnit[] = [
       'Lineares Kraftgesetz und harmonische Schwingung, schwache Dämpfung, Resonanz bei erzwungenen Schwingungen, elektromagnetischer Schwingkreis im Vergleich.',
       'Linear force law and harmonic oscillation, weak damping, resonance in forced oscillation, the electromagnetic oscillating circuit by comparison.',
     ),
-    simulations: ['fadenpendel', 'federpendel', 'resonanz'],
+    simulations: ['fadenpendel', 'federpendel', 'resonanz', 'schwingkreis'],
   },
   {
     code: '2.2',

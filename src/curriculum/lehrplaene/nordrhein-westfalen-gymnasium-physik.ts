@@ -629,7 +629,7 @@ const Q_UNITS: CurriculumUnit[] = [
           'Geladene Teilchen in elektrischen Längs- und Querfeldern, Lorentzkraft und gekreuzte Felder.',
           'Charged particles in longitudinal and transverse electric fields, the Lorentz force and crossed fields.',
         ),
-        simulations: ['lorentzkraft'],
+        simulations: ['lorentzkraft', 'teilchen-felder'],
       },
       {
         code: 'LK-1.3',
@@ -666,7 +666,7 @@ const Q_UNITS: CurriculumUnit[] = [
           'Federpendel, Fadenpendel, gedämpfte und erzwungene Schwingungen und Resonanz, Schwingkreis und Hertz’scher Dipol.',
           'Spring and simple pendulum, damped and forced oscillations and resonance, the LC circuit and the Hertzian dipole.',
         ),
-        simulations: ['federpendel', 'fadenpendel', 'resonanz'],
+        simulations: ['federpendel', 'fadenpendel', 'resonanz', 'schwingkreis'],
       },
     ],
   },

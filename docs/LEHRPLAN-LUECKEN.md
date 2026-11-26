@@ -2,7 +2,7 @@
 
 <!-- Automatisch erzeugt mit `npm run lehrplan:luecken` aus src/curriculum/lehrplaene/ – nicht von Hand bearbeiten. -->
 
-Lernbereiche der Länder-Lehrpläne, zu denen es noch **keine** Simulation gibt – Vorrat für neue Simulationen (Anleitung: `docs/NEUE-SIMULATION.md`). Insgesamt **89 von 1773** Lernbereichen ohne Simulation.
+Lernbereiche der Länder-Lehrpläne, zu denen es noch **keine** Simulation gibt – Vorrat für neue Simulationen (Anleitung: `docs/NEUE-SIMULATION.md`). Insgesamt **83 von 1773** Lernbereichen ohne Simulation.
 
 Nicht jeder Lernbereich eignet sich für eine Simulation. Reine Methoden-, Praktikums- und Projektthemen sind im Lehrplan mit `method: true` gekennzeichnet und zählen nicht als Lücke. Kommt ein Thema in mehreren Ländern vor, lohnt es sich besonders.
 
@@ -92,13 +92,13 @@ Alle Lernbereiche haben eine Simulation.
 | --- | --- | --- | --- |
 | 12 | S.3 | Stochastik › Hypergeometrische Verteilung | Ziehen ohne Zurücklegen mit der hypergeometrischen Verteilung beschreiben. |
 
-## Physik (66)
+## Physik (60)
 
 ### Baden-Württemberg · Gymnasium (0)
 
 Alle Lernbereiche haben eine Simulation.
 
-### Bayern · Gymnasium (9)
+### Bayern · Gymnasium (10)
 
 | Stufe | Nr. | Lernbereich | Kurz |
 | --- | --- | --- | --- |
@@ -107,6 +107,7 @@ Alle Lernbereiche haben eine Simulation.
 | 11 | 4.1 | Profilbereich am NTG (27 Std.) (nur NTG) › Die Methode der kleinen Schritte | Bewegungen mit veränderlicher Kraft schrittweise am Computer berechnen, z. B. Fall mit Luftwiderstand und harmonische Schwingung, und mit Experimenten vergleichen. |
 | 11 | 4.2 | Profilbereich am NTG (27 Std.) (nur NTG) › Photovoltaik in Anwendungen | U-I-Kennlinie einer Solarzelle und den Punkt maximaler Leistung bestimmen, Komponenten von Photovoltaikanlagen kennen und ihren Nutzen bewerten. |
 | 13 | 1.2 | Grundideen der Quantenphysik › Einblick in das Weltbild der Quantenphysik | Wellenfunktion und Nachweiswahrscheinlichkeit, Superposition, Komplementarität und der quantenphysikalische Messprozess. |
+| 13 | 4.1 | Kernphysik › Ein einfaches Kernmodell der Quantenphysik | Bindungsenergie je Nukleon, Potentialtopfmodell des Kerns, Entstehung der Strahlungsarten und Energiebilanzen bei Zerfällen und Kernreaktionen. |
 | 13 | A1 | Orientierung am Himmel (nur Astrophysik) | Sternbilder und Objekte am Nachthimmel mit Sternkarte oder Software finden, Sichtbarkeit beurteilen und Schleifenbahnen der Planeten erklären. |
 | 13 | E1.2 | Grundideen der Quantenphysik (erhöhtes Niveau) › Einblick in das Weltbild der Quantenphysik | Wellenfunktion, Unbestimmtheitsrelation, Messprozess, Quantenradierer, Nicht-Lokalität und Dekohärenz sowie Quantentechnik und ihr Missbrauch in Texten. |
 | 13 | E3 | Strukturuntersuchungen zum Aufbau der Materie (erhöhtes Niveau) | Methoden der Strukturuntersuchung und Standardmodell, zusätzlich Röntgen-Strukturanalyse und Synchrotronstrahlung. |
@@ -130,7 +131,7 @@ Alle Lernbereiche haben eine Simulation.
 
 Alle Lernbereiche haben eine Simulation.
 
-### Hessen · Gymnasium (30)
+### Hessen · Gymnasium (21)
 
 | Stufe | Nr. | Lernbereich | Kurz |
 | --- | --- | --- | --- |
@@ -141,16 +142,6 @@ Alle Lernbereiche haben eine Simulation.
 | 11 | E.6.4 | Grundlagen der Thermodynamik › Entropieerzeugung und Wirkungsgrad | Entropie als Maß für die Richtung natürlicher Abläufe; Grenzen des Wirkungsgrads. |
 | 11 | E.7.2 | Drehbewegungen › Drehimpuls | Drehimpuls als Erhaltungsgröße; Präzession. |
 | 11 | E.7.3 | Drehbewegungen › Trägheitsmoment | Anwendungsbeispiele wie die Pirouette. |
-| 12 | Q1.1.5 | Elektrisches Feld › Kräfte auf Körper in homogenen elektrischen Feldern, Bahnformen (qualitativ), Energiebetrachtung | Millikan-Versuch, Beschleunigung geladener Teilchen und Ablenkung quer zum Feld. |
-| 12 | Q1.1.9 | Elektrisches Feld › Kräfte auf Körper in homogenen elektrischen Feldern, Bahnformen, Energiebetrachtung (nur LK) | Quantitative Ablenkung (Vergleich mit waagerechtem Wurf), Linearbeschleuniger. |
-| 12 | Q1.2.5 | Magnetisches Feld › Hall-Effekt (nur LK) | Spannung quer zum Strom im Magnetfeld erklären. |
-| 12 | Q1.2.6 | Magnetisches Feld › Teilchenbeschleuniger (nur LK) | Funktionsprinzip z. B. von Zyklotron und Synchrotron. |
-| 12 | Q2.2.3 | Induktion und elektromagnetische Schwingungen › Selbstinduktion und Induktivität einer langen Spule (phänomenologisch) | Selbstinduktion an Spulen beobachten und beschreiben. |
-| 12 | Q2.2.5 | Induktion und elektromagnetische Schwingungen › Elektromagnetische harmonische Schwingungen | Schwingkreis: Kenngrößen, Energieumwandlung, Thomson’sche Gleichung. |
-| 12 | Q2.2.7 | Induktion und elektromagnetische Schwingungen › Selbstinduktion und Induktivität (nur LK) | Ein- und Ausschaltvorgänge, Definition der Induktivität. |
-| 12 | Q2.2.8 | Induktion und elektromagnetische Schwingungen › Energie des Feldes einer stromdurchflossenen Spule (nur LK) | Magnetische Feldenergie (ohne Herleitung). |
-| 12 | Q2.2.9 | Induktion und elektromagnetische Schwingungen › Vergleich von mechanischen und elektromagnetischen Schwingungen unter energetischen Aspekten (nur LK) | Analogien zwischen Pendel und Schwingkreis. |
-| 12 | Q2.2.10 | Induktion und elektromagnetische Schwingungen › Gedämpfte Schwingungen (nur LK) | Dämpfung im Schwingkreis. |
 | 13 | Q3.2.3 | Welle-Teilchen-Dualismus › Compton-Effekt (nur LK) | Streuung von Photonen an Elektronen. |
 | 13 | Q3.3.4 | Atomvorstellungen › Röntgenstrahlung (nur LK) | Kontinuierliches und charakteristisches Röntgenspektrum, Röntgenröhre, Moseley-Gesetz. |
 | 13 | Q4.1.1 | Quantenobjekte › Qualitative Betrachtung eines quantenmechanischen Atommodells | Orbitale als Aufenthaltswahrscheinlichkeit; Elektron als stehende Welle im Potenzialtopf. |
@@ -160,6 +151,7 @@ Alle Lernbereiche haben eine Simulation.
 | 13 | Q4.1.7 | Quantenobjekte › Koinzidenzmethode zum Nachweis einzelner Photonen anhand eines Beispiels (nur LK) | Unteilbarkeit von Photonen, z. B. am Mach-Zehnder-Interferometer. |
 | 13 | Q4.2.1 | Technische Anwendungen der Quantenphysik › Laser | Metastabile Niveaus, Besetzungsinversion, stimulierte Emission, Aufbau und Anwendungen. |
 | 13 | Q4.2.2 | Technische Anwendungen der Quantenphysik › Rastertunnelmikroskop (nur LK) | Tunneleffekt sowie Aufbau und Anwendungen. |
+| 13 | Q4.3.3 | Kernphysik › Bindungsenergie | Massendefekt, Bindungsenergie pro Nukleon, Kernreaktionen. |
 | 13 | Q4.3.5 | Kernphysik › Potenzialtopfmodell für Kerne (nur qualitativ) (nur LK) | Getrennte Töpfe für Protonen und Neutronen; Alpha-Zerfall durch Tunneln. |
 | 13 | Q4.4.3 | Spezielle Relativitätstheorie › Lorentztransformation und Addition von Geschwindigkeiten (nur LK) | Umrechnung zwischen bewegten Bezugssystemen. |
 | 13 | Q4.5.3 | Festkörperphysik › Quantenphysikalische Erklärung der Energiebänder (nur LK) | Fermienergie (qualitativ). |
@@ -173,11 +165,13 @@ Alle Lernbereiche haben eine Simulation.
 | 12/13 | Q-3.2 | Quantenobjekte › Komplementarität und Unbestimmtheit | Nur eA: Mach-Zehnder-Interferometer, Delayed-Choice-Experiment, Zustand, Präparation, Superposition und Unbestimmtheit. |
 | 12/13 | Q-5.2 | Atomkern › Energiespektren und Anwendungen | Halbleiterdetektor, Alpha-Spektrum einer Zerfallsreihe, Bragg-Kurve; nur eA: Nukleonen im Potenzialtopf. |
 
-### Nordrhein-Westfalen · Gymnasium (1)
+### Nordrhein-Westfalen · Gymnasium (3)
 
 | Stufe | Nr. | Lernbereich | Kurz |
 | --- | --- | --- | --- |
 | 7–10 | 10.2 | Ionisierende Strahlung und Kernenergie › Wechselwirkung von Strahlung mit Materie | Nachweis und Absorption von Strahlung, biologische Wirkung, Medizin und Strahlenschutz. |
+| 7–10 | 10.3 | Ionisierende Strahlung und Kernenergie › Kernenergie | Kernspaltung, Kernfusion, Kernkraftwerke und Endlagerung. |
+| 12/13 | LK-4.4 | Atom- und Kernphysik (Leistungskurs) › Kernspaltung und -fusion | Bindungsenergien, Massendefekt und Kettenreaktion. |
 
 ### Rheinland-Pfalz · Gymnasium (14)
 
@@ -213,15 +207,14 @@ Alle Lernbereiche haben eine Simulation.
 | 11 | LK-4 | Modellbildung und Simulation (Leistungskurs) | Bewegungen numerisch modellieren, Parameter variieren und mit dem Experiment vergleichen. |
 | 12 | LK-W2 | Deterministisches Chaos (Wahlbereich Leistungskurs) | Nichtlineare Systeme, Attraktoren und begrenzte Vorhersagbarkeit. |
 
-### Sachsen-Anhalt · Gymnasium (1)
+### Sachsen-Anhalt · Gymnasium (0)
 
-| Stufe | Nr. | Lernbereich | Kurz |
-| --- | --- | --- | --- |
-| 11/12 | eA-2.4 | Elektrodynamik (erhöhtes Anforderungsniveau) › Wechselstromwiderstände und elektromagnetische Schwingungen | Effektivwerte, induktiver und kapazitiver Widerstand mit Zeigerdiagramm, Schwingkreis und Thomson’sche Gleichung. |
+Alle Lernbereiche haben eine Simulation.
 
-### Schleswig-Holstein · Gymnasium (1)
+### Schleswig-Holstein · Gymnasium (2)
 
 | Stufe | Nr. | Lernbereich | Kurz |
 | --- | --- | --- | --- |
 | 7–10 | 3.5 | Elektromagnetische Strahlung › Klimaphysik (Block II) | Strahlungshaushalt der Erde, Albedo, natürlicher und anthropogener Treibhauseffekt und Rückkopplungen. |
+| 7–10 | 5.3 | Radioaktivität und ionisierende Strahlung › Kernenergie (Block II) | Kernspaltung und Kettenreaktion, Kernfusion in Reaktoren und Sonne, Chancen und Risiken. |
 

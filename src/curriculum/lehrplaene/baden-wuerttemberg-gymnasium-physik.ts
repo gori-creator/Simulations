@@ -708,7 +708,7 @@ export const badenWuerttembergGymnasiumPhysik: StateCurriculum = {
             "Harmonische und gedämpfte Schwingungen mathematisch beschreiben, Periodendauer von Feder- und Fadenpendel und Schwingkreis, Vergleich mechanisch–elektromagnetisch und Resonanz.",
             "Describing harmonic and damped oscillations mathematically, periods of spring and simple pendulum and LC circuit, comparing mechanical and electromagnetic oscillations, and resonance.",
           ),
-          simulations: ["federpendel", "fadenpendel", "resonanz"],
+          simulations: ["federpendel", "fadenpendel", "resonanz", "schwingkreis"],
         },
         {
           code: "3.6.4",
@@ -1004,7 +1004,7 @@ export const badenWuerttembergGymnasiumPhysik: StateCurriculum = {
                 "Magnetfelder von Leiter und Spule, Kraft auf Leiter und Lorentzkraft, Hall-Effekt, Kreisbahnen geladener Teilchen quantitativ sowie gekreuzte Felder in Wien-Filter und Massenspektrograph.",
                 "Magnetic fields of wire and coil, force on a conductor and Lorentz force, Hall effect, quantitative circular paths of charged particles, and crossed fields in the Wien filter and mass spectrometer.",
               ),
-              simulations: ["lorentzkraft", "magnetfeld-spule"],
+              simulations: ["lorentzkraft", "magnetfeld-spule", "teilchen-felder"],
             },
             {
               code: "3.6.2.3",
