@@ -57,7 +57,7 @@ const SJ_6_UNITS: CurriculumUnit[] = [
       'Licht als Strahl: Schatten und Finsternisse, Reflexionsgesetz am Spiegel, Brechung und Totalreflexion qualitativ, Bilder an Sammellinse und Lochkamera.',
       'Light as rays: shadows and eclipses, the law of reflection at a mirror, refraction and total internal reflection qualitatively, images formed by a converging lens and a pinhole camera.',
     ),
-    simulations: ['licht-schatten', 'reflexion', 'brechung', 'linsen'],
+    simulations: ['licht-schatten', 'reflexion', 'brechung', 'linsen', 'farben'],
   },
   {
     code: '3',

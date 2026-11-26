@@ -142,6 +142,7 @@ const SEK_I_UNITS: CurriculumUnit[] = [
         code: '3.4',
         title: L('Spektrum und Wellenlänge (Block II)', 'Spectrum and wavelength (block II)'),
         summary: L('Spektralfarben, Farbaddition und -subtraktion, Absorption und Transmission, nicht sichtbare Bereiche und Sensoren.', 'Spectral colours, additive and subtractive mixing, absorption and transmission, invisible ranges and sensors.'),
+        simulations: ['farben'],
       },
       {
         code: '3.5',

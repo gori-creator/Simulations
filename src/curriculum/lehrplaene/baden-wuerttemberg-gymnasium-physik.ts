@@ -100,7 +100,7 @@ export const badenWuerttembergGymnasiumPhysik: StateCurriculum = {
             "Sehen, Lichtausbreitung im Strahlenmodell, Schatten, Mondphasen und Finsternisse; Reflexion, Brechung, Sammellinse und die Zerlegung von weißem Licht im Spektrum.",
             "Vision, propagation of light in the ray model, shadows, moon phases and eclipses; reflection, refraction, the converging lens and splitting white light into a spectrum.",
           ),
-          simulations: ["licht-schatten", "reflexion"],
+          simulations: ["licht-schatten", "reflexion", 'farben'],
         },
         {
           code: "3.1.8",
@@ -194,7 +194,7 @@ export const badenWuerttembergGymnasiumPhysik: StateCurriculum = {
             "Sehen, Lichtausbreitung im Strahlenmodell, Schatten, Mondphasen und Finsternisse; Reflexion, Brechung, Sammellinse und die Zerlegung von weißem Licht im Spektrum.",
             "Vision, propagation of light in the ray model, shadows, moon phases and eclipses; reflection, refraction, the converging lens and splitting white light into a spectrum.",
           ),
-          simulations: ["reflexion", "brechung", "linsen"],
+          simulations: ["reflexion", "brechung", "linsen", 'farben'],
         },
         {
           code: "3.1.8",

@@ -76,6 +76,7 @@ const K6: CurriculumUnit[] = [
     code: 'W3',
     title: L('Farben (Wahlbereich)', 'Colours (optional)'),
     summary: L('Zerlegung weißen Lichts, additive und subtraktive Farbmischung.', 'Splitting white light, additive and subtractive colour mixing.'),
+    simulations: ['farben'],
   },
 ];
 
@@ -271,7 +272,7 @@ const K10: CurriculumUnit[] = [
       'Brechungsgesetz und Totalreflexion, Farbzerlegung, Interferenz am Doppelspalt und Gitter zur Bestimmung der Wellenlänge und das elektromagnetische Spektrum.',
       'The law of refraction and total internal reflection, dispersion, interference at double slits and gratings to measure wavelength, and the electromagnetic spectrum.',
     ),
-    simulations: ['brechung', 'doppelspalt'],
+    simulations: ['brechung', 'doppelspalt', 'farben'],
   },
   {
     code: '5',
@@ -294,6 +295,7 @@ const K10: CurriculumUnit[] = [
     code: 'W3',
     title: L('Fernsehbildtechnik (Wahlbereich)', 'Television picture technology (optional)'),
     summary: L('Aufbau des Fernsehbilds und Funktionsweise von Bildschirmen.', 'How the television picture is built and how screens work.'),
+    simulations: ['farben'],
   },
 ];
 

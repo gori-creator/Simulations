@@ -200,6 +200,7 @@ const SEK_I_UNITS: CurriculumUnit[] = [
           'Zerlegung von Licht am Prisma, Infrarot und Ultraviolett, Absorption und Farbmischung (RGB, CMYK).',
           'Splitting light with a prism, infrared and ultraviolet, absorption and colour mixing (RGB, CMYK).',
         ),
+        simulations: ['farben'],
       },
     ],
   },

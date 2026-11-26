@@ -982,7 +982,7 @@ export const hessenGymnasiumPhysik: StateCurriculum = {
                 'Phänomene wie Spiegelbilder, Brechung und Totalreflexion physikalisch erklären.',
                 'Explaining phenomena such as mirror images, refraction and total internal reflection.',
               ),
-              simulations: ['brechung'],
+              simulations: ['brechung', 'farben'],
             },
             {
               code: '2.3',
@@ -1302,7 +1302,7 @@ export const hessenGymnasiumPhysik: StateCurriculum = {
                 'Phänomene wie Spiegelbilder, Brechung und Totalreflexion physikalisch erklären.',
                 'Explaining phenomena such as mirror images, refraction and total internal reflection.',
               ),
-              simulations: ['brechung'],
+              simulations: ['brechung', 'farben'],
             },
             {
               code: '2.3',
