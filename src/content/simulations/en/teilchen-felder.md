@@ -30,12 +30,26 @@ A mass spectrometer sorts atoms by their mass. First a **velocity filter** (cros
 
 If a charged particle flies at an angle to the magnetic field, the Lorentz force only acts on the part of the velocity across the field. The particle circles and at the same time keeps moving along the field lines: a **helix**. This is how the Earth’s magnetic field guides electrons and protons from the Sun to the poles. There they collide with air molecules and make them glow – the **aurora**.
 
+### Fine-beam tube: the specific charge e/m
+
+In the fine-beam tube electrons are accelerated through the voltage $U$ and then fly in the magnetic field of two coils. The Lorentz force forces them onto a circle; a little gas in the bulb makes the path visible. From $e \cdot v \cdot B = \frac{m v^2}{r}$ and $e \cdot U = \frac{1}{2} m v^2$ it follows that
+
+$\frac{e}{m} = \frac{2U}{B^2 r^2} \approx 1.76 \cdot 10^{11}\,\text{C/kg}.$
+
+Together with the elementary charge from the Millikan experiment this gives the mass of the electron.
+
+### Oscilloscope
+
+In a cathode-ray tube two pairs of plates deflect the electron beam horizontally and vertically. With a **time base** (sawtooth in the x direction) the screen shows how a voltage changes with time. If sine voltages are applied to both pairs of plates, **Lissajous figures** appear, from which frequency ratios can be read off.
+
 ## Try it
 
 - [Electron gun](?mode=laengs&Ua=1000), [deflection](?mode=quer&Ua=1000&Ud=100)
 - [Millikan](?mode=millikan&n=3), [cyclotron](?mode=zyklotron&B=1&Uz=20), [Hall probe](?mode=hall&stoff=hl&B=0.5&I=1)
 - [Chlorine isotopes](?mode=spektro&probe=chlor&B2=0.5) and [uranium](?mode=spektro&probe=uran&B2=1.5): how far apart are the impact points?
 - [Helical path](?mode=spirale&al=60&B=1): change the angle from 0° to 90°.
+- [Fine-beam tube](?mode=faden&uf=200&ih=1.5): change voltage and coil current. Does e/m stay the same?
+- [Oscilloscope](?mode=oszi&osaw=1&fr=2&ay=0.8) and [Lissajous eight](?mode=oszi&osaw=0&fr=2&ph=0&ay=1): press play.
 - [Practice](?mode=ueben&qn=1): six kinds of tasks with a score.
 
 ## Exercises

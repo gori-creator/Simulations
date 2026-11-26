@@ -48,6 +48,18 @@ Ein Massenspektrometer sortiert Atome nach ihrer Masse. Zuerst lässt ein **Gesc
 
 Fliegt ein geladenes Teilchen schräg zum Magnetfeld, wirkt die Lorentzkraft nur auf den Teil der Geschwindigkeit quer zum Feld. Das Teilchen kreist und bewegt sich zugleich längs der Feldlinien weiter: eine **Schraubenbahn**. So führt das Erdmagnetfeld Elektronen und Protonen von der Sonne zu den Polen. Dort stoßen sie mit Luftmolekülen zusammen und bringen sie zum Leuchten – das **Polarlicht**.
 
+### Fadenstrahlrohr: die spezifische Ladung e/m
+
+Im Fadenstrahlrohr werden Elektronen mit der Spannung $U$ beschleunigt und fliegen dann im Magnetfeld zweier Spulen. Die Lorentzkraft zwingt sie auf einen Kreis, ein wenig Gas im Kolben macht die Bahn sichtbar. Aus $e \cdot v \cdot B = \frac{m v^2}{r}$ und $e \cdot U = \frac{1}{2} m v^2$ folgt
+
+$\frac{e}{m} = \frac{2U}{B^2 r^2} \approx 1{,}76 \cdot 10^{11}\,\text{C/kg}.$
+
+Mit der Elementarladung aus dem Millikan-Versuch erhält man so die Masse des Elektrons.
+
+### Oszilloskop
+
+In der Braun’schen Röhre lenken zwei Plattenpaare den Elektronenstrahl waagerecht und senkrecht ab. Mit einer **Zeitablenkung** (Sägezahn in x-Richtung) zeigt der Schirm, wie sich eine Spannung mit der Zeit ändert. Legt man an beide Plattenpaare Sinusspannungen, entstehen **Lissajous-Figuren**, an denen man Frequenzverhältnisse ablesen kann.
+
 ## Ausprobieren
 
 - [Elektronenkanone](?mode=laengs&Ua=1000): Wie hängt die Geschwindigkeit von der Spannung ab?
@@ -56,6 +68,8 @@ Fliegt ein geladenes Teilchen schräg zum Magnetfeld, wirkt die Lorentzkraft nur
 - [Zyklotron](?mode=zyklotron&B=1&Uz=20) und [Hall-Sonde](?mode=hall&stoff=hl&B=0.5&I=1).
 - [Chlor-Isotope](?mode=spektro&probe=chlor&B2=0.5) und [Uran](?mode=spektro&probe=uran&B2=1.5): Wie weit liegen die Auftreffpunkte auseinander?
 - [Schraubenbahn](?mode=spirale&al=60&B=1): Verändere den Winkel von 0° bis 90°.
+- [Fadenstrahlrohr](?mode=faden&uf=200&ih=1.5): Verändere Spannung und Spulenstrom. Bleibt e/m gleich?
+- [Oszilloskop](?mode=oszi&osaw=1&fr=2&ay=0.8) und [Lissajous-Acht](?mode=oszi&osaw=0&fr=2&ph=0&ay=1): Drücke Start.
 - [Üben](?mode=ueben&qn=1): Sechs Aufgabenarten mit Punktestand.
 
 ## Aufgaben
