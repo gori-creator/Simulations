@@ -2,7 +2,7 @@
 
 <!-- Automatisch erzeugt mit `npm run lehrplan:luecken` aus src/curriculum/lehrplaene/ – nicht von Hand bearbeiten. -->
 
-Lernbereiche der Länder-Lehrpläne, zu denen es noch **keine** Simulation gibt – Vorrat für neue Simulationen (Anleitung: `docs/NEUE-SIMULATION.md`). Insgesamt **102 von 1773** Lernbereichen ohne Simulation.
+Lernbereiche der Länder-Lehrpläne, zu denen es noch **keine** Simulation gibt – Vorrat für neue Simulationen (Anleitung: `docs/NEUE-SIMULATION.md`). Insgesamt **96 von 1773** Lernbereichen ohne Simulation.
 
 Nicht jeder Lernbereich eignet sich für eine Simulation. Reine Methoden-, Praktikums- und Projektthemen sind im Lehrplan mit `method: true` gekennzeichnet und zählen nicht als Lücke. Kommt ein Thema in mehreren Ländern vor, lohnt es sich besonders.
 
@@ -92,7 +92,7 @@ Alle Lernbereiche haben eine Simulation.
 | --- | --- | --- | --- |
 | 12 | S.3 | Stochastik › Hypergeometrische Verteilung | Ziehen ohne Zurücklegen mit der hypergeometrischen Verteilung beschreiben. |
 
-## Physik (79)
+## Physik (73)
 
 ### Baden-Württemberg · Gymnasium (0)
 
@@ -121,18 +121,17 @@ Alle Lernbereiche haben eine Simulation.
 
 Alle Lernbereiche haben eine Simulation.
 
-### Bremen · Gymnasium (2)
+### Bremen · Gymnasium (1)
 
 | Stufe | Nr. | Lernbereich | Kurz |
 | --- | --- | --- | --- |
-| 11/12 | 4 | Elektromagnetische Schwingungen | Harmonische elektromagnetische Schwingungen, Schwingkreis, Ausbreitung und Spektrum elektromagnetischer Wellen. |
 | 11/12 | 8 | Struktur der Materie (LK) | LK: Bausteine der Materie, Kernmasse und Kernradius, Paarbildung, Quarks und Teilchenzoo. |
 
 ### Hamburg · Gymnasium (0)
 
 Alle Lernbereiche haben eine Simulation.
 
-### Hessen · Gymnasium (34)
+### Hessen · Gymnasium (33)
 
 | Stufe | Nr. | Lernbereich | Kurz |
 | --- | --- | --- | --- |
@@ -153,7 +152,6 @@ Alle Lernbereiche haben eine Simulation.
 | 12 | Q2.2.8 | Induktion und elektromagnetische Schwingungen › Energie des Feldes einer stromdurchflossenen Spule (nur LK) | Magnetische Feldenergie (ohne Herleitung). |
 | 12 | Q2.2.9 | Induktion und elektromagnetische Schwingungen › Vergleich von mechanischen und elektromagnetischen Schwingungen unter energetischen Aspekten (nur LK) | Analogien zwischen Pendel und Schwingkreis. |
 | 12 | Q2.2.10 | Induktion und elektromagnetische Schwingungen › Gedämpfte Schwingungen (nur LK) | Dämpfung im Schwingkreis. |
-| 13 | Q3.1.1 | Elektromagnetische Wellen › Spektrum elektromagnetischer Wellen | Frequenzbereiche und technische Anwendungen im Überblick. |
 | 13 | Q3.1.2 | Elektromagnetische Wellen › Charakteristische Wellenphänomene | Lineare Polarisation von Licht und Totalreflexion (Glasfaser). |
 | 13 | Q3.1.4 | Elektromagnetische Wellen › Brechung, Reflexion, Beugung bei elektromagnetischen Wellen (nur LK) | Brechungsgesetz mit Wellenmodell. |
 | 13 | Q3.2.3 | Welle-Teilchen-Dualismus › Compton-Effekt (nur LK) | Streuung von Photonen an Elektronen. |
@@ -187,11 +185,10 @@ Alle Lernbereiche haben eine Simulation.
 | 7–10 | 10.3 | Ionisierende Strahlung und Kernenergie › Kernenergie | Kernspaltung, Kernfusion, Kernkraftwerke und Endlagerung. |
 | 12/13 | LK-4.4 | Atom- und Kernphysik (Leistungskurs) › Kernspaltung und -fusion | Bindungsenergien, Massendefekt und Kettenreaktion. |
 
-### Rheinland-Pfalz · Gymnasium (15)
+### Rheinland-Pfalz · Gymnasium (14)
 
 | Stufe | Nr. | Lernbereich | Kurz |
 | --- | --- | --- | --- |
-| 12/13 | GF-W.5 | Wahlpflichtbausteine (Grundfach, fünf zu wählen) › Elektromagnetische Wellen | Rückkopplung, offener Schwingkreis, Ausbreitung und Modulation, Anwendungen und Spektrum. |
 | 12/13 | GF-W.6 | Wahlpflichtbausteine (Grundfach, fünf zu wählen) › Wechselstromkreise | Effektivwerte, Impedanz und Phasenverschiebung, Wirk- und Blindleistung. |
 | 12/13 | GF-W.8 | Wahlpflichtbausteine (Grundfach, fünf zu wählen) › Festkörperphysik | Bändermodell und Eigenschaften von Festkörpern. |
 | 12/13 | GF-W.12 | Wahlpflichtbausteine (Grundfach, fünf zu wählen) › Strahlenbiophysik | Dosis, biologische Wirkung, Strahlenschutz und medizinische Anwendungen. |
@@ -207,29 +204,25 @@ Alle Lernbereiche haben eine Simulation.
 | 12/13 | LF-W.19 | Wahlpflichtbausteine (Leistungsfach, sieben zu wählen) › Chaos und Fraktale – Nichtlineare dynamische Systeme | Chaosphänomene, Merkmale chaotischer Systeme und fraktale Strukturen. |
 | 12/13 | LF-W.20 | Wahlpflichtbausteine (Leistungsfach, sieben zu wählen) › Strömungsphysik | Strömungsarten, Kontinuitätsgleichung, Bernoulli-Gleichung und dynamischer Auftrieb. |
 
-### Saarland · Gymnasium (1)
+### Saarland · Gymnasium (0)
 
-| Stufe | Nr. | Lernbereich | Kurz |
-| --- | --- | --- | --- |
-| 13 | 3.4 | Elektromagnetische Wellen | Entstehung und Eigenschaften elektromagnetischer Wellen. |
+Alle Lernbereiche haben eine Simulation.
 
-### Sachsen · Gymnasium (7)
+### Sachsen · Gymnasium (6)
 
 | Stufe | Nr. | Lernbereich | Kurz |
 | --- | --- | --- | --- |
 | 7 | W3 | Vom Fliegen (Wahlbereich) | Geschichte des Fliegens und dynamischer Auftrieb am Tragflügel. |
 | 8 | W2 | Kühlschrank und Wärmepumpe (Wahlbereich) | Wärmeübertragung gegen das Temperaturgefälle mit Energieaufwand. |
 | 8 | W3 | Elektrisches Messen nichtelektrischer Größen (Wahlbereich) | Sensoren wandeln Größen wie Temperatur oder Licht in Spannungen um. |
-| 10 | W2 | Kommunikation mit elektronischen Medien (Wahlbereich) | Informationsübertragung mit Hertz’schen Wellen, Modulation und Demodulation. |
 | 11 | GK-W2 | Messen und Modellieren (Wahlbereich Grundkurs) | Messreihen mit Videoanalyse und Messschnittstellen erfassen und mit Modellen vergleichen. |
 | 11 | LK-4 | Modellbildung und Simulation (Leistungskurs) | Bewegungen numerisch modellieren, Parameter variieren und mit dem Experiment vergleichen. |
 | 12 | LK-W2 | Deterministisches Chaos (Wahlbereich Leistungskurs) | Nichtlineare Systeme, Attraktoren und begrenzte Vorhersagbarkeit. |
 
-### Sachsen-Anhalt · Gymnasium (2)
+### Sachsen-Anhalt · Gymnasium (1)
 
 | Stufe | Nr. | Lernbereich | Kurz |
 | --- | --- | --- | --- |
-| 10 | 4 | Klimaphysik | Elektromagnetisches Spektrum, Strahlungshaushalt der Erde, Albedo, Stefan-Boltzmann-Gesetz, natürlicher und menschengemachter Treibhauseffekt. |
 | 11/12 | eA-2.4 | Elektrodynamik (erhöhtes Anforderungsniveau) › Wechselstromwiderstände und elektromagnetische Schwingungen | Effektivwerte, induktiver und kapazitiver Widerstand mit Zeigerdiagramm, Schwingkreis und Thomson’sche Gleichung. |
 
 ### Schleswig-Holstein · Gymnasium (2)
