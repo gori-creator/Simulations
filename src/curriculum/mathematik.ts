@@ -298,6 +298,22 @@ export const mathematik: Subject = {
         ]),
         topic('gleichungen', L('Gleichungen und Gleichungssysteme', 'Equations and systems of equations'), [
           {
+            id: 'ungleichungen',
+            status: 'ready',
+            slug: L('lineare-ungleichungen', 'linear-inequalities'),
+            title: L('Lineare Ungleichungen lösen', 'Solving linear inequalities'),
+            summary: L(
+              'Wann ist 2x + 1 kleiner als 7? Zwei Geraden, eine Waage und der Zahlenstrahl zeigen alle Lösungen, die Umformungen samt umgedrehtem Zeichen stehen daneben. Außerdem: Bedingungen mit „und“ und „oder“, Tarife und Aufzüge aus dem Alltag, Halbebenen und ein Übungsmodus.',
+              'When is 2x + 1 less than 7? Two lines, a balance and the number line show all solutions, with the transformation steps including the reversed sign. Also: conditions with “and” and “or”, plans and lifts from everyday life, half-planes and a practice mode.',
+            ),
+            grades: [6, 9],
+            kmk: ['M-L4', 'M-L1', 'M-K5'],
+            keywords: L(
+              ['Ungleichung', 'lineare Ungleichung', 'Lösungsmenge', 'Äquivalenzumformung', 'Relationszeichen', 'kleiner', 'größer', 'Zeichen umdrehen', 'Zahlenstrahl', 'Intervall', 'Probe', 'Tarifvergleich', 'Doppelungleichung', 'Intervall', 'Halbebene', 'und', 'oder', 'Waage'],
+              ['inequality', 'linear inequality', 'solution set', 'equivalent transformation', 'inequality sign', 'less than', 'greater than', 'reverse the sign', 'number line', 'interval', 'check', 'comparing tariffs', 'compound inequality', 'interval', 'half-plane', 'and', 'or', 'balance'],
+            ),
+          },
+          {
             id: 'waagemodell',
             status: 'ready',
             slug: L('waagemodell', 'balance-model'),
