@@ -84,7 +84,7 @@ const T_3_2: CurriculumUnit = {
     'Temperatur als Maß für die Bewegungsenergie der Teilchen, Wärmetransport, elektromagnetisches Spektrum, Strahlungsgleichgewicht der Erde, Atmosphäre und Treibhauseffekt.',
     'Temperature as a measure of the kinetic energy of particles, heat transfer, the electromagnetic spectrum, the Earth’s radiation balance, the atmosphere and the greenhouse effect.',
   ),
-  simulations: ['teilchenmodell', 'waermetransport'],
+  simulations: ["teilchenmodell", "waermeausdehnung", "waermetransport"],
 };
 
 const T_2_2: CurriculumUnit = {

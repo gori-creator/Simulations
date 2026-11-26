@@ -236,6 +236,7 @@ export const hessenGymnasiumPhysik: StateCurriculum = {
                 'Ausdehnung von festen, flüssigen und gasförmigen Stoffen untersuchen.',
                 'Investigating the expansion of solids, liquids and gases.',
               ),
+              simulations: ['waermeausdehnung'],
             },
             {
               code: '5.5',
@@ -244,6 +245,7 @@ export const hessenGymnasiumPhysik: StateCurriculum = {
                 'Dichteverhalten von Wasser bei 4 °C und Folgen für Gewässer.',
                 'Density behaviour of water at 4 °C and consequences for lakes.',
               ),
+              simulations: ['waermeausdehnung'],
             },
             {
               code: '5.6',
@@ -525,6 +527,7 @@ export const hessenGymnasiumPhysik: StateCurriculum = {
                 'Ausdehnung von festen, flüssigen und gasförmigen Stoffen untersuchen.',
                 'Investigating the expansion of solids, liquids and gases.',
               ),
+              simulations: ['waermeausdehnung'],
             },
             {
               code: '5.5',
@@ -533,6 +536,7 @@ export const hessenGymnasiumPhysik: StateCurriculum = {
                 'Dichteverhalten von Wasser bei 4 °C und Folgen für Gewässer.',
                 'Density behaviour of water at 4 °C and consequences for lakes.',
               ),
+              simulations: ['waermeausdehnung'],
             },
             {
               code: '5.6',
@@ -815,6 +819,7 @@ export const hessenGymnasiumPhysik: StateCurriculum = {
                 'Ausdehnung von festen, flüssigen und gasförmigen Stoffen untersuchen.',
                 'Investigating the expansion of solids, liquids and gases.',
               ),
+              simulations: ['waermeausdehnung'],
             },
             {
               code: '5.5',
@@ -823,6 +828,7 @@ export const hessenGymnasiumPhysik: StateCurriculum = {
                 'Dichteverhalten von Wasser bei 4 °C und Folgen für Gewässer.',
                 'Density behaviour of water at 4 °C and consequences for lakes.',
               ),
+              simulations: ['waermeausdehnung'],
             },
             {
               code: '5.6',

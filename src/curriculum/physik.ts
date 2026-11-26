@@ -1009,6 +1009,22 @@ export const physik: Subject = {
           grades: [8, 13],
           simulations: [
             {
+              id: 'waermeausdehnung',
+              status: 'ready',
+              slug: L('waermeausdehnung-anomalie-wasser', 'thermal-expansion-anomaly-of-water'),
+              title: L('Wärmeausdehnung und Anomalie des Wassers', 'Thermal expansion and the anomaly of water'),
+              summary: L(
+                'Brücken brauchen Dehnungsfugen, Schienen Stoßlücken, und im Sommer hängen Stromleitungen tiefer. Ein Bimetall schaltet das Bügeleisen ab, ein Thermometer macht die Ausdehnung sichtbar. Nur Wasser tanzt aus der Reihe: Bei 4 °C ist es am schwersten.',
+                'Bridges need expansion joints, rails need gaps, and power lines sag lower in summer. A bimetal switches off the iron, a thermometer makes expansion visible. Only water breaks the rule: it is heaviest at 4 °C.',
+              ),
+              grades: [6, 10],
+              kmk: ['P-S', 'P-E', 'P-BK-Wechselwirkung', 'P-BK-Mathematisieren'],
+              keywords: L(
+                ['Wärmeausdehnung', 'Längenausdehnung', 'Ausdehnungskoeffizient', 'Bimetall', 'Dehnungsfuge', 'Volumenausdehnung', 'Gas', 'Gay-Lussac', 'absoluter Nullpunkt', 'Kelvin', 'Anomalie des Wassers', 'Dichte', '4 °C', 'Eis', 'See im Winter', 'Teilchenmodell', 'Thermometer'],
+                ['thermal expansion', 'linear expansion', 'expansion coefficient', 'bimetal', 'expansion joint', 'volume expansion', 'gas', 'Gay-Lussac', 'absolute zero', 'kelvin', 'anomaly of water', 'density', '4 °C', 'ice', 'lake in winter', 'particle model', 'thermometer'],
+              ),
+            },
+            {
               id: 'gasgesetze',
               status: 'ready',
               slug: L('gasgesetze', 'gas-laws'),
