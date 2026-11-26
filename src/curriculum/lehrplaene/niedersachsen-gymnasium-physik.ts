@@ -55,7 +55,7 @@ const DJ_5_6: CurriculumUnit[] = [
       'Sehen mit dem Sender-Empfänger-Modell, geradlinige Ausbreitung, Schatten, Finsternisse und Mondphasen; Reflexion, Streuung und Brechung; Bilder an Spiegel, Lochblende und Sammellinse; weißes Licht als Farbgemisch.',
       'Seeing with the sender–receiver model, straight-line propagation, shadows, eclipses and lunar phases; reflection, scattering and refraction; images in mirrors, pinholes and converging lenses; white light as a mixture of colours.',
     ),
-    simulations: ['licht-schatten', 'reflexion', 'brechung', 'linsen'],
+    simulations: ['licht-schatten', 'reflexion', 'brechung', 'linsen', 'farben'],
   },
 ];
 

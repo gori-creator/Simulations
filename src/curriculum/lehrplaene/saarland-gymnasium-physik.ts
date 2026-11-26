@@ -111,7 +111,7 @@ const KS_9_UNITS: CurriculumUnit[] = [
       'Brechung und Totalreflexion, Abbildungen durch Linsen, optische Geräte zur Vergrößerung des Sehwinkels, Spektralfarben und elektromagnetisches Spektrum.',
       'Refraction and total internal reflection, images formed by lenses, optical instruments that enlarge the visual angle, spectral colours and the electromagnetic spectrum.',
     ),
-    simulations: ['brechung', 'linsen'],
+    simulations: ['brechung', 'linsen', 'farben'],
   },
   {
     code: '2',

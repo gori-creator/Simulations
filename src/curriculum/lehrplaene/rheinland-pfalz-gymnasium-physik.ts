@@ -45,7 +45,7 @@ const SEK_I_UNITS: CurriculumUnit[] = [
       'Licht im Basiskonzept Wechselwirkung: Reflexion, Brechung und Absorption, Schatten im Strahlenmodell, Strahlenverläufe auch bei Linsen; Totalreflexion als Vertiefung.',
       'Light and interaction: reflection, refraction and absorption, shadows in the ray model, ray paths also through lenses; total internal reflection as an extension.',
     ),
-    simulations: ['licht-schatten', 'reflexion', 'brechung', 'linsen'],
+    simulations: ['licht-schatten', 'reflexion', 'brechung', 'linsen', 'farben'],
   },
   {
     code: '3',

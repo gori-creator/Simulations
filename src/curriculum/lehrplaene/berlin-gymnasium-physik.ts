@@ -158,7 +158,7 @@ const KS_9_10_UNITS: CurriculumUnit[] = [
       'Modell Lichtstrahl, Reflexions- und Brechungsgesetz, Totalreflexion, Bildentstehung an der Sammellinse mit Linsengleichung, Spektrum am Prisma und Farbaddition.',
       'The light-ray model, laws of reflection and refraction, total internal reflection, image formation by a converging lens with the lens equation, the spectrum from a prism and additive colour mixing.',
     ),
-    simulations: ['reflexion', 'brechung', 'linsen'],
+    simulations: ['reflexion', 'brechung', 'linsen', 'farben'],
   },
 ];
 
