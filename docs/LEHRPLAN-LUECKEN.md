@@ -2,7 +2,7 @@
 
 <!-- Automatisch erzeugt mit `npm run lehrplan:luecken` aus src/curriculum/lehrplaene/ – nicht von Hand bearbeiten. -->
 
-Lernbereiche der Länder-Lehrpläne, zu denen es noch **keine** Simulation gibt – Vorrat für neue Simulationen (Anleitung: `docs/NEUE-SIMULATION.md`). Insgesamt **102 von 1773** Lernbereichen ohne Simulation.
+Lernbereiche der Länder-Lehrpläne, zu denen es noch **keine** Simulation gibt – Vorrat für neue Simulationen (Anleitung: `docs/NEUE-SIMULATION.md`). Insgesamt **100 von 1773** Lernbereichen ohne Simulation.
 
 Nicht jeder Lernbereich eignet sich für eine Simulation. Reine Methoden-, Praktikums- und Projektthemen sind im Lehrplan mit `method: true` gekennzeichnet und zählen nicht als Lücke. Kommt ein Thema in mehreren Ländern vor, lohnt es sich besonders.
 
@@ -92,7 +92,7 @@ Alle Lernbereiche haben eine Simulation.
 | --- | --- | --- | --- |
 | 12 | S.3 | Stochastik › Hypergeometrische Verteilung | Ziehen ohne Zurücklegen mit der hypergeometrischen Verteilung beschreiben. |
 
-## Physik (79)
+## Physik (77)
 
 ### Baden-Württemberg · Gymnasium (0)
 
@@ -132,7 +132,7 @@ Alle Lernbereiche haben eine Simulation.
 
 Alle Lernbereiche haben eine Simulation.
 
-### Hessen · Gymnasium (34)
+### Hessen · Gymnasium (32)
 
 | Stufe | Nr. | Lernbereich | Kurz |
 | --- | --- | --- | --- |
@@ -154,8 +154,6 @@ Alle Lernbereiche haben eine Simulation.
 | 12 | Q2.2.9 | Induktion und elektromagnetische Schwingungen › Vergleich von mechanischen und elektromagnetischen Schwingungen unter energetischen Aspekten (nur LK) | Analogien zwischen Pendel und Schwingkreis. |
 | 12 | Q2.2.10 | Induktion und elektromagnetische Schwingungen › Gedämpfte Schwingungen (nur LK) | Dämpfung im Schwingkreis. |
 | 13 | Q3.1.1 | Elektromagnetische Wellen › Spektrum elektromagnetischer Wellen | Frequenzbereiche und technische Anwendungen im Überblick. |
-| 13 | Q3.1.2 | Elektromagnetische Wellen › Charakteristische Wellenphänomene | Lineare Polarisation von Licht und Totalreflexion (Glasfaser). |
-| 13 | Q3.1.4 | Elektromagnetische Wellen › Brechung, Reflexion, Beugung bei elektromagnetischen Wellen (nur LK) | Brechungsgesetz mit Wellenmodell. |
 | 13 | Q3.2.3 | Welle-Teilchen-Dualismus › Compton-Effekt (nur LK) | Streuung von Photonen an Elektronen. |
 | 13 | Q3.3.4 | Atomvorstellungen › Röntgenstrahlung (nur LK) | Kontinuierliches und charakteristisches Röntgenspektrum, Röntgenröhre, Moseley-Gesetz. |
 | 13 | Q4.1.1 | Quantenobjekte › Qualitative Betrachtung eines quantenmechanischen Atommodells | Orbitale als Aufenthaltswahrscheinlichkeit; Elektron als stehende Welle im Potenzialtopf. |
