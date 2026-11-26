@@ -2,7 +2,7 @@
 
 <!-- Automatisch erzeugt mit `npm run lehrplan:luecken` aus src/curriculum/lehrplaene/ – nicht von Hand bearbeiten. -->
 
-Lernbereiche der Länder-Lehrpläne, zu denen es noch **keine** Simulation gibt – Vorrat für neue Simulationen (Anleitung: `docs/NEUE-SIMULATION.md`). Insgesamt **92 von 1773** Lernbereichen ohne Simulation.
+Lernbereiche der Länder-Lehrpläne, zu denen es noch **keine** Simulation gibt – Vorrat für neue Simulationen (Anleitung: `docs/NEUE-SIMULATION.md`). Insgesamt **87 von 1773** Lernbereichen ohne Simulation.
 
 Nicht jeder Lernbereich eignet sich für eine Simulation. Reine Methoden-, Praktikums- und Projektthemen sind im Lehrplan mit `method: true` gekennzeichnet und zählen nicht als Lücke. Kommt ein Thema in mehreren Ländern vor, lohnt es sich besonders.
 
@@ -92,7 +92,7 @@ Alle Lernbereiche haben eine Simulation.
 | --- | --- | --- | --- |
 | 12 | S.3 | Stochastik › Hypergeometrische Verteilung | Ziehen ohne Zurücklegen mit der hypergeometrischen Verteilung beschreiben. |
 
-## Physik (69)
+## Physik (64)
 
 ### Baden-Württemberg · Gymnasium (0)
 
@@ -131,7 +131,7 @@ Alle Lernbereiche haben eine Simulation.
 
 Alle Lernbereiche haben eine Simulation.
 
-### Hessen · Gymnasium (26)
+### Hessen · Gymnasium (25)
 
 | Stufe | Nr. | Lernbereich | Kurz |
 | --- | --- | --- | --- |
@@ -146,7 +146,6 @@ Alle Lernbereiche haben eine Simulation.
 | 12 | Q1.1.9 | Elektrisches Feld › Kräfte auf Körper in homogenen elektrischen Feldern, Bahnformen, Energiebetrachtung (nur LK) | Quantitative Ablenkung (Vergleich mit waagerechtem Wurf), Linearbeschleuniger. |
 | 12 | Q1.2.5 | Magnetisches Feld › Hall-Effekt (nur LK) | Spannung quer zum Strom im Magnetfeld erklären. |
 | 12 | Q1.2.6 | Magnetisches Feld › Teilchenbeschleuniger (nur LK) | Funktionsprinzip z. B. von Zyklotron und Synchrotron. |
-| 13 | Q3.1.1 | Elektromagnetische Wellen › Spektrum elektromagnetischer Wellen | Frequenzbereiche und technische Anwendungen im Überblick. |
 | 13 | Q3.2.3 | Welle-Teilchen-Dualismus › Compton-Effekt (nur LK) | Streuung von Photonen an Elektronen. |
 | 13 | Q3.3.4 | Atomvorstellungen › Röntgenstrahlung (nur LK) | Kontinuierliches und charakteristisches Röntgenspektrum, Röntgenröhre, Moseley-Gesetz. |
 | 13 | Q4.1.1 | Quantenobjekte › Qualitative Betrachtung eines quantenmechanischen Atommodells | Orbitale als Aufenthaltswahrscheinlichkeit; Elektron als stehende Welle im Potenzialtopf. |
@@ -178,11 +177,10 @@ Alle Lernbereiche haben eine Simulation.
 | 7–10 | 10.3 | Ionisierende Strahlung und Kernenergie › Kernenergie | Kernspaltung, Kernfusion, Kernkraftwerke und Endlagerung. |
 | 12/13 | LK-4.4 | Atom- und Kernphysik (Leistungskurs) › Kernspaltung und -fusion | Bindungsenergien, Massendefekt und Kettenreaktion. |
 
-### Rheinland-Pfalz · Gymnasium (15)
+### Rheinland-Pfalz · Gymnasium (14)
 
 | Stufe | Nr. | Lernbereich | Kurz |
 | --- | --- | --- | --- |
-| 12/13 | GF-W.5 | Wahlpflichtbausteine (Grundfach, fünf zu wählen) › Elektromagnetische Wellen | Rückkopplung, offener Schwingkreis, Ausbreitung und Modulation, Anwendungen und Spektrum. |
 | 12/13 | GF-W.6 | Wahlpflichtbausteine (Grundfach, fünf zu wählen) › Wechselstromkreise | Effektivwerte, Impedanz und Phasenverschiebung, Wirk- und Blindleistung. |
 | 12/13 | GF-W.8 | Wahlpflichtbausteine (Grundfach, fünf zu wählen) › Festkörperphysik | Bändermodell und Eigenschaften von Festkörpern. |
 | 12/13 | GF-W.12 | Wahlpflichtbausteine (Grundfach, fünf zu wählen) › Strahlenbiophysik | Dosis, biologische Wirkung, Strahlenschutz und medizinische Anwendungen. |
@@ -198,29 +196,24 @@ Alle Lernbereiche haben eine Simulation.
 | 12/13 | LF-W.19 | Wahlpflichtbausteine (Leistungsfach, sieben zu wählen) › Chaos und Fraktale – Nichtlineare dynamische Systeme | Chaosphänomene, Merkmale chaotischer Systeme und fraktale Strukturen. |
 | 12/13 | LF-W.20 | Wahlpflichtbausteine (Leistungsfach, sieben zu wählen) › Strömungsphysik | Strömungsarten, Kontinuitätsgleichung, Bernoulli-Gleichung und dynamischer Auftrieb. |
 
-### Saarland · Gymnasium (1)
+### Saarland · Gymnasium (0)
 
-| Stufe | Nr. | Lernbereich | Kurz |
-| --- | --- | --- | --- |
-| 13 | 3.4 | Elektromagnetische Wellen | Entstehung und Eigenschaften elektromagnetischer Wellen. |
+Alle Lernbereiche haben eine Simulation.
 
-### Sachsen · Gymnasium (7)
+### Sachsen · Gymnasium (6)
 
 | Stufe | Nr. | Lernbereich | Kurz |
 | --- | --- | --- | --- |
 | 7 | W3 | Vom Fliegen (Wahlbereich) | Geschichte des Fliegens und dynamischer Auftrieb am Tragflügel. |
 | 8 | W2 | Kühlschrank und Wärmepumpe (Wahlbereich) | Wärmeübertragung gegen das Temperaturgefälle mit Energieaufwand. |
 | 8 | W3 | Elektrisches Messen nichtelektrischer Größen (Wahlbereich) | Sensoren wandeln Größen wie Temperatur oder Licht in Spannungen um. |
-| 10 | W2 | Kommunikation mit elektronischen Medien (Wahlbereich) | Informationsübertragung mit Hertz’schen Wellen, Modulation und Demodulation. |
 | 11 | GK-W2 | Messen und Modellieren (Wahlbereich Grundkurs) | Messreihen mit Videoanalyse und Messschnittstellen erfassen und mit Modellen vergleichen. |
 | 11 | LK-4 | Modellbildung und Simulation (Leistungskurs) | Bewegungen numerisch modellieren, Parameter variieren und mit dem Experiment vergleichen. |
 | 12 | LK-W2 | Deterministisches Chaos (Wahlbereich Leistungskurs) | Nichtlineare Systeme, Attraktoren und begrenzte Vorhersagbarkeit. |
 
-### Sachsen-Anhalt · Gymnasium (1)
+### Sachsen-Anhalt · Gymnasium (0)
 
-| Stufe | Nr. | Lernbereich | Kurz |
-| --- | --- | --- | --- |
-| 10 | 4 | Klimaphysik | Elektromagnetisches Spektrum, Strahlungshaushalt der Erde, Albedo, Stefan-Boltzmann-Gesetz, natürlicher und menschengemachter Treibhauseffekt. |
+Alle Lernbereiche haben eine Simulation.
 
 ### Schleswig-Holstein · Gymnasium (2)
 

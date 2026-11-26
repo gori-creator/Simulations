@@ -84,7 +84,7 @@ const T_3_2: CurriculumUnit = {
     'Temperatur als Maß für die Bewegungsenergie der Teilchen, Wärmetransport, elektromagnetisches Spektrum, Strahlungsgleichgewicht der Erde, Atmosphäre und Treibhauseffekt.',
     'Temperature as a measure of the kinetic energy of particles, heat transfer, the electromagnetic spectrum, the Earth’s radiation balance, the atmosphere and the greenhouse effect.',
   ),
-  simulations: ["teilchenmodell", "waermeausdehnung", "waermetransport"],
+  simulations: ["teilchenmodell", "waermeausdehnung", "waermetransport", "em-spektrum"],
 };
 
 const T_2_2: CurriculumUnit = {
@@ -173,7 +173,7 @@ const S_UNITS: CurriculumUnit[] = [
       'Erzeugung und Ausbreitung harmonischer Wellen, Transversal- und Longitudinalwellen, Ausbreitungsgeschwindigkeit und Wellenlänge, Beugung, Reflexion und Brechung, Polarisation, elektromagnetisches Spektrum.',
       'Generation and propagation of harmonic waves, transverse and longitudinal waves, speed and wavelength, diffraction, reflection and refraction, polarisation, the electromagnetic spectrum.',
     ),
-    simulations: ['wellen-ausbreitung', 'schall', 'polarisation'],
+    simulations: ["wellen-ausbreitung", "schall", "em-spektrum", "polarisation"],
   },
   {
     code: '2.3',

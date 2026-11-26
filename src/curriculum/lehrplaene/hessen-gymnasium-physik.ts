@@ -2247,6 +2247,7 @@ export const hessenGymnasiumPhysik: StateCurriculum = {
               code: 'Q3.1.1',
               title: L('Spektrum elektromagnetischer Wellen', 'Spectrum of electromagnetic waves'),
               summary: L('Frequenzbereiche und technische Anwendungen im Überblick.', 'Overview of frequency ranges and technical applications.'),
+              simulations: ['em-spektrum'],
             },
             {
               code: 'Q3.1.2',

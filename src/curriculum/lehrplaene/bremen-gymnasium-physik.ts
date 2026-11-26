@@ -72,7 +72,7 @@ const KS_7_9_UNITS: CurriculumUnit[] = [
       'Elektromagnetisches Spektrum, Atomkern, radioaktiver Zerfall und Strahlungsarten, Nachweis, Halbwertszeit und Aktivität, Kernspaltung und Kernfusion, Strahlenschutz und Kernenergie.',
       'The electromagnetic spectrum, the nucleus, radioactive decay and types of radiation, detection, half-life and activity, fission and fusion, radiation protection and nuclear energy.',
     ),
-    simulations: ['radioaktiver-zerfall'],
+    simulations: ['radioaktiver-zerfall', 'em-spektrum'],
   },
 ];
 
@@ -131,7 +131,7 @@ const QP_UNITS: CurriculumUnit[] = [
     code: '4',
     title: L('Elektromagnetische Schwingungen', 'Electromagnetic oscillations'),
     summary: L('Harmonische elektromagnetische Schwingungen, Schwingkreis, Ausbreitung und Spektrum elektromagnetischer Wellen.', 'Harmonic electromagnetic oscillations, the oscillating circuit, propagation and spectrum of electromagnetic waves.'),
-    simulations: ['schwingkreis'],
+    simulations: ['schwingkreis', 'em-spektrum'],
   },
   {
     code: '5',

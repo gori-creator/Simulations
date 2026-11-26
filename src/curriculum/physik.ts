@@ -730,6 +730,22 @@ export const physik: Subject = {
               ),
             },
             {
+              id: 'em-spektrum',
+              status: 'ready',
+              slug: L('elektromagnetisches-spektrum', 'electromagnetic-spectrum'),
+              title: L('Elektromagnetisches Spektrum, Dipol und Modulation', 'Electromagnetic spectrum, dipole and modulation'),
+              summary: L(
+                'Radio, WLAN, Wärme, Licht, Röntgen: alles dieselbe Art Welle, nur mit anderer Wellenlänge. Ein Stab als Sender strahlt sie ab, und Musik reist huckepack auf der Radiowelle. Außerdem: Geräte im Alltag, Laufzeit bis Mond und Sonne und ein Übungsmodus.',
+                'Radio, Wi-Fi, heat, light, X-rays: all the same kind of wave, just with a different wavelength. A rod antenna sends them out, and music rides piggyback on the radio wave. Also: everyday devices, travel time to the Moon and Sun and a practice mode.',
+              ),
+              grades: [10, 13],
+              kmk: ['P-S', 'P-E', 'P-BK-Wechselwirkung', 'P-BK-Mathematisieren'],
+              keywords: L(
+                ['elektromagnetisches Spektrum', 'elektromagnetische Welle', 'Wellenlänge', 'Frequenz', 'Lichtgeschwindigkeit', 'Radiowellen', 'Mikrowellen', 'Infrarot', 'Wärmestrahlung', 'sichtbares Licht', 'Ultraviolett', 'UV', 'Röntgenstrahlung', 'Gammastrahlung', 'Photonenenergie', 'ionisierende Strahlung', 'Hertzscher Dipol', 'Antenne', 'offener Schwingkreis', 'Modulation', 'Amplitudenmodulation', 'Frequenzmodulation', 'AM', 'FM', 'Trägerwelle', 'Mikrowellenherd', 'GPS', 'Laufzeit', 'WLAN', 'Fernbedienung'],
+                ['electromagnetic spectrum', 'electromagnetic wave', 'wavelength', 'frequency', 'speed of light', 'radio waves', 'microwaves', 'infrared', 'thermal radiation', 'visible light', 'ultraviolet', 'UV', 'X-rays', 'gamma rays', 'photon energy', 'ionising radiation', 'Hertzian dipole', 'antenna', 'open oscillating circuit', 'modulation', 'amplitude modulation', 'frequency modulation', 'AM', 'FM', 'carrier wave', 'microwave oven', 'GPS', 'travel time', 'Wi-Fi', 'remote control'],
+              ),
+            },
+            {
               id: 'stehende-wellen',
               status: 'ready',
               slug: L('stehende-wellen', 'standing-waves'),

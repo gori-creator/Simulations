@@ -211,7 +211,7 @@ const Q34_UNITS: CurriculumUnit[] = [
       'Ausbreitung und Kenngrößen von Wellen, stehende Wellen, Beugung, Brechung und Interferenz, Interferenz von Licht an Doppelspalt und Gitter.',
       'Propagation and parameters of waves, standing waves, diffraction, refraction and interference, interference of light at a double slit and a grating.',
     ),
-    simulations: ['wellen-ausbreitung', 'stehende-wellen', 'interferenz', 'doppelspalt', 'polarisation'],
+    simulations: ["wellen-ausbreitung", "stehende-wellen", "interferenz", "doppelspalt", "em-spektrum", "polarisation"],
   },
   {
     code: '3.2.6',

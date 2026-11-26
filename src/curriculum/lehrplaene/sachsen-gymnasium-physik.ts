@@ -290,6 +290,7 @@ const K10: CurriculumUnit[] = [
     code: 'W2',
     title: L('Kommunikation mit elektronischen Medien (Wahlbereich)', 'Communication with electronic media (optional)'),
     summary: L('Informationsübertragung mit Hertz’schen Wellen, Modulation und Demodulation.', 'Transmitting information with radio waves, modulation and demodulation.'),
+    simulations: ['em-spektrum'],
   },
   {
     code: 'W3',
@@ -481,7 +482,7 @@ const J12: CurriculumUnit[] = [
       'Fortschreitende und stehende Wellen, Reflexion, Brechung, Beugung und Interferenz, Hertz’sche Wellen und Licht am Doppelspalt, Gitter und Einzelspalt.',
       'Travelling and standing waves, reflection, refraction, diffraction and interference, radio waves, and light at double slits, gratings and single slits.',
     ),
-    simulations: ['wellen-ausbreitung', 'interferenz', 'stehende-wellen', 'doppelspalt', 'polarisation'],
+    simulations: ["wellen-ausbreitung", "interferenz", "stehende-wellen", "doppelspalt", "em-spektrum", "polarisation"],
   },
   {
     code: 'LK-3',
