@@ -136,7 +136,7 @@ export function electricToGravity(): number {
 /* ------------------------------------------------------------------ */
 
 export type Loc = { de: string; en: string };
-export type TaskKind = 'F' | 'r2' | 'sign' | 'count' | 'q3' | 'rub' | 'Fr' | 'ratio';
+export type TaskKind = 'F' | 'r2' | 'sign' | 'count' | 'q3' | 'rub' | 'Fr' | 'ratio' | 'balloon' | 'storm';
 
 export interface ChargeTask {
   kind: TaskKind;
@@ -177,7 +177,7 @@ const RUB_NAMES: Record<Material, Loc> = {
 export function makeTask(n: number): ChargeTask {
   const r = rng(n * 157 + 3);
   const pick = <T>(xs: readonly T[]) => xs[Math.floor(r() * xs.length)]!;
-  const kinds: TaskKind[] = ['sign', 'F', 'r2', 'count', 'rub', 'q3', 'Fr', 'ratio'];
+  const kinds: TaskKind[] = ['sign', 'F', 'r2', 'count', 'rub', 'q3', 'Fr', 'ratio', 'balloon', 'storm'];
   const kind = kinds[(n - 1) % kinds.length]!;
   if (kind === 'sign') {
     const s1 = pick([1, -1]);
@@ -186,7 +186,10 @@ export function makeTask(n: number): ChargeTask {
     const w = (s: number, l: 'de' | 'en') => (s > 0 ? (l === 'de' ? 'positiv' : 'positive') : l === 'de' ? 'negativ' : 'negative');
     return {
       kind,
-      text: { de: `Eine Kugel ist ${w(s1, 'de')}, die andere ${w(s2, 'de')} geladen. Stoßen sie sich ab (1) oder ziehen sie sich an (2)?`, en: `One sphere is charged ${w(s1, 'en')}, the other ${w(s2, 'en')}. Do they repel (1) or attract (2)?` },
+      text: {
+        de: `Eine Kugel ist ${w(s1, 'de')}, die andere ${w(s2, 'de')} geladen. Stoßen sie sich ab (1) oder ziehen sie sich an (2)?`,
+        en: `One sphere is charged ${w(s1, 'en')}, the other ${w(s2, 'en')}. Do they repel (1) or attract (2)?`,
+      },
       answer: a,
       unit: '',
       tol: 0,
@@ -200,11 +203,17 @@ export function makeTask(n: number): ChargeTask {
     const F = (K * q1 * 1e-6 * q2 * 1e-6) / (rc / 100) ** 2;
     return {
       kind,
-      text: { de: `Zwei Ladungen mit ${de(q1)} µC und ${de(q2)} µC sind ${de(rc)} cm voneinander entfernt. Wie groß ist die Kraft in N? (k ≈ 9 · 10⁹ N m²/C²)`, en: `Two charges of ${en(q1)} µC and ${en(q2)} µC are ${en(rc)} cm apart. How large is the force in N? (k ≈ 9 · 10⁹ N m²/C²)` },
+      text: {
+        de: `Zwei Ladungen mit ${de(q1)} µC und ${de(q2)} µC sind ${de(rc)} cm voneinander entfernt. Wie groß ist die Kraft in N? (k ≈ 9 · 10⁹ N m²/C²)`,
+        en: `Two charges of ${en(q1)} µC and ${en(q2)} µC are ${en(rc)} cm apart. How large is the force in N? (k ≈ 9 · 10⁹ N m²/C²)`,
+      },
       answer: F,
       unit: 'N',
       tol: 0.02,
-      solution: { de: `F = k · Q₁ · Q₂ : r² = 8,99 · 10⁹ · ${de(q1)} · 10⁻⁶ · ${de(q2)} · 10⁻⁶ : (${de(rc / 100)})² ≈ ${de(F, 2)} N`, en: `F = k · Q₁ · Q₂ / r² = 8.99 · 10⁹ · ${en(q1)} · 10⁻⁶ · ${en(q2)} · 10⁻⁶ / (${en(rc / 100)})² ≈ ${en(F, 2)} N` },
+      solution: {
+        de: `F = k · Q₁ · Q₂ : r² = 8,99 · 10⁹ · ${de(q1)} · 10⁻⁶ · ${de(q2)} · 10⁻⁶ : (${de(rc / 100)})² ≈ ${de(F, 2)} N`,
+        en: `F = k · Q₁ · Q₂ / r² = 8.99 · 10⁹ · ${en(q1)} · 10⁻⁶ · ${en(q2)} · 10⁻⁶ / (${en(rc / 100)})² ≈ ${en(F, 2)} N`,
+      },
     };
   }
   if (kind === 'r2') {
@@ -213,11 +222,17 @@ export function makeTask(n: number): ChargeTask {
     const F = F0 / (f * f);
     return {
       kind,
-      text: { de: `Zwei Ladungen stoßen sich mit ${de(F0)} N ab. Der Abstand wird ${f === 2 ? 'verdoppelt' : f === 3 ? 'verdreifacht' : 'vervierfacht'}. Wie groß ist die Kraft jetzt in N?`, en: `Two charges repel with ${en(F0)} N. The distance is ${f === 2 ? 'doubled' : f === 3 ? 'tripled' : 'quadrupled'}. How large is the force now in N?` },
+      text: {
+        de: `Zwei Ladungen stoßen sich mit ${de(F0)} N ab. Der Abstand wird ${f === 2 ? 'verdoppelt' : f === 3 ? 'verdreifacht' : 'vervierfacht'}. Wie groß ist die Kraft jetzt in N?`,
+        en: `Two charges repel with ${en(F0)} N. The distance is ${f === 2 ? 'doubled' : f === 3 ? 'tripled' : 'quadrupled'}. How large is the force now in N?`,
+      },
       answer: F,
       unit: 'N',
       tol: 0.01,
-      solution: { de: `F ~ 1/r²: ${f}-facher Abstand → Kraft durch ${f * f}: ${de(F0)} N : ${f * f} = ${de(F, 2)} N`, en: `F ∝ 1/r²: ${f} times the distance → force divided by ${f * f}: ${en(F0)} N / ${f * f} = ${en(F, 2)} N` },
+      solution: {
+        de: `F ~ 1/r²: ${f}-facher Abstand → Kraft durch ${f * f}: ${de(F0)} N : ${f * f} = ${de(F, 2)} N`,
+        en: `F ∝ 1/r²: ${f} times the distance → force divided by ${f * f}: ${en(F0)} N / ${f * f} = ${en(F, 2)} N`,
+      },
     };
   }
   if (kind === 'count') {
@@ -226,7 +241,10 @@ export function makeTask(n: number): ChargeTask {
     const Q = nE * 10 ** exp * E_CHARGE;
     return {
       kind,
-      text: { de: `Ein Stab hat ${de(nE)} · 10^${exp} Elektronen zu viel. Wie groß ist seine Ladung in nC? (e = 1,6 · 10⁻¹⁹ C)`, en: `A rod has ${en(nE)} · 10^${exp} excess electrons. What is its charge in nC? (e = 1.6 · 10⁻¹⁹ C)` },
+      text: {
+        de: `Ein Stab hat ${de(nE)} · 10^${exp} Elektronen zu viel. Wie groß ist seine Ladung in nC? (e = 1,6 · 10⁻¹⁹ C)`,
+        en: `A rod has ${en(nE)} · 10^${exp} excess electrons. What is its charge in nC? (e = 1.6 · 10⁻¹⁹ C)`,
+      },
       answer: Q * 1e9,
       unit: 'nC',
       tol: 0.02,
@@ -245,13 +263,19 @@ export function makeTask(n: number): ChargeTask {
     const ans = c.a < 0 ? 1 : 2;
     return {
       kind,
-      text: { de: `Ein Stab aus ${RUB_NAMES[a].de} wird mit ${RUB_NAMES[b].de} gerieben. Wird der Stab negativ (1) oder positiv (2)?`, en: `A ${RUB_NAMES[a].en} rod is rubbed with ${RUB_NAMES[b].en}. Does the rod become negative (1) or positive (2)?` },
+      text: {
+        de: `Ein Stab aus ${RUB_NAMES[a].de} wird mit ${RUB_NAMES[b].de} gerieben. Wird der Stab negativ (1) oder positiv (2)?`,
+        en: `A ${RUB_NAMES[a].en} rod is rubbed with ${RUB_NAMES[b].en}. Does the rod become negative (1) or positive (2)?`,
+      },
       answer: ans,
       unit: '',
       tol: 0,
       solution: {
         de: ans === 1 ? `Der Stab nimmt Elektronen auf und wird negativ, ${RUB_NAMES[b].de} wird positiv.` : `Der Stab gibt Elektronen ab und wird positiv, ${RUB_NAMES[b].de} wird negativ.`,
-        en: ans === 1 ? `The rod takes electrons and becomes negative, the ${RUB_NAMES[b].en} becomes positive.` : `The rod gives off electrons and becomes positive, the ${RUB_NAMES[b].en} becomes negative.`,
+        en:
+          ans === 1
+            ? `The rod takes electrons and becomes negative, the ${RUB_NAMES[b].en} becomes positive.`
+            : `The rod gives off electrons and becomes positive, the ${RUB_NAMES[b].en} becomes negative.`,
       },
     };
   }
@@ -262,7 +286,10 @@ export function makeTask(n: number): ChargeTask {
     const F = F0 * f1 * f2;
     return {
       kind,
-      text: { de: `Zwei Ladungen ziehen sich mit ${de(F0)} N an. Q₁ wird ${f1}-mal so groß${f2 > 1 ? `, Q₂ ${f2}-mal so groß` : ''}, der Abstand bleibt gleich. Wie groß ist die Kraft jetzt in N?`, en: `Two charges attract with ${en(F0)} N. Q₁ becomes ${f1} times as large${f2 > 1 ? `, Q₂ ${f2} times as large` : ''}, the distance stays the same. How large is the force now in N?` },
+      text: {
+        de: `Zwei Ladungen ziehen sich mit ${de(F0)} N an. Q₁ wird ${f1}-mal so groß${f2 > 1 ? `, Q₂ ${f2}-mal so groß` : ''}, der Abstand bleibt gleich. Wie groß ist die Kraft jetzt in N?`,
+        en: `Two charges attract with ${en(F0)} N. Q₁ becomes ${f1} times as large${f2 > 1 ? `, Q₂ ${f2} times as large` : ''}, the distance stays the same. How large is the force now in N?`,
+      },
       answer: F,
       unit: 'N',
       tol: 0.01,
@@ -275,26 +302,101 @@ export function makeTask(n: number): ChargeTask {
     const rr = Math.sqrt((K * (q * 1e-6) ** 2) / F);
     return {
       kind,
-      text: { de: `Zwei gleiche Ladungen von je ${de(q)} µC stoßen sich mit ${de(F)} N ab. Wie weit sind sie voneinander entfernt, in cm? (k ≈ 9 · 10⁹ N m²/C²)`, en: `Two equal charges of ${en(q)} µC each repel with ${en(F)} N. How far apart are they, in cm? (k ≈ 9 · 10⁹ N m²/C²)` },
+      text: {
+        de: `Zwei gleiche Ladungen von je ${de(q)} µC stoßen sich mit ${de(F)} N ab. Wie weit sind sie voneinander entfernt, in cm? (k ≈ 9 · 10⁹ N m²/C²)`,
+        en: `Two equal charges of ${en(q)} µC each repel with ${en(F)} N. How far apart are they, in cm? (k ≈ 9 · 10⁹ N m²/C²)`,
+      },
       answer: rr * 100,
       unit: 'cm',
       tol: 0.02,
-      solution: { de: `r = √(k · Q² : F) = √(8,99 · 10⁹ · (${de(q)} · 10⁻⁶)² : ${de(F)}) m ≈ ${de(rr * 100, 1)} cm`, en: `r = √(k · Q² / F) = √(8.99 · 10⁹ · (${en(q)} · 10⁻⁶)² / ${en(F)}) m ≈ ${en(rr * 100, 1)} cm` },
+      solution: {
+        de: `r = √(k · Q² : F) = √(8,99 · 10⁹ · (${de(q)} · 10⁻⁶)² : ${de(F)}) m ≈ ${de(rr * 100, 1)} cm`,
+        en: `r = √(k · Q² / F) = √(8.99 · 10⁹ · (${en(q)} · 10⁻⁶)² / ${en(F)}) m ≈ ${en(rr * 100, 1)} cm`,
+      },
+    };
+  }
+  if (kind === 'balloon') {
+    const q = pick([
+      [
+        {
+          de: 'Ein geriebener Luftballon bleibt an der (ungeladenen) Wand kleben. Warum? (1) Die Wand ist entgegengesetzt geladen. (2) Der Ballon verschiebt die Ladungen in den Molekülen der Wand ein wenig, die zugewandte Seite wird entgegengesetzt geladen. (3) Der Ballon ist magnetisch.',
+          en: 'A rubbed balloon sticks to the (uncharged) wall. Why? (1) The wall has the opposite charge. (2) The balloon shifts the charges in the wall’s molecules slightly; the near side gets the opposite charge. (3) The balloon is magnetic.',
+        },
+        2,
+      ],
+      [
+        {
+          de: 'Ein geladener Kamm zieht Papierschnipsel an. Was passiert, wenn man ihn näher heranbringt? (1) Die Anziehung wird stärker. (2) Sie bleibt gleich. (3) Sie wird schwächer.',
+          en: 'A charged comb attracts scraps of paper. What happens if you bring it closer? (1) The attraction gets stronger. (2) It stays the same. (3) It gets weaker.',
+        },
+        1,
+      ],
+    ] as [Loc, number][]);
+    return {
+      kind,
+      text: q[0],
+      answer: q[1],
+      unit: '',
+      tol: 0,
+      solution: {
+        de: 'Im Isolator können sich die Elektronen nicht frei bewegen, aber in jedem Molekül ein wenig verschieben (Polarisation). Die dem Ballon zugewandte Seite ist entgegengesetzt geladen und näher – die Anziehung überwiegt und wächst stark, je näher man kommt.',
+        en: 'In an insulator the electrons cannot move freely but can shift slightly within each molecule (polarisation). The side facing the balloon has the opposite charge and is closer – attraction wins and grows strongly the closer you get.',
+      },
+    };
+  }
+  if (kind === 'storm') {
+    const q = pick([
+      [
+        {
+          de: 'Wo bist du bei Gewitter am sichersten? (1) unter einem einzelnen Baum (2) auf einem freien Feld (3) im Auto mit geschlossenen Türen',
+          en: 'Where are you safest in a thunderstorm? (1) under a single tree (2) in an open field (3) in a car with the doors closed',
+        },
+        3,
+      ],
+      [
+        {
+          de: 'Wozu dient ein Blitzableiter? (1) Er zieht den Blitz an und leitet den Strom sicher in die Erde. (2) Er verhindert, dass es blitzt. (3) Er lädt die Wolke auf.',
+          en: 'What is a lightning rod for? (1) It attracts the lightning and conducts the current safely to earth. (2) It prevents lightning. (3) It charges the cloud.',
+        },
+        1,
+      ],
+    ] as [Loc, number][]);
+    return {
+      kind,
+      text: q[0],
+      answer: q[1],
+      unit: '',
+      tol: 0,
+      solution: {
+        de: 'An Spitzen ist das elektrische Feld besonders stark – dort schlägt der Blitz bevorzugt ein. Ein Blitzableiter bietet diese Spitze und leitet den Strom über dicke Drähte in die Erde. Die Metallhülle eines Autos wirkt als Faraday’scher Käfig: Der Strom fließt außen herum.',
+        en: 'The electric field is especially strong at points – that is where lightning prefers to strike. A lightning rod provides such a point and conducts the current through thick wires to earth. The metal body of a car acts as a Faraday cage: the current flows around the outside.',
+      },
     };
   }
   const exp = Math.round(Math.log10(electricToGravity()));
   return {
     kind: 'ratio',
-    text: { de: 'Im Wasserstoffatom: Die elektrische Kraft zwischen Elektron und Proton ist etwa 10^x-mal so groß wie die Gravitation. Wie groß ist x?', en: 'In a hydrogen atom the electric force between electron and proton is about 10^x times the gravitational force. What is x?' },
+    text: {
+      de: 'Im Wasserstoffatom: Die elektrische Kraft zwischen Elektron und Proton ist etwa 10^x-mal so groß wie die Gravitation. Wie groß ist x?',
+      en: 'In a hydrogen atom the electric force between electron and proton is about 10^x times the gravitational force. What is x?',
+    },
     answer: exp,
     unit: '',
     tol: 0.03,
-    solution: { de: `F_el : F_G = k · e² : (G · m_e · m_p) ≈ 2,3 · 10³⁹ – also x ≈ ${exp}. Gravitation spielt im Atom keine Rolle.`, en: `F_el / F_G = k · e² / (G · m_e · m_p) ≈ 2.3 · 10³⁹ – so x ≈ ${exp}. Gravity plays no role in the atom.` },
+    solution: {
+      de: `F_el : F_G = k · e² : (G · m_e · m_p) ≈ 2,3 · 10³⁹ – also x ≈ ${exp}. Gravitation spielt im Atom keine Rolle.`,
+      en: `F_el / F_G = k · e² / (G · m_e · m_p) ≈ 2.3 · 10³⁹ – so x ≈ ${exp}. Gravity plays no role in the atom.`,
+    },
   };
 }
 
 export function parseAnswer(input: string): number | null {
-  const s = input.trim().replace(/\s/g, '').replace('−', '-').replace(',', '.').replace(/[a-zA-Zµ/²³°]+$/, '');
+  const s = input
+    .trim()
+    .replace(/\s/g, '')
+    .replace('−', '-')
+    .replace(',', '.')
+    .replace(/[a-zA-Zµ/²³°]+$/, '');
   if (!s || !/^-?\d*\.?\d+(e-?\d+)?$/.test(s)) return null;
   return Number(s);
 }
@@ -304,4 +406,51 @@ export function checkTask(task: ChargeTask, input: string): boolean | null {
   if (x === null) return null;
   if (task.tol === 0) return x === task.answer;
   return Math.abs(x - task.answer) <= task.tol * Math.abs(task.answer) + 1e-9;
+}
+
+/* ------------------------------------------------------------------ */
+/* Luftballon und Papierschnipsel                                      */
+/* ------------------------------------------------------------------ */
+
+/**
+ * Anziehung eines geladenen Körpers auf einen ungeladenen Papierschnipsel im
+ * Verhältnis zu dessen Gewichtskraft (Modell: influzierter Dipol, F ∝ Q²/d⁵,
+ * so normiert, dass 10 nC in 2 cm Abstand gerade das Gewicht tragen).
+ */
+export function scrapLiftRatio(qNanoC: number, dCm: number): number {
+  return ((qNanoC / 10) ** 2 * 2 ** 5) / dCm ** 5;
+}
+
+/** Ausrichtung der Moleküle in der Wand (0…1) bei Abstand d (cm) und Ladung Q (nC). */
+export function polarization(qNanoC: number, dCm: number): number {
+  return Math.min(1, (qNanoC / 10) * (2 / dCm) ** 2);
+}
+
+/* ------------------------------------------------------------------ */
+/* Gewitter                                                            */
+/* ------------------------------------------------------------------ */
+
+/** Durchschlagfeldstärke trockener Luft in V/m (Richtwert). */
+export const BREAKDOWN = 3e6;
+
+/**
+ * Feldstärke am Boden unter einer Gewitterwolke (Ladung Q in C, Höhe h in m):
+ * Punktladung mit Spiegelladung im Boden, E = 2·k·Q / h².
+ */
+export function groundField(Q: number, h: number): number {
+  return (2 * K * Q) / (h * h);
+}
+
+/** Feldverstärkung an Spitzen (Richtwerte): flaches Dach, Baum, Blitzableiter. */
+export const TIP_FACTOR = { dach: 5, baum: 30, stab: 80 } as const;
+export type Tip = keyof typeof TIP_FACTOR;
+
+/** Wo schlägt der Blitz ein? Die Stelle mit dem größten Feld, falls es die Durchschlagfeldstärke erreicht. */
+export function strike(Q: number, h: number, rod: boolean): { target: Tip | null; field: number } {
+  const E = groundField(Q, h);
+  const tips: Tip[] = rod ? ['dach', 'baum', 'stab'] : ['dach', 'baum'];
+  let best: Tip = 'dach';
+  for (const t of tips) if (TIP_FACTOR[t] > TIP_FACTOR[best]) best = t;
+  const field = E * TIP_FACTOR[best];
+  return { target: field >= BREAKDOWN ? best : null, field };
 }
