@@ -4,14 +4,18 @@ import {
   cyclotron,
   deflection,
   E,
+  fadenRadius,
   floatVoltage,
   hallVoltage,
   helix,
+  HELMHOLTZ_K,
   makeTask,
   ME,
   millikanCharge,
   MP,
   SAMPLES,
+  screenSpot,
+  specificCharge,
   spectrometerRadius,
   speedAfter,
 } from '../src/simulations/physik/teilchen-felder/model';
@@ -77,7 +81,7 @@ describe('Massenspektrometer und Schraubenbahn', () => {
 describe('Übung', () => {
   it('ist reproduzierbar und wechselt die Aufgabenarten', () => {
     expect(makeTask(2)).toEqual(makeTask(2));
-    expect(new Set(Array.from({ length: 12 }, (_, i) => makeTask(i + 1).kind)).size).toBe(6);
+    expect(new Set(Array.from({ length: 16 }, (_, i) => makeTask(i + 1).kind)).size).toBe(8);
   });
   it('erkennt die hinterlegte Antwort', () => {
     for (let i = 1; i <= 120; i++) {
@@ -94,6 +98,35 @@ describe('Übung', () => {
       const t = makeTask(i);
       expect(t.text.en + t.solution.en).not.toMatch(/\d,\d/);
       expect(t.text.de + t.solution.de).not.toMatch(/\d\.\d/);
+    }
+  });
+});
+
+describe('Fadenstrahlrohr und Oszilloskop', () => {
+  it('aus U, B und r folgt wieder e/m', () => {
+    const B = HELMHOLTZ_K * 1.5;
+    const r = fadenRadius(200, B);
+    expect(r).toBeGreaterThan(0.03);
+    expect(r).toBeLessThan(0.06);
+    expect(specificCharge(200, B, r)).toBeCloseTo(E / ME, -8);
+    expect(HELMHOLTZ_K * 1000).toBeCloseTo(0.78, 2);
+  });
+  it('größere Spannung, größerer Kreis; stärkeres Feld, kleinerer Kreis', () => {
+    expect(fadenRadius(300, 1e-3)).toBeGreaterThan(fadenRadius(200, 1e-3));
+    expect(fadenRadius(200, 2e-3)).toBeCloseTo(fadenRadius(200, 1e-3) / 2, 12);
+  });
+  it('Leuchtfleck: Sägezahn läuft von links nach rechts, Lissajous 1:1 mit 90° ist ein Kreis', () => {
+    expect(screenSpot(0, true, 1, 0, 1)[0]).toBeCloseTo(-1, 9);
+    expect(screenSpot(0.5, true, 1, 0, 1)[0]).toBeCloseTo(0, 9);
+    for (const t of [0.1, 0.37, 0.8]) {
+      const [x, y] = screenSpot(t, false, 1, 90, 1);
+      expect(x * x + y * y).toBeCloseTo(1, 9);
+    }
+  });
+  it('neue Übungsarten haben eine gültige Antwort', () => {
+    for (let n = 1; n <= 80; n++) {
+      const t = makeTask(n);
+      if (t.kind === 'em' || t.kind === 'circle') expect(checkTask(t, String(Math.round(t.answer * 1000) / 1000).replace('.', ','))).toBe(true);
     }
   });
 });
