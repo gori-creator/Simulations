@@ -3,6 +3,7 @@ import {
   brewster,
   chain,
   checkTask,
+  cinemaEye,
   criticalAngle,
   fresnel,
   glareThroughSunglasses,
@@ -11,6 +12,9 @@ import {
   malus,
   refractionAngle,
   SEGMENTS,
+  SKY_PMAX,
+  skyPolarization,
+  skyThroughFilter,
   wavelengthRatio,
 } from '../src/simulations/physik/polarisation/model';
 
@@ -89,7 +93,7 @@ describe('LCD', () => {
 describe('Übung', () => {
   it('ist reproduzierbar und wechselt die Aufgabenarten', () => {
     expect(makeTask(4)).toEqual(makeTask(4));
-    expect(new Set(Array.from({ length: 12 }, (_, i) => makeTask(i + 1).kind)).size).toBe(6);
+    expect(new Set(Array.from({ length: 16 }, (_, i) => makeTask(i + 1).kind)).size).toBe(8);
   });
   it('erkennt die hinterlegte Antwort', () => {
     for (let i = 1; i <= 120; i++) {
@@ -107,6 +111,32 @@ describe('Übung', () => {
       const t = makeTask(i);
       expect(t.text.en + t.solution.en).not.toMatch(/\d,\d/);
       expect(t.text.de + t.solution.de).not.toMatch(/\d\.\d/);
+    }
+  });
+});
+
+describe('Himmelslicht und 3D-Kino', () => {
+  it('Himmel ist 90° neben der Sonne am stärksten polarisiert', () => {
+    expect(skyPolarization(90)).toBeCloseTo(SKY_PMAX, 9);
+    expect(skyPolarization(0)).toBeCloseTo(0, 9);
+    expect(skyPolarization(180)).toBeCloseTo(0, 9);
+    expect(skyPolarization(60)).toBeLessThan(skyPolarization(90));
+  });
+  it('Polfilter: dunkelste Stellung lässt (1 − P)/2 durch, unpolarisiert die Hälfte', () => {
+    expect(skyThroughFilter(0.75, 90)).toBeCloseTo(0.125, 9);
+    expect(skyThroughFilter(0.75, 0)).toBeCloseTo(0.875, 9);
+    expect(skyThroughFilter(0, 37)).toBeCloseTo(0.5, 9);
+  });
+  it('3D-Kino: Geisterbild wächst mit der Kopfneigung', () => {
+    expect(cinemaEye(0).ghost).toBeCloseTo(0, 9);
+    expect(cinemaEye(30).ghost).toBeCloseTo(0.25, 9);
+    expect(cinemaEye(-30).ghost).toBeCloseTo(0.25, 9);
+    expect(cinemaEye(45).own).toBeCloseTo(0.5, 9);
+  });
+  it('neue Übungsarten sind lösbar', () => {
+    for (let n = 1; n <= 80; n++) {
+      const t = makeTask(n);
+      if (t.kind === 'sky' || t.kind === 'ghost') expect(checkTask(t, String(Math.round(t.answer * 10) / 10).replace('.', ','))).toBe(true);
     }
   });
 });

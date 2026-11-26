@@ -1,5 +1,31 @@
 import { defineSimulation, Plot, prefersReducedMotion, roundRect, Surface, text, withAlpha, type Rect } from '../../../sim-core';
-import { checkTask, conductionPower, conductionStep, CONTAINERS, cooling, coolingTime, diffusivity, heatLoss, makeTask, MATERIALS, netRadiation, radiatedPower, uValue, wallTemperatures, WINDOWS, type ContainerId, type HeatTask, type MaterialId, type WindowId } from './model';
+import {
+  airTransfer,
+  BODY_MAKES,
+  bodyLoss,
+  CLO,
+  collectorEfficiency,
+  COLLECTOR_AREA,
+  checkTask,
+  conductionPower,
+  conductionStep,
+  CONTAINERS,
+  cooling,
+  coolingTime,
+  diffusivity,
+  heatLoss,
+  makeTask,
+  MATERIALS,
+  netRadiation,
+  radiatedPower,
+  uValue,
+  wallTemperatures,
+  WINDOWS,
+  type ContainerId,
+  type HeatTask,
+  type MaterialId,
+  type WindowId,
+} from './model';
 
 const L = (de: string, en: string) => ({ de, en });
 
@@ -39,6 +65,8 @@ export default defineSimulation({
         { value: 'strahlung', label: L('Wärmestrahlung', 'Radiation') },
         { value: 'daemmung', label: L('Wärmedämmung: Wand und Fenster', 'Insulation: wall and window') },
         { value: 'abkuehlen', label: L('Alltag: Tee im Becher und in der Thermoskanne', 'Everyday: tea in a mug and a vacuum flask') },
+        { value: 'koerper', label: L('Alltag: Kleidung und Wind', 'Everyday: clothing and wind') },
+        { value: 'kollektor', label: L('Sonnenkollektor auf dem Dach', 'Solar collector on the roof') },
         { value: 'ueben', label: L('Üben: Aufgaben zum Wärmetransport', 'Practice: heat transfer tasks') },
       ],
       default: 'leitung',
@@ -124,7 +152,17 @@ export default defineSimulation({
       default: 'becher',
       visibleIf: (v) => v.mode === 'abkuehlen',
     },
-    { key: 't0', type: 'number', label: L('Anfangstemperatur des Tees', 'Starting temperature of the tea'), min: 50, max: 95, step: 1, default: 85, unit: '°C', visibleIf: (v) => v.mode === 'abkuehlen' },
+    {
+      key: 't0',
+      type: 'number',
+      label: L('Anfangstemperatur des Tees', 'Starting temperature of the tea'),
+      min: 50,
+      max: 95,
+      step: 1,
+      default: 85,
+      unit: '°C',
+      visibleIf: (v) => v.mode === 'abkuehlen',
+    },
     {
       key: 'dauer',
       type: 'choice',
@@ -137,10 +175,60 @@ export default defineSimulation({
       display: 'buttons',
       visibleIf: (v) => v.mode === 'abkuehlen',
     },
+    { key: 'kclo', type: 'number', label: L('Kleidung', 'Clothing'), min: 0, max: 3, step: 0.5, default: 1, unit: 'clo', visibleIf: (v) => v.mode === 'koerper' },
+    { key: 'kta', type: 'number', label: L('Lufttemperatur', 'Air temperature'), min: -20, max: 30, step: 1, default: 5, unit: '°C', visibleIf: (v) => v.mode === 'koerper' },
+    { key: 'kv', type: 'number', label: L('Wind', 'Wind'), min: 0, max: 15, step: 0.5, default: 0, unit: 'm/s', visibleIf: (v) => v.mode === 'koerper' },
+    {
+      key: 'kakt',
+      type: 'choice',
+      label: L('Tätigkeit', 'Activity'),
+      options: [
+        { value: 'ruhe', label: L('stehen (100 W)', 'standing (100 W)') },
+        { value: 'gehen', label: L('zügig gehen (250 W)', 'brisk walking (250 W)') },
+      ],
+      default: 'ruhe',
+      display: 'buttons',
+      visibleIf: (v) => v.mode === 'koerper',
+    },
+    { key: 'sg', type: 'number', label: L('Sonnenstrahlung G', 'Solar irradiance G'), min: 100, max: 1000, step: 50, default: 800, unit: 'W/m²', visibleIf: (v) => v.mode === 'kollektor' },
+    {
+      key: 'stc',
+      type: 'number',
+      label: L('Wassertemperatur im Kollektor', 'Water temperature in the collector'),
+      min: 10,
+      max: 90,
+      step: 5,
+      default: 50,
+      unit: '°C',
+      visibleIf: (v) => v.mode === 'kollektor',
+    },
+    { key: 'sta', type: 'number', label: L('Lufttemperatur', 'Air temperature'), min: -10, max: 35, step: 1, default: 20, unit: '°C', visibleIf: (v) => v.mode === 'kollektor' },
+    { key: 'sglas', type: 'boolean', label: L('Glasabdeckung', 'glass cover'), default: true, visibleIf: (v) => v.mode === 'kollektor' },
+    { key: 'sschw', type: 'boolean', label: L('schwarzer Absorber', 'black absorber'), default: true, visibleIf: (v) => v.mode === 'kollektor' },
     { key: 'qn', type: 'number', label: L('Aufgabe Nr.', 'Task no.'), min: 1, max: 999, step: 1, default: 1, visibleIf: (v) => v.mode === 'ueben' },
     { key: 'qa', type: 'text', label: L('Deine Antwort', 'Your answer'), default: '', maxLength: 16, placeholder: L('eine Zahl', 'a number'), visibleIf: (v) => v.mode === 'ueben' },
-    { key: 'dw', type: 'number', label: L('Mauerwerk (Ziegel)', 'Masonry (brick)'), min: 10, max: 50, step: 1, default: 24, unit: 'cm', visibleIf: (v) => v.mode === 'daemmung' && v.bau !== 'fenster' },
-    { key: 'di', type: 'number', label: L('Dämmung (Styropor)', 'Insulation (polystyrene)'), min: 0, max: 30, step: 1, default: 0, unit: 'cm', visibleIf: (v) => v.mode === 'daemmung' && v.bau !== 'fenster' },
+    {
+      key: 'dw',
+      type: 'number',
+      label: L('Mauerwerk (Ziegel)', 'Masonry (brick)'),
+      min: 10,
+      max: 50,
+      step: 1,
+      default: 24,
+      unit: 'cm',
+      visibleIf: (v) => v.mode === 'daemmung' && v.bau !== 'fenster',
+    },
+    {
+      key: 'di',
+      type: 'number',
+      label: L('Dämmung (Styropor)', 'Insulation (polystyrene)'),
+      min: 0,
+      max: 30,
+      step: 1,
+      default: 0,
+      unit: 'cm',
+      visibleIf: (v) => v.mode === 'daemmung' && v.bau !== 'fenster',
+    },
     { key: 'ta', type: 'number', label: L('Außentemperatur', 'Outside temperature'), min: -20, max: 15, step: 1, default: -5, unit: '°C', visibleIf: (v) => v.mode === 'daemmung' },
   ],
   hint: (v) =>
@@ -152,9 +240,22 @@ export default defineSimulation({
           ? L('Jeder Körper strahlt – je heißer, desto viel mehr. Auch durch das Vakuum.', 'Every body radiates – the hotter, the much more. Even through a vacuum.')
           : v.mode === 'daemmung'
             ? L('Innen 20 °C, außen kalt. Wie viel Wärme geht durch Wand oder Fenster verloren?', 'Inside 20 °C, outside cold. How much heat is lost through the wall or window?')
-            : v.mode === 'abkuehlen'
-              ? L('Drücke „Start“: Vier Gefäße kühlen gleichzeitig ab. Welches hält den Tee am längsten warm – und warum?', 'Press “Start”: four containers cool down at the same time. Which keeps the tea warm longest – and why?')
-              : L('Rechne oder ordne zu und gib die Zahl ein. Komma oder Punkt sind beide in Ordnung.', 'Work it out or classify and enter the number. A comma or a point are both fine.'),
+            : v.mode === 'koerper'
+              ? L(
+                  'Der Körper gibt Wärme über die Haut ab. Kleidung hält eine ruhende Luftschicht fest, Wind bläst sie weg. Wann frierst du?',
+                  'The body gives off heat through the skin. Clothing holds a layer of still air, wind blows it away. When do you feel cold?',
+                )
+              : v.mode === 'kollektor'
+                ? L(
+                    'Der schwarze Absorber schluckt die Sonnenstrahlung, das Glas hält die warme Luft fest. Je heißer das Wasser, desto mehr Wärme geht wieder verloren.',
+                    'The black absorber swallows the sunlight, the glass keeps the warm air in. The hotter the water, the more heat is lost again.',
+                  )
+                : v.mode === 'abkuehlen'
+                  ? L(
+                      'Drücke „Start“: Vier Gefäße kühlen gleichzeitig ab. Welches hält den Tee am längsten warm – und warum?',
+                      'Press “Start”: four containers cool down at the same time. Which keeps the tea warm longest – and why?',
+                    )
+                  : L('Rechne oder ordne zu und gib die Zahl ein. Komma oder Punkt sind beide in Ordnung.', 'Work it out or classify and enter the number. A comma or a point are both fine.'),
   actions: [
     { id: 'reset', label: L('Neu starten', 'Restart'), visibleIf: (v) => v.mode === 'leitung' },
     { id: 'go', label: L('Start', 'Start'), primary: true, visibleIf: (v) => v.mode === 'abkuehlen' },
@@ -185,11 +286,39 @@ export default defineSimulation({
     { id: 'win3', label: L('Dreifachglas', 'Triple glazing'), values: { mode: 'daemmung', bau: 'fenster', fen: 'dreifach', fa: 4, ta: -5 } },
     { id: 'tea', label: L('Tee im offenen Becher', 'Tea in an open mug'), values: { mode: 'abkuehlen', gef: 'becher', t0: 85, dauer: '60' } },
     { id: 'flask', label: L('Thermoskanne über 6 Stunden', 'Vacuum flask over 6 hours'), values: { mode: 'abkuehlen', gef: 'thermos', t0: 85, dauer: '360' } },
-    { id: 'quiz', label: L('Üben: acht Aufgaben', 'Practice: eight tasks'), values: { mode: 'ueben', qn: 1, qa: '' } },
+    { id: 'winter', label: L('Winterspaziergang mit Wind', 'Winter walk in the wind'), values: { mode: 'koerper', kclo: 2, kta: -5, kv: 6, kakt: 'gehen' } },
+    { id: 'tshirt', label: L('T-Shirt bei 5 °C', 'T-shirt at 5 °C'), values: { mode: 'koerper', kclo: 0.5, kta: 5, kv: 0, kakt: 'ruhe' } },
+    { id: 'sommer', label: L('Kollektor im Sommer', 'Collector in summer'), values: { mode: 'kollektor', sg: 800, stc: 50, sta: 20, sglas: true, sschw: true } },
+    { id: 'nackt', label: L('Ohne Glas, blankes Blech', 'No glass, bare sheet metal'), values: { mode: 'kollektor', sg: 800, stc: 50, sta: 20, sglas: false, sschw: false } },
+    { id: 'quiz', label: L('Üben: zehn Aufgabenarten', 'Practice: ten kinds of tasks'), values: { mode: 'ueben', qn: 1, qa: '' } },
   ],
   strings: {
     de: {
-      canvas: 'Wärmetransport: ein Stab zwischen heißem und kaltem Ende mit Temperaturverlauf, ein beheizter Wassertopf mit Strömung, ein strahlender Körper oder eine Hauswand mit Dämmung und Temperaturverlauf',
+      canvasB: 'Ein Mensch mit Kleidungsschichten, Wärmepfeile und Wind; daneben ein Diagramm der Wärmeabgabe über der Kleidung',
+      canvasC: 'Sonnenkollektor im Querschnitt auf einem Dach mit Sonnenstrahlen und Verlusten; daneben der Wirkungsgrad über der Wassertemperatur',
+      bLoss: 'Wärmeabgabe ≈ {P} W (Körper erzeugt {M} W)',
+      bCold: 'Du frierst – der Körper verliert mehr Wärme, als er erzeugt.',
+      bWarm: 'Zu warm – der Körper muss schwitzen.',
+      bOk: 'Angenehm – Wärmeabgabe und Wärmeerzeugung passen.',
+      bShare: 'Dämmung: Kleidung {c} %, Luftschicht {a} %',
+      bInfo: 'Kleidung wirkt durch die ruhende Luft zwischen den Fasern. Wind bläst die warme Luftschicht an der Oberfläche weg – darum fühlt sich Wind kälter an.',
+      bMakes: 'erzeugt',
+      bAxX: 'Kleidung in clo',
+      bAxY: 'P in W',
+      sEta: 'Wirkungsgrad η ≈ {e} %',
+      sP: 'Das Wasser nimmt {P} W auf (2 m²)',
+      sLoss: 'Verloren: {L} W',
+      sInfo:
+        'Der schwarze Absorber verwandelt Strahlung in Wärme. Glas lässt das Sonnenlicht durch, hält aber die warme Luft fest und bremst die Wärmestrahlung des heißen Blechs. Je heißer das Wasser, desto größer die Verluste.',
+      sSun: 'Sonne',
+      sRefl: 'reflektiert',
+      sConv: 'Strömung',
+      sRad: 'Strahlung',
+      sWater: 'Wasser',
+      sAxX: 'Wassertemperatur in °C',
+      sAxY: 'η in %',
+      canvas:
+        'Wärmetransport: ein Stab zwischen heißem und kaltem Ende mit Temperaturverlauf, ein beheizter Wassertopf mit Strömung, ein strahlender Körper oder eine Hauswand mit Dämmung und Temperaturverlauf',
       x: 'x in cm',
       T: 'T in °C',
       hot: 'heiß',
@@ -246,7 +375,31 @@ export default defineSimulation({
       qBad: 'Bitte eine Zahl eingeben.',
     },
     en: {
-      canvas: 'Heat transfer: a rod between a hot and a cold end with a temperature profile, a heated pot of water with convection, a radiating body or a house wall with insulation and temperature profile',
+      canvasB: 'A person with layers of clothing, heat arrows and wind; next to it a chart of heat loss against clothing',
+      canvasC: 'Cross-section of a solar collector on a roof with sun rays and losses; next to it the efficiency against water temperature',
+      bLoss: 'Heat given off ≈ {P} W (body makes {M} W)',
+      bCold: 'You are cold – the body loses more heat than it makes.',
+      bWarm: 'Too warm – the body has to sweat.',
+      bOk: 'Comfortable – heat loss and heat production match.',
+      bShare: 'Insulation: clothing {c} %, air layer {a} %',
+      bInfo: 'Clothing works through the still air between the fibres. Wind blows away the warm layer of air at the surface – that is why wind feels colder.',
+      bMakes: 'makes',
+      bAxX: 'clothing in clo',
+      bAxY: 'P in W',
+      sEta: 'Efficiency η ≈ {e} %',
+      sP: 'The water takes up {P} W (2 m²)',
+      sLoss: 'Lost: {L} W',
+      sInfo:
+        'The black absorber turns radiation into heat. Glass lets the sunlight through but keeps the warm air in and holds back the thermal radiation of the hot metal. The hotter the water, the larger the losses.',
+      sSun: 'sun',
+      sRefl: 'reflected',
+      sConv: 'convection',
+      sRad: 'radiation',
+      sWater: 'water',
+      sAxX: 'water temperature in °C',
+      sAxY: 'η in %',
+      canvas:
+        'Heat transfer: a rod between a hot and a cold end with a temperature profile, a heated pot of water with convection, a radiating body or a house wall with insulation and temperature profile',
       x: 'x in cm',
       T: 'T in °C',
       hot: 'hot',
@@ -392,14 +545,45 @@ export default defineSimulation({
         const total = (p.dw + p.di) as number;
         plot.setRangePadded([-6, total + 6], [-22, 24], { left: 46, right: 14, top: 22, bottom: 24 });
         plot.setAxes({ x: { label: ctx.t('x') }, y: { label: ctx.t('T') } });
+      } else if (p.mode === 'koerper') {
+        const top = Math.max(300, Math.min(800, bodyLoss(0, p.kta, p.kv) * 1.05));
+        plot.setRangePadded([0, 3], [0, top], { left: 52, right: 14, top: 22, bottom: 24 });
+        plot.setAxes({ x: { label: ctx.t('bAxX') }, y: { label: ctx.t('bAxY') } });
+      } else if (p.mode === 'kollektor') {
+        plot.setRangePadded([0, 100], [0, 100], { left: 46, right: 14, top: 22, bottom: 24 });
+        plot.setAxes({ x: { label: ctx.t('sAxX') }, y: { label: ctx.t('sAxY') } });
       } else if (p.mode === 'strahlung') {
         plot.setRangePadded([0, 800], [0, 50], { left: 46, right: 14, top: 22, bottom: 24 });
         plot.setAxes({ x: { label: 'ϑ in °C' }, y: { label: 'P in kW/m²' } });
       }
     }
 
+    function bodyState(P: number, M: number): string {
+      // Ohne Schwitzen gibt der Körper etwa 20 % seiner Wärme auch über den Atem ab
+      return P > M * 1.15 ? 'bCold' : P < M * 0.6 ? 'bWarm' : 'bOk';
+    }
+
     function updateReadouts(): void {
       for (const k of ['time', 'lam', 'P', 'rad', 'U', 'loss', 'info']) ctx.readout(k, null);
+      if (p.mode === 'koerper') {
+        const P = bodyLoss(p.kclo, p.kta, p.kv);
+        const M = BODY_MAKES[p.kakt as 'ruhe' | 'gehen'];
+        const rc = p.kclo * CLO;
+        const ra = 1 / airTransfer(p.kv);
+        ctx.readout('P', tr('bLoss', { P: fmt.num(P, 0), M: fmt.num(M, 0) }));
+        ctx.readout('loss', ctx.t(bodyState(P, M)));
+        ctx.readout('U', tr('bShare', { c: fmt.num((rc / (rc + ra)) * 100, 0), a: fmt.num((ra / (rc + ra)) * 100, 0) }));
+        ctx.readout('info', ctx.t('bInfo'));
+        return;
+      }
+      if (p.mode === 'kollektor') {
+        const eta = collectorEfficiency(p.sg, p.stc, p.sta, p.sglas, p.sschw);
+        ctx.readout('lam', tr('sEta', { e: fmt.num(eta * 100, 0) }));
+        ctx.readout('P', tr('sP', { P: fmt.num(eta * p.sg * COLLECTOR_AREA, 0) }));
+        ctx.readout('loss', tr('sLoss', { L: fmt.num((1 - eta) * p.sg * COLLECTOR_AREA, 0) }));
+        ctx.readout('info', ctx.t('sInfo'));
+        return;
+      }
       if (p.mode === 'leitung') {
         const m = MATERIALS[p.mat as MaterialId];
         ctx.readout('time', timeText(time));
@@ -688,7 +872,10 @@ export default defineSimulation({
       plot.axes();
       const ts = wallTemperatures(layers(), 20, p.ta);
       const xs = [0, p.dw, p.dw + p.di];
-      const pts: [number, number][] = [[-6, 20], [0, ts[0]!]];
+      const pts: [number, number][] = [
+        [-6, 20],
+        [0, ts[0]!],
+      ];
       for (let i = 1; i < ts.length; i++) pts.push([xs[i]!, ts[i]!]);
       pts.push([p.dw + p.di + 6, p.ta]);
       plot.vline(0, { color: withAlpha(th.muted, 0.6), width: 1 });
@@ -807,7 +994,8 @@ export default defineSimulation({
         plot.fn((t) => cooling(p.t0, 20, k, t), { color: withAlpha(cols[i]!, sel ? 0.35 : 0.15), width: 1.5, from: 0, to: tEndCup() });
         plot.fn((t) => cooling(p.t0, 20, k, t), { color: cols[i]!, width: sel ? 3.5 : 2, from: 0, to: Math.min(tc, tEndCup()) });
         const tl = Math.min(tc, tEndCup());
-        if (sel || labelOk(cooling(p.t0, 20, k, tl))) plot.text(tl, cooling(p.t0, 20, k, tl), ctx.t(`cup_${c}`), { color: cols[i]!, size: 11, weight: sel ? 'bold' : 'normal', align: 'right', offset: [-4, -10] });
+        if (sel || labelOk(cooling(p.t0, 20, k, tl)))
+          plot.text(tl, cooling(p.t0, 20, k, tl), ctx.t(`cup_${c}`), { color: cols[i]!, size: 11, weight: sel ? 'bold' : 'normal', align: 'right', offset: [-4, -10] });
       });
       plot.end();
     }
@@ -975,10 +1163,200 @@ export default defineSimulation({
       if (tries === 1) score = { right: score.right + (r ? 1 : 0), all: score.all + 1, streak: r ? score.streak + 1 : 0 };
     }
 
+    /* ---------- Kleidung und Wind ---------- */
+    function arrowTo(g: CanvasRenderingContext2D, x0: number, y0: number, x1: number, y1: number, col: string, w: number): void {
+      const a = Math.atan2(y1 - y0, x1 - x0);
+      g.strokeStyle = col;
+      g.fillStyle = col;
+      g.lineWidth = w;
+      g.beginPath();
+      g.moveTo(x0, y0);
+      g.lineTo(x1 - Math.cos(a) * w * 2, y1 - Math.sin(a) * w * 2);
+      g.stroke();
+      g.beginPath();
+      g.moveTo(x1, y1);
+      g.lineTo(x1 - Math.cos(a - 0.5) * (w * 3 + 4), y1 - Math.sin(a - 0.5) * (w * 3 + 4));
+      g.lineTo(x1 - Math.cos(a + 0.5) * (w * 3 + 4), y1 - Math.sin(a + 0.5) * (w * 3 + 4));
+      g.closePath();
+      g.fill();
+    }
+
+    function drawBody(r: Rect): void {
+      const g = surface.g;
+      const th = ctx.theme;
+      const P = bodyLoss(p.kclo, p.kta, p.kv);
+      const M = BODY_MAKES[p.kakt as 'ruhe' | 'gehen'];
+      const state = bodyState(P, M);
+      const cx = r.x + r.w * 0.42;
+      const s0 = Math.max(0.5, Math.min((r.h - 80) / 240, r.w / 260, 1.5));
+      const headY = r.y + 22 + 22 * s0;
+      // Kleidungsschichten: je clo ein Ring um den Rumpf
+      const torso = (pad: number) => {
+        roundRect(g, cx - 30 * s0 - pad, headY + 26 * s0 - pad * 0.5, 60 * s0 + 2 * pad, 110 * s0 + pad, 18 * s0 + pad);
+      };
+      const layersN = Math.round(p.kclo * 2);
+      for (let i = layersN; i >= 1; i--) {
+        torso(i * 5 * s0);
+        g.fillStyle = withAlpha(th.series[i % 2 === 0 ? 0 : 3]!, 0.18 + 0.06 * i);
+        g.fill();
+      }
+      // Rumpf, Kopf, Beine
+      g.fillStyle = withAlpha(th.series[1]!, 0.55);
+      torso(0);
+      g.fill();
+      g.beginPath();
+      g.arc(cx, headY, 20 * s0, 0, Math.PI * 2);
+      g.fill();
+      g.strokeStyle = withAlpha(th.series[1]!, 0.55);
+      g.lineWidth = 14 * s0;
+      g.lineCap = 'round';
+      g.beginPath();
+      g.moveTo(cx - 14 * s0, headY + 140 * s0);
+      g.lineTo(cx - 16 * s0, headY + 200 * s0);
+      g.moveTo(cx + 14 * s0, headY + 140 * s0);
+      g.lineTo(cx + 16 * s0, headY + 200 * s0);
+      g.stroke();
+      g.lineCap = 'butt';
+      // Wärmepfeile: Stärke nach Wärmeabgabe
+      const w = Math.max(1.5, Math.min(7, P / 60));
+      const col = state === 'bCold' ? th.series[0]! : state === 'bWarm' ? th.series[1]! : th.series[2]!;
+      const pulse = 0.5 + 0.5 * Math.sin(anim * 3);
+      for (const [dx, dy] of [
+        [1, -0.5],
+        [1, 0.3],
+        [-1, -0.2],
+        [-1, 0.5],
+      ] as const) {
+        const x0 = cx + dx * (36 * s0 + layersN * 5 * s0);
+        const y0 = headY + 80 * s0 + dy * 50 * s0;
+        arrowTo(g, x0, y0, x0 + dx * (26 + 10 * pulse) * s0, y0 + dy * 8, withAlpha(col, 0.85), w);
+      }
+      // Wind von links
+      if (p.kv > 0) {
+        g.strokeStyle = withAlpha(th.muted, 0.7);
+        g.lineWidth = 1.5;
+        for (let i = 0; i < 6; i++) {
+          const y = r.y + r.h * (0.2 + i * 0.12);
+          const len = 20 + p.kv * 3;
+          const x = r.x + 10 + ((anim * (20 + p.kv * 12) + i * 47) % Math.max(40, cx - r.x - 70 * s0 - len));
+          g.beginPath();
+          g.moveTo(x, y);
+          g.lineTo(x + len, y);
+          g.stroke();
+        }
+      }
+      text(g, `${fmt.num(p.kta, 0)} °C`, r.x + r.w - 14, r.y + 22, { font: `800 16px ${th.font}`, color: th.text, align: 'right' });
+      const lines = wrap(g, ctx.t(state), r.w - 28);
+      g.font = `700 13px ${th.font}`;
+      lines.forEach((ln, i) => text(g, ln, r.x + 14, r.y + r.h - 14 - (lines.length - 1 - i) * 17, { font: `700 13px ${th.font}`, color: col, align: 'left' }));
+    }
+
+    function drawBodyChart(): void {
+      const th = ctx.theme;
+      const M = BODY_MAKES[p.kakt as 'ruhe' | 'gehen'];
+      plot.begin();
+      plot.grid({ minor: false });
+      plot.axes();
+      plot.hline(M, { color: th.series[2]!, dash: [5, 4], width: 1.5 });
+      plot.text(3, M, `${ctx.t('bMakes')} ${fmt.num(M, 0)} W`, { color: th.series[2]!, size: 11, align: 'right', offset: [-4, -10] });
+      plot.fn((c) => bodyLoss(c, p.kta, p.kv), { color: th.series[0]!, width: 2.5, from: 0, to: 3 });
+      plot.point(p.kclo, bodyLoss(p.kclo, p.kta, p.kv), { color: th.series[0]!, radius: 6 });
+      plot.end();
+    }
+
+    /* ---------- Sonnenkollektor ---------- */
+    function drawCollector(r: Rect): void {
+      const g = surface.g;
+      const th = ctx.theme;
+      const eta = collectorEfficiency(p.sg, p.stc, p.sta, p.sglas, p.sschw);
+      // Dach (schräg) mit Kollektor im Querschnitt
+      const x0 = r.x + r.w * 0.12;
+      const x1 = r.x + r.w * 0.88;
+      const y0 = r.y + r.h - 24;
+      const y1 = Math.max(r.y + r.h * 0.42, y0 - (x1 - x0) * 0.45);
+      const ang = Math.atan2(y1 - y0, x1 - x0);
+      const nx = Math.sin(ang);
+      const ny = -Math.cos(ang);
+      const off = (x: number, y: number, d: number): [number, number] => [x + nx * d, y + ny * d];
+      const quad = (d0: number, d1: number, fill: string) => {
+        const a = off(x0, y0, d0);
+        const b = off(x1, y1, d0);
+        const c = off(x1, y1, d1);
+        const d = off(x0, y0, d1);
+        g.beginPath();
+        g.moveTo(a[0], a[1]);
+        g.lineTo(b[0], b[1]);
+        g.lineTo(c[0], c[1]);
+        g.lineTo(d[0], d[1]);
+        g.closePath();
+        g.fillStyle = fill;
+        g.fill();
+      };
+      quad(-14, 0, withAlpha(th.muted, 0.35)); // Dämmung unten
+      const hot = Math.max(0, Math.min(1, (p.stc - 10) / 80));
+      quad(0, 8, withAlpha(th.series[1]!, 0.3 + 0.6 * hot)); // Wasser
+      quad(8, 12, p.sschw ? (th.dark ? withAlpha(th.text, 0.15) : th.text) : withAlpha(th.muted, 0.7)); // Absorber
+      if (p.sglas) quad(26, 29, withAlpha(th.series[0]!, 0.45));
+      // Sonne und Strahlen
+      const sx = r.x + 30;
+      const sy = r.y + 30;
+      g.fillStyle = th.series[3]!;
+      g.beginPath();
+      g.arc(sx, sy, 16, 0, Math.PI * 2);
+      g.fill();
+      text(g, `${ctx.t('sSun')}: ${fmt.num(p.sg, 0)} W/m²`, sx + 24, sy, { font: `700 12px ${th.font}`, color: th.text, align: 'left' });
+      const rays = Math.max(2, Math.round(p.sg / 200));
+      const t0 = (anim * 0.6) % 1;
+      for (let i = 0; i < rays; i++) {
+        const f = (i + 0.5) / rays;
+        const tx = x0 + (x1 - x0) * (0.25 + 0.6 * f);
+        const ty = y0 + (y1 - y0) * (0.25 + 0.6 * f);
+        const [ex, ey] = off(tx, ty, 12);
+        const k = (t0 + f) % 1;
+        g.strokeStyle = withAlpha(th.series[3]!, 0.75);
+        g.lineWidth = 2;
+        g.setLineDash([6, 6]);
+        g.lineDashOffset = -k * 24;
+        g.beginPath();
+        g.moveTo(sx + (ex - sx) * 0.15, sy + (ey - sy) * 0.15);
+        g.lineTo(ex, ey);
+        g.stroke();
+      }
+      g.setLineDash([]);
+      g.lineDashOffset = 0;
+      // Verluste: Reflexion, Strömung, Strahlung
+      const mid = off((x0 + x1) / 2, (y0 + y1) / 2, 34);
+      const conv = p.sglas ? 0.35 : 1;
+      const lossW = (v: number) => Math.max(1.2, Math.min(6, v));
+      const dT = Math.max(0, p.stc - p.sta);
+      arrowTo(g, mid[0] - 30, mid[1], mid[0] - 50, mid[1] - 46, withAlpha(th.muted, 0.8), lossW(p.sschw ? 1.2 : 5));
+      text(g, ctx.t('sRefl'), mid[0] - 54, mid[1] - 58, { font: `600 11px ${th.font}`, color: th.muted });
+      arrowTo(g, mid[0] + 10, mid[1], mid[0] + 20, mid[1] - 50, withAlpha(th.series[1]!, 0.8), lossW((dT / 15) * conv * 2));
+      text(g, ctx.t('sConv'), mid[0] + 22, mid[1] - 62, { font: `600 11px ${th.font}`, color: th.series[1]! });
+      arrowTo(g, mid[0] + 50, mid[1] - 10, mid[0] + 80, mid[1] - 50, withAlpha(th.series[4] ?? th.series[0]!, 0.8), lossW((dT / 20) * (p.sglas ? 0.6 : 1) * 2));
+      text(g, ctx.t('sRad'), mid[0] + 86, mid[1] - 60, { font: `600 11px ${th.font}`, color: th.muted });
+      const [wx, wy] = off(x1, y1, -24);
+      text(g, `${ctx.t('sWater')} ${fmt.num(p.stc, 0)} °C`, wx - 10, wy + 10, { font: `700 12px ${th.font}`, color: th.series[1]!, align: 'right' });
+      text(g, `η ≈ ${fmt.num(eta * 100, 0)} %`, r.x + r.w - 14, r.y + 22, { font: `800 16px ${th.font}`, color: eta > 0.3 ? th.series[2]! : th.muted, align: 'right' });
+    }
+
+    function drawCollectorChart(): void {
+      const th = ctx.theme;
+      plot.begin();
+      plot.grid({ minor: false });
+      plot.axes();
+      const other = (glass: boolean, black: boolean) => (T: number) => 100 * collectorEfficiency(p.sg, T, p.sta, glass, black);
+      plot.fn(other(!p.sglas, p.sschw), { color: withAlpha(th.muted, 0.6), width: 1.5, from: Math.max(0, p.sta), to: 100 });
+      plot.fn(other(p.sglas, p.sschw), { color: th.series[2]!, width: 2.5, from: Math.max(0, p.sta), to: 100 });
+      plot.point(p.stc, 100 * collectorEfficiency(p.sg, p.stc, p.sta, p.sglas, p.sschw), { color: th.series[2]!, radius: 6 });
+      plot.end();
+    }
+
     return {
       update(changed, source) {
         if (source === 'init' || changed.has('mode') || changed.has('mat') || changed.has('th')) resetRod();
-        if (source === 'init' || ['mode', 'dw', 'di', 'bau', 'fa', 'ta', 'dauer', 't0'].some((k) => changed.has(k))) setupPlot();
+        if (source === 'init' || ['mode', 'dw', 'di', 'bau', 'fa', 'ta', 'dauer', 't0', 'kta', 'kv'].some((k) => changed.has(k))) setupPlot();
+        if ((p.mode === 'koerper' || p.mode === 'kollektor') && !prefersReducedMotion()) ctx.clock.play();
         if (source === 'init' || source === 'replace' || ['mode', 't0', 'dauer'].some((k) => changed.has(k))) {
           tc = 0;
           cooling_on = false;
@@ -993,7 +1371,7 @@ export default defineSimulation({
           if (verdict === false) verdict = null;
           badInput = false;
         }
-        surface.canvas.setAttribute('aria-label', ctx.t(p.mode === 'ueben' ? 'canvasQuiz' : 'canvas'));
+        surface.canvas.setAttribute('aria-label', ctx.t(p.mode === 'ueben' ? 'canvasQuiz' : p.mode === 'koerper' ? 'canvasB' : p.mode === 'kollektor' ? 'canvasC' : 'canvas'));
         updateReadouts();
       },
 
@@ -1051,6 +1429,16 @@ export default defineSimulation({
         surface.begin();
         if (p.mode === 'ueben') {
           drawQuiz(surface.width, surface.height);
+          return;
+        }
+        if (p.mode === 'koerper') {
+          drawBody(s.scene);
+          drawBodyChart();
+          return;
+        }
+        if (p.mode === 'kollektor') {
+          drawCollector(s.scene);
+          drawCollectorChart();
           return;
         }
         if (p.mode === 'abkuehlen') {

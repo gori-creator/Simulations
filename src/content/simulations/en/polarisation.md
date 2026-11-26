@@ -42,8 +42,18 @@ Light reflected from water or glass is partly polarised: it oscillates mainly ho
 
 Each pixel of an LCD sits between two crossed filters. In between, a **liquid crystal** twists the direction of oscillation by 90° – the light passes the second filter and the pixel is bright. When a voltage is applied, the molecules line up and stop twisting: the pixel goes dark. This is how digits appear on calculators and watches.
 
+### Blue sky and polarising filter
+
+The blue of the sky is sunlight scattered sideways by the air. Light scattered at right angles to the sunlight is largely polarised – up to about three quarters 90° away from the sun. A polarising filter in front of a camera can block this part: the sky turns deep blue while the clouds stay bright, because their light is unpolarised. Bees even use the pattern of sky polarisation to find their way.
+
+### 3D cinema
+
+In a 3D cinema two images run at the same time: one for the left eye and one for the right, polarised at right angles. Each lens lets through only its own image. If you tilt your head by the angle φ, each eye sees the fraction sin²φ of the wrong image – a quarter already at 30°, and ghost images appear. That is why many cinemas use circularly polarised light, where tilting your head does not matter.
+
 ## Try it
 
+- [Sky 90° from the sun](?mode=himmel&hs=90&hon=1&hf=90) and [near the sun](?mode=himmel&hs=20&hon=1&hf=90): where does the filter work best?
+- [3D cinema](?mode=kino&kt=0&kb=1) and [head tilted](?mode=kino&kt=30&kb=1): how much of the wrong image does each eye see?
 - [Two filters](?mode=pol&th1=0&th2=60&mitte=0): Turn the analyser from 0° to 180°. When is it brightest, when dark?
 - [Crossed filters](?mode=pol&th1=0&th2=90&mitte=0): No light. Now switch on the third filter.
 - [Three filters](?mode=pol&th1=0&th2=90&mitte=1&th3=45): At which angle of the middle filter does most light get through?

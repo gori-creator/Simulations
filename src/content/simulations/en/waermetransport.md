@@ -34,8 +34,18 @@ $$
 
 A **lid** keeps the warm air and steam in; a **double-walled** mug has an insulating layer of air; a **vacuum flask** has a vacuum between its walls (no particles, so no conduction or convection) and **silvered** walls that reflect radiation. What is left is mainly conduction through the neck and stopper.
 
+### Everyday: clothing and wind
+
+At rest the body produces about 100 W of heat, considerably more when walking briskly. It is given off through the skin: by conduction, convection and radiation. Clothing insulates because it holds air between the fibres – like a house wall with insulation. Wind blows away the warm layer of air at the surface, which is why a windy day feels colder than a still one at the same temperature. The simulation ignores sweating and uses P = A · ΔT / (R_clothing + R_air).
+
+### Solar collector
+
+A flat-plate collector on the roof uses all three kinds of heat transfer: a black absorber swallows the sunlight, conduction carries the heat into the water, and a glass pane reduces losses by convection and thermal radiation. The hotter the water compared with the air, the more is lost again – the efficiency drops.
+
 ## Try it
 
+- [Winter walk in the wind](?mode=koerper&kclo=2&kta=-5&kv=6&kakt=gehen) and [T-shirt at 5 °C](?mode=koerper&kclo=0.5&kta=5&kv=0&kakt=ruhe): how much clothing do you need so you do not get cold?
+- [Collector in summer](?mode=kollektor&sg=800&stc=50&sta=20&sglas=1&sschw=1) and [no glass, bare sheet metal](?mode=kollektor&sg=800&stc=50&sta=20&sglas=0&sschw=0): what do glass and black paint do?
 - [Copper](?mode=leitung&mat=copper) vs [wood](?mode=leitung&mat=wood&raffer=10000)
 - [Pot of water](?mode=stroemung), [hotplate](?mode=strahlung&tk=500)
 - [Old wall](?mode=daemmung&di=0) vs [insulated](?mode=daemmung&di=16)

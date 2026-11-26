@@ -1,5 +1,30 @@
-import { defineSimulation, roundRect, Surface, subText, text, withAlpha, type Rect } from '../../../sim-core';
-import { BREAKER, bodyCurrent, checkTask, contactVoltage, cost, current, danger, faultOutcome, fuseBlows, HOME_POWER, householdCurrent, makeTask, power, RCD_LIMIT, type Contact, type CurrentTask, type Danger, type Device, type HomeDevice } from './model';
+import { defineSimulation, prefersReducedMotion, roundRect, Surface, subText, text, withAlpha, type Rect } from '../../../sim-core';
+import {
+  BREAKER,
+  bodyCurrent,
+  holdForce,
+  layerThickness,
+  METAL,
+  platedMass,
+  type Metal,
+  checkTask,
+  contactVoltage,
+  cost,
+  current,
+  danger,
+  faultOutcome,
+  fuseBlows,
+  HOME_POWER,
+  householdCurrent,
+  makeTask,
+  power,
+  RCD_LIMIT,
+  type Contact,
+  type CurrentTask,
+  type Danger,
+  type Device,
+  type HomeDevice,
+} from './model';
 
 const L = (de: string, en: string) => ({ de, en });
 
@@ -31,6 +56,8 @@ export default defineSimulation({
         { value: 'haushalt', label: L('Haushalt: Mehrfachsteckdose und Sicherung', 'Home: power strip and breaker') },
         { value: 'schutz', label: L('Schutzleiter und FI-Schalter', 'Protective earth and RCD') },
         { value: 'vogel', label: L('Warum dem Vogel auf der Leitung nichts passiert', 'Why the bird on the wire is safe') },
+        { value: 'galvanik', label: L('Verkupfern: chemische Wirkung', 'Copper plating: chemical effect') },
+        { value: 'kran', label: L('Schrottkran: Elektromagnet', 'Scrap crane: electromagnet') },
         { value: 'ueben', label: L('Üben: Aufgaben zum Strom', 'Practice: tasks on current') },
       ],
       default: 'wirkungen',
@@ -103,21 +130,60 @@ export default defineSimulation({
       default: 'eins',
       visibleIf: (v) => v.mode === 'vogel',
     },
+    {
+      key: 'gmet',
+      type: 'choice',
+      label: L('Metall', 'Metal'),
+      options: [
+        { value: 'cu', label: L('Kupfer', 'copper') },
+        { value: 'ag', label: L('Silber', 'silver') },
+        { value: 'ni', label: L('Nickel', 'nickel') },
+      ],
+      default: 'cu',
+      visibleIf: (v) => v.mode === 'galvanik',
+    },
+    { key: 'gi', type: 'number', label: L('Stromstärke I', 'Current I'), unit: 'A', min: 0.1, max: 3, step: 0.1, default: 1, visibleIf: (v) => v.mode === 'galvanik' },
+    { key: 'gt', type: 'number', label: L('Zeit t', 'Time t'), unit: 'min', min: 5, max: 180, step: 5, default: 30, visibleIf: (v) => v.mode === 'galvanik' },
+    { key: 'kn', type: 'number', label: L('Windungen N', 'Turns N'), min: 100, max: 1000, step: 50, default: 500, visibleIf: (v) => v.mode === 'kran' },
+    { key: 'ki', type: 'number', label: L('Stromstärke I', 'Current I'), unit: 'A', min: 0, max: 5, step: 0.1, default: 3, visibleIf: (v) => v.mode === 'kran' },
+    { key: 'kl', type: 'number', label: L('Schrott', 'Scrap'), unit: 'kg', min: 100, max: 1200, step: 50, default: 600, visibleIf: (v) => v.mode === 'kran' },
     { key: 'qn', type: 'number', label: L('Aufgabe Nr.', 'Task no.'), min: 1, max: 999, step: 1, default: 1, visibleIf: (v) => v.mode === 'ueben' },
     { key: 'qa', type: 'text', label: L('Deine Antwort', 'Your answer'), default: '', maxLength: 10, placeholder: L('Nummer oder Zahl', 'number'), visibleIf: (v) => v.mode === 'ueben' },
   ],
   hint: (v) =>
     v.mode === 'haushalt'
-      ? L('Schalte Geräte ein. Ihre Ströme addieren sich – über 16 A schaltet die Sicherung den Stromkreis ab.', 'Switch devices on. Their currents add up – above 16 A the breaker switches the circuit off.')
+      ? L(
+          'Schalte Geräte ein. Ihre Ströme addieren sich – über 16 A schaltet die Sicherung den Stromkreis ab.',
+          'Switch devices on. Their currents add up – above 16 A the breaker switches the circuit off.',
+        )
       : v.mode === 'schutz'
-        ? L('Ein Draht berührt innen das Metallgehäuse. Was passiert mit und ohne Schutzleiter, mit und ohne FI-Schalter?', 'A wire touches the metal casing inside. What happens with and without protective earth, with and without an RCD?')
+        ? L(
+            'Ein Draht berührt innen das Metallgehäuse. Was passiert mit und ohne Schutzleiter, mit und ohne FI-Schalter?',
+            'A wire touches the metal casing inside. What happens with and without protective earth, with and without an RCD?',
+          )
         : v.mode === 'vogel'
           ? L('Gefährlich ist nicht die hohe Spannung allein, sondern ein Spannungsunterschied am Körper.', 'What is dangerous is not the high voltage alone but a voltage difference across the body.')
-          : v.mode === 'ueben'
-            ? L('Gib die Nummer der richtigen Antwort oder die Zahl ein und drücke „Prüfen“.', 'Enter the number of the correct answer or the value and press “Check”.')
-            : v.mode === 'gefahr'
-      ? L('Wie viel Strom durch den Körper fließt, hängt von der Spannung und von der Haut ab. Schon wenige Milliampere sind gefährlich.', 'How much current flows through the body depends on the voltage and on the skin. Just a few milliamperes are dangerous.')
-      : L('Drücke Start, wähle ein Gerät und erhöhe die Spannung. Was passiert bei einem Kurzschluss?', 'Press play, choose a device and raise the voltage. What happens in a short circuit?'),
+          : v.mode === 'galvanik'
+            ? L(
+                'Strom zerlegt die Salzlösung: Am Minuspol scheidet sich Metall ab. Je mehr Strom und je länger, desto dicker die Schicht.',
+                'Current splits the salt solution: metal is deposited at the negative pole. The more current and the longer, the thicker the layer.',
+              )
+            : v.mode === 'kran'
+              ? L(
+                  'Mehr Windungen und mehr Strom machen den Magneten stärker. Schaltest du den Strom ab, fällt der Schrott herunter.',
+                  'More turns and more current make the magnet stronger. Switch the current off and the scrap drops.',
+                )
+              : v.mode === 'ueben'
+                ? L('Gib die Nummer der richtigen Antwort oder die Zahl ein und drücke „Prüfen“.', 'Enter the number of the correct answer or the value and press “Check”.')
+                : v.mode === 'gefahr'
+                  ? L(
+                      'Wie viel Strom durch den Körper fließt, hängt von der Spannung und von der Haut ab. Schon wenige Milliampere sind gefährlich.',
+                      'How much current flows through the body depends on the voltage and on the skin. Just a few milliamperes are dangerous.',
+                    )
+                  : L(
+                      'Drücke Start, wähle ein Gerät und erhöhe die Spannung. Was passiert bei einem Kurzschluss?',
+                      'Press play, choose a device and raise the voltage. What happens in a short circuit?',
+                    ),
   actions: [
     { id: 'touch', label: L('Gehäuse berühren', 'Touch the casing'), primary: true, visibleIf: (v) => v.mode === 'schutz' },
     { id: 'reset', label: L('Wieder einschalten', 'Switch back on'), visibleIf: (v) => v.mode === 'schutz' || v.mode === 'haushalt' },
@@ -141,14 +207,26 @@ export default defineSimulation({
     { id: 'fi', label: L('Steckdose mit FI-Schalter', 'Socket with RCD'), values: { mode: 'gefahr', quelle: 'netz', nass: true, fi: true } },
     { id: 'spule', label: L('Elektromagnet hebt Klammern', 'Electromagnet lifts clips'), values: { mode: 'wirkungen', geraet: 'spule', U: 9, sich: '5', kurz: false } },
     { id: 'wasser', label: L('Strom durch Salzwasser', 'Current through salt water'), values: { mode: 'wirkungen', geraet: 'wasser', U: 12, sich: '2', kurz: false } },
-    { id: 'kitchen', label: L('Frühstück: Kocher + Toaster', 'Breakfast: kettle + toaster'), values: { mode: 'haushalt', kocher: true, toaster: true, foehn: false, heizer: false, lampe: true, laden: true } },
-    { id: 'over', label: L('Überlast: Kocher, Föhn, Heizlüfter', 'Overload: kettle, dryer, heater'), values: { mode: 'haushalt', kocher: true, foehn: true, heizer: true, toaster: false, lampe: true, laden: true } },
+    {
+      id: 'kitchen',
+      label: L('Frühstück: Kocher + Toaster', 'Breakfast: kettle + toaster'),
+      values: { mode: 'haushalt', kocher: true, toaster: true, foehn: false, heizer: false, lampe: true, laden: true },
+    },
+    {
+      id: 'over',
+      label: L('Überlast: Kocher, Föhn, Heizlüfter', 'Overload: kettle, dryer, heater'),
+      values: { mode: 'haushalt', kocher: true, foehn: true, heizer: true, toaster: false, lampe: true, laden: true },
+    },
     { id: 'pe', label: L('Defekt mit Schutzleiter', 'Fault with protective earth'), values: { mode: 'schutz', pe: true, fi: false, fehl: true } },
     { id: 'nope', label: L('Defekt ohne Schutzleiter', 'Fault without protective earth'), values: { mode: 'schutz', pe: false, fi: false, fehl: true } },
     { id: 'rcd', label: L('Ohne Schutzleiter, aber mit FI', 'No earth, but with RCD'), values: { mode: 'schutz', pe: false, fi: true, fehl: true } },
     { id: 'bird', label: L('Vogel auf einem Seil', 'Bird on one wire'), values: { mode: 'vogel', kon: 'eins' } },
     { id: 'kite', label: L('Drachenschnur an der Leitung', 'Kite string on the line'), values: { mode: 'vogel', kon: 'boden' } },
-    { id: 'quiz', label: L('Üben: sechs Aufgaben', 'Practice: six tasks'), values: { mode: 'ueben', qn: 1, qa: '' } },
+    { id: 'plate', label: L('Schlüssel verkupfern', 'Copper-plate a key'), values: { mode: 'galvanik', gmet: 'cu', gi: 1, gt: 30 } },
+    { id: 'silver', label: L('Löffel versilbern', 'Silver-plate a spoon'), values: { mode: 'galvanik', gmet: 'ag', gi: 0.5, gt: 60 } },
+    { id: 'crane', label: L('Schrottkran hebt 600 kg', 'Scrap crane lifts 600 kg'), values: { mode: 'kran', kn: 500, ki: 3, kl: 600 } },
+    { id: 'weak', label: L('Zu wenig Strom für 1000 kg', 'Too little current for 1000 kg'), values: { mode: 'kran', kn: 300, ki: 2, kl: 1000 } },
+    { id: 'quiz', label: L('Üben: acht Aufgabenarten', 'Practice: eight task types'), values: { mode: 'ueben', qn: 1, qa: '' } },
   ],
   strings: {
     de: {
@@ -179,6 +257,26 @@ export default defineSimulation({
       scale: 'Körperstrom in mA',
       off: 'abgeschaltet',
       canvasQ: 'Übungsaufgabe zum Strom mit Rückmeldung',
+      canvasGal: 'Becherglas mit Salzlösung, links eine Metallplatte am Pluspol, rechts ein Schlüssel am Minuspol; Metall-Ionen wandern zum Schlüssel und bilden eine Schicht',
+      canvasK: 'Kran mit einem Elektromagneten über einem Schrotthaufen; daneben Balken für Haltekraft und Gewicht',
+      gMass: 'm ≈ {m} g {metal} (in {t} min)',
+      gLayer: 'Schicht auf 50 cm²: etwa {d} µm',
+      gInfo: 'Am Minuspol nehmen die Metall-Ionen Elektronen auf und werden zu Metall. Die Masse wächst mit Stromstärke mal Zeit.',
+      gPerAh: 'pro Amperestunde {m} g',
+      gAnode: 'Platte (+)',
+      gKey: 'Schlüssel (−)',
+      gAfter: 'nach {t} min: {m} g',
+      cu: 'Kupfer',
+      ag: 'Silber',
+      ni: 'Nickel',
+      kF: 'Haltekraft F ≈ {F} kN',
+      kG: 'Gewicht des Schrotts ≈ {G} kN',
+      kLift: 'Der Magnet hebt den Schrott.',
+      kDrop: 'Zu schwach – der Schrott bleibt liegen.',
+      kOff: 'Kein Strom – kein Magnet.',
+      kInfo: 'Der Strom in der Spule macht den Eisenkern zum Magneten. Doppelt so viele Windungen wirken wie doppelt so viel Strom – bis das Eisen gesättigt ist.',
+      kForce: 'Haltekraft',
+      kWeight: 'Gewicht',
       hhI: 'I = P : U = {P} W : 230 V ≈ {I} A',
       hhOk: 'Sicherung hält (unter 16 A)',
       hhTrip: 'Sicherung löst aus – Stromkreis abgeschaltet (über 16 A)',
@@ -235,6 +333,26 @@ export default defineSimulation({
       scale: 'body current in mA',
       off: 'switched off',
       canvasQ: 'Practice task on current with feedback',
+      canvasGal: 'Beaker with salt solution, on the left a metal plate at the positive pole, on the right a key at the negative pole; metal ions move to the key and form a layer',
+      canvasK: 'Crane with an electromagnet above a pile of scrap; next to it bars for holding force and weight',
+      gMass: 'm ≈ {m} g of {metal} (in {t} min)',
+      gLayer: 'Layer on 50 cm²: about {d} µm',
+      gInfo: 'At the negative pole the metal ions take up electrons and become metal. The mass grows with current times time.',
+      gPerAh: '{m} g per ampere-hour',
+      gAnode: 'plate (+)',
+      gKey: 'key (−)',
+      gAfter: 'after {t} min: {m} g',
+      cu: 'copper',
+      ag: 'silver',
+      ni: 'nickel',
+      kF: 'Holding force F ≈ {F} kN',
+      kG: 'Weight of the scrap ≈ {G} kN',
+      kLift: 'The magnet lifts the scrap.',
+      kDrop: 'Too weak – the scrap stays on the ground.',
+      kOff: 'No current – no magnet.',
+      kInfo: 'The current in the coil turns the iron core into a magnet. Twice as many turns act like twice the current – until the iron is saturated.',
+      kForce: 'holding force',
+      kWeight: 'weight',
       hhI: 'I = P / U = {P} W / 230 V ≈ {I} A',
       hhOk: 'breaker holds (below 16 A)',
       hhTrip: 'breaker trips – circuit switched off (above 16 A)',
@@ -307,6 +425,20 @@ export default defineSimulation({
         const U = contactVoltage(p.kon as Contact);
         show.info = p.kon === 'eins' ? tr('vEins', { U: fmt.num(U, 3) }) : ctx.t(p.kon === 'zwei' ? 'vZwei' : 'vBoden');
         show.eff = ctx.t('vInfo');
+      } else if (p.mode === 'galvanik') {
+        const met = p.gmet as Metal;
+        const m = platedMass(p.gi, p.gt, met);
+        show.I = tr('gMass', { m: fmt.num(m, 2), metal: ctx.t(met), t: fmt.num(p.gt, 0) });
+        show.P = tr('gLayer', { d: fmt.num(layerThickness(m, met, 50), 1) });
+        show.eff = tr('gPerAh', { m: fmt.num(platedMass(1, 60, met), 2) });
+        show.info = ctx.t('gInfo');
+      } else if (p.mode === 'kran') {
+        const F = holdForce(p.kn, p.ki);
+        const G = p.kl * 9.81;
+        show.I = tr('kF', { F: fmt.num(F / 1000, 1) });
+        show.P = tr('kG', { G: fmt.num(G / 1000, 1) });
+        show.fuse = p.ki <= 0 ? ctx.t('kOff') : F > G ? ctx.t('kLift') : ctx.t('kDrop');
+        show.info = ctx.t('kInfo');
       } else if (p.mode === 'ueben') {
         show.info = tr('qScore', { k: score.right, n: score.all, s: score.streak });
       } else if (p.mode === 'wirkungen') {
@@ -654,7 +786,14 @@ export default defineSimulation({
       g.fill();
       const label = `${fmt.num(mA, mA < 10 ? 1 : 0)} mA: ${ctx.t(d)}`;
       const align: CanvasTextAlign = mxp < sx0 + 80 ? 'left' : mxp > sx1 - 80 ? 'right' : 'center';
-      subText(g, label, align === 'left' ? Math.max(sx0, mxp - 10) : align === 'right' ? Math.min(sx1, mxp + 10) : mxp, sy - 40, { size: 12, family: th.font, weight: 700, color: th.text, align, halo: th.bg });
+      subText(g, label, align === 'left' ? Math.max(sx0, mxp - 10) : align === 'right' ? Math.min(sx1, mxp + 10) : mxp, sy - 40, {
+        size: 12,
+        family: th.font,
+        weight: 700,
+        color: th.text,
+        align,
+        halo: th.bg,
+      });
       // 30-mA-Linie des FI-Schalters
       if (p.fi) {
         g.strokeStyle = th.series[2]!;
@@ -713,7 +852,10 @@ export default defineSimulation({
         g.fill();
         g.strokeStyle = act ? th.text : withAlpha(th.muted, 0.5);
         g.stroke();
-        const name = ctx.lang === 'de' ? { kocher: 'Kocher', foehn: 'Föhn', toaster: 'Toaster', heizer: 'Heizer', lampe: 'Lampe', laden: 'Laden' }[d] : { kocher: 'kettle', foehn: 'dryer', toaster: 'toaster', heizer: 'heater', lampe: 'lamp', laden: 'charger' }[d];
+        const name =
+          ctx.lang === 'de'
+            ? { kocher: 'Kocher', foehn: 'Föhn', toaster: 'Toaster', heizer: 'Heizer', lampe: 'Lampe', laden: 'Laden' }[d]
+            : { kocher: 'kettle', foehn: 'dryer', toaster: 'toaster', heizer: 'heater', lampe: 'lamp', laden: 'charger' }[d];
         text(g, name, cx, dy + 15, { font: `700 ${narrow ? 9 : 12}px ${th.font}`, color: th.text });
         text(g, `${HOME_POWER[d]} W`, cx, dy + 32, { font: `500 ${narrow ? 9 : 11}px ${th.font}`, color: th.muted });
       });
@@ -877,25 +1019,25 @@ export default defineSimulation({
       // Vogel (nicht beim Drachen)
       const by = y1 + 5;
       if (k !== 'boden') {
-      g.fillStyle = col;
-      g.beginPath();
-      g.ellipse(bx, by - 14, k === 'zwei' ? 26 : 14, k === 'zwei' ? 18 : 10, 0, 0, Math.PI * 2);
-      g.fill();
-      g.beginPath();
-      g.arc(bx + (k === 'zwei' ? 22 : 12), by - 24, 6, 0, Math.PI * 2);
-      g.fill();
-      g.strokeStyle = col;
-      g.lineWidth = 2;
-      g.beginPath();
-      g.moveTo(bx - 4, by - 6);
-      g.lineTo(bx - 4, by);
-      g.moveTo(bx + 4, by - 6);
-      g.lineTo(bx + 4, by);
-      if (k === 'zwei') {
-        g.moveTo(bx - 20, by - 8);
-        g.lineTo(bx - 34, y2);
-      }
-      g.stroke();
+        g.fillStyle = col;
+        g.beginPath();
+        g.ellipse(bx, by - 14, k === 'zwei' ? 26 : 14, k === 'zwei' ? 18 : 10, 0, 0, Math.PI * 2);
+        g.fill();
+        g.beginPath();
+        g.arc(bx + (k === 'zwei' ? 22 : 12), by - 24, 6, 0, Math.PI * 2);
+        g.fill();
+        g.strokeStyle = col;
+        g.lineWidth = 2;
+        g.beginPath();
+        g.moveTo(bx - 4, by - 6);
+        g.lineTo(bx - 4, by);
+        g.moveTo(bx + 4, by - 6);
+        g.lineTo(bx + 4, by);
+        if (k === 'zwei') {
+          g.moveTo(bx - 20, by - 8);
+          g.lineTo(bx - 34, y2);
+        }
+        g.stroke();
       }
       if (k === 'boden') {
         // Drache mit Schnur zur Erde
@@ -1022,6 +1164,233 @@ export default defineSimulation({
       if (tries === 1) score = { right: score.right + (res ? 1 : 0), all: score.all + 1, streak: res ? score.streak + 1 : 0 };
     }
 
+    /* ---------- Verkupfern ---------- */
+    let animT = 0;
+    function drawPlating(r: Rect): void {
+      const g = surface.g;
+      const th = ctx.theme;
+      const met = p.gmet as Metal;
+      const wide = r.w >= 640;
+      const scene: Rect = wide ? { x: r.x, y: r.y, w: r.w * 0.62, h: r.h } : r;
+      const prog = Math.min(1, animT / 6);
+      const m = platedMass(p.gi, p.gt * prog, met);
+      const metCol = met === 'cu' ? th.series[3]! : met === 'ag' ? th.muted : (th.series[4] ?? th.muted);
+      // Becherglas
+      const bw = Math.min(scene.w * 0.75, 380);
+      const bh = Math.min(scene.h * 0.5, 220);
+      const bx = scene.x + (scene.w - bw) / 2;
+      const by = scene.y + scene.h - bh - 30;
+      g.fillStyle = withAlpha(th.series[0]!, 0.15);
+      g.fillRect(bx, by + bh * 0.15, bw, bh * 0.85);
+      g.strokeStyle = th.text;
+      g.lineWidth = 2;
+      g.beginPath();
+      g.moveTo(bx, by);
+      g.lineTo(bx, by + bh);
+      g.lineTo(bx + bw, by + bh);
+      g.lineTo(bx + bw, by);
+      g.stroke();
+      // Elektroden
+      const ax = bx + bw * 0.18;
+      const kx = bx + bw * 0.78;
+      const top = by - 24;
+      const bot = by + bh - 20;
+      g.fillStyle = metCol;
+      g.fillRect(ax - 8, top, 16, bot - top);
+      // Schlüssel mit wachsender Schicht
+      const coat = Math.min(6, layerThickness(m, met, 50) / 4);
+      const keyBody = (pad: number) => {
+        g.beginPath();
+        g.arc(kx, top + 22, 16 + pad, 0, Math.PI * 2);
+        g.rect(kx - 5 - pad, top + 36, 10 + 2 * pad, bot - top - 40 + pad);
+        g.rect(kx + 5, bot - 30 - pad, 12 + pad, 8 + 2 * pad);
+        g.rect(kx + 5, bot - 14 - pad, 9 + pad, 7 + 2 * pad);
+      };
+      if (coat > 0.2) {
+        keyBody(coat);
+        g.fillStyle = metCol;
+        g.fill();
+      }
+      keyBody(0);
+      g.fillStyle = th.dark ? withAlpha(th.muted, 0.8) : withAlpha(th.text, 0.35);
+      g.fill();
+      g.beginPath();
+      g.arc(kx, top + 22, 6, 0, Math.PI * 2);
+      g.fillStyle = th.bg;
+      g.fill();
+      // Quelle und Leitungen
+      const sy = scene.y + (wide ? 34 : 62);
+      g.strokeStyle = th.text;
+      g.lineWidth = 2;
+      g.beginPath();
+      g.moveTo(ax, top);
+      g.lineTo(ax, sy);
+      g.lineTo(scene.x + scene.w / 2 - 14, sy);
+      g.moveTo(scene.x + scene.w / 2 + 14, sy);
+      g.lineTo(kx, sy);
+      g.lineTo(kx, top);
+      g.stroke();
+      g.lineWidth = 3;
+      g.beginPath();
+      g.moveTo(scene.x + scene.w / 2 - 6, sy - 14);
+      g.lineTo(scene.x + scene.w / 2 - 6, sy + 14);
+      g.stroke();
+      g.lineWidth = 6;
+      g.beginPath();
+      g.moveTo(scene.x + scene.w / 2 + 6, sy - 8);
+      g.lineTo(scene.x + scene.w / 2 + 6, sy + 8);
+      g.stroke();
+      text(g, '+', scene.x + scene.w / 2 - 18, sy - 14, { font: `700 13px ${th.font}`, color: th.muted });
+      text(g, '−', scene.x + scene.w / 2 + 18, sy - 14, { font: `700 13px ${th.font}`, color: th.muted });
+      text(g, `${fmt.num(p.gi, 1)} A`, scene.x + scene.w / 2, sy + 28, { font: `700 12px ${th.font}`, color: th.muted });
+      // Ionen wandern zum Minuspol
+      const ion = met === 'cu' ? 'Cu²⁺' : met === 'ag' ? 'Ag⁺' : 'Ni²⁺';
+      const n = 14;
+      const speed = 0.08 + p.gi * 0.08;
+      for (let i = 0; i < n; i++) {
+        const f = (hash(i) + animT * speed) % 1;
+        const x = ax + 14 + f * (kx - ax - 34);
+        const y = by + bh * 0.25 + hash(i + 50) * (bh * 0.65);
+        g.beginPath();
+        g.arc(x, y, 4, 0, Math.PI * 2);
+        g.fillStyle = metCol;
+        g.fill();
+      }
+      text(g, ion, (ax + kx) / 2, by + bh * 0.2, { font: `700 12px ${th.font}`, color: th.text });
+      text(g, ctx.t('gAnode'), ax, by + bh + 16, { font: `600 12px ${th.font}`, color: th.muted });
+      text(g, ctx.t('gKey'), kx, by + bh + 16, { font: `600 12px ${th.font}`, color: th.muted });
+      text(g, tr('gAfter', { t: fmt.num(p.gt * prog, 0), m: fmt.num(m, 2) }), r.x + 14, r.y + 18, { font: `800 15px ${th.font}`, color: th.series[2]!, align: 'left' });
+      if (wide) {
+        // Masse über der Zeit
+        const cx0 = r.x + r.w * 0.66;
+        const cw = r.w * 0.3;
+        const cy0 = r.y + r.h * 0.25;
+        const ch = r.h * 0.5;
+        const mMax = platedMass(3, 180, met);
+        // Vergleich: größter Strom gestrichelt
+        g.strokeStyle = withAlpha(th.muted, 0.6);
+        g.lineWidth = 1.5;
+        g.setLineDash([4, 4]);
+        g.beginPath();
+        g.moveTo(cx0, cy0 + ch);
+        g.lineTo(cx0 + cw, cy0);
+        g.stroke();
+        g.setLineDash([]);
+        text(g, '3 A', cx0 + cw - 14, cy0 - 10, { font: `500 11px ${th.font}`, color: th.muted });
+        text(g, `${fmt.num(mMax, 1)} g`, cx0 - 26, cy0 + 14, { font: `500 11px ${th.font}`, color: th.muted });
+        g.strokeStyle = th.muted;
+        g.lineWidth = 1;
+        g.beginPath();
+        g.moveTo(cx0, cy0);
+        g.lineTo(cx0, cy0 + ch);
+        g.lineTo(cx0 + cw, cy0 + ch);
+        g.stroke();
+        g.strokeStyle = metCol;
+        g.lineWidth = 2.5;
+        g.beginPath();
+        g.moveTo(cx0, cy0 + ch);
+        g.lineTo(cx0 + (cw * p.gt * prog) / 180, cy0 + ch - (ch * m) / mMax);
+        g.stroke();
+        const ex = cx0 + (cw * p.gt * prog) / 180;
+        const ey = cy0 + ch - (ch * m) / mMax;
+        g.beginPath();
+        g.arc(ex, ey, 4, 0, Math.PI * 2);
+        g.fillStyle = metCol;
+        g.fill();
+        text(g, `${fmt.num(p.gi, 1)} A`, ex + 8, ey - 10, { font: `700 11px ${th.font}`, color: th.text, align: 'left' });
+        text(g, 'm', cx0 - 10, cy0, { font: `700 12px ${th.font}`, color: th.muted });
+        text(g, 't', cx0 + cw, cy0 + ch + 14, { font: `700 12px ${th.font}`, color: th.muted });
+        text(g, '180 min', cx0 + cw - 20, cy0 + ch + 30, { font: `500 11px ${th.font}`, color: th.muted });
+      }
+    }
+
+    /* ---------- Schrottkran ---------- */
+    let craneY = 0;
+    function drawCrane(r: Rect): void {
+      const g = surface.g;
+      const th = ctx.theme;
+      const wide = r.w >= 640;
+      const scene: Rect = wide ? { x: r.x, y: r.y, w: r.w * 0.6, h: r.h } : { x: r.x, y: r.y, w: r.w, h: r.h * 0.68 };
+      const F = holdForce(p.kn, p.ki);
+      const G = p.kl * 9.81;
+      const lifts = p.ki > 0 && F > G;
+      const ground = scene.y + scene.h - 16;
+      const sc = Math.max(1, Math.min(1.8, scene.h / 320));
+      // Ausleger
+      const armY = scene.y + 40;
+      const cx = scene.x + scene.w * 0.55;
+      g.strokeStyle = th.text;
+      g.lineWidth = 4;
+      g.beginPath();
+      g.moveTo(scene.x + 24, ground);
+      g.lineTo(scene.x + 24, armY);
+      g.lineTo(cx + 40, armY);
+      g.stroke();
+      // Magnet: hängt tiefer, hebt bei genug Kraft
+      const pileH = (18 + Math.min(40, p.kl / 30)) * sc;
+      const low = ground - pileH - 22;
+      const high = armY + 60;
+      const magY = low - craneY * (low - high);
+      g.lineWidth = 1.5;
+      g.beginPath();
+      g.moveTo(cx, armY);
+      g.lineTo(cx, magY - 10);
+      g.stroke();
+      const on = Math.min(1, (p.kn * p.ki) / 5000);
+      const mw = 90 * sc;
+      g.fillStyle = th.dark ? withAlpha(th.muted, 0.7) : withAlpha(th.text, 0.6);
+      roundRect(g, cx - mw / 2, magY - 10, mw, 22 * sc, 4);
+      g.fill();
+      if (p.ki > 0) {
+        g.fillStyle = withAlpha(th.series[3]!, 0.25 + 0.6 * on);
+        g.fillRect(cx - mw / 2 + 6, magY - 6, mw - 12, 6);
+        // Feldlinien
+        g.strokeStyle = withAlpha(th.series[0]!, 0.25 + 0.5 * on);
+        g.lineWidth = 1;
+        for (let k = 1; k <= 3; k++) {
+          g.beginPath();
+          g.ellipse(cx, magY + 12 * sc, mw / 2 - 6, (6 + k * 6 * on) * sc, 0, 0, Math.PI);
+          g.stroke();
+        }
+      }
+      // Schrotthaufen
+      const pileTop = lifts ? magY + 12 * sc : ground - pileH;
+      for (let i = 0; i < 12; i++) {
+        const w = (14 + hash(i) * 22) * sc;
+        const h = (6 + hash(i + 9) * 8) * sc;
+        const x = cx + (-46 + hash(i + 20) * 76) * sc;
+        const y = pileTop + hash(i + 30) * (pileH - h);
+        g.save();
+        g.translate(x + w / 2, y + h / 2);
+        g.rotate((hash(i + 40) - 0.5) * 0.8);
+        g.fillStyle = withAlpha(th.series[i % 2 === 0 ? 1 : 3]!, 0.55);
+        g.fillRect(-w / 2, -h / 2, w, h);
+        g.restore();
+      }
+      g.strokeStyle = th.muted;
+      g.lineWidth = 2;
+      g.beginPath();
+      g.moveTo(scene.x + 8, ground);
+      g.lineTo(scene.x + scene.w - 8, ground);
+      g.stroke();
+      text(g, `${fmt.num(p.kl, 0)} kg`, cx + mw / 2 + 14, pileTop + pileH / 2, { font: `700 12px ${th.font}`, color: th.muted, align: 'left' });
+      const msg = p.ki <= 0 ? ctx.t('kOff') : lifts ? ctx.t('kLift') : ctx.t('kDrop');
+      text(g, msg, r.x + 14, r.y + 18, { font: `800 15px ${th.font}`, color: lifts ? th.series[2]! : th.muted, align: 'left' });
+      // Balken Kraft gegen Gewicht
+      const bars: Rect = wide ? { x: r.x + r.w * 0.64, y: r.y + r.h * 0.3, w: r.w * 0.32, h: r.h * 0.4 } : { x: r.x + 14, y: r.y + r.h * 0.72, w: r.w - 28, h: r.h * 0.24 };
+      const max = Math.max(F, G, 1) * 1.1;
+      const rows: [string, number, string][] = [
+        [ctx.t('kForce'), F, th.series[0]!],
+        [ctx.t('kWeight'), G, th.series[1]!],
+      ];
+      rows.forEach(([lab, v, col], i) => {
+        const y = bars.y + i * (bars.h / 2);
+        text(g, `${lab}: ${fmt.num(v / 1000, 1)} kN`, bars.x, y + 10, { font: `600 12px ${th.font}`, color: th.text, align: 'left' });
+        g.fillStyle = withAlpha(col, 0.75);
+        g.fillRect(bars.x, y + 20, (bars.w * v) / max, Math.min(18, bars.h / 2 - 28));
+      });
+    }
+
     return {
       update(changed, source) {
         if (source === 'init' || source === 'replace' || ['mode', 'pe', 'fi', 'fehl'].some((k) => changed.has(k))) {
@@ -1039,7 +1408,17 @@ export default defineSimulation({
           if (verdict === false) verdict = null;
           badInput = false;
         }
-        surface.canvas.setAttribute('aria-label', ctx.t(p.mode === 'ueben' ? 'canvasQ' : p.mode === 'gefahr' ? 'canvasG' : 'canvasW'));
+        surface.canvas.setAttribute(
+          'aria-label',
+          ctx.t(p.mode === 'ueben' ? 'canvasQ' : p.mode === 'gefahr' ? 'canvasG' : p.mode === 'galvanik' ? 'canvasGal' : p.mode === 'kran' ? 'canvasK' : 'canvasW'),
+        );
+        if (source === 'init' || source === 'replace' || ['mode', 'gmet', 'gi', 'gt'].some((k) => changed.has(k))) animT = 0;
+        if (p.mode === 'galvanik' || p.mode === 'kran') {
+          if (prefersReducedMotion()) {
+            animT = 100;
+            craneY = holdForce(p.kn, p.ki) > p.kl * 9.81 && p.ki > 0 ? 1 : 0;
+          } else ctx.clock.play();
+        }
         updateReadouts();
       },
       action(id) {
@@ -1056,7 +1435,13 @@ export default defineSimulation({
         ctx.requestRender();
       },
       tick(dt) {
-        t += Math.min(dt, 0.05);
+        const h = Math.min(dt, 0.05);
+        t += h;
+        animT += h;
+        if (p.mode === 'kran') {
+          const goal = p.ki > 0 && holdForce(p.kn, p.ki) > p.kl * 9.81 ? 1 : 0;
+          craneY += Math.sign(goal - craneY) * Math.min(Math.abs(goal - craneY), h * (goal > craneY ? 0.5 : 2));
+        }
       },
       resetTime() {
         t = 0;
@@ -1068,6 +1453,8 @@ export default defineSimulation({
         if (p.mode === 'schutz') return drawProtect(r);
         if (p.mode === 'vogel') return drawBird(r);
         if (p.mode === 'ueben') return drawQuiz(r);
+        if (p.mode === 'galvanik') return drawPlating(r);
+        if (p.mode === 'kran') return drawCrane(r);
         if (p.mode === 'gefahr') drawDanger(r);
         else drawCircuit(r);
       },
