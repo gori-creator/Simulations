@@ -207,7 +207,7 @@ const HP_12_UNITS: CurriculumUnit[] = [
     code: '1.4',
     title: L('Bewegung von Ladungsträgern in Feldern', 'Motion of charge carriers in fields'),
     summary: L('Geladene Teilchen im elektrischen und magnetischen Feld, Lorentzkraft.', 'Charged particles in electric and magnetic fields, the Lorentz force.'),
-    simulations: ['lorentzkraft'],
+    simulations: ['lorentzkraft', 'teilchen-felder'],
   },
   {
     code: '2',

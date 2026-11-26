@@ -529,7 +529,7 @@ const QPHASE_UNITS: CurriculumUnit[] = [
           'Kräfte auf geladene Teilchen in elektrischen und magnetischen Feldern, Lorentzkraft und Bahnformen.',
           'Forces on charged particles in electric and magnetic fields, the Lorentz force and the resulting paths.',
         ),
-        simulations: ['lorentzkraft'],
+        simulations: ['lorentzkraft', 'teilchen-felder'],
       },
       {
         code: 'WPF-1.3',

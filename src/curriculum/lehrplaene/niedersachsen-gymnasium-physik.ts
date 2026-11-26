@@ -257,7 +257,7 @@ const Q_UNITS: CurriculumUnit[] = [
           'Kraft auf stromdurchflossene Leiter, Flussdichte, Elektronen unter Lorentzkraft, im Querfeld und im Wien-Filter; nur eA: e/m mit dem Fadenstrahlrohr.',
           'Force on current-carrying wires, flux density, electrons under the Lorentz force, in a transverse field and in a Wien filter; higher level only: e/m with the fine-beam tube.',
         ),
-        simulations: ['lorentzkraft', 'magnetfeld-spule'],
+        simulations: ['lorentzkraft', 'magnetfeld-spule', 'teilchen-felder'],
       },
       {
         code: 'Q-1.4',

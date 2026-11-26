@@ -628,7 +628,7 @@ const QP_UNITS: CurriculumUnit[] = [
         code: 'LF-W.1',
         title: L('Anwendungsbeispiele für Teilchen in Feldern', 'Applications of particles in fields'),
         summary: L('Fadenstrahlrohr, Elektronenablenkröhre, Teilchenbeschleuniger, Massenspektrometer und MHD-Generator.', 'Fine-beam tube, electron deflection tube, particle accelerators, mass spectrometer and MHD generator.'),
-        simulations: ['lorentzkraft'],
+        simulations: ['lorentzkraft', 'teilchen-felder'],
       },
       {
         code: 'LF-W.2',
