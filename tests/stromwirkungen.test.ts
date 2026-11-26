@@ -9,8 +9,11 @@ import {
   danger,
   faultOutcome,
   fuseBlows,
+  holdForce,
   householdCurrent,
+  layerThickness,
   makeTask,
+  platedMass,
   power,
 } from '../src/simulations/physik/stromwirkungen/model';
 
@@ -83,6 +86,38 @@ describe('Übung Strom', () => {
       if (t.choices) expect(t.answer).toBeLessThanOrEqual(t.choices.length);
       expect(t.text.de).not.toMatch(/\d\.\d/);
       expect(t.text.en).not.toMatch(/\d,\d/);
+    }
+  });
+});
+
+describe('Verkupfern und Schrottkran', () => {
+  it('Faraday: etwa 1,19 g Kupfer und 4 g Silber pro Amperestunde', () => {
+    expect(platedMass(1, 60, 'cu')).toBeCloseTo(1.186, 2);
+    expect(platedMass(1, 60, 'ag')).toBeCloseTo(4.025, 2);
+    expect(platedMass(2, 30, 'cu')).toBeCloseTo(platedMass(1, 60, 'cu'), 9);
+  });
+  it('Schichtdicke in Mikrometern', () => {
+    // 1 g Kupfer auf 50 cm²: 1 / (8,96 · 50) cm ≈ 22 µm
+    expect(layerThickness(1, 'cu', 50)).toBeCloseTo(22.3, 1);
+  });
+  it('Haltekraft wächst mit Windungen mal Strom und bleibt begrenzt', () => {
+    expect(holdForce(500, 0)).toBe(0);
+    expect(holdForce(500, 2)).toBeCloseTo(holdForce(1000, 1), 9);
+    expect(holdForce(1000, 5)).toBeGreaterThan(holdForce(500, 3));
+    expect(holdForce(1000, 5)).toBeLessThan(12000);
+    // Beispiele: 500 Windungen, 3 A heben 600 kg; 300 Windungen, 2 A nicht 1000 kg
+    expect(holdForce(500, 3)).toBeGreaterThan(600 * 9.81);
+    expect(holdForce(300, 2)).toBeLessThan(1000 * 9.81);
+  });
+  it('neue Übungsarten kommen vor und sind lösbar', () => {
+    const kinds = new Set(Array.from({ length: 16 }, (_, i) => makeTask(i + 1).kind));
+    expect(kinds.size).toBe(8);
+    for (let n = 1; n <= 80; n++) {
+      const t = makeTask(n);
+      if (t.kind === 'plate' || t.kind === 'magnet') {
+        expect(checkTask(t, String(Math.round(t.answer * 100) / 100).replace('.', ','))).toBe(true);
+        expect(t.answer).toBeGreaterThan(0);
+      }
     }
   });
 });

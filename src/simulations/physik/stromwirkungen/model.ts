@@ -147,7 +147,43 @@ export function contactVoltage(c: Contact, lineCurrent = 200, gapM = 0.05, ohmPe
 /* ------------------------------------------------------------------ */
 
 export type Loc = { de: string; en: string };
-export type TaskKind = 'effect' | 'I' | 'fuse' | 'cost' | 'body' | 'safety';
+/** Faraday-Konstante in C/mol */
+export const FARADAY = 96485;
+
+export type Metal = 'cu' | 'ag' | 'ni';
+
+/** Molare Masse (g/mol), Ladungszahl der Ionen und Dichte (g/cm³) */
+export const METAL: Record<Metal, { M: number; z: number; rho: number }> = {
+  cu: { M: 63.55, z: 2, rho: 8.96 },
+  ag: { M: 107.87, z: 1, rho: 10.49 },
+  ni: { M: 58.69, z: 2, rho: 8.91 },
+};
+
+/** Abgeschiedene Masse in g bei Stromstärke I (A) und Zeit t (min): m = I·t·M / (z·F). */
+export function platedMass(I: number, tMin: number, metal: Metal): number {
+  const { M, z } = METAL[metal];
+  return (I * tMin * 60 * M) / (z * FARADAY);
+}
+
+/** Schichtdicke in µm, wenn sich die Masse m (g) gleichmäßig auf die Fläche A (cm²) verteilt. */
+export function layerThickness(m: number, metal: Metal, areaCm2: number): number {
+  return (m / (METAL[metal].rho * areaCm2)) * 1e4;
+}
+
+/** Größte Haltekraft des Kranmagneten (N) im vereinfachten Modell */
+export const CRANE_FMAX = 12000;
+/** Windungen mal Stromstärke, bei der der Eisenkern merklich sättigt */
+export const CRANE_NI0 = 2000;
+
+/**
+ * Haltekraft eines Lasthebemagneten in N (vereinfachtes Modell): wächst mit
+ * Windungszahl · Stromstärke, flacht ab, wenn das Eisen gesättigt ist.
+ */
+export function holdForce(N: number, I: number): number {
+  return CRANE_FMAX * (1 - Math.exp(-(N * I) / CRANE_NI0));
+}
+
+export type TaskKind = 'effect' | 'I' | 'fuse' | 'cost' | 'body' | 'safety' | 'plate' | 'magnet';
 
 export interface CurrentTask {
   kind: TaskKind;
@@ -186,7 +222,7 @@ const HOME_NAME: Record<HomeDevice, Loc> = {
 export function makeTask(n: number): CurrentTask {
   const r = rng(n * 73 + 41);
   const pick = <T>(xs: readonly T[]) => xs[Math.floor(r() * xs.length)]!;
-  const kinds: TaskKind[] = ['effect', 'I', 'fuse', 'body', 'cost', 'safety'];
+  const kinds: TaskKind[] = ['effect', 'I', 'fuse', 'body', 'cost', 'safety', 'plate', 'magnet'];
   const kind = kinds[(n - 1) % kinds.length]!;
   if (kind === 'effect') {
     const items: [Loc, number][] = [
@@ -204,14 +240,24 @@ export function makeTask(n: number): CurrentTask {
       { de: 'magnetische Wirkung', en: 'magnetic effect' },
       { de: 'chemische Wirkung', en: 'chemical effect' },
     ];
-    return { kind, text: { de: `Welche Wirkung des Stroms wird genutzt? „${t.de}“`, en: `Which effect of current is used? “${t.en}”` }, answer: a, tol: 0, choices, solution: { de: `${choices[a - 1]!.de}.`, en: `${choices[a - 1]!.en}.` } };
+    return {
+      kind,
+      text: { de: `Welche Wirkung des Stroms wird genutzt? „${t.de}“`, en: `Which effect of current is used? “${t.en}”` },
+      answer: a,
+      tol: 0,
+      choices,
+      solution: { de: `${choices[a - 1]!.de}.`, en: `${choices[a - 1]!.en}.` },
+    };
   }
   if (kind === 'I') {
     const d = pick(['kocher', 'foehn', 'toaster', 'heizer'] as HomeDevice[]);
     const I = HOME_POWER[d] / MAINS;
     return {
       kind,
-      text: { de: `Ein ${HOME_NAME[d].de} hat ${HOME_POWER[d]} W und hängt an 230 V. Wie groß ist die Stromstärke in A?`, en: `A ${HOME_NAME[d].en} is rated ${HOME_POWER[d]} W and runs on 230 V. What is the current in A?` },
+      text: {
+        de: `Ein ${HOME_NAME[d].de} hat ${HOME_POWER[d]} W und hängt an 230 V. Wie groß ist die Stromstärke in A?`,
+        en: `A ${HOME_NAME[d].en} is rated ${HOME_POWER[d]} W and runs on 230 V. What is the current in A?`,
+      },
       answer: I,
       tol: 0.03,
       choices: null,
@@ -237,7 +283,10 @@ export function makeTask(n: number): CurrentTask {
         { de: 'ja', en: 'yes' },
         { de: 'nein', en: 'no' },
       ],
-      solution: { de: `I = ${HOME_POWER[a] + HOME_POWER[b] + HOME_POWER[c]} W : 230 V ≈ ${de(I, 1)} A – ${I > BREAKER ? 'mehr' : 'weniger'} als 16 A.`, en: `I = ${HOME_POWER[a] + HOME_POWER[b] + HOME_POWER[c]} W / 230 V ≈ ${en(I, 1)} A – ${I > BREAKER ? 'more' : 'less'} than 16 A.` },
+      solution: {
+        de: `I = ${HOME_POWER[a] + HOME_POWER[b] + HOME_POWER[c]} W : 230 V ≈ ${de(I, 1)} A – ${I > BREAKER ? 'mehr' : 'weniger'} als 16 A.`,
+        en: `I = ${HOME_POWER[a] + HOME_POWER[b] + HOME_POWER[c]} W / 230 V ≈ ${en(I, 1)} A – ${I > BREAKER ? 'more' : 'less'} than 16 A.`,
+      },
     };
   }
   if (kind === 'body') {
@@ -246,11 +295,17 @@ export function makeTask(n: number): CurrentTask {
     const mA = bodyCurrent(U, wet);
     return {
       kind,
-      text: { de: `Eine Person mit ${wet ? 'nasser' : 'trockener'} Haut (Körperwiderstand ${wet ? '1000' : '3000'} Ω) berührt ${U} V. Wie groß ist der Körperstrom in mA?`, en: `A person with ${wet ? 'wet' : 'dry'} skin (body resistance ${wet ? '1000' : '3000'} Ω) touches ${U} V. What is the current through the body in mA?` },
+      text: {
+        de: `Eine Person mit ${wet ? 'nasser' : 'trockener'} Haut (Körperwiderstand ${wet ? '1000' : '3000'} Ω) berührt ${U} V. Wie groß ist der Körperstrom in mA?`,
+        en: `A person with ${wet ? 'wet' : 'dry'} skin (body resistance ${wet ? '1000' : '3000'} Ω) touches ${U} V. What is the current through the body in mA?`,
+      },
       answer: mA,
       tol: 0.03,
       choices: null,
-      solution: { de: `I = U : R = ${U} V : ${wet ? '1000' : '3000'} Ω ≈ ${de(mA, 0)} mA${mA >= 50 ? ' – lebensgefährlich' : mA >= 10 ? ' – Muskelkrampf, gefährlich' : ''}`, en: `I = U / R = ${U} V / ${wet ? '1000' : '3000'} Ω ≈ ${en(mA, 0)} mA${mA >= 50 ? ' – deadly' : mA >= 10 ? ' – muscle cramp, dangerous' : ''}` },
+      solution: {
+        de: `I = U : R = ${U} V : ${wet ? '1000' : '3000'} Ω ≈ ${de(mA, 0)} mA${mA >= 50 ? ' – lebensgefährlich' : mA >= 10 ? ' – Muskelkrampf, gefährlich' : ''}`,
+        en: `I = U / R = ${U} V / ${wet ? '1000' : '3000'} Ω ≈ ${en(mA, 0)} mA${mA >= 50 ? ' – deadly' : mA >= 10 ? ' – muscle cramp, dangerous' : ''}`,
+      },
     };
   }
   if (kind === 'cost') {
@@ -259,18 +314,78 @@ export function makeTask(n: number): CurrentTask {
     const c = cost(HOME_POWER[d], h);
     return {
       kind,
-      text: { de: `Ein ${HOME_NAME[d].de} (${HOME_POWER[d]} W) läuft ${de(h, 1)} Stunden. Was kostet das in Euro bei 0,35 € pro kWh?`, en: `A ${HOME_NAME[d].en} (${HOME_POWER[d]} W) runs for ${en(h, 1)} hours. What does that cost in euros at €0.35 per kWh?` },
+      text: {
+        de: `Ein ${HOME_NAME[d].de} (${HOME_POWER[d]} W) läuft ${de(h, 1)} Stunden. Was kostet das in Euro bei 0,35 € pro kWh?`,
+        en: `A ${HOME_NAME[d].en} (${HOME_POWER[d]} W) runs for ${en(h, 1)} hours. What does that cost in euros at €0.35 per kWh?`,
+      },
       answer: c,
       tol: 0.03,
       choices: null,
-      solution: { de: `E = ${de(HOME_POWER[d] / 1000, 1)} kW · ${de(h, 1)} h = ${de((HOME_POWER[d] / 1000) * h, 2)} kWh; Kosten ≈ ${de(c, 2)} €`, en: `E = ${en(HOME_POWER[d] / 1000, 1)} kW · ${en(h, 1)} h = ${en((HOME_POWER[d] / 1000) * h, 2)} kWh; cost ≈ €${en(c, 2)}` },
+      solution: {
+        de: `E = ${de(HOME_POWER[d] / 1000, 1)} kW · ${de(h, 1)} h = ${de((HOME_POWER[d] / 1000) * h, 2)} kWh; Kosten ≈ ${de(c, 2)} €`,
+        en: `E = ${en(HOME_POWER[d] / 1000, 1)} kW · ${en(h, 1)} h = ${en((HOME_POWER[d] / 1000) * h, 2)} kWh; cost ≈ €${en(c, 2)}`,
+      },
+    };
+  }
+  if (kind === 'plate') {
+    const I = pick([0.5, 1, 1.5, 2]);
+    const t = pick([20, 30, 45, 60, 90]);
+    const m = platedMass(I, t, 'cu');
+    return {
+      kind,
+      text: {
+        de: `Ein Schlüssel wird ${t} Minuten lang mit ${de(I, 1)} A verkupfert. Pro Amperestunde scheiden sich etwa 1,19 g Kupfer ab. Wie viel Gramm Kupfer sind es?`,
+        en: `A key is copper-plated for ${t} minutes at ${en(I, 1)} A. About 1.19 g of copper is deposited per ampere-hour. How many grams of copper is that?`,
+      },
+      answer: m,
+      tol: 0.03,
+      choices: null,
+      solution: {
+        de: `Ladung ${de(I, 1)} A · ${de(t / 60, 2)} h = ${de((I * t) / 60, 2)} Ah; m ≈ ${de((I * t) / 60, 2)} · 1,19 g ≈ ${de(m, 2)} g`,
+        en: `Charge ${en(I, 1)} A · ${en(t / 60, 2)} h = ${en((I * t) / 60, 2)} Ah; m ≈ ${en((I * t) / 60, 2)} · 1.19 g ≈ ${en(m, 2)} g`,
+      },
+    };
+  }
+  if (kind === 'magnet') {
+    const N1 = pick([200, 300, 400, 500]);
+    const I1 = pick([1, 1.5, 2, 3]);
+    const N2 = pick([600, 800, 1000, 1200].filter((x) => x !== N1 * 2));
+    const I2 = (N1 * I1) / N2;
+    return {
+      kind,
+      text: {
+        de: `Ein Elektromagnet hat ${N1} Windungen und ${de(I1, 1)} A. Ein zweiter, gleich gebauter Magnet hat ${N2} Windungen. Bei welcher Stromstärke in A ist er genauso stark?`,
+        en: `An electromagnet has ${N1} turns and ${en(I1, 1)} A. A second magnet of the same build has ${N2} turns. At what current in A is it just as strong?`,
+      },
+      answer: I2,
+      tol: 0.03,
+      choices: null,
+      solution: {
+        de: `Gleich stark bei gleichem Produkt Windungen · Strom: ${N1} · ${de(I1, 1)} A = ${N2} · I, also I ≈ ${de(I2, 2)} A`,
+        en: `Equally strong for the same product turns · current: ${N1} · ${en(I1, 1)} A = ${N2} · I, so I ≈ ${en(I2, 2)} A`,
+      },
     };
   }
   const items: [Loc, number, Loc][] = [
-    [{ de: 'Das Metallgehäuse eines Geräts ist über den grün-gelben Leiter mit der Erde verbunden.', en: 'The metal casing of a device is connected to earth by the green-yellow wire.' }, 1, { de: 'Schutzleiter: Bei einem Fehler fließt der Strom zur Erde, die Sicherung löst aus.', en: 'Protective earth: in a fault the current flows to earth and the fuse trips.' }],
-    [{ de: 'Ein Schalter vergleicht den hin- und zurückfließenden Strom und schaltet bei 30 mA Unterschied ab.', en: 'A switch compares the outgoing and returning current and switches off at a 30 mA difference.' }, 2, { de: 'FI-Schutzschalter (Fehlerstrom-Schutzschalter).', en: 'Residual current device (RCD).' }],
+    [
+      { de: 'Das Metallgehäuse eines Geräts ist über den grün-gelben Leiter mit der Erde verbunden.', en: 'The metal casing of a device is connected to earth by the green-yellow wire.' },
+      1,
+      { de: 'Schutzleiter: Bei einem Fehler fließt der Strom zur Erde, die Sicherung löst aus.', en: 'Protective earth: in a fault the current flows to earth and the fuse trips.' },
+    ],
+    [
+      {
+        de: 'Ein Schalter vergleicht den hin- und zurückfließenden Strom und schaltet bei 30 mA Unterschied ab.',
+        en: 'A switch compares the outgoing and returning current and switches off at a 30 mA difference.',
+      },
+      2,
+      { de: 'FI-Schutzschalter (Fehlerstrom-Schutzschalter).', en: 'Residual current device (RCD).' },
+    ],
     [{ de: 'Ein dünner Draht schmilzt, wenn zu viel Strom fließt.', en: 'A thin wire melts when too much current flows.' }, 3, { de: 'Schmelzsicherung.', en: 'Fuse.' }],
-    [{ de: 'Das Gerät hat ein Gehäuse aus Kunststoff und ein Doppelquadrat-Zeichen.', en: 'The device has a plastic casing and a double-square symbol.' }, 4, { de: 'Schutzisolierung.', en: 'Double insulation.' }],
+    [
+      { de: 'Das Gerät hat ein Gehäuse aus Kunststoff und ein Doppelquadrat-Zeichen.', en: 'The device has a plastic casing and a double-square symbol.' },
+      4,
+      { de: 'Schutzisolierung.', en: 'Double insulation.' },
+    ],
   ];
   const [t, a, sol] = pick(items);
   return {
@@ -289,7 +404,11 @@ export function makeTask(n: number): CurrentTask {
 }
 
 export function checkTask(task: CurrentTask, input: string): boolean | null {
-  const s = input.trim().replace(/\s/g, '').replace(',', '.').replace(/[a-zA-Z€]+$/, '');
+  const s = input
+    .trim()
+    .replace(/\s/g, '')
+    .replace(',', '.')
+    .replace(/[a-zA-Z€]+$/, '');
   if (!/^\d*\.?\d+$/.test(s)) return null;
   const x = Number(s);
   if (task.tol === 0) return x === task.answer;

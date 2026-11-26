@@ -1,5 +1,23 @@
 import { defineSimulation, Plot, roundRect, Surface, subText, text, withAlpha, type Rect } from '../../../sim-core';
-import { brewster, chain, checkTask, criticalAngle, fresnel, glareThroughSunglasses, lcdBrightness, makeTask, malus, refractionAngle, SEGMENTS, wavelengthRatio, type PolTask } from './model';
+import {
+  brewster,
+  chain,
+  checkTask,
+  cinemaEye,
+  SKY_PMAX,
+  skyPolarization,
+  skyThroughFilter,
+  criticalAngle,
+  fresnel,
+  glareThroughSunglasses,
+  lcdBrightness,
+  makeTask,
+  malus,
+  refractionAngle,
+  SEGMENTS,
+  wavelengthRatio,
+  type PolTask,
+} from './model';
 
 const L = (de: string, en: string) => ({ de, en });
 const DEG = Math.PI / 180;
@@ -41,6 +59,8 @@ export default defineSimulation({
         { value: 'welle', label: L('Querwelle oder Längswelle?', 'Transverse or longitudinal wave?') },
         { value: 'spiegel', label: L('Reflexion und Sonnenbrille', 'Reflection and sunglasses') },
         { value: 'lcd', label: L('LCD-Anzeige', 'LCD display') },
+        { value: 'himmel', label: L('Blauer Himmel und Polfilter', 'Blue sky and polarising filter') },
+        { value: 'kino', label: L('3D-Kino', '3D cinema') },
         { value: 'ueben', label: L('Üben: Aufgaben', 'Practice: tasks') },
       ],
       default: 'pol',
@@ -83,6 +103,21 @@ export default defineSimulation({
     { key: 'brille', type: 'boolean', label: L('Polarisations-Sonnenbrille aufsetzen', 'put on polarising sunglasses'), default: false, visibleIf: (v) => v.mode === 'spiegel' },
     { key: 'u', type: 'number', label: L('Spannung am Flüssigkristall', 'Voltage on the liquid crystal'), min: 0, max: 100, step: 5, default: 0, unit: '%', visibleIf: (v) => v.mode === 'lcd' },
     { key: 'ziffer', type: 'number', label: L('Angezeigte Ziffer', 'Digit shown'), min: 0, max: 9, step: 1, default: 4, visibleIf: (v) => v.mode === 'lcd' },
+    {
+      key: 'hs',
+      type: 'number',
+      label: L('Blickrichtung: Winkel zur Sonne', 'View direction: angle to the sun'),
+      min: 0,
+      max: 180,
+      step: 5,
+      default: 90,
+      unit: '°',
+      visibleIf: (v) => v.mode === 'himmel',
+    },
+    { key: 'hon', type: 'boolean', label: L('Polfilter vor der Kamera', 'polarising filter in front of the camera'), default: true, visibleIf: (v) => v.mode === 'himmel' },
+    { key: 'hf', type: 'number', label: L('Polfilter drehen', 'Turn the filter'), min: 0, max: 180, step: 5, default: 90, unit: '°', visibleIf: (v) => v.mode === 'himmel' && v.hon === true },
+    { key: 'kt', type: 'number', label: L('Kopf neigen', 'Tilt your head'), min: -45, max: 45, step: 5, default: 0, unit: '°', visibleIf: (v) => v.mode === 'kino' },
+    { key: 'kb', type: 'boolean', label: L('3D-Brille aufsetzen', 'put on 3D glasses'), default: true, visibleIf: (v) => v.mode === 'kino' },
     { key: 'qn', type: 'number', label: L('Aufgabe Nr.', 'Task no.'), min: 1, max: 999, step: 1, default: 1, visibleIf: (v) => v.mode === 'ueben' },
     { key: 'qa', type: 'text', label: L('Deine Antwort', 'Your answer'), default: '', maxLength: 10, placeholder: L('Nummer oder Zahl', 'number'), visibleIf: (v) => v.mode === 'ueben' },
     { key: 'th1', type: 'number', label: L('Winkel Polarisator', 'Angle of polariser'), min: 0, max: 180, step: 5, default: 0, unit: '°', visibleIf: (v) => v.mode === 'pol' },
@@ -113,22 +148,32 @@ export default defineSimulation({
             'Spiegelndes Licht ist teilweise polarisiert, beim Brewster-Winkel sogar vollständig. Setz die Sonnenbrille auf!',
             'Reflected light is partly polarised, at Brewster’s angle even completely. Put on the sunglasses!',
           )
-        : v.mode === 'lcd'
+        : v.mode === 'himmel'
           ? L(
-              'Zwischen gekreuzten Filtern dreht der Flüssigkristall das Licht. Mit Spannung hört er damit auf – das Segment wird dunkel.',
-              'Between crossed filters the liquid crystal twists the light. With voltage it stops – the segment goes dark.',
+              'Das Blau des Himmels ist Streulicht – und teilweise polarisiert, am stärksten 90° neben der Sonne. Dreh das Polfilter: Der Himmel wird dunkel, die Wolke bleibt hell.',
+              'The blue of the sky is scattered light – and partly polarised, most strongly 90° away from the sun. Turn the filter: the sky goes dark, the cloud stays bright.',
             )
-          : v.mode === 'ueben'
-            ? L('Gib die Zahl oder die Nummer der Antwort ein und drücke „Prüfen“.', 'Enter the number or the number of the answer and press “Check”.')
-            : v.mode === 'huygens'
+          : v.mode === 'kino'
+            ? L(
+                'Die Bilder für das linke und das rechte Auge sind senkrecht zueinander polarisiert. Neig den Kopf – dann sieht jedes Auge auch etwas vom falschen Bild.',
+                'The images for the left and right eye are polarised at right angles. Tilt your head – then each eye also sees some of the wrong image.',
+              )
+            : v.mode === 'lcd'
               ? L(
-                  'Drücke Start: Jeder Punkt der Grenzfläche, den die Welle erreicht, sendet eine Elementarwelle aus. Ihre gemeinsame Tangente ist die neue Wellenfront.',
-                  'Press play: every point of the boundary the wave reaches sends out a wavelet. Their common tangent is the new wave front.',
+                  'Zwischen gekreuzten Filtern dreht der Flüssigkristall das Licht. Mit Spannung hört er damit auf – das Segment wird dunkel.',
+                  'Between crossed filters the liquid crystal twists the light. With voltage it stops – the segment goes dark.',
                 )
-              : L(
-                  'Drehe den Analysator: Bei 90° zum Polarisator wird es dunkel. Was passiert, wenn du ein drittes Filter dazwischen stellst?',
-                  'Turn the analyser: at 90° to the polariser it goes dark. What happens if you put a third filter in between?',
-                ),
+              : v.mode === 'ueben'
+                ? L('Gib die Zahl oder die Nummer der Antwort ein und drücke „Prüfen“.', 'Enter the number or the number of the answer and press “Check”.')
+                : v.mode === 'huygens'
+                  ? L(
+                      'Drücke Start: Jeder Punkt der Grenzfläche, den die Welle erreicht, sendet eine Elementarwelle aus. Ihre gemeinsame Tangente ist die neue Wellenfront.',
+                      'Press play: every point of the boundary the wave reaches sends out a wavelet. Their common tangent is the new wave front.',
+                    )
+                  : L(
+                      'Drehe den Analysator: Bei 90° zum Polarisator wird es dunkel. Was passiert, wenn du ein drittes Filter dazwischen stellst?',
+                      'Turn the analyser: at 90° to the polariser it goes dark. What happens if you put a third filter in between?',
+                    ),
   readouts: [
     { key: 'I', label: L('Helligkeit am Schirm', 'Brightness on the screen'), spoiler: true },
     { key: 'delta', label: L('Winkel zwischen den Filtern', 'Angle between the filters') },
@@ -154,7 +199,11 @@ export default defineSimulation({
     { id: 'schaufenster', label: L('Schaufenster, flacher Blick', 'Shop window, grazing view'), values: { mode: 'spiegel', ra: 80, stoff: 'glas', brille: true } },
     { id: 'lcdAus', label: L('LCD: ohne Spannung hell', 'LCD: bright without voltage'), values: { mode: 'lcd', u: 0, ziffer: 4 } },
     { id: 'lcdAn', label: L('LCD: volle Spannung', 'LCD: full voltage'), values: { mode: 'lcd', u: 100, ziffer: 7 } },
-    { id: 'quiz', label: L('Üben: sechs Aufgabenarten', 'Practice: six kinds of tasks'), values: { mode: 'ueben', qn: 1, qa: '' } },
+    { id: 'himmel', label: L('Himmel 90° neben der Sonne', 'Sky 90° from the sun'), values: { mode: 'himmel', hs: 90, hon: true, hf: 90 } },
+    { id: 'sonne', label: L('Himmel nahe der Sonne', 'Sky near the sun'), values: { mode: 'himmel', hs: 20, hon: true, hf: 90 } },
+    { id: 'kino', label: L('3D-Kino, Kopf gerade', '3D cinema, head straight'), values: { mode: 'kino', kt: 0, kb: true } },
+    { id: 'kopf', label: L('3D-Kino, Kopf schief', '3D cinema, head tilted'), values: { mode: 'kino', kt: 30, kb: true } },
+    { id: 'quiz', label: L('Üben: acht Aufgabenarten', 'Practice: eight kinds of tasks'), values: { mode: 'ueben', qn: 1, qa: '' } },
   ],
   strings: {
     de: {
@@ -181,6 +230,24 @@ export default defineSimulation({
       total: 'Totalreflexion',
       canvasW: 'Eine Welle läuft auf einen drehbaren Spalt zu; Querwellen kommen nur durch, wenn sie in Spaltrichtung schwingen, Längswellen immer',
       canvasS: 'Licht wird an einer Oberfläche gespiegelt; Diagramm der Reflexion für beide Schwingungsrichtungen über dem Einfallswinkel, mit Brewster-Winkel',
+      canvasH: 'Skizze mit Sonne am Horizont, Beobachter und Blickrichtung; daneben zwei Fotos des Himmels mit einer Wolke, ohne und mit Polfilter',
+      canvasK: 'Kinoleinwand mit zwei verschieden polarisierten Bildern und einer 3D-Brille; daneben, was das linke und das rechte Auge sehen',
+      hP: 'Himmelslicht dort zu {p} % polarisiert',
+      hT: 'Durch das Filter: Himmel {s} %, Wolke 50 %',
+      hInfo:
+        'Die Luft streut blaues Licht zur Seite. Senkrecht zum Sonnenlicht gestreutes Licht schwingt fast nur in einer Richtung. Ein Polfilter kann es sperren – Fotografen machen so den Himmel dunkler und die Wolken treten hervor.',
+      hSun: 'Sonne',
+      hView: 'Blick',
+      hBand: 'am stärksten polarisiert',
+      hNo: 'ohne Filter',
+      hWith: 'mit Polfilter',
+      kOwn: 'Jedes Auge sieht {p} % seines Bildes',
+      kGhost: 'Geisterbild: {p} % des falschen Bildes',
+      kNoGlasses: 'Ohne Brille sehen beide Augen beide Bilder – alles doppelt.',
+      kInfo: 'Zwei Projektoren werfen das Bild fürs linke Auge mit 45° und das fürs rechte mit 135° Schwingungsrichtung auf die Leinwand. Die Brillengläser lassen jeweils nur eine Richtung durch.',
+      kLeft: 'linkes Auge',
+      kRight: 'rechtes Auge',
+      kScreen: 'Leinwand',
       canvasL: 'Aufbau eines LCD-Bildpunkts mit zwei gekreuzten Filtern und Flüssigkristall; daneben eine Sieben-Segment-Anzeige',
       canvasQ: 'Übungsaufgabe zur Polarisation mit Rückmeldung und Punktestand',
       wQuer: 'Querwelle: schwingt quer zur Laufrichtung',
@@ -238,6 +305,24 @@ export default defineSimulation({
       total: 'total internal reflection',
       canvasW: 'A wave travels towards a rotatable slit; transverse waves only pass if they oscillate along the slit, longitudinal waves always',
       canvasS: 'Light is reflected at a surface; graph of the reflection for both directions of oscillation against the angle of incidence, with Brewster’s angle',
+      canvasH: 'Sketch with the sun on the horizon, an observer and the view direction; next to it two photos of the sky with a cloud, without and with a polarising filter',
+      canvasK: 'Cinema screen with two differently polarised images and 3D glasses; next to it what the left and right eye see',
+      hP: 'skylight there is {p} % polarised',
+      hT: 'Through the filter: sky {s} %, cloud 50 %',
+      hInfo:
+        'Air scatters blue light sideways. Light scattered at right angles to the sunlight oscillates almost in one direction only. A polarising filter can block it – that is how photographers darken the sky and make clouds stand out.',
+      hSun: 'sun',
+      hView: 'view',
+      hBand: 'most strongly polarised',
+      hNo: 'without filter',
+      hWith: 'with polarising filter',
+      kOwn: 'Each eye sees {p} % of its image',
+      kGhost: 'Ghost image: {p} % of the wrong image',
+      kNoGlasses: 'Without glasses both eyes see both images – everything double.',
+      kInfo: 'Two projectors throw the image for the left eye with a 45° direction of oscillation and the one for the right eye with 135° onto the screen. Each lens lets through only one direction.',
+      kLeft: 'left eye',
+      kRight: 'right eye',
+      kScreen: 'screen',
       canvasL: 'Structure of an LCD pixel with two crossed filters and liquid crystal; next to it a seven-segment display',
       canvasQ: 'Practice task on polarisation with feedback and score',
       wQuer: 'transverse wave: oscillates across the direction of travel',
@@ -337,6 +422,22 @@ export default defineSimulation({
         ctx.readout('I', tr('lPix', { p: fmt.num((lcdBrightness(p.u / 100) / 0.5) * 100, 0) }));
         ctx.readout('delta', tr('lTwist', { d: fmt.num(90 * (1 - p.u / 100), 0) }));
         ctx.readout('info', ctx.t('lInfo'));
+        return;
+      }
+      if (p.mode === 'himmel') {
+        const P = skyPolarization(p.hs);
+        ctx.readout('I', tr('hP', { p: fmt.num(P * 100, 0) }));
+        if (p.hon) ctx.readout('delta', tr('hT', { s: fmt.num(skyThroughFilter(P, p.hf) * 100, 0) }));
+        ctx.readout('info', ctx.t('hInfo'));
+        return;
+      }
+      if (p.mode === 'kino') {
+        const e = cinemaEye(p.kt);
+        if (p.kb) {
+          ctx.readout('I', tr('kOwn', { p: fmt.num(e.own * 100, 0) }));
+          ctx.readout('delta', tr('kGhost', { p: fmt.num(e.ghost * 100, 0) }));
+        } else ctx.readout('I', ctx.t('kNoGlasses'));
+        ctx.readout('info', ctx.t('kInfo'));
         return;
       }
       if (p.mode === 'ueben') {
@@ -1046,7 +1147,231 @@ export default defineSimulation({
       if (tries === 1) score = { right: score.right + (res ? 1 : 0), all: score.all + 1, streak: res ? score.streak + 1 : 0 };
     }
 
-    const canvasKey = () => ({ huygens: 'canvasHuy', welle: 'canvasW', spiegel: 'canvasS', lcd: 'canvasL', ueben: 'canvasQ' })[p.mode as string] ?? 'canvasPol';
+    /* ---------- Blauer Himmel ---------- */
+    function skyPhoto(r: Rect, rel: number, label: string): void {
+      const g = surface.g;
+      const th = ctx.theme;
+      // rel: Himmelshelligkeit relativ zur Wolke (1 = ohne Filter)
+      const dark = Math.max(0, Math.min(1, 1 - rel / (1 + SKY_PMAX)));
+      g.save();
+      roundRect(g, r.x, r.y, r.w, r.h, 6);
+      g.clip();
+      g.fillStyle = th.bg;
+      g.fillRect(r.x, r.y, r.w, r.h);
+      g.fillStyle = withAlpha(th.series[0]!, th.dark ? 0.95 - 0.75 * dark : 0.2 + 0.8 * dark);
+      g.fillRect(r.x, r.y, r.w, r.h);
+      // Wolke: unpolarisiert, bleibt gleich hell
+      const cx = r.x + r.w * 0.38;
+      const cy = r.y + r.h * 0.35;
+      const s0 = Math.min(r.w, r.h) * 0.12;
+      g.fillStyle = th.dark ? withAlpha(th.text, 0.85) : th.bg;
+      for (const [dx, dy, k] of [
+        [-1.2, 0.2, 0.8],
+        [0, 0, 1.1],
+        [1.2, 0.25, 0.85],
+        [0.5, -0.5, 0.8],
+      ] as const) {
+        g.beginPath();
+        g.arc(cx + dx * s0, cy + dy * s0, k * s0, 0, Math.PI * 2);
+        g.fill();
+      }
+      // Hügel
+      g.fillStyle = withAlpha(th.series[2]!, 0.75);
+      g.beginPath();
+      g.moveTo(r.x, r.y + r.h);
+      g.lineTo(r.x, r.y + r.h * 0.78);
+      g.quadraticCurveTo(r.x + r.w * 0.3, r.y + r.h * 0.6, r.x + r.w * 0.55, r.y + r.h * 0.78);
+      g.quadraticCurveTo(r.x + r.w * 0.8, r.y + r.h * 0.9, r.x + r.w, r.y + r.h * 0.7);
+      g.lineTo(r.x + r.w, r.y + r.h);
+      g.fill();
+      g.restore();
+      g.strokeStyle = th.muted;
+      g.lineWidth = 1;
+      roundRect(g, r.x, r.y, r.w, r.h, 6);
+      g.stroke();
+      text(g, label, r.x + 8, r.y + r.h - 10, { font: `700 12px ${th.font}`, color: th.dark ? th.text : th.bg, align: 'left' });
+    }
+
+    function drawSky(): void {
+      const g = surface.g;
+      const th = ctx.theme;
+      const W = surface.width;
+      const H = surface.height;
+      const wide = W >= 700;
+      const scene: Rect = wide ? { x: 0, y: 0, w: W * 0.55, h: H } : { x: 0, y: 0, w: W, h: H * 0.5 };
+      const P = skyPolarization(p.hs);
+      // Skizze: Beobachter, Himmelskuppel, Sonne am Horizont links
+      const ox = scene.x + scene.w / 2;
+      const oy = scene.y + scene.h - 30;
+      const R = Math.min(scene.w * 0.42, scene.h - 60);
+      g.strokeStyle = th.muted;
+      g.lineWidth = 1.5;
+      g.beginPath();
+      g.moveTo(scene.x + 10, oy);
+      g.lineTo(scene.x + scene.w - 10, oy);
+      g.stroke();
+      g.beginPath();
+      g.arc(ox, oy, R, Math.PI, 2 * Math.PI);
+      g.strokeStyle = withAlpha(th.series[0]!, 0.5);
+      g.stroke();
+      // Band der stärksten Polarisation: 90° von der Sonne, hier durch den Zenit
+      g.strokeStyle = withAlpha(th.series[3]!, 0.8);
+      g.lineWidth = 8;
+      g.beginPath();
+      g.arc(ox, oy, R, -Math.PI / 2 - 0.12, -Math.PI / 2 + 0.12);
+      g.stroke();
+      text(g, ctx.t('hBand'), ox, oy - R - 14, { font: `600 11px ${th.font}`, color: th.series[3]! });
+      // Sonne
+      const sx = ox - R;
+      g.fillStyle = th.series[3]!;
+      g.beginPath();
+      g.arc(sx, oy, 12, Math.PI, 2 * Math.PI);
+      g.fill();
+      text(g, ctx.t('hSun'), sx, oy + 14, { font: `600 11px ${th.font}`, color: th.muted });
+      // Blickrichtung
+      const a = Math.PI - p.hs * DEG;
+      const vx = ox + Math.cos(a) * R * 0.92;
+      const vy = oy - Math.sin(a) * R * 0.92;
+      g.strokeStyle = th.text;
+      g.lineWidth = 2;
+      g.beginPath();
+      g.moveTo(ox, oy);
+      g.lineTo(vx, vy);
+      g.stroke();
+      g.beginPath();
+      g.arc(vx, vy, 5, 0, Math.PI * 2);
+      g.fillStyle = th.text;
+      g.fill();
+      // Winkel zur Sonne
+      g.strokeStyle = th.muted;
+      g.lineWidth = 1;
+      g.beginPath();
+      g.arc(ox, oy, 34, Math.PI, Math.PI + p.hs * DEG);
+      g.stroke();
+      text(g, `${fmt.num(p.hs, 0)}°`, ox - 48, oy - 30, { font: `700 12px ${th.font}`, color: th.text });
+      g.fillStyle = th.text;
+      g.beginPath();
+      g.arc(ox, oy, 6, 0, Math.PI * 2);
+      g.fill();
+      text(g, `P ≈ ${fmt.num(P * 100, 0)} %`, scene.x + 14, scene.y + 18, { font: `800 15px ${th.font}`, color: th.series[0]!, align: 'left' });
+      // Fotos
+      const area: Rect = wide ? { x: W * 0.57, y: 12, w: W * 0.4, h: H - 24 } : { x: 10, y: H * 0.52, w: W - 20, h: H * 0.46 };
+      const gap = 10;
+      const r1: Rect = wide ? { x: area.x, y: area.y, w: area.w, h: (area.h - gap) / 2 } : { x: area.x, y: area.y, w: (area.w - gap) / 2, h: area.h };
+      const r2: Rect = wide ? { x: area.x, y: area.y + r1.h + gap, w: area.w, h: r1.h } : { x: area.x + r1.w + gap, y: area.y, w: r1.w, h: area.h };
+      skyPhoto(r1, 1, ctx.t('hNo'));
+      if (p.hon) skyPhoto(r2, 2 * skyThroughFilter(P, p.hf), `${ctx.t('hWith')} (${fmt.num(p.hf, 0)}°)`);
+      else skyPhoto(r2, 1, ctx.t('hNo'));
+    }
+
+    /* ---------- 3D-Kino ---------- */
+    function drawCinema(): void {
+      const g = surface.g;
+      const th = ctx.theme;
+      const W = surface.width;
+      const H = surface.height;
+      const wide = W >= 700;
+      const scene: Rect = wide ? { x: 0, y: 0, w: W * 0.5, h: H } : { x: 0, y: 0, w: W, h: H * 0.5 };
+      const colL = th.series[0]!;
+      const colR = th.series[1]!;
+      // Leinwand mit beiden Bildern
+      const sw = Math.min(scene.w * 0.8, 340);
+      let sh = Math.min(scene.h * 0.42, 170);
+      const sx = scene.x + (scene.w - sw) / 2;
+      g.font = `800 14px ${th.font}`;
+      const msgLines = wrap(g, !p.kb ? ctx.t('kNoGlasses') : tr('kGhost', { p: fmt.num(cinemaEye(p.kt).ghost * 100, 0) }), scene.w - 28);
+      const sy = scene.y + 24 + msgLines.length * 18 + 18;
+      sh = Math.min(sh, (scene.y + scene.h - sy) * 0.4);
+      g.fillStyle = withAlpha(th.muted, 0.12);
+      g.fillRect(sx, sy, sw, sh);
+      g.strokeStyle = th.muted;
+      g.lineWidth = 1;
+      g.strokeRect(sx, sy, sw, sh);
+      text(g, ctx.t('kScreen'), sx + sw / 2, sy - 12, { font: `600 11px ${th.font}`, color: th.muted });
+      const ball = (cx: number, cy: number, rad: number, col: string, alpha: number) => {
+        if (alpha < 0.01) return;
+        g.fillStyle = withAlpha(col, 0.85 * alpha);
+        g.beginPath();
+        g.arc(cx, cy, rad, 0, Math.PI * 2);
+        g.fill();
+      };
+      const off = sw * 0.06;
+      ball(sx + sw / 2 - off, sy + sh / 2, sh * 0.3, colL, 0.7);
+      ball(sx + sw / 2 + off, sy + sh / 2, sh * 0.3, colR, 0.7);
+      // Schwingungsrichtungen der beiden Bilder
+      const dirArrow = (cx: number, cy: number, angDeg: number, col: string, len: number) => {
+        const a = angDeg * DEG;
+        g.strokeStyle = col;
+        g.lineWidth = 2.5;
+        g.beginPath();
+        g.moveTo(cx - Math.cos(a) * len, cy + Math.sin(a) * len);
+        g.lineTo(cx + Math.cos(a) * len, cy - Math.sin(a) * len);
+        g.stroke();
+      };
+      dirArrow(sx + 26, sy + sh - 22, 45, colL, 14);
+      dirArrow(sx + sw - 26, sy + sh - 22, 135, colR, 14);
+      // Brille (gekippt)
+      const gx = scene.x + scene.w / 2;
+      const lw = Math.min(60, sw * 0.22);
+      const gy = wide ? sy + sh + Math.min(70, scene.h * 0.22) : (sy + sh + scene.y + scene.h) / 2;
+      g.save();
+      g.translate(gx, gy);
+      g.rotate(-p.kt * DEG);
+      for (const [dx, ang, col] of [
+        [-lw * 0.65, 45, colL],
+        [lw * 0.65, 135, colR],
+      ] as const) {
+        g.strokeStyle = th.text;
+        g.lineWidth = 2.5;
+        roundRect(g, dx - lw / 2, -lw * 0.35, lw, lw * 0.7, 10);
+        if (p.kb) {
+          g.fillStyle = withAlpha(th.muted, 0.25);
+          g.fill();
+        }
+        g.stroke();
+        if (p.kb) {
+          g.save();
+          g.translate(dx, 0);
+          dirArrow(0, 0, ang, col, lw * 0.25);
+          g.restore();
+        }
+      }
+      g.beginPath();
+      g.moveTo(-lw * 0.15, 0);
+      g.lineTo(lw * 0.15, 0);
+      g.stroke();
+      g.restore();
+      text(g, `${fmt.num(p.kt, 0)}°`, gx + lw * 1.6, gy, { font: `700 12px ${th.font}`, color: th.muted });
+      // Was die Augen sehen
+      const e = cinemaEye(p.kt);
+      const area: Rect = wide ? { x: W * 0.52, y: 30, w: W * 0.45, h: H - 50 } : { x: 10, y: H * 0.53, w: W - 20, h: H * 0.44 };
+      const gap = 10;
+      const pw = (area.w - gap) / 2;
+      (
+        [
+          [ctx.t('kLeft'), colL, colR, -1],
+          [ctx.t('kRight'), colR, colL, 1],
+        ] as const
+      ).forEach(([lab, own, other, side], i) => {
+        const r: Rect = { x: area.x + i * (pw + gap), y: area.y, w: pw, h: Math.min(area.h - 24, pw * 1.1) };
+        g.strokeStyle = th.muted;
+        g.lineWidth = 1;
+        roundRect(g, r.x, r.y, r.w, r.h, 8);
+        g.stroke();
+        const cx = r.x + r.w / 2;
+        const cy = r.y + r.h / 2;
+        const rad = Math.min(r.w, r.h) * 0.25;
+        const o = r.w * 0.08;
+        const aOwn = p.kb ? e.own : 1;
+        const aGhost = p.kb ? e.ghost : 1;
+        ball(cx + side * -o * (p.kb ? 0 : 1), cy, rad, own, aOwn);
+        ball(cx + side * o * (p.kb ? 2 : 1), cy, rad, other, aGhost);
+        text(g, lab, cx, r.y + r.h + 14, { font: `700 12px ${th.font}`, color: th.text });
+      });
+      msgLines.forEach((ln, i) => text(g, ln, scene.x + 14, scene.y + 14 + i * 18, { font: `800 14px ${th.font}`, color: !p.kb || e.ghost > 0.05 ? th.series[1]! : th.series[2]!, align: 'left' }));
+    }
+
+    const canvasKey = () => ({ huygens: 'canvasHuy', welle: 'canvasW', spiegel: 'canvasS', lcd: 'canvasL', himmel: 'canvasH', kino: 'canvasK', ueben: 'canvasQ' })[p.mode as string] ?? 'canvasPol';
 
     return {
       update(changed, source) {
@@ -1089,6 +1414,8 @@ export default defineSimulation({
           return drawMirror();
         }
         if (p.mode === 'lcd') return drawLcd();
+        if (p.mode === 'himmel') return drawSky();
+        if (p.mode === 'kino') return drawCinema();
         if (p.mode === 'ueben') return drawQuiz();
         if (p.mode === 'huygens') {
           drawHuygens({ x: 0, y: 0, w: surface.width, h: surface.height });
