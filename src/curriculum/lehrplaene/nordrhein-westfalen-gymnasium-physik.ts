@@ -55,6 +55,7 @@ const ERPROBUNG_UNITS: CurriculumUnit[] = [
           'Wärmemitführung, Wärmeleitung und Wärmestrahlung, Temperaturausgleich und Wärmedämmung.',
           'Convection, conduction and radiation, temperature equalisation and insulation.',
         ),
+        simulations: ['waermetransport'],
       },
       {
         code: '1.3',
@@ -294,12 +295,13 @@ const SEK_I_UNITS: CurriculumUnit[] = [
           'Dichte, Schweredruck, Auftrieb und Archimedisches Prinzip, Luftdruck; Druck als Folge von Teilchenstößen.',
           'Density, hydrostatic pressure, buoyancy and Archimedes’ principle, air pressure; pressure as a result of particle collisions.',
         ),
-        simulations: ['gasgesetze', 'dichte-auftrieb'],
+        simulations: ['gasgesetze', 'dichte-auftrieb', 'druck'],
       },
       {
         code: '8.2',
         title: L('Druckmessung', 'Measuring pressure'),
         summary: L('Druck und Kraftwirkungen, Druck in Pascal angeben und messen.', 'Pressure and the effects of force, stating and measuring pressure in pascals.'),
+        simulations: ['druck'],
       },
     ],
   },

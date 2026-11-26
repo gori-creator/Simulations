@@ -184,6 +184,22 @@ export const physik: Subject = {
           grades: [7, 11],
           simulations: [
             {
+              id: 'druck',
+              status: 'ready',
+              slug: L('druck-hydraulik-luftdruck', 'pressure-hydraulics-air-pressure'),
+              title: L('Druck: Kraft pro Fläche, Hydraulik, Wasser- und Luftdruck', 'Pressure: force per area, hydraulics, water and air pressure'),
+              summary: L(
+                'Mit Schneeschuhen sinkt man nicht ein, mit ein paar Pumpstößen hebt man ein Auto, und beim Tauchen drückt das Wasser von allen Seiten. Verbundene Gefäße, Wasserturm, Barometer und Magdeburger Halbkugeln zeigen, was Druck im Alltag bewirkt – bis zum Wind an der Küste.',
+                'With snowshoes you don’t sink in, a few pump strokes lift a car, and when diving the water presses from all sides. Connected vessels, a water tower, a barometer and the Magdeburg hemispheres show what pressure does in everyday life – right up to the wind at the coast.',
+              ),
+              grades: [7, 10],
+              kmk: ['P-S', 'P-E', 'P-BK-Wechselwirkung', 'P-BK-Mathematisieren'],
+              keywords: L(
+                ['Druck', 'Auflagedruck', 'Pascal', 'Bar', 'Hektopascal', 'hydraulische Presse', 'Hydraulik', 'Kraftwandler', 'Schweredruck', 'Wasserdruck', 'Tauchen', 'Luftdruck', 'Barometer', 'barometrische Höhenformel', 'Hochdruckgebiet', 'Tiefdruckgebiet', 'Wind', 'Seewind', 'Landwind', 'Wetter', 'verbundene Gefäße', 'hydrostatisches Paradoxon', 'Wasserturm', 'Quecksilber', 'Torricelli', 'Magdeburger Halbkugeln', 'Otto von Guericke', 'Vakuum'],
+                ['pressure', 'contact pressure', 'pascal', 'bar', 'hectopascal', 'hydraulic press', 'hydraulics', 'force multiplier', 'hydrostatic pressure', 'water pressure', 'diving', 'air pressure', 'barometer', 'barometric formula', 'high-pressure area', 'low-pressure area', 'wind', 'sea breeze', 'land breeze', 'weather', 'connected vessels', 'hydrostatic paradox', 'water tower', 'mercury', 'Torricelli', 'Magdeburg hemispheres', 'vacuum'],
+              ),
+            },
+            {
               id: 'energieerhaltung',
               status: 'ready',
               slug: L('energieerhaltung-achterbahn', 'energy-roller-coaster'),
@@ -953,6 +969,22 @@ export const physik: Subject = {
           title: L('Teilchenmodell', 'Particle model'),
           grades: [6, 8],
           simulations: [
+            {
+              id: 'waermetransport',
+              status: 'ready',
+              slug: L('waermeleitung-stroemung-strahlung', 'conduction-convection-radiation'),
+              title: L('Wärmeleitung, Wärmeströmung, Wärmestrahlung', 'Conduction, convection and radiation'),
+              summary: L(
+                'Warum wird der Löffel im Tee heiß, warum steigt warmes Wasser auf, und wie wärmt die Sonne durch das leere All? Im Alltag: Wie viel spart eine gedämmte Wand oder ein Dreifachfenster, und warum bleibt Tee in der Thermoskanne stundenlang heiß?',
+                'Why does the spoon in your tea get hot, why does warm water rise, and how does the Sun warm us through empty space? In everyday life: how much does an insulated wall or triple glazing save, and why does tea stay hot in a vacuum flask for hours?',
+              ),
+              grades: [5, 10],
+              kmk: ['P-S', 'P-E', 'P-BK-Energie', 'P-BK-Mathematisieren'],
+              keywords: L(
+                ['Wärmetransport', 'Wärmeleitung', 'Wärmeleitfähigkeit', 'Wärmeströmung', 'Konvektion', 'Wärmestrahlung', 'Stefan-Boltzmann-Gesetz', 'Emissionsgrad', 'Wärmedämmung', 'U-Wert', 'Wärmedurchgangskoeffizient', 'Temperaturgefälle', 'Isolator', 'Styropor', 'Kupfer', 'Energiesparen'],
+                ['heat transfer', 'conduction', 'thermal conductivity', 'convection', 'thermal radiation', 'Stefan–Boltzmann law', 'emissivity', 'insulation', 'U-value', 'thermal transmittance', 'temperature gradient', 'insulator', 'polystyrene', 'copper', 'saving energy'],
+              ),
+            },
             {
               id: 'teilchenmodell',
               status: 'ready',

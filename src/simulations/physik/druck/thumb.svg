@@ -1,0 +1,11 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 320 180">
+  <g fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round">
+    <path d="M30 40V150H260V60M60 40V124H220V60" stroke-width="4" />
+    <rect x="32" y="70" width="26" height="10" stroke-width="3" />
+    <rect x="222" y="70" width="36" height="10" stroke-width="3" />
+    <path d="M45 20V64M37 54L45 66L53 54" stroke-width="4" />
+    <path d="M240 64V16M230 28L240 14L250 28" stroke-width="6" />
+    <path d="M280 150L300 130" stroke-width="2" stroke-opacity="0.4" />
+  </g>
+  <rect x="62" y="126" width="156" height="22" fill="currentColor" fill-opacity="0.25" />
+</svg>

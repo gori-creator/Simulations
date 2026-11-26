@@ -44,7 +44,7 @@ const SEK_I_UNITS: CurriculumUnit[] = [
           'Energieformen im Alltag, Umwandlung, Erhaltung und Entwertung, Wärmeleitung, Konvektion und Wärmestrahlung, Wärmedämmung.',
           'Forms of energy in everyday life, conversion, conservation and degradation, conduction, convection and radiation, insulation.',
         ),
-        simulations: ['energieerhaltung'],
+        simulations: ['energieerhaltung', 'waermetransport'],
       },
       {
         code: '1.2',
@@ -121,7 +121,7 @@ const SEK_I_UNITS: CurriculumUnit[] = [
         code: '3.1',
         title: L('Ausbreitung von Licht- und Wärmestrahlung, Strahlenmodell (Block I)', 'Propagation of light and thermal radiation, ray model (block I)'),
         summary: L('Licht- und Wärmeausbreitung im Strahlenmodell, selbstleuchtende und beleuchtete Körper, Sender-Empfänger-Modell des Sehens.', 'Propagation of light and heat in the ray model, luminous and illuminated bodies, the sender–receiver model of vision.'),
-        simulations: ['licht-schatten'],
+        simulations: ['licht-schatten', 'waermetransport'],
       },
       {
         code: '3.2',
@@ -159,7 +159,7 @@ const SEK_I_UNITS: CurriculumUnit[] = [
         code: '4.1',
         title: L('Dichte (Block I)', 'Density (block I)'),
         summary: L('Masse, Volumen und Dichte, Schwimmen, Schweben und Sinken.', 'Mass, volume and density, floating, hovering and sinking.'),
-        simulations: ['dichte-auftrieb'],
+        simulations: ['dichte-auftrieb', 'druck'],
       },
       {
         code: '4.2',

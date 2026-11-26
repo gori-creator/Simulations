@@ -80,7 +80,7 @@ const KS_8_UNITS: CurriculumUnit[] = [
     code: '3',
     title: L('Druck', 'Pressure'),
     summary: L('Druck als Zustand, Schweredruck in Flüssigkeiten, Luftdruck, Auftrieb.', 'Pressure as a state, hydrostatic pressure, air pressure, buoyancy.'),
-    simulations: ['dichte-auftrieb'],
+    simulations: ['dichte-auftrieb', 'druck'],
   },
   {
     code: '4',
@@ -92,7 +92,7 @@ const KS_8_UNITS: CurriculumUnit[] = [
     code: '5',
     title: L('Thermische Energie und Wärme', 'Thermal energy and heat'),
     summary: L('Spezifische Wärmekapazität, Ausbreitung von Wärme.', 'Specific heat capacity, heat transfer.'),
-    simulations: ['teilchenmodell', 'waermeausdehnung'],
+    simulations: ["teilchenmodell", "waermeausdehnung", "waermetransport"],
   },
   {
     code: '6',
