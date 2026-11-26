@@ -110,7 +110,36 @@ export const SEGMENTS: Record<number, string> = {
 /* ------------------------------------------------------------------ */
 
 export type Loc = { de: string; en: string };
-export type TaskKind = 'malus' | 'chain' | 'crossed' | 'brewster' | 'wave' | 'lcd';
+/** Größter Polarisationsgrad des blauen Himmels (Dunst und Mehrfachstreuung verhindern 100 %) */
+export const SKY_PMAX = 0.75;
+
+/**
+ * Polarisationsgrad des Himmelslichts im Winkel θ zur Sonne (Rayleigh-Streuung,
+ * auf SKY_PMAX begrenzt): am größten bei 90°, null zur Sonne hin und genau gegenüber.
+ */
+export function skyPolarization(thetaDeg: number): number {
+  const c = Math.cos(thetaDeg * (Math.PI / 180));
+  return (SKY_PMAX * (1 - c * c)) / (1 + c * c);
+}
+
+/**
+ * Anteil des Himmelslichts hinter einem idealen Polfilter. phiDeg ist der Winkel
+ * zwischen Durchlassrichtung und Schwingungsrichtung des Himmelslichts.
+ */
+export function skyThroughFilter(P: number, phiDeg: number): number {
+  return 0.5 * (1 + P * Math.cos(2 * phiDeg * (Math.PI / 180)));
+}
+
+/**
+ * 3D-Kino mit linear polarisierten Bildern: Anteil des eigenen Bildes und des
+ * „falschen“ Bildes (Geisterbild), wenn der Kopf um tiltDeg geneigt ist.
+ */
+export function cinemaEye(tiltDeg: number): { own: number; ghost: number } {
+  const own = Math.cos(tiltDeg * (Math.PI / 180)) ** 2;
+  return { own, ghost: 1 - own };
+}
+
+export type TaskKind = 'malus' | 'chain' | 'crossed' | 'brewster' | 'wave' | 'lcd' | 'sky' | 'ghost';
 
 export interface PolTask {
   kind: TaskKind;
@@ -142,7 +171,7 @@ export function numText(x: number, lang: 'de' | 'en', d = 1): string {
 export function makeTask(n: number): PolTask {
   const r = rng(n * 61 + 29);
   const pick = <T>(xs: readonly T[]) => xs[Math.floor(r() * xs.length)]!;
-  const kinds: TaskKind[] = ['malus', 'crossed', 'chain', 'wave', 'brewster', 'lcd'];
+  const kinds: TaskKind[] = ['malus', 'crossed', 'chain', 'wave', 'brewster', 'lcd', 'sky', 'ghost'];
   const kind = kinds[(n - 1) % kinds.length]!;
   const nt = numText;
   if (kind === 'malus') {
@@ -216,6 +245,42 @@ export function makeTask(n: number): PolTask {
       solution: {
         de: 'Nur Querwellen haben eine Schwingungsrichtung quer zur Ausbreitung, die ein Filter auswählen kann.',
         en: 'Only transverse waves have a direction of oscillation across the direction of travel that a filter can select.',
+      },
+    };
+  }
+  if (kind === 'sky') {
+    const P = pick([60, 70, 75, 80]);
+    const pc = ((1 - P / 100) / 2) * 100;
+    return {
+      kind,
+      text: {
+        de: `Der Himmel ist 90° neben der Sonne zu ${P} % polarisiert. Ein Fotograf dreht sein Polfilter in die dunkelste Stellung. Wie viel Prozent des Himmelslichts kommen noch durch?`,
+        en: `The sky 90° away from the sun is ${P} % polarised. A photographer turns the polarising filter to the darkest position. What percentage of the skylight still gets through?`,
+      },
+      answer: pc,
+      tol: 0.5,
+      choices: null,
+      solution: {
+        de: `Unpolarisierter Anteil ${100 - P} %, davon die Hälfte: ${nt(pc, 'de')} %. Der polarisierte Anteil wird ganz gesperrt.`,
+        en: `Unpolarised part ${100 - P} %, half of it: ${nt(pc, 'en')} %. The polarised part is blocked completely.`,
+      },
+    };
+  }
+  if (kind === 'ghost') {
+    const a = pick([10, 15, 20, 30]);
+    const pc = cinemaEye(a).ghost * 100;
+    return {
+      kind,
+      text: {
+        de: `Im 3D-Kino sind die Bilder für das linke und das rechte Auge senkrecht zueinander polarisiert. Jemand neigt den Kopf um ${a}°. Wie viel Prozent des falschen Bildes sieht jedes Auge?`,
+        en: `In a 3D cinema the images for the left and right eye are polarised at right angles. Someone tilts their head by ${a}°. What percentage of the wrong image does each eye see?`,
+      },
+      answer: pc,
+      tol: 0.5,
+      choices: null,
+      solution: {
+        de: `Zum falschen Bild stehen die Filter jetzt unter ${90 - a}°: cos²(${90 - a}°) = sin²(${a}°) ≈ ${nt(pc, 'de')} %`,
+        en: `The filters are now at ${90 - a}° to the wrong image: cos²(${90 - a}°) = sin²(${a}°) ≈ ${nt(pc, 'en')} %`,
       },
     };
   }

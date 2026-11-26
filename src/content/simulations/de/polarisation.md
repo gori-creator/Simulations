@@ -42,8 +42,18 @@ Licht, das an Wasser oder Glas gespiegelt wird, ist teilweise polarisiert: Es sc
 
 Jeder Bildpunkt eines LCD liegt zwischen zwei gekreuzten Filtern. Dazwischen dreht ein **Flüssigkristall** die Schwingungsrichtung um 90° – das Licht passt durch das zweite Filter, der Punkt ist hell. Legt man Spannung an, richten sich die Moleküle aus und drehen nicht mehr: Der Punkt wird dunkel. So entstehen die Ziffern auf Taschenrechnern und Uhren.
 
+### Blauer Himmel und Polfilter
+
+Das Blau des Himmels ist Sonnenlicht, das an der Luft zur Seite gestreut wird. Licht, das senkrecht zum Sonnenlicht gestreut wird, ist weitgehend polarisiert – 90° neben der Sonne bis zu etwa drei Viertel. Ein Polfilter vor der Kamera kann diesen Anteil sperren: Der Himmel wird dunkelblau, die Wolken bleiben hell, denn ihr Licht ist unpolarisiert. Bienen nutzen das Muster der Himmelspolarisation sogar zur Orientierung.
+
+### 3D-Kino
+
+Im 3D-Kino laufen zwei Bilder gleichzeitig: eines für das linke Auge, eines für das rechte, senkrecht zueinander polarisiert. Jedes Brillenglas lässt nur sein Bild durch. Neigt man den Kopf um den Winkel φ, sieht jedes Auge den Anteil sin²φ des falschen Bildes – bei 30° schon ein Viertel, es entstehen Geisterbilder. Viele Kinos nutzen deshalb zirkular polarisiertes Licht, bei dem das Kopfneigen nicht stört.
+
 ## Ausprobieren
 
+- [Himmel 90° neben der Sonne](?mode=himmel&hs=90&hon=1&hf=90) und [nahe der Sonne](?mode=himmel&hs=20&hon=1&hf=90): Wo wirkt das Polfilter am stärksten?
+- [3D-Kino](?mode=kino&kt=0&kb=1) und [Kopf schief](?mode=kino&kt=30&kb=1): Wie viel vom falschen Bild sieht jedes Auge?
 - [Zwei Filter](?mode=pol&th1=0&th2=60&mitte=0): Drehe den Analysator von 0° bis 180°. Wann ist es am hellsten, wann dunkel?
 - [Gekreuzte Filter](?mode=pol&th1=0&th2=90&mitte=0): Kein Licht. Schalte jetzt das dritte Filter ein.
 - [Drei Filter](?mode=pol&th1=0&th2=90&mitte=1&th3=45): Bei welchem Winkel des mittleren Filters kommt am meisten Licht durch?
