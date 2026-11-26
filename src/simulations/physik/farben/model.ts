@@ -185,7 +185,7 @@ export function spectralName(lambdaNm: number): ColorName | 'uv' | 'ir' {
 /* ------------------------------------------------------------------ */
 
 export type Loc = { de: string; en: string };
-export type TaskKind = 'add' | 'sub' | 'object' | 'filter' | 'pixel' | 'lambda';
+export type TaskKind = 'add' | 'sub' | 'object' | 'filter' | 'pixel' | 'lambda' | 'rainbow' | 'sky';
 
 export interface ColorTask {
   kind: TaskKind;
@@ -241,7 +241,7 @@ const LIGHT_NAME: Record<LightId, Loc> = {
 export function makeTask(n: number): ColorTask {
   const r = rng(n * 61 + 29);
   const pick = <T>(xs: readonly T[]) => xs[Math.floor(r() * xs.length)]!;
-  const kinds: TaskKind[] = ['add', 'object', 'sub', 'filter', 'pixel', 'lambda'];
+  const kinds: TaskKind[] = ['add', 'object', 'sub', 'filter', 'pixel', 'lambda', 'rainbow', 'sky'];
   const kind = kinds[(n - 1) % kinds.length]!;
   const choose = (correct: ColorName, others: ColorName[]) => {
     const opts = [correct, ...others.filter((o) => o !== correct)].slice(0, 4);
@@ -262,9 +262,15 @@ export function makeTask(n: number): ColorTask {
     const c = choose(res, ['yellow', 'magenta', 'cyan', 'white', 'grey']);
     return {
       kind,
-      text: { de: `Zwei Scheinwerfer, ${NAME[a as ColorName].de} und ${NAME[b as ColorName].de}, leuchten auf dieselbe Stelle einer weißen Wand. Welche Farbe siehst du dort?`, en: `Two spotlights, ${NAME[a as ColorName].en} and ${NAME[b as ColorName].en}, shine on the same spot of a white wall. What colour do you see there?` },
+      text: {
+        de: `Zwei Scheinwerfer, ${NAME[a as ColorName].de} und ${NAME[b as ColorName].de}, leuchten auf dieselbe Stelle einer weißen Wand. Welche Farbe siehst du dort?`,
+        en: `Two spotlights, ${NAME[a as ColorName].en} and ${NAME[b as ColorName].en}, shine on the same spot of a white wall. What colour do you see there?`,
+      },
       ...c,
-      solution: { de: `Additive Mischung: ${NAME[a as ColorName].de} + ${NAME[b as ColorName].de} = ${NAME[res].de}.`, en: `Additive mixing: ${NAME[a as ColorName].en} + ${NAME[b as ColorName].en} = ${NAME[res].en}.` },
+      solution: {
+        de: `Additive Mischung: ${NAME[a as ColorName].de} + ${NAME[b as ColorName].de} = ${NAME[res].de}.`,
+        en: `Additive mixing: ${NAME[a as ColorName].en} + ${NAME[b as ColorName].en} = ${NAME[res].en}.`,
+      },
     };
   }
   if (kind === 'sub') {
@@ -277,9 +283,15 @@ export function makeTask(n: number): ColorTask {
     const c = choose(res, ['red', 'green', 'blue', 'black', 'white']);
     return {
       kind,
-      text: { de: `Weißes Licht geht durch einen ${NAME[a].de}- und einen ${NAME[b].de}-Filter hintereinander. Welche Farbe kommt heraus?`, en: `White light passes through a ${NAME[a].en} and a ${NAME[b].en} filter, one after the other. What colour comes out?` },
+      text: {
+        de: `Weißes Licht geht durch einen ${NAME[a].de}- und einen ${NAME[b].de}-Filter hintereinander. Welche Farbe kommt heraus?`,
+        en: `White light passes through a ${NAME[a].en} and a ${NAME[b].en} filter, one after the other. What colour comes out?`,
+      },
       ...c,
-      solution: { de: `Subtraktive Mischung: ${NAME[a].de} und ${NAME[b].de} lassen beide nur ${NAME[res].de} durch.`, en: `Subtractive mixing: ${NAME[a].en} and ${NAME[b].en} both let only ${NAME[res].en} through.` },
+      solution: {
+        de: `Subtraktive Mischung: ${NAME[a].de} und ${NAME[b].de} lassen beide nur ${NAME[res].de} durch.`,
+        en: `Subtractive mixing: ${NAME[a].en} and ${NAME[b].en} both let only ${NAME[res].en} through.`,
+      },
     };
   }
   if (kind === 'object') {
@@ -304,9 +316,15 @@ export function makeTask(n: number): ColorTask {
     const c = choose(res, ['black', 'red', 'green', 'blue', 'white']);
     return {
       kind,
-      text: { de: `${NAME[l].de}es Licht fällt auf einen ${NAME[f].de}filter. Was kommt dahinter an?`, en: `${NAME[l].en.charAt(0).toUpperCase()}${NAME[l].en.slice(1)} light falls on a ${NAME[f].en} filter. What arrives behind it?` },
+      text: {
+        de: `${NAME[l].de}es Licht fällt auf einen ${NAME[f].de}filter. Was kommt dahinter an?`,
+        en: `${NAME[l].en.charAt(0).toUpperCase()}${NAME[l].en.slice(1)} light falls on a ${NAME[f].en} filter. What arrives behind it?`,
+      },
       ...c,
-      solution: { de: f === l ? `Der Filter lässt ${NAME[f].de} durch – es kommt ${NAME[l].de} an.` : `Der ${NAME[f].de}filter schluckt ${NAME[l].de}es Licht – dahinter bleibt es dunkel (Schwarz).`, en: f === l ? `The filter lets ${NAME[f].en} through.` : `The ${NAME[f].en} filter absorbs ${NAME[l].en} light – it stays dark (black).` },
+      solution: {
+        de: f === l ? `Der Filter lässt ${NAME[f].de} durch – es kommt ${NAME[l].de} an.` : `Der ${NAME[f].de}filter schluckt ${NAME[l].de}es Licht – dahinter bleibt es dunkel (Schwarz).`,
+        en: f === l ? `The filter lets ${NAME[f].en} through.` : `The ${NAME[f].en} filter absorbs ${NAME[l].en} light – it stays dark (black).`,
+      },
     };
   }
   if (kind === 'pixel') {
@@ -324,10 +342,59 @@ export function makeTask(n: number): ColorTask {
     ];
     return {
       kind,
-      text: { de: `Ein Bildschirm soll ${NAME[target[0]].de} zeigen. Mit wie viel Prozent leuchten die ${chName[ch]!.de}-Punkte?`, en: `A screen is to show ${NAME[target[0]].en}. At what percentage do the ${chName[ch]!.en} dots shine?` },
+      text: {
+        de: `Ein Bildschirm soll ${NAME[target[0]].de} zeigen. Mit wie viel Prozent leuchten die ${chName[ch]!.de}-Punkte?`,
+        en: `A screen is to show ${NAME[target[0]].en}. At what percentage do the ${chName[ch]!.en} dots shine?`,
+      },
       answer: target[1][ch]!,
       choices: null,
-      solution: { de: `${NAME[target[0]].de} = R ${target[1][0]} %, G ${target[1][1]} %, B ${target[1][2]} %.`, en: `${NAME[target[0]].en} = R ${target[1][0]} %, G ${target[1][1]} %, B ${target[1][2]} %.` },
+      solution: {
+        de: `${NAME[target[0]].de} = R ${target[1][0]} %, G ${target[1][1]} %, B ${target[1][2]} %.`,
+        en: `${NAME[target[0]].en} = R ${target[1][0]} %, G ${target[1][1]} %, B ${target[1][2]} %.`,
+      },
+    };
+  }
+  if (kind === 'rainbow') {
+    const q = pick([
+      [
+        { de: 'Welche Farbe steht im Regenbogen ganz außen?', en: 'Which colour is on the very outside of a rainbow?' },
+        'red',
+        {
+          de: 'Rotes Licht wird am wenigsten gebrochen und kommt unter dem größten Winkel (etwa 42°) zurück – es liegt außen.',
+          en: 'Red light is refracted least and returns at the largest angle (about 42°) – it is on the outside.',
+        },
+      ],
+      [
+        { de: 'Welche Farbe steht im Regenbogen ganz innen?', en: 'Which colour is on the very inside of a rainbow?' },
+        'blue',
+        {
+          de: 'Blaues und violettes Licht wird am stärksten gebrochen und kommt unter dem kleinsten Winkel (etwa 40,5°) zurück – es liegt innen.',
+          en: 'Blue and violet light is refracted most and returns at the smallest angle (about 40.5°) – it is on the inside.',
+        },
+      ],
+    ] as [Loc, ColorName, Loc][]);
+    const c = choose(q[1], ['red', 'yellow', 'green', 'blue']);
+    return { kind, text: q[0], ...c, solution: q[2] };
+  }
+  if (kind === 'sky') {
+    const q = pick([
+      [{ de: 'Warum ist der Himmel am Tag blau?', en: 'Why is the sky blue during the day?' }, 1],
+      [{ de: 'Warum ist die Sonne beim Untergang rot?', en: 'Why is the Sun red at sunset?' }, 2],
+    ] as [Loc, number][]);
+    return {
+      kind,
+      text: q[0],
+      answer: q[1],
+      choices: [
+        { de: 'Die Luft streut blaues Licht viel stärker als rotes.', en: 'Air scatters blue light much more strongly than red.' },
+        { de: 'Auf dem langen Weg durch die Luft wird das blaue Licht herausgestreut, rotes bleibt übrig.', en: 'On the long path through the air the blue light is scattered out, red is left.' },
+        { de: 'Die Luft ist blau gefärbt wie ein Farbfilter.', en: 'The air is tinted blue like a colour filter.' },
+        { de: 'Die Sonne sendet abends nur rotes Licht aus.', en: 'In the evening the Sun only emits red light.' },
+      ],
+      solution: {
+        de: 'Luftmoleküle streuen kurzwelliges Licht viel stärker (Rayleigh-Streuung, etwa mit 1/λ⁴). Das gestreute Blau kommt von überall am Himmel. Steht die Sonne tief, ist der Weg durch die Luft lang: Das Blau ist dann herausgestreut, übrig bleiben Gelb, Orange und Rot.',
+        en: 'Air molecules scatter short-wavelength light much more strongly (Rayleigh scattering, roughly 1/λ⁴). The scattered blue comes from all over the sky. When the Sun is low, the path through the air is long: the blue has been scattered out, leaving yellow, orange and red.',
+      },
     };
   }
   const l = pick([420, 470, 530, 580, 650]);
@@ -337,7 +404,10 @@ export function makeTask(n: number): ColorTask {
     kind: 'lambda',
     text: { de: `Welche Farbe hat Licht mit ${l} nm Wellenlänge?`, en: `What colour is light with a wavelength of ${l} nm?` },
     ...c,
-    solution: { de: `${l} nm liegt im Bereich ${NAME[col].de} (blau ≈ 420–450, grün ≈ 495–570, gelb ≈ 570–590, rot ab ≈ 620 nm).`, en: `${l} nm lies in the ${NAME[col].en} range (blue ≈ 420–450, green ≈ 495–570, yellow ≈ 570–590, red from ≈ 620 nm).` },
+    solution: {
+      de: `${l} nm liegt im Bereich ${NAME[col].de} (blau ≈ 420–450, grün ≈ 495–570, gelb ≈ 570–590, rot ab ≈ 620 nm).`,
+      en: `${l} nm lies in the ${NAME[col].en} range (blue ≈ 420–450, green ≈ 495–570, yellow ≈ 570–590, red from ≈ 620 nm).`,
+    },
   };
 }
 
@@ -346,4 +416,94 @@ export function checkTask(task: ColorTask, input: string): boolean | null {
   if (!/^\d+(\.\d+)?$/.test(s)) return null;
   const x = Number(s);
   return Math.abs(x - task.answer) < 1e-9;
+}
+
+/* ------------------------------------------------------------------ */
+/* Regenbogen                                                          */
+/* ------------------------------------------------------------------ */
+
+/** Brechzahl von Wasser (Näherung nach Cauchy), λ in nm. */
+export function waterIndex(lambdaNm: number): number {
+  return 1.3247 + 3300 / (lambdaNm * lambdaNm);
+}
+
+/**
+ * Winkel (°) zwischen Sonnenrichtung und zurückkommendem Licht nach einer
+ * Reflexion im Tropfen, für den Stoßparameter b (0…1, Abstand vom Mittelpunkt
+ * relativ zum Radius): θ = 4β − 2α mit sin α = b, sin β = b/n.
+ */
+export function dropAngle(b: number, n: number): number {
+  const a = Math.asin(b);
+  const be = Math.asin(b / n);
+  return ((4 * be - 2 * a) * 180) / Math.PI;
+}
+
+/** Regenbogenwinkel (°): größter Rückstreuwinkel, dort häufen sich die Strahlen. */
+export function rainbowAngle(lambdaNm: number): number {
+  const n = waterIndex(lambdaNm);
+  // Maximum bei cos²α = (n² − 1)/3
+  const a = Math.acos(Math.sqrt((n * n - 1) / 3));
+  return dropAngle(Math.sin(a), n);
+}
+
+/* ------------------------------------------------------------------ */
+/* Himmelsblau und Abendrot (Rayleigh-Streuung)                        */
+/* ------------------------------------------------------------------ */
+
+/** Relative Weglänge durch die Luft bei Sonnenhöhe h (°), begrenzt am Horizont. */
+export function airMass(elevDeg: number): number {
+  const h = Math.max(0.5, elevDeg);
+  // Näherung nach Kasten und Young
+  return 1 / (Math.sin((h * Math.PI) / 180) + 0.50572 * (h + 6.07995) ** -1.6364);
+}
+
+/** Durchgelassener Anteil bei Wellenlänge λ (nm) und Luftmasse m. */
+export function transmission(lambdaNm: number, m: number): number {
+  const tau = 0.1 * (550 / lambdaNm) ** 4;
+  return Math.exp(-tau * m);
+}
+
+/** Farbe der Sonnenscheibe bzw. des Himmels (Rgb 0…1, auf das Maximum normiert). */
+export function sunAndSky(elevDeg: number): { sun: Rgb; sky: Rgb; blueShare: number } {
+  const m = airMass(elevDeg);
+  let sr = 0;
+  let sg = 0;
+  let sb = 0;
+  let kr = 0;
+  let kg = 0;
+  let kb = 0;
+  let blueSun = 0;
+  let allSun = 0;
+  // Weißabgleich: das unveränderte Spektrum soll Weiß ergeben
+  let wr = 0;
+  let wg = 0;
+  let wb = 0;
+  for (let l = 400; l <= 700; l += 10) {
+    const [r, g, b] = wavelengthToRgb(l);
+    wr += r;
+    wg += g;
+    wb += b;
+  }
+  for (let l = 400; l <= 700; l += 10) {
+    const [r0, g0, b0] = wavelengthToRgb(l);
+    const r = r0 / wr;
+    const g = g0 / wg;
+    const b = b0 / wb;
+    const t = transmission(l, m);
+    sr += r * t;
+    sg += g * t;
+    sb += b * t;
+    // gestreutes Licht: ∝ 1/λ⁴, abgeschwächt auf dem Weg
+    const sc = (550 / l) ** 4 * Math.sqrt(t);
+    kr += r * sc;
+    kg += g * sc;
+    kb += b * sc;
+    allSun += t;
+    if (l < 500) blueSun += t;
+  }
+  const norm = (x: number, y: number, z: number): Rgb => {
+    const mx = Math.max(x, y, z, 1e-9);
+    return [x / mx, y / mx, z / mx];
+  };
+  return { sun: norm(sr, sg, sb), sky: norm(kr, kg, kb), blueShare: blueSun / allSun };
 }

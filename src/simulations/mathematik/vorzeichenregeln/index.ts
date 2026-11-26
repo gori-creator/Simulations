@@ -1,9 +1,29 @@
 import { defineSimulation, drawArrowHead, prefersReducedMotion, roundRect, Surface, text, withAlpha } from '../../../sim-core';
-import { balanceAfter, checkDrill, jumps, makeDrill, partialProducts, patternRows, product, productSign, quotient, sign, tempAfter, type Drill } from './model';
+import {
+  balanceAfter,
+  bracketText,
+  checkDrill,
+  expandBracket,
+  jumps,
+  makeDrill,
+  makeExpr,
+  partialProducts,
+  patternRows,
+  product,
+  productSign,
+  quotient,
+  sign,
+  sumText,
+  tempAfter,
+  type Drill,
+  type Expr,
+} from './model';
 
 const L = (de: string, en: string) => ({ de, en });
 
-type Mode = 'strahl' | 'muster' | 'schulden' | 'teilen' | 'tafel' | 'viele' | 'alltag' | 'ueben';
+const NOTE_KEY = { start: 'pStart', dot: 'pDot', signs: 'pSigns', sum: 'pSum' } as const;
+
+type Mode = 'strahl' | 'muster' | 'schulden' | 'teilen' | 'tafel' | 'viele' | 'alltag' | 'punkt' | 'klammer' | 'ueben';
 
 /**
  * Vorzeichenregeln beim Multiplizieren und Dividieren: Sprünge am
@@ -28,45 +48,108 @@ export default defineSimulation({
         { value: 'tafel', label: L('Einmaleins-Tafel mit Vorzeichen', 'Times table with signs') },
         { value: 'viele', label: L('Viele Faktoren und Potenzen', 'Many factors and powers') },
         { value: 'alltag', label: L('Alltag: Temperatur im Tagesverlauf', 'Everyday: temperature over the day') },
+        { value: 'punkt', label: L('Punkt vor Strich mit Vorzeichen', 'Order of operations with signs') },
+        { value: 'klammer', label: L('Klammern auflösen', 'Removing brackets') },
         { value: 'ueben', label: L('Üben: Kopfrechnen', 'Practice: mental arithmetic') },
       ],
       default: 'strahl',
       display: 'menu',
     },
-    { key: 'a', type: 'number', label: L('erster Faktor a', 'first factor a'), min: -6, max: 6, step: 1, default: -3, visibleIf: (v) => v.mode === 'strahl' || v.mode === 'muster' || v.mode === 'tafel' },
-    { key: 'b', type: 'number', label: L('zweiter Faktor b', 'second factor b'), min: -6, max: 6, step: 1, default: -4, visibleIf: (v) => v.mode === 'strahl' || v.mode === 'muster' || v.mode === 'tafel' },
+    {
+      key: 'a',
+      type: 'number',
+      label: L('erster Faktor a', 'first factor a'),
+      min: -6,
+      max: 6,
+      step: 1,
+      default: -3,
+      visibleIf: (v) => v.mode === 'strahl' || v.mode === 'muster' || v.mode === 'tafel',
+    },
+    {
+      key: 'b',
+      type: 'number',
+      label: L('zweiter Faktor b', 'second factor b'),
+      min: -6,
+      max: 6,
+      step: 1,
+      default: -4,
+      visibleIf: (v) => v.mode === 'strahl' || v.mode === 'muster' || v.mode === 'tafel',
+    },
     { key: 'nf', type: 'number', label: L('Anzahl der Faktoren', 'Number of factors'), min: 2, max: 8, step: 1, default: 5, visibleIf: (v) => v.mode === 'viele' },
     { key: 'nn', type: 'number', label: L('davon negativ', 'of which negative'), min: 0, max: 8, step: 1, default: 3, visibleIf: (v) => v.mode === 'viele' },
     { key: 'fv', type: 'number', label: L('Betrag jedes Faktors', 'Size of each factor'), min: 1, max: 3, step: 1, default: 2, visibleIf: (v) => v.mode === 'viele' },
     { key: 'ts', type: 'number', label: L('Temperatur jetzt', 'Temperature now'), min: -10, max: 20, step: 1, default: 2, unit: '°C', visibleIf: (v) => v.mode === 'alltag' },
     { key: 'rt', type: 'number', label: L('Änderung pro Stunde', 'Change per hour'), min: -5, max: 5, step: 1, default: -3, unit: '°C', visibleIf: (v) => v.mode === 'alltag' },
     { key: 'hh', type: 'number', label: L('Stunden (− = vorher)', 'Hours (− = earlier)'), min: -6, max: 6, step: 1, default: -4, unit: 'h', visibleIf: (v) => v.mode === 'alltag' },
+    { key: 'ex', type: 'number', label: L('Aufgabe Nr.', 'Task no.'), min: 1, max: 99, step: 1, default: 1, visibleIf: (v) => v.mode === 'punkt' },
+    { key: 'kf', type: 'number', label: L('Faktor vor der Klammer', 'Factor in front of the bracket'), min: -4, max: 4, step: 1, default: -1, visibleIf: (v) => v.mode === 'klammer' },
+    { key: 'k1', type: 'number', label: L('erster Summand', 'first term'), min: -9, max: 9, step: 1, default: 3, visibleIf: (v) => v.mode === 'klammer' },
+    { key: 'k2', type: 'number', label: L('zweiter Summand', 'second term'), min: -9, max: 9, step: 1, default: -5, visibleIf: (v) => v.mode === 'klammer' },
+    { key: 'k3', type: 'number', label: L('dritter Summand', 'third term'), min: -9, max: 9, step: 1, default: 1, visibleIf: (v) => v.mode === 'klammer' },
     { key: 'dq', type: 'number', label: L('Aufgabe Nr.', 'Task no.'), min: 1, max: 999, step: 1, default: 1, visibleIf: (v) => v.mode === 'ueben' },
     { key: 'da', type: 'text', label: L('Deine Antwort', 'Your answer'), default: '', maxLength: 8, placeholder: L('eine Zahl oder + / −', 'a number or + / −'), visibleIf: (v) => v.mode === 'ueben' },
     { key: 'st', type: 'number', label: L('Kontostand vorher', 'Balance before'), min: -40, max: 40, step: 5, default: -20, unit: '€', visibleIf: (v) => v.mode === 'schulden' },
     { key: 'k', type: 'number', label: L('Karten: dazu (+) oder weg (−)', 'Cards: added (+) or removed (−)'), min: -6, max: 6, step: 1, default: -3, visibleIf: (v) => v.mode === 'schulden' },
-    { key: 'w', type: 'number', label: L('Wert einer Karte (− = Schuldschein)', 'Value of one card (− = IOU)'), min: -6, max: 6, step: 1, default: -5, unit: '€', visibleIf: (v) => v.mode === 'schulden' },
+    {
+      key: 'w',
+      type: 'number',
+      label: L('Wert einer Karte (− = Schuldschein)', 'Value of one card (− = IOU)'),
+      min: -6,
+      max: 6,
+      step: 1,
+      default: -5,
+      unit: '€',
+      visibleIf: (v) => v.mode === 'schulden',
+    },
     { key: 'dd', type: 'number', label: L('Dividend', 'Dividend'), min: -36, max: 36, step: 1, default: -12, visibleIf: (v) => v.mode === 'teilen' },
     { key: 'dv', type: 'number', label: L('Divisor', 'Divisor'), min: -6, max: 6, step: 1, default: 3, visibleIf: (v) => v.mode === 'teilen' },
   ],
   hint: (v) =>
-    v.mode === 'muster'
-      ? L('Geht der erste Faktor um 1 nach unten, ändert sich das Ergebnis immer um denselben Betrag. Setze das Muster über die Null hinaus fort.', 'When the first factor goes down by 1, the result always changes by the same amount. Continue the pattern past zero.')
-      : v.mode === 'tafel'
-        ? L('Die Tafel zerfällt in vier Viertel: Oben rechts und unten links ist alles negativ, sonst positiv.', 'The table splits into four quarters: top right and bottom left are negative, the rest positive.')
-        : v.mode === 'viele'
-          ? L('Zähle die Minuszeichen: Bei einer geraden Anzahl ist das Produkt positiv, bei einer ungeraden negativ.', 'Count the minus signs: with an even number the product is positive, with an odd number negative.')
-          : v.mode === 'alltag'
-            ? L('Fällt die Temperatur um 3 °C pro Stunde, war sie vor 4 Stunden höher: (−3) · (−4) = +12.', 'If the temperature falls by 3 °C per hour, it was higher 4 hours ago: (−3) · (−4) = +12.')
-            : v.mode === 'ueben'
-              ? L('Rechne im Kopf. Bei „Vorzeichen?“ genügt + oder −.', 'Work it out in your head. For “sign?” just enter + or −.')
-              : v.mode === 'schulden'
-        ? L('Schuldscheine wegnehmen macht das Konto besser – minus mal minus ergibt plus.', 'Taking away IOUs makes the account better – minus times minus gives plus.')
-        : v.mode === 'teilen'
-          ? L('Dividieren ist die Umkehrung des Multiplizierens. Deshalb gelten dieselben Vorzeichenregeln.', 'Dividing undoes multiplying, so the same sign rules apply.')
-          : L('Ein negativer erster Faktor bedeutet: erst springen, dann an der Null spiegeln (Gegenzahl).', 'A negative first factor means: jump first, then reflect at zero (opposite number).'),
+    v.mode === 'punkt'
+      ? L(
+          'Erst Mal und Geteilt, dann Plus und Minus. Rechen- und Vorzeichen fasst man zusammen: + (−3) wird − 3, − (−3) wird + 3.',
+          'Multiply and divide first, then add and subtract. Combine operation and sign: + (−3) becomes − 3, − (−3) becomes + 3.',
+        )
+      : v.mode === 'klammer'
+        ? L(
+            'Jeder Summand in der Klammer wird mit dem Faktor multipliziert. Steht ein Minus davor, klappt jedes Vorzeichen um.',
+            'Every term in the bracket is multiplied by the factor. With a minus in front, every sign flips.',
+          )
+        : v.mode === 'muster'
+          ? L(
+              'Geht der erste Faktor um 1 nach unten, ändert sich das Ergebnis immer um denselben Betrag. Setze das Muster über die Null hinaus fort.',
+              'When the first factor goes down by 1, the result always changes by the same amount. Continue the pattern past zero.',
+            )
+          : v.mode === 'tafel'
+            ? L(
+                'Die Tafel zerfällt in vier Viertel: Oben rechts und unten links ist alles negativ, sonst positiv.',
+                'The table splits into four quarters: top right and bottom left are negative, the rest positive.',
+              )
+            : v.mode === 'viele'
+              ? L(
+                  'Zähle die Minuszeichen: Bei einer geraden Anzahl ist das Produkt positiv, bei einer ungeraden negativ.',
+                  'Count the minus signs: with an even number the product is positive, with an odd number negative.',
+                )
+              : v.mode === 'alltag'
+                ? L(
+                    'Fällt die Temperatur um 3 °C pro Stunde, war sie vor 4 Stunden höher: (−3) · (−4) = +12.',
+                    'If the temperature falls by 3 °C per hour, it was higher 4 hours ago: (−3) · (−4) = +12.',
+                  )
+                : v.mode === 'ueben'
+                  ? L('Rechne im Kopf. Bei „Vorzeichen?“ genügt + oder −.', 'Work it out in your head. For “sign?” just enter + or −.')
+                  : v.mode === 'schulden'
+                    ? L('Schuldscheine wegnehmen macht das Konto besser – minus mal minus ergibt plus.', 'Taking away IOUs makes the account better – minus times minus gives plus.')
+                    : v.mode === 'teilen'
+                      ? L('Dividieren ist die Umkehrung des Multiplizierens. Deshalb gelten dieselben Vorzeichenregeln.', 'Dividing undoes multiplying, so the same sign rules apply.')
+                      : L(
+                          'Ein negativer erster Faktor bedeutet: erst springen, dann an der Null spiegeln (Gegenzahl).',
+                          'A negative first factor means: jump first, then reflect at zero (opposite number).',
+                        ),
   actions: [
-    { id: 'play', label: L('Abspielen', 'Play'), primary: true, visibleIf: (v) => v.mode === 'alltag' || v.mode === 'viele' },
+    { id: 'play', label: L('Abspielen', 'Play'), primary: true, visibleIf: (v) => v.mode === 'alltag' || v.mode === 'viele' || v.mode === 'klammer' },
+    { id: 'pnext', label: L('Nächster Schritt', 'Next step'), primary: true, visibleIf: (v) => v.mode === 'punkt' },
+    { id: 'pback', label: L('Von vorn', 'Start again'), visibleIf: (v) => v.mode === 'punkt' },
+    { id: 'pnew', label: L('Neue Aufgabe', 'New task'), visibleIf: (v) => v.mode === 'punkt' },
     { id: 'dcheck', label: L('Prüfen', 'Check'), primary: true, visibleIf: (v) => v.mode === 'ueben' },
     { id: 'dnext', label: L('Nächste Aufgabe', 'Next task'), visibleIf: (v) => v.mode === 'ueben' },
   ],
@@ -89,10 +172,30 @@ export default defineSimulation({
     { id: 'mixed', label: L('Gemischt: 3 von 6 negativ', 'Mixed: 3 of 6 negative'), values: { mode: 'viele', nf: 6, nn: 3, fv: 1 } },
     { id: 'night', label: L('Kälteeinbruch: vor 4 Stunden?', 'Cold snap: 4 hours ago?'), values: { mode: 'alltag', ts: 2, rt: -3, hh: -4 } },
     { id: 'warm', label: L('Erwärmung: in 5 Stunden', 'Warming: in 5 hours'), values: { mode: 'alltag', ts: -6, rt: 2, hh: 5 } },
+    { id: 'punkt1', label: L('Punkt vor Strich: Aufgabe 1', 'Order of operations: task 1'), values: { mode: 'punkt', ex: 1 } },
+    { id: 'punkt7', label: L('Punkt vor Strich: Aufgabe 7', 'Order of operations: task 7'), values: { mode: 'punkt', ex: 7 } },
+    { id: 'minusKlammer', label: L('−(3 − 5 + 1)', '−(3 − 5 + 1)'), values: { mode: 'klammer', kf: -1, k1: 3, k2: -5, k3: 1 } },
+    { id: 'malKlammer', label: L('−3 · (2 + 4 − 6)', '−3 · (2 + 4 − 6)'), values: { mode: 'klammer', kf: -3, k1: 2, k2: 4, k3: -6 } },
+    { id: 'plusKlammer', label: L('+(−4 + 7 − 2): nichts ändert sich', '+(−4 + 7 − 2): nothing changes'), values: { mode: 'klammer', kf: 1, k1: -4, k2: 7, k3: -2 } },
     { id: 'drill', label: L('Üben: Kopfrechnen', 'Practice: mental arithmetic'), values: { mode: 'ueben', dq: 1, da: '' } },
   ],
   strings: {
     de: {
+      canvasP: 'Ein Rechenausdruck mit positiven und negativen Zahlen wird Schritt für Schritt nach Punkt vor Strich ausgerechnet',
+      canvasK: 'Karten mit den Summanden einer Klammer; beim Auflösen wird jede Karte mit dem Faktor multipliziert und klappt bei negativem Faktor ihr Vorzeichen um',
+      pStart: 'Die Aufgabe',
+      pDot: 'Punkt vor Strich: Mal und Geteilt zuerst',
+      pSigns: 'Rechen- und Vorzeichen zusammenfassen',
+      pSum: 'Von links nach rechts addieren',
+      pStep: 'Schritt {i} von {n}',
+      kBefore: 'Klammer',
+      kAfter: 'aufgelöst',
+      kRule: 'Jede Zahl in der Klammer wird mit {k} multipliziert.',
+      kFlip: 'Minus vor der Klammer: alle Vorzeichen in der Klammer drehen sich um.',
+      kKeep: 'Plus vor der Klammer: die Klammer fällt einfach weg.',
+      kCheck: 'Probe: {k} · ({s}) = {r}',
+      dHint_order: 'Punkt vor Strich: erst Mal und Geteilt, dann Plus und Minus.',
+      dHint_bracket: 'Jede Zahl in der Klammer mit dem Faktor multiplizieren.',
       canvas: 'Zahlenstrahl mit Sprüngen für die Rechnung, darunter eine Erklärung und eine Tabelle der Vorzeichenregeln',
       ruleSame: 'gleiche Vorzeichen → Ergebnis positiv',
       ruleDiff: 'verschiedene Vorzeichen → Ergebnis negativ',
@@ -201,6 +304,21 @@ export default defineSimulation({
       dHint_pow: 'Even exponent → +, odd exponent → −.',
       dHint_mix: 'Multiplication before addition.',
       dHint_sign: 'Even number of minus signs → +, odd → −.',
+      dHint_order: 'Multiplication and division first, then addition and subtraction.',
+      dHint_bracket: 'Multiply every term in the bracket by the factor.',
+      canvasP: 'An expression with positive and negative numbers is worked out step by step using the order of operations',
+      canvasK: 'Cards with the terms of a bracket; when the bracket is removed each card is multiplied by the factor and flips its sign if the factor is negative',
+      pStart: 'The task',
+      pDot: 'Multiply and divide first',
+      pSigns: 'Combine operation signs and number signs',
+      pSum: 'Add from left to right',
+      pStep: 'Step {i} of {n}',
+      kBefore: 'bracket',
+      kAfter: 'removed',
+      kRule: 'Every number in the bracket is multiplied by {k}.',
+      kFlip: 'Minus in front of the bracket: every sign inside flips.',
+      kKeep: 'Plus in front of the bracket: the bracket simply disappears.',
+      kCheck: 'Check: {k} · ({s}) = {r}',
     },
   },
 
@@ -231,12 +349,30 @@ export default defineSimulation({
     let drScore = { right: 0, all: 0, streak: 0 };
     let drBad = false;
 
+    /* Punkt vor Strich und Klammern */
+    let expr: Expr = makeExpr(1);
+    let pStep = 0;
+    const kTerms = () => [p.k1, p.k2, p.k3];
+
     function factors(): number[] {
       const nn = Math.min(p.nn, p.nf);
       return Array.from({ length: p.nf }, (_, i) => (i < nn ? -p.fv : p.fv));
     }
 
     function updateReadouts(): void {
+      if (mode() === 'punkt') {
+        ctx.readout('term', expr.steps[0]!);
+        ctx.readout('res', `= ${expr.steps[expr.steps.length - 1]}`);
+        ctx.readout('rule', ctx.t(NOTE_KEY[expr.notes[pStep]!]));
+        return;
+      }
+      if (mode() === 'klammer') {
+        const t = kTerms();
+        ctx.readout('term', bracketText(p.kf, t));
+        ctx.readout('res', `= ${sumText(expandBracket(p.kf, t))} = ${n(p.kf * (t[0]! + t[1]! + t[2]!))}`);
+        ctx.readout('rule', ctx.t(p.kf === -1 ? 'kFlip' : p.kf === 1 ? 'kKeep' : 'kRule').replace('{k}', par(p.kf)));
+        return;
+      }
       if (mode() === 'tafel') {
         ctx.readout('term', `${par(p.a)} · ${par(p.b)}`);
         ctx.readout('res', `= ${n(p.a * p.b)}`);
@@ -498,7 +634,8 @@ export default defineSimulation({
       else if (drRes !== null) {
         text(g, ctx.t(drRes ? 'dOk' : 'dNo'), W / 2, H * 0.52, { font: `800 ${narrow ? 20 : 26}px ${th.font}`, color: drRes ? th.series[2]! : th.series[1]! });
         text(g, ctx.t(`dHint_${drill.kind}`), W / 2, H * 0.62, { font: `500 ${narrow ? 12 : 14}px ${th.font}`, color: th.muted });
-        if (!drRes && drTries >= 2) text(g, tr('dSol', { a: drill.kind === 'sign' ? (drill.answer > 0 ? '+' : '−') : n(drill.answer) }), W / 2, H * 0.7, { font: `700 14px ${th.font}`, color: th.text });
+        if (!drRes && drTries >= 2)
+          text(g, tr('dSol', { a: drill.kind === 'sign' ? (drill.answer > 0 ? '+' : '−') : n(drill.answer) }), W / 2, H * 0.7, { font: `700 14px ${th.font}`, color: th.text });
       } else text(g, ctx.t('dHow'), W / 2, H * 0.52, { font: `500 14px ${th.font}`, color: th.muted });
       const done = Math.min(10, drScore.all);
       for (let i = 0; i < 10; i++) {
@@ -509,7 +646,94 @@ export default defineSimulation({
       }
     }
 
+    function drawPunkt(g: CanvasRenderingContext2D, W: number, H: number): void {
+      const th = ctx.theme;
+      const narrow = W < 560;
+      const fs = narrow ? 16 : 24;
+      const pad = narrow ? 16 : 40;
+      let y = pad + 10;
+      for (let i = 0; i <= pStep; i++) {
+        const cur = i === pStep;
+        const yy = y;
+        g.font = `${cur ? 800 : 600} ${fs}px ${th.font}`;
+        const s0 = (i === 0 ? '' : '= ') + expr.steps[i]!;
+        text(g, s0, pad, yy, { font: `${cur ? 800 : 600} ${fs}px ${th.font}`, color: cur ? (i === expr.steps.length - 1 ? th.series[2]! : th.series[0]!) : withAlpha(th.text, 0.6), align: 'left' });
+        const nw = g.measureText(s0).width;
+        const note = ctx.t(NOTE_KEY[expr.notes[i]!]);
+        if (!narrow) text(g, note, Math.max(pad + nw + 30, W * 0.55), yy, { font: `500 ${fs * 0.6}px ${th.font}`, color: th.muted, align: 'left' });
+        else text(g, note, pad, yy + fs * 0.95, { font: `500 12px ${th.font}`, color: th.muted, align: 'left' });
+        y += narrow ? fs * 2.6 : fs * 2.1;
+      }
+      // Fortschritt
+      text(g, tr('pStep', { i: pStep + 1, n: expr.steps.length }), pad, H - 24, { font: `600 13px ${th.font}`, color: th.muted, align: 'left' });
+      for (let i = 0; i < expr.steps.length; i++) {
+        g.beginPath();
+        g.arc(W - pad - (expr.steps.length - 1 - i) * 20, H - 24, 6, 0, Math.PI * 2);
+        g.fillStyle = i <= pStep ? th.series[0]! : withAlpha(th.muted, 0.25);
+        g.fill();
+      }
+    }
+
+    function drawKlammer(g: CanvasRenderingContext2D, W: number, H: number): void {
+      const th = ctx.theme;
+      const narrow = W < 560;
+      const t = kTerms();
+      const out = expandBracket(p.kf, t);
+      const fs = narrow ? 16 : 22;
+      const cw = Math.min(narrow ? 70 : 110, (W - 80) / 4);
+      const ch = cw * 0.8;
+      const gap = narrow ? 10 : 18;
+      const total = 3 * cw + 2 * gap;
+      const x0 = (W - total) / 2;
+      const y1 = H * 0.18;
+      const y2 = H * 0.55;
+      text(g, bracketText(p.kf, t), W / 2, y1 - ch / 2 - 22, { font: `800 ${fs}px ${th.font}`, color: th.text });
+      if (!narrow) text(g, ctx.t('kBefore'), x0 - 8, y1, { font: `600 12px ${th.font}`, color: th.muted, align: 'right' });
+      if (!narrow) text(g, ctx.t('kAfter'), x0 - 8, y2, { font: `600 12px ${th.font}`, color: th.muted, align: 'right' });
+      const card = (x: number, y: number, v: number, scaleX: number, col: string) => {
+        g.save();
+        g.translate(x + cw / 2, y);
+        g.scale(Math.max(0.02, Math.abs(scaleX)), 1);
+        roundRect(g, -cw / 2, -ch / 2, cw, ch, 8);
+        g.fillStyle = withAlpha(col, 0.18);
+        g.fill();
+        g.strokeStyle = col;
+        g.lineWidth = 2;
+        g.stroke();
+        g.restore();
+        if (Math.abs(scaleX) > 0.25) text(g, (v > 0 ? '+' : '') + n(v), x + cw / 2, y, { font: `800 ${fs}px ${th.font}`, color: col });
+      };
+      const colOf = (v: number) => (v < 0 ? th.series[1]! : v > 0 ? th.series[0]! : th.muted);
+      t.forEach((v, i) => card(x0 + i * (cw + gap), y1, v, 1, colOf(v)));
+      // Animation: Karten wandern nach unten, klappen bei negativem Faktor um (Breite durch 0)
+      const u = playing || ta < 1 ? ta : 1;
+      out.forEach((v, i) => {
+        const x = x0 + i * (cw + gap);
+        const y = y1 + (y2 - y1) * Math.min(1, u * 1.6);
+        const flipU = Math.max(0, Math.min(1, (u - 0.5) * 2));
+        const flips = p.kf < 0;
+        const sx = flips ? Math.cos(flipU * Math.PI) : 1;
+        const shown = flips && flipU < 0.5 ? t[i]! : v;
+        card(x, y, shown, sx, colOf(shown));
+        if (u >= 1 && p.kf !== 1 && p.kf !== -1) text(g, `${par(p.kf)} · ${par(t[i]!)}`, x + cw / 2, y + ch / 2 + 14, { font: `500 12px ${th.font}`, color: th.muted });
+      });
+      if (u >= 1) {
+        const fs2 = narrow ? 15 : 19;
+        text(g, `= ${sumText(out)} = ${n(out[0]! + out[1]! + out[2]!)}`, W / 2, y2 + ch / 2 + 44, { font: `800 ${fs2}px ${th.font}`, color: th.series[2]! });
+        text(g, tr('kCheck', { k: par(p.kf), s: n(t[0]! + t[1]! + t[2]!), r: n(p.kf * (t[0]! + t[1]! + t[2]!)) }), W / 2, y2 + ch / 2 + 44 + fs2 * 1.6, {
+          font: `500 13px ${th.font}`,
+          color: th.muted,
+        });
+      }
+    }
+
     function render(): void {
+      if (mode() === 'punkt' || mode() === 'klammer') {
+        const g0 = surface.begin();
+        if (mode() === 'punkt') drawPunkt(g0, surface.width, surface.height);
+        else drawKlammer(g0, surface.width, surface.height);
+        return;
+      }
       if (mode() === 'tafel' || mode() === 'viele' || mode() === 'alltag' || mode() === 'ueben') {
         const g0 = surface.begin();
         const W0 = surface.width;
@@ -818,7 +1042,12 @@ export default defineSimulation({
           if (drRes === false) drRes = null;
           drBad = false;
         }
-        if (['mode', 'rt', 'hh', 'ts', 'nf', 'nn', 'fv'].some((k) => changed.has(k))) {
+        if (source === 'init' || source === 'replace' || changed.has('ex')) {
+          expr = makeExpr(p.ex);
+          pStep = 0;
+        }
+        surface.canvas.setAttribute('aria-label', ctx.t(mode() === 'punkt' ? 'canvasP' : mode() === 'klammer' ? 'canvasK' : 'canvas'));
+        if (['mode', 'rt', 'hh', 'ts', 'nf', 'nn', 'fv', 'kf', 'k1', 'k2', 'k3'].some((k) => changed.has(k))) {
           ta = 1;
           playing = false;
         }
@@ -832,6 +1061,11 @@ export default defineSimulation({
             playing = true;
             ctx.clock.play();
           }
+        } else if (id === 'pnext') pStep = Math.min(expr.steps.length - 1, pStep + 1);
+        else if (id === 'pback') pStep = 0;
+        else if (id === 'pnew') {
+          ctx.set({ ex: p.ex >= 99 ? 1 : p.ex + 1 });
+          return;
         } else if (id === 'dcheck') checkDr();
         else if (id === 'dnext') {
           ctx.set({ dq: p.dq >= 999 ? 1 : p.dq + 1, da: '' });
