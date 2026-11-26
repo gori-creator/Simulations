@@ -78,7 +78,7 @@ const KS_7_8_UNITS: CurriculumUnit[] = [
       'Energieformen, potenzielle Energie, mechanische Arbeit und Leistung, Goldene Regel der Mechanik und Energieerhaltungssatz.',
       'Forms of energy, potential energy, mechanical work and power, the golden rule of mechanics and conservation of energy.',
     ),
-    simulations: ['energieerhaltung', 'hebelgesetz', 'schiefe-ebene'],
+    simulations: ['energieerhaltung', 'hebelgesetz', 'schiefe-ebene', 'leistung'],
   },
   {
     code: '3.4',
