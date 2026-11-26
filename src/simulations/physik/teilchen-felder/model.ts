@@ -129,7 +129,7 @@ export function helix(v: number, alphaDeg: number, B: number, q = E, m = ME): { 
 /* ------------------------------------------------------------------ */
 
 export type Loc = { de: string; en: string };
-export type TaskKind = 'speed' | 'force' | 'millikan' | 'radius' | 'hall' | 'direction';
+export type TaskKind = 'speed' | 'force' | 'millikan' | 'radius' | 'hall' | 'direction' | 'em' | 'circle';
 
 export interface FieldTask {
   kind: TaskKind;
@@ -161,7 +161,7 @@ export function numText(x: number, lang: 'de' | 'en', d = 2): string {
 export function makeTask(n: number): FieldTask {
   const r = rng(n * 43 + 11);
   const pick = <T>(xs: readonly T[]) => xs[Math.floor(r() * xs.length)]!;
-  const kinds: TaskKind[] = ['speed', 'direction', 'force', 'millikan', 'radius', 'hall'];
+  const kinds: TaskKind[] = ['speed', 'direction', 'force', 'millikan', 'radius', 'hall', 'em', 'circle'];
   const kind = kinds[(n - 1) % kinds.length]!;
   const nt = numText;
   if (kind === 'speed') {
@@ -270,6 +270,60 @@ export function makeTask(n: number): FieldTask {
       },
     };
   }
+  if (kind === 'em') {
+    const U = pick([150, 200, 250]);
+    const Bm = pick([1, 1.2, 1.5]);
+    const r = fadenRadius(U, Bm * 1e-3);
+    const rc = Math.round(r * 1000) / 10;
+    const em = (2 * U) / ((Bm * 1e-3) ** 2 * (rc / 100) ** 2) / 1e11;
+    return {
+      kind,
+      text: {
+        de: `Im Fadenstrahlrohr kreisen Elektronen (U = ${U} V, B = ${nt(Bm, 'de', 1)} mT) auf einer Bahn mit r = ${nt(rc, 'de', 1)} cm. Wie groß ist e/m in 10¹¹ C/kg? (e/m = 2U / (B² r²))`,
+        en: `In the fine-beam tube electrons circle (U = ${U} V, B = ${nt(Bm, 'en', 1)} mT) on a path with r = ${nt(rc, 'en', 1)} cm. What is e/m in 10¹¹ C/kg? (e/m = 2U / (B² r²))`,
+      },
+      answer: em,
+      tol: 0.03,
+      choices: null,
+      solution: {
+        de: `e/m = 2 · ${U} V : ((${nt(Bm, 'de', 1)} · 10⁻³ T)² · (${nt(rc / 100, 'de', 3)} m)²) ≈ ${nt(em, 'de', 2)} · 10¹¹ C/kg`,
+        en: `e/m = 2 · ${U} V / ((${nt(Bm, 'en', 1)} · 10⁻³ T)² · (${nt(rc / 100, 'en', 3)} m)²) ≈ ${nt(em, 'en', 2)} · 10¹¹ C/kg`,
+      },
+    };
+  }
+  if (kind === 'circle') {
+    const q = pick([
+      [
+        {
+          de: 'Im Fadenstrahlrohr wird die Beschleunigungsspannung erhöht. Wie ändert sich der Kreis?',
+          en: 'In the fine-beam tube the accelerating voltage is increased. How does the circle change?',
+        },
+        1,
+      ],
+      [
+        {
+          de: 'Im Fadenstrahlrohr wird der Spulenstrom (also B) erhöht. Wie ändert sich der Kreis?',
+          en: 'In the fine-beam tube the coil current (and so B) is increased. How does the circle change?',
+        },
+        2,
+      ],
+    ] as [Loc, number][]);
+    return {
+      kind,
+      text: q[0],
+      answer: q[1],
+      tol: 0,
+      choices: [
+        { de: 'größer', en: 'larger' },
+        { de: 'kleiner', en: 'smaller' },
+        { de: 'gleich', en: 'the same' },
+      ],
+      solution: {
+        de: 'r = m·v / (e·B): Schnellere Elektronen (mehr Spannung) fliegen größere Kreise, ein stärkeres Feld zwingt sie auf kleinere.',
+        en: 'r = m·v / (e·B): faster electrons (more voltage) fly larger circles, a stronger field forces them onto smaller ones.',
+      },
+    };
+  }
   return {
     kind: 'hall',
     text: {
@@ -300,4 +354,36 @@ export function checkTask(task: FieldTask, input: string): boolean | null {
   const x = Number(s);
   if (task.tol === 0) return x === task.answer;
   return Math.abs(x - task.answer) <= task.tol * Math.abs(task.answer) + 1e-9;
+}
+
+/* ------------------------------------------------------------------ */
+/* Fadenstrahlrohr: e/m bestimmen                                      */
+/* ------------------------------------------------------------------ */
+
+/** Helmholtz-Spulen: B = k · I mit k ≈ 0,78 mT/A (N = 130, R = 15 cm). */
+export const HELMHOLTZ_K = (0.715 * 4e-7 * Math.PI * 130) / 0.15;
+
+/** Bahnradius (m) von Elektronen nach der Spannung U im Feld B: r = √(2mU/e) / B. */
+export function fadenRadius(U: number, B: number): number {
+  return Math.sqrt((2 * ME * U) / E) / B;
+}
+
+/** Spezifische Ladung aus Messwerten: e/m = 2U / (B² r²). */
+export function specificCharge(U: number, B: number, r: number): number {
+  return (2 * U) / (B * B * r * r);
+}
+
+/* ------------------------------------------------------------------ */
+/* Oszilloskop                                                         */
+/* ------------------------------------------------------------------ */
+
+/**
+ * Leuchtfleck auf dem Schirm (−1…1) zur Zeit t (in Perioden der x-Ablenkung):
+ * x als Sägezahn (Zeitablenkung) oder Sinus, y als Sinus mit Frequenzverhältnis
+ * fy : fx und Phasenverschiebung φ (Grad).
+ */
+export function screenSpot(t: number, saw: boolean, ratio: number, phaseDeg: number, ay: number): [number, number] {
+  const x = saw ? 2 * (t - Math.floor(t)) - 1 : Math.sin(2 * Math.PI * t);
+  const y = ay * Math.sin(2 * Math.PI * ratio * t + (phaseDeg * Math.PI) / 180);
+  return [x, y];
 }

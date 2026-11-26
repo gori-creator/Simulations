@@ -7,15 +7,21 @@ import {
   CHANNELS,
   checkTask,
   coalEquivalent,
+  collisionsNeeded,
   curve,
+  E_THERMAL,
+  energyAfter,
   fissionEnergy,
   fusionEnergy,
   householdYears,
   makeTask,
   massDefect,
   multiplication,
+  remaining,
   stableZ,
   uraniumHeat,
+  WASTE,
+  xi,
 } from '../src/simulations/physik/kernspaltung/model';
 
 describe('Kernspaltung', () => {
@@ -76,7 +82,7 @@ describe('Spaltkanäle, Massendefekt, Kraftwerk', () => {
 describe('Übung', () => {
   it('ist reproduzierbar und wechselt die Aufgabenarten', () => {
     expect(makeTask(8)).toEqual(makeTask(8));
-    expect(new Set(Array.from({ length: 12 }, (_, i) => makeTask(i + 1).kind)).size).toBe(6);
+    expect(new Set(Array.from({ length: 16 }, (_, i) => makeTask(i + 1).kind)).size).toBe(8);
   });
   it('erkennt die hinterlegte Antwort', () => {
     for (let i = 1; i <= 120; i++) {
@@ -93,6 +99,27 @@ describe('Übung', () => {
       const t = makeTask(i);
       expect(t.text.en + t.solution.en).not.toMatch(/\d,\d/);
       expect(t.text.de + t.solution.de).not.toMatch(/\d\.\d/);
+    }
+  });
+});
+
+describe('Moderator und Abfall', () => {
+  it('Wasserstoff braucht etwa 18, Graphit etwa 115 Stöße', () => {
+    expect(Math.round(collisionsNeeded(1))).toBe(18);
+    expect(Math.round(collisionsNeeded(12))).toBeGreaterThan(110);
+    expect(Math.round(collisionsNeeded(12))).toBeLessThan(120);
+    expect(collisionsNeeded(207)).toBeGreaterThan(1500);
+    expect(xi(1)).toBe(1);
+    expect(energyAfter(1, collisionsNeeded(1))).toBeCloseTo(E_THERMAL, 9);
+  });
+  it('Halbwertszeiten: nach einer Halbwertszeit die Hälfte', () => {
+    for (const w of WASTE) expect(remaining(w.T, w.T)).toBeCloseTo(0.5, 9);
+    expect(remaining(30.1, 100)).toBeCloseTo(0.1, 1);
+  });
+  it('neue Übungsarten haben eine gültige Antwort', () => {
+    for (let n = 1; n <= 80; n++) {
+      const t = makeTask(n);
+      if (t.kind === 'moderator' || t.kind === 'halflife') expect(checkTask(t, String(t.answer).replace('.', ','))).toBe(true);
     }
   });
 });

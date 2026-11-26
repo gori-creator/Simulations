@@ -1,5 +1,26 @@
 import { defineSimulation, Plot, prefersReducedMotion, roundRect, Surface, text, withAlpha, type Rect } from '../../../sim-core';
-import { ALPHA, cableSag, capillaryRise, checkTask, gapWidth, gasVolume, GAMMA_LIQ, lengthChange, liquidVolume, makeTask, thermostatStep, waterDensity, type ExpansionTask, type LiquidId, type SolidId } from './model';
+import {
+  airDensity,
+  balloonLift,
+  ICE_EXPANSION,
+  SEA_DENSITY,
+  submergedFraction,
+  ALPHA,
+  cableSag,
+  capillaryRise,
+  checkTask,
+  gapWidth,
+  gasVolume,
+  GAMMA_LIQ,
+  lengthChange,
+  liquidVolume,
+  makeTask,
+  thermostatStep,
+  waterDensity,
+  type ExpansionTask,
+  type LiquidId,
+  type SolidId,
+} from './model';
 
 const L = (de: string, en: string) => ({ de, en });
 const T0 = 20;
@@ -46,6 +67,8 @@ export default defineSimulation({
         { value: 'wasser', label: L('Anomalie des Wassers', 'Anomaly of water') },
         { value: 'alltag', label: L('Alltag: Brücke, Schiene, Stromleitung', 'Everyday: bridge, rail, power line') },
         { value: 'thermostat', label: L('Bimetall-Thermostat im Bügeleisen', 'Bimetal thermostat in an iron') },
+        { value: 'ballon', label: L('Heißluftballon: warme Luft trägt', 'Hot-air balloon: warm air lifts') },
+        { value: 'eis', label: L('Eis: Wasser dehnt sich beim Gefrieren aus', 'Ice: water expands when it freezes') },
         { value: 'ueben', label: L('Üben: Aufgaben zur Wärmeausdehnung', 'Practice: thermal expansion tasks') },
       ],
       default: 'fest',
@@ -65,7 +88,17 @@ export default defineSimulation({
       default: 'aluminium',
       visibleIf: (v) => v.mode === 'fest',
     },
-    { key: 't', type: 'number', label: L('Temperatur', 'Temperature'), min: -20, max: 100, step: 1, default: 60, unit: '°C', visibleIf: (v) => v.mode === 'fest' || v.mode === 'gas' || v.mode === 'fluessig' },
+    {
+      key: 't',
+      type: 'number',
+      label: L('Temperatur', 'Temperature'),
+      min: -20,
+      max: 100,
+      step: 1,
+      default: 60,
+      unit: '°C',
+      visibleIf: (v) => v.mode === 'fest' || v.mode === 'gas' || v.mode === 'fluessig',
+    },
     { key: 'L0', type: 'number', label: L('Länge bei 20 °C', 'Length at 20 °C'), min: 1, max: 100, step: 1, default: 1, unit: 'm', visibleIf: (v) => v.mode === 'fest' },
     {
       key: 'av',
@@ -80,26 +113,88 @@ export default defineSimulation({
       visibleIf: (v) => v.mode === 'alltag',
     },
     { key: 'jt', type: 'number', label: L('Temperatur im Jahreslauf', 'Temperature during the year'), min: -20, max: 50, step: 1, default: 35, unit: '°C', visibleIf: (v) => v.mode === 'alltag' },
-    { key: 'set', type: 'number', label: L('Eingestellte Temperatur (Regler)', 'Set temperature (dial)'), min: 100, max: 220, step: 5, default: 150, unit: '°C', visibleIf: (v) => v.mode === 'thermostat' },
-    { key: 'hy', type: 'number', label: L('Schaltdifferenz des Bimetalls', 'Switching gap of the bimetal'), min: 4, max: 30, step: 1, default: 12, unit: 'K', visibleIf: (v) => v.mode === 'thermostat' },
+    {
+      key: 'set',
+      type: 'number',
+      label: L('Eingestellte Temperatur (Regler)', 'Set temperature (dial)'),
+      min: 100,
+      max: 220,
+      step: 5,
+      default: 150,
+      unit: '°C',
+      visibleIf: (v) => v.mode === 'thermostat',
+    },
+    {
+      key: 'hy',
+      type: 'number',
+      label: L('Schaltdifferenz des Bimetalls', 'Switching gap of the bimetal'),
+      min: 4,
+      max: 30,
+      step: 1,
+      default: 12,
+      unit: 'K',
+      visibleIf: (v) => v.mode === 'thermostat',
+    },
+    { key: 'bvol', type: 'number', label: L('Volumen der Hülle', 'Volume of the envelope'), min: 500, max: 4000, step: 100, default: 2500, unit: 'm³', visibleIf: (v) => v.mode === 'ballon' },
+    { key: 'bto', type: 'number', label: L('Temperatur draußen', 'Outside temperature'), min: -10, max: 35, step: 1, default: 15, unit: '°C', visibleIf: (v) => v.mode === 'ballon' },
+    { key: 'bti', type: 'number', label: L('Temperatur im Ballon', 'Temperature in the balloon'), min: 15, max: 120, step: 1, default: 100, unit: '°C', visibleIf: (v) => v.mode === 'ballon' },
+    {
+      key: 'blast',
+      type: 'number',
+      label: L('Hülle, Korb, Brenner und Personen', 'Envelope, basket, burner and people'),
+      min: 200,
+      max: 1200,
+      step: 10,
+      default: 600,
+      unit: 'kg',
+      visibleIf: (v) => v.mode === 'ballon',
+    },
+    { key: 'ifill', type: 'number', label: L('Flasche gefüllt zu', 'Bottle filled to'), min: 50, max: 100, step: 1, default: 95, unit: '%', visibleIf: (v) => v.mode === 'eis' },
+    { key: 'isalt', type: 'boolean', label: L('Eisberg im Meerwasser (salzig)', 'iceberg in sea water (salty)'), default: true, visibleIf: (v) => v.mode === 'eis' },
     { key: 'qn', type: 'number', label: L('Aufgabe Nr.', 'Task no.'), min: 1, max: 999, step: 1, default: 1, visibleIf: (v) => v.mode === 'ueben' },
     { key: 'qa', type: 'text', label: L('Deine Antwort', 'Your answer'), default: '', maxLength: 16, placeholder: L('eine Zahl', 'a number'), visibleIf: (v) => v.mode === 'ueben' },
-    { key: 'luft', type: 'number', label: L('Lufttemperatur über dem See', 'Air temperature above the lake'), min: -10, max: 20, step: 1, default: 2, unit: '°C', visibleIf: (v) => v.mode === 'wasser' },
+    {
+      key: 'luft',
+      type: 'number',
+      label: L('Lufttemperatur über dem See', 'Air temperature above the lake'),
+      min: -10,
+      max: 20,
+      step: 1,
+      default: 2,
+      unit: '°C',
+      visibleIf: (v) => v.mode === 'wasser',
+    },
   ],
   hint: (v) =>
-    v.mode === 'fest'
-      ? L('Die Längenänderung ist stark vergrößert gezeichnet. Unten: Stahl als Vergleich.', 'The change in length is drawn strongly magnified. Below: steel for comparison.')
-      : v.mode === 'gas'
-        ? L('Gase dehnen sich viel stärker aus als feste Stoffe – alle etwa gleich.', 'Gases expand much more than solids – all of them by about the same amount.')
-        : v.mode === 'wasser'
-          ? L('Wasser ist bei 4 °C am schwersten. Darum frieren Seen von oben zu.', 'Water is densest at 4 °C. That is why lakes freeze from the top.')
-          : v.mode === 'fluessig'
-            ? L('Drei Thermometer mit gleichem Glas, aber verschiedenen Flüssigkeiten. Welche steigt am stärksten – und was macht Wasser unter 4 °C?', 'Three thermometers with the same glass but different liquids. Which rises most – and what does water do below 4 °C?')
-            : v.mode === 'alltag'
-              ? L('Schiebe die Temperatur von Winter bis Hochsommer. Warum braucht man Fugen und Lücken?', 'Slide the temperature from winter to midsummer. Why are joints and gaps needed?')
-              : v.mode === 'thermostat'
-                ? L('Drücke „Einschalten“: Das Bimetall öffnet den Kontakt, wenn es heiß wird, und schließt ihn beim Abkühlen wieder.', 'Press “Switch on”: the bimetal opens the contact when it gets hot and closes it again as it cools.')
-                : L('Rechne oder ordne zu und gib die Zahl ein. Komma oder Punkt sind beide in Ordnung.', 'Work it out or classify and enter the number. A comma or a point are both fine.'),
+    v.mode === 'ballon'
+      ? L(
+          'Warme Luft dehnt sich aus und ist darum leichter als die kalte Luft draußen. Heize auf, bis der Ballon steigt.',
+          'Warm air expands and is therefore lighter than the cold air outside. Heat it until the balloon rises.',
+        )
+      : v.mode === 'eis'
+        ? L(
+            'Wasser ist eine Ausnahme: Beim Gefrieren dehnt es sich um etwa 9 % aus. Darum schwimmt Eis – und volle Flaschen platzen.',
+            'Water is an exception: when it freezes it expands by about 9 %. That is why ice floats – and full bottles burst.',
+          )
+        : v.mode === 'fest'
+          ? L('Die Längenänderung ist stark vergrößert gezeichnet. Unten: Stahl als Vergleich.', 'The change in length is drawn strongly magnified. Below: steel for comparison.')
+          : v.mode === 'gas'
+            ? L('Gase dehnen sich viel stärker aus als feste Stoffe – alle etwa gleich.', 'Gases expand much more than solids – all of them by about the same amount.')
+            : v.mode === 'wasser'
+              ? L('Wasser ist bei 4 °C am schwersten. Darum frieren Seen von oben zu.', 'Water is densest at 4 °C. That is why lakes freeze from the top.')
+              : v.mode === 'fluessig'
+                ? L(
+                    'Drei Thermometer mit gleichem Glas, aber verschiedenen Flüssigkeiten. Welche steigt am stärksten – und was macht Wasser unter 4 °C?',
+                    'Three thermometers with the same glass but different liquids. Which rises most – and what does water do below 4 °C?',
+                  )
+                : v.mode === 'alltag'
+                  ? L('Schiebe die Temperatur von Winter bis Hochsommer. Warum braucht man Fugen und Lücken?', 'Slide the temperature from winter to midsummer. Why are joints and gaps needed?')
+                  : v.mode === 'thermostat'
+                    ? L(
+                        'Drücke „Einschalten“: Das Bimetall öffnet den Kontakt, wenn es heiß wird, und schließt ihn beim Abkühlen wieder.',
+                        'Press “Switch on”: the bimetal opens the contact when it gets hot and closes it again as it cools.',
+                      )
+                    : L('Rechne oder ordne zu und gib die Zahl ein. Komma oder Punkt sind beide in Ordnung.', 'Work it out or classify and enter the number. A comma or a point are both fine.'),
   actions: [
     { id: 'go', label: L('Einschalten', 'Switch on'), primary: true, visibleIf: (v) => v.mode === 'thermostat' },
     { id: 'check', label: L('Prüfen', 'Check'), primary: true, visibleIf: (v) => v.mode === 'ueben' },
@@ -129,10 +224,30 @@ export default defineSimulation({
     { id: 'line', label: L('Stromleitung im Sommer', 'Power line in summer'), values: { mode: 'alltag', av: 'leitung', jt: 40 } },
     { id: 'iron', label: L('Bügeleisen: Baumwolle (200 °C)', 'Iron: cotton (200 °C)'), values: { mode: 'thermostat', set: 200, hy: 12 } },
     { id: 'silk', label: L('Bügeleisen: Seide (110 °C)', 'Iron: silk (110 °C)'), values: { mode: 'thermostat', set: 110, hy: 12 } },
-    { id: 'quiz', label: L('Üben: acht Aufgaben', 'Practice: eight tasks'), values: { mode: 'ueben', qn: 1, qa: '' } },
+    { id: 'ballonStart', label: L('Heißluftballon startet', 'Hot-air balloon takes off'), values: { mode: 'ballon', bvol: 2500, bto: 15, bti: 100, blast: 600 } },
+    { id: 'ballonSommer', label: L('Heißer Sommertag: zu wenig Auftrieb', 'Hot summer day: not enough lift'), values: { mode: 'ballon', bvol: 2500, bto: 35, bti: 80, blast: 600 } },
+    { id: 'flasche', label: L('Volle Flasche im Gefrierfach', 'Full bottle in the freezer'), values: { mode: 'eis', ifill: 95, isalt: true } },
+    { id: 'flascheHalb', label: L('Flasche mit Platz', 'Bottle with room'), values: { mode: 'eis', ifill: 80, isalt: false } },
+    { id: 'quiz', label: L('Üben: zehn Aufgabenarten', 'Practice: ten kinds of tasks'), values: { mode: 'ueben', qn: 1, qa: '' } },
   ],
   strings: {
     de: {
+      canvasB: 'Ein Heißluftballon über dem Boden; die Luft innen ist wärmer und dünner als außen',
+      canvasI: 'Links eine Flasche mit Wasser und daneben dieselbe Flasche mit Eis; rechts ein Eisberg, von dem nur ein kleiner Teil aus dem Wasser ragt',
+      bRho: 'Luftdichte draußen {o} kg/m³, im Ballon {i} kg/m³',
+      bLift: 'Tragkraft der warmen Luft: {m} kg',
+      bNet: 'zu tragen: {m} kg',
+      bUp: 'Der Ballon steigt.',
+      bDown: 'Der Ballon bleibt am Boden.',
+      bInfo: 'Warme Luft dehnt sich aus: Dieselbe Menge braucht mehr Platz, ein Kubikmeter ist leichter. Der Unterschied zur kalten Luft draußen trägt den Ballon.',
+      iWater: 'Wasser',
+      iFrozen: 'gefroren',
+      iBurst: 'Das Eis passt nicht mehr hinein – die Flasche platzt.',
+      iOk: 'Das Eis hat noch Platz.',
+      iAbove: 'Über Wasser: etwa {p} %',
+      iInfo:
+        'Beim Gefrieren ordnen sich die Wassermoleküle in einem lockeren Gitter: Eis braucht etwa 9 % mehr Platz und ist leichter als Wasser. Darum schwimmt es – vom Eisberg schaut nur gut ein Zehntel heraus.',
+      iVol: 'Eis: {v} % des Flaschenvolumens',
       canvas: 'Wärmeausdehnung: zwei Stäbe und ein Bimetallstreifen, ein Kolben mit Gas oder ein See mit Temperaturschichtung; daneben ein Diagramm',
       dLVal: 'ΔL = α · L₀ · ΔT = {a} · 10⁻⁶ 1/K · {L} m · {dT} K ≈ {d}',
       steelVal: 'Stahl zum Vergleich: {d}',
@@ -191,6 +306,22 @@ export default defineSimulation({
       qBad: 'Bitte eine Zahl eingeben.',
     },
     en: {
+      canvasB: 'A hot-air balloon above the ground; the air inside is warmer and thinner than outside',
+      canvasI: 'On the left a bottle of water and next to it the same bottle with ice; on the right an iceberg of which only a small part sticks out of the water',
+      bRho: 'air density outside {o} kg/m³, in the balloon {i} kg/m³',
+      bLift: 'lift of the warm air: {m} kg',
+      bNet: 'to be carried: {m} kg',
+      bUp: 'The balloon rises.',
+      bDown: 'The balloon stays on the ground.',
+      bInfo: 'Warm air expands: the same amount takes up more space, so a cubic metre is lighter. The difference from the cold air outside carries the balloon.',
+      iWater: 'water',
+      iFrozen: 'frozen',
+      iBurst: 'The ice no longer fits – the bottle bursts.',
+      iOk: 'The ice still has room.',
+      iAbove: 'above water: about {p} %',
+      iInfo:
+        'When water freezes, the molecules arrange themselves in an open lattice: ice takes up about 9 % more space and is lighter than water. That is why it floats – only just over a tenth of an iceberg sticks out.',
+      iVol: 'ice: {v} % of the bottle volume',
       canvas: 'Thermal expansion: two rods and a bimetallic strip, a piston with gas or a lake with temperature layers; next to it a graph',
       dLVal: 'ΔL = α · L₀ · ΔT = {a} · 10⁻⁶ 1/K · {L} m · {dT} K ≈ {d}',
       steelVal: 'steel for comparison: {d}',
@@ -338,6 +469,18 @@ export default defineSimulation({
 
     function updateReadouts(): void {
       for (const k of ['dL', 'V', 'rho', 'lake', 'info']) ctx.readout(k, null);
+      if (p.mode === 'ballon') {
+        ctx.readout('rho', tr('bRho', { o: fmt.num(airDensity(p.bto), 3), i: fmt.num(airDensity(p.bti), 3) }));
+        ctx.readout('V', `${tr('bLift', { m: fmt.num(balloonLift(p.bvol, p.bto, p.bti), 0) })}, ${tr('bNet', { m: fmt.num(p.blast, 0) })}`);
+        ctx.readout('info', ctx.t('bInfo'));
+        return;
+      }
+      if (p.mode === 'eis') {
+        ctx.readout('V', tr('iVol', { v: fmt.num((p.ifill / 100) * ICE_EXPANSION * 100, 0) }));
+        ctx.readout('rho', tr('iAbove', { p: fmt.num((1 - submergedFraction(p.isalt ? SEA_DENSITY : 1000)) * 100, 0) }));
+        ctx.readout('info', ctx.t('iInfo'));
+        return;
+      }
       if (p.mode === 'fluessig') {
         ctx.readout('V', tr('liqVal', { e: fmt.num(rise('ethanol', p.t), 0), q: fmt.num(rise('mercury', p.t), 0), w: fmt.num(rise('water', p.t), 0) }));
         ctx.readout('info', ctx.t('liqInfo'));
@@ -368,7 +511,10 @@ export default defineSimulation({
       if (p.mode === 'fest') {
         const a = ALPHA[p.mat as SolidId];
         const d = lengthChange(a, p.L0, p.t - T0);
-        ctx.readout('dL', `${tr('dLVal', { a: fmt.num(a * 1e6, 1), L: fmt.num(p.L0, 0), dT: fmt.num(p.t - T0, 0), d: len(d) })}; ${tr('steelVal', { d: len(lengthChange(ALPHA.steel, p.L0, p.t - T0)) })}`);
+        ctx.readout(
+          'dL',
+          `${tr('dLVal', { a: fmt.num(a * 1e6, 1), L: fmt.num(p.L0, 0), dT: fmt.num(p.t - T0, 0), d: len(d) })}; ${tr('steelVal', { d: len(lengthChange(ALPHA.steel, p.L0, p.t - T0)) })}`,
+        );
       } else if (p.mode === 'gas') {
         ctx.readout('V', tr('Vval', { T: fmt.num(p.t + 273.15, 0), V: fmt.num(gasVolume(1, T0, p.t), 3) }));
       } else {
@@ -526,7 +672,7 @@ export default defineSimulation({
       const top = r.y + 30;
       const bulbY = r.y + r.h - 46;
       const mark = bulbY - (bulbY - top) * 0.32;
-      const pxPerMm = (bulbY - top) * 0.62 / rise('ethanol', 100);
+      const pxPerMm = ((bulbY - top) * 0.62) / rise('ethanol', 100);
       LIQS.forEach((id, i) => {
         const cx = r.x + (r.w * (i + 0.5)) / 3;
         // Rohr und Kugel
@@ -839,12 +985,32 @@ export default defineSimulation({
         for (const [t, , on] of hist) {
           if (on && start === null) start = t;
           if (!on && start !== null) {
-            plot.polygon([[start, 0], [t, 0], [t, 250], [start, 250]], { fill: withAlpha(th.series[1]!, 0.08) });
+            plot.polygon(
+              [
+                [start, 0],
+                [t, 0],
+                [t, 250],
+                [start, 250],
+              ],
+              { fill: withAlpha(th.series[1]!, 0.08) },
+            );
             start = null;
           }
         }
-        if (start !== null) plot.polygon([[start, 0], [tt, 0], [tt, 250], [start, 250]], { fill: withAlpha(th.series[1]!, 0.08) });
-        plot.polyline(hist.map(([t, T]) => [t, T] as [number, number]), { color: th.series[1]!, width: 3 });
+        if (start !== null)
+          plot.polygon(
+            [
+              [start, 0],
+              [tt, 0],
+              [tt, 250],
+              [start, 250],
+            ],
+            { fill: withAlpha(th.series[1]!, 0.08) },
+          );
+        plot.polyline(
+          hist.map(([t, T]) => [t, T] as [number, number]),
+          { color: th.series[1]!, width: 3 },
+        );
       } else if (p.mode === 'gas') {
         plot.fn((t) => gasVolume(1, T0, t), { color: withAlpha(th.series[1]!, 0.5), width: 2, dash: [6, 5], from: -273.15, to: -20 });
         plot.fn((t) => gasVolume(1, T0, t), { color: th.series[1]!, width: 3, from: -20, to: 100 });
@@ -859,6 +1025,163 @@ export default defineSimulation({
         plot.point(tt, waterDensity(tt), { color: th.series[0]!, radius: 6 });
       }
       plot.end();
+    }
+
+    /* ---------- Heißluftballon ---------- */
+    let animT = 0;
+    function drawBalloon(r: Rect): void {
+      const g = surface.g;
+      const th = ctx.theme;
+      const wide = r.w >= 700;
+      const lift = balloonLift(p.bvol, p.bto, p.bti);
+      const scene: Rect = wide ? { x: r.x, y: r.y, w: r.w * 0.58, h: r.h } : { x: r.x, y: r.y, w: r.w, h: r.h * 0.6 };
+      const ground = scene.y + scene.h - 20;
+      // Steigt der Ballon? Netto-Last: Auftrieb minus Hülle, Korb und Personen
+      const net = lift - p.blast;
+      const rise = net > 0 ? Math.min(1, animT * (0.1 + Math.min(net, 400) / 1000)) : 0;
+      const bh = Math.min(scene.h * 0.45, 170);
+      const bw = bh * 0.8;
+      const cx = scene.x + scene.w / 2;
+      const by = ground - 30 - bh / 2 - rise * Math.max(0, Math.min(scene.h * 0.35, ground - 30 - bh - (scene.y + 56)));
+      g.fillStyle = withAlpha(th.series[2]!, 0.2);
+      g.fillRect(scene.x, ground, scene.w, 20);
+      // Hülle: Farbe nach Innentemperatur
+      const hot = Math.min(1, Math.max(0, (p.bti - 20) / 100));
+      g.beginPath();
+      g.ellipse(cx, by, bw / 2, bh / 2, 0, 0, Math.PI * 2);
+      g.fillStyle = withAlpha(th.series[3]!, 0.25 + 0.5 * hot);
+      g.fill();
+      g.strokeStyle = th.series[3]!;
+      g.lineWidth = 2;
+      g.stroke();
+      // Seile und Korb
+      g.strokeStyle = th.muted;
+      g.lineWidth = 1;
+      g.beginPath();
+      g.moveTo(cx - bw * 0.3, by + bh * 0.4);
+      g.lineTo(cx - 14, by + bh / 2 + 26);
+      g.moveTo(cx + bw * 0.3, by + bh * 0.4);
+      g.lineTo(cx + 14, by + bh / 2 + 26);
+      g.stroke();
+      g.fillStyle = withAlpha(th.text, 0.7);
+      g.fillRect(cx - 16, by + bh / 2 + 26, 32, 18);
+      // Flamme
+      if (p.bti > p.bto) {
+        const fl = 8 + 4 * Math.sin(animT * 12);
+        g.beginPath();
+        g.moveTo(cx - 5, by + bh / 2 + 22);
+        g.lineTo(cx, by + bh / 2 + 22 - fl);
+        g.lineTo(cx + 5, by + bh / 2 + 22);
+        g.closePath();
+        g.fillStyle = th.series[3]!;
+        g.fill();
+      }
+      // Luftteilchen innen (weniger) und außen (mehr)
+      const nIn = Math.round((26 * airDensity(p.bti)) / 1.3);
+      for (let k = 0; k < nIn; k++) {
+        const a = k * 2.399;
+        const rr = Math.sqrt((k + 0.5) / nIn) * 0.85;
+        g.beginPath();
+        g.arc(cx + Math.cos(a) * rr * bw * 0.45, by + Math.sin(a) * rr * bh * 0.45, 2, 0, Math.PI * 2);
+        g.fillStyle = withAlpha(th.text, 0.6);
+        g.fill();
+      }
+      text(g, `${fmt.num(p.bti, 0)} °C`, cx, by - bh / 2 - 12, { font: `700 13px ${th.font}`, color: th.series[3]! });
+      text(g, ctx.t(net > 0 ? 'bUp' : 'bDown'), scene.x + 14, scene.y + 20, { font: `800 15px ${th.font}`, color: net > 0 ? th.series[2]! : th.muted, align: 'left' });
+      // Werte
+      const panel: Rect = wide ? { x: scene.w + 20, y: 40, w: r.w - scene.w - 40, h: r.h - 80 } : { x: 16, y: scene.h + 16, w: r.w - 32, h: r.h - scene.h - 20 };
+      let y = panel.y;
+      const line = (str: string, col: string, weight = 600) => {
+        g.font = `${weight} 13px ${th.font}`;
+        for (const part of wrap(g, str, panel.w)) {
+          text(g, part, panel.x, y, { font: `${weight} 13px ${th.font}`, color: col, align: 'left' });
+          y += 18;
+        }
+        y += 3;
+      };
+      line(tr('bRho', { o: fmt.num(airDensity(p.bto), 3), i: fmt.num(airDensity(p.bti), 3) }), th.text);
+      line(tr('bLift', { m: fmt.num(lift, 0) }), th.series[2]!, 700);
+      line(tr('bNet', { m: fmt.num(p.blast, 0) }), th.muted, 500);
+    }
+
+    /* ---------- Eis ---------- */
+    function drawIce(r: Rect): void {
+      const g = surface.g;
+      const th = ctx.theme;
+      const wide = r.w >= 700;
+      const half: Rect = wide ? { x: r.x, y: r.y, w: r.w / 2, h: r.h } : { x: r.x, y: r.y, w: r.w, h: r.h / 2 };
+      // Flasche: Füllstand Wasser, daneben nach dem Gefrieren
+      const bw = Math.min(70, half.w * 0.18);
+      const bh = Math.min(half.h * 0.55, 200);
+      const by = half.y + Math.max(64, half.h * 0.25);
+      const fill = p.ifill / 100;
+      const iceV = fill * ICE_EXPANSION;
+      const burst = iceV > 1;
+      const bottle = (x: number, level: number, col: string, broken: boolean) => {
+        g.fillStyle = withAlpha(col, 0.45);
+        const lv = Math.min(1, level);
+        g.fillRect(x, by + bh * (1 - lv), bw, bh * lv);
+        g.strokeStyle = th.text;
+        g.lineWidth = 2;
+        g.beginPath();
+        g.moveTo(x + bw * 0.35, by - 24);
+        g.lineTo(x + bw * 0.35, by);
+        g.lineTo(x, by + 10);
+        g.lineTo(x, by + bh);
+        g.lineTo(x + bw, by + bh);
+        g.lineTo(x + bw, by + 10);
+        g.lineTo(x + bw * 0.65, by);
+        g.lineTo(x + bw * 0.65, by - 24);
+        g.stroke();
+        if (broken) {
+          g.strokeStyle = th.series[3]!;
+          g.lineWidth = 2.5;
+          g.beginPath();
+          g.moveTo(x + bw * 0.2, by + bh * 0.2);
+          g.lineTo(x + bw * 0.5, by + bh * 0.45);
+          g.lineTo(x + bw * 0.3, by + bh * 0.6);
+          g.lineTo(x + bw * 0.7, by + bh * 0.85);
+          g.stroke();
+        }
+      };
+      const x1 = half.x + half.w * 0.22;
+      const x2 = half.x + half.w * 0.62;
+      bottle(x1, fill, th.series[0]!, false);
+      bottle(x2, iceV, th.muted, burst);
+      text(g, ctx.t('iWater'), x1 + bw / 2, by + bh + 18, { font: `600 12px ${th.font}`, color: th.text });
+      text(g, ctx.t('iFrozen'), x2 + bw / 2, by + bh + 18, { font: `600 12px ${th.font}`, color: th.text });
+      text(g, ctx.t(burst ? 'iBurst' : 'iOk'), half.x + half.w / 2, half.y + 22, { font: `800 14px ${th.font}`, color: burst ? th.series[3]! : th.series[2]! });
+      // Eisberg
+      const sea: Rect = wide ? { x: r.x + r.w / 2, y: r.y, w: r.w / 2, h: r.h } : { x: r.x, y: r.y + r.h / 2, w: r.w, h: r.h / 2 };
+      const sub = submergedFraction(p.isalt ? SEA_DENSITY : 1000);
+      const wl = sea.y + sea.h * 0.4;
+      g.fillStyle = withAlpha(th.series[0]!, 0.25);
+      g.fillRect(sea.x + 10, wl, sea.w - 20, sea.y + sea.h - wl - 10);
+      const ih = Math.min(sea.h * 0.5, 160);
+      const iw = ih * 0.9;
+      const icx = sea.x + sea.w / 2;
+      const bob = Math.sin(animT * 1.5) * 2;
+      const top = wl - ih * (1 - sub) + bob;
+      g.beginPath();
+      g.moveTo(icx - iw * 0.15, top);
+      g.lineTo(icx + iw * 0.2, top + ih * 0.06);
+      g.lineTo(icx + iw * 0.5, top + ih * 0.55);
+      g.lineTo(icx + iw * 0.3, top + ih);
+      g.lineTo(icx - iw * 0.35, top + ih);
+      g.lineTo(icx - iw * 0.5, top + ih * 0.5);
+      g.closePath();
+      g.fillStyle = withAlpha(th.muted, 0.55);
+      g.fill();
+      g.strokeStyle = th.text;
+      g.lineWidth = 1.5;
+      g.stroke();
+      g.strokeStyle = th.series[0]!;
+      g.lineWidth = 2;
+      g.beginPath();
+      g.moveTo(sea.x + 10, wl);
+      g.lineTo(sea.x + sea.w - 10, wl);
+      g.stroke();
+      text(g, tr('iAbove', { p: fmt.num((1 - sub) * 100, 0) }), sea.x + sea.w / 2, sea.y + 22, { font: `800 14px ${th.font}`, color: th.text });
     }
 
     return {
@@ -878,7 +1201,12 @@ export default defineSimulation({
           if (verdict === false) verdict = null;
           badInput = false;
         }
-        surface.canvas.setAttribute('aria-label', ctx.t(p.mode === 'ueben' ? 'canvasQuiz' : 'canvas'));
+        surface.canvas.setAttribute('aria-label', ctx.t(p.mode === 'ueben' ? 'canvasQuiz' : p.mode === 'ballon' ? 'canvasB' : p.mode === 'eis' ? 'canvasI' : 'canvas'));
+        if (changed.has('mode') || changed.has('bti') || changed.has('blast') || changed.has('bto') || changed.has('bvol')) animT = 0;
+        if (p.mode === 'ballon' || p.mode === 'eis') {
+          if (prefersReducedMotion()) animT = 100;
+          else ctx.clock.play();
+        }
         updateReadouts();
       },
       action(id) {
@@ -902,6 +1230,12 @@ export default defineSimulation({
         ctx.requestRender();
       },
       tick(dt) {
+        animT += Math.min(dt, 0.05);
+        if (p.mode === 'ballon' || p.mode === 'eis') {
+          // Der Ballon braucht die Uhr nur, bis er oben ist
+          if (p.mode === 'ballon' && animT > 12) ctx.clock.pause();
+          return;
+        }
         if (p.mode !== 'thermostat' || !running) {
           ctx.clock.pause();
           return;
@@ -928,6 +1262,8 @@ export default defineSimulation({
           drawQuiz(surface.width, surface.height);
           return;
         }
+        if (p.mode === 'ballon') return drawBalloon({ x: 0, y: 0, w: surface.width, h: surface.height });
+        if (p.mode === 'eis') return drawIce({ x: 0, y: 0, w: surface.width, h: surface.height });
         if (p.mode === 'fluessig') drawLiquids(s.scene);
         else if (p.mode === 'alltag') drawAlltag(s.scene);
         else if (p.mode === 'thermostat') drawThermostat(s.scene);

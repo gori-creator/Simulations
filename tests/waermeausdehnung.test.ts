@@ -1,6 +1,8 @@
 import { describe, expect, it } from 'vitest';
 import {
+  airDensity,
   ALPHA,
+  balloonLift,
   bimetalDeflection,
   cableSag,
   capillaryRise,
@@ -8,10 +10,13 @@ import {
   gapWidth,
   gasVolume,
   ICE_DENSITY,
+  ICE_EXPANSION,
   lengthChange,
   liquidVolume,
   makeTask,
   parseAnswer,
+  SEA_DENSITY,
+  submergedFraction,
   thermostatStep,
   waterDensity,
 } from '../src/simulations/physik/waermeausdehnung/model';
@@ -110,6 +115,27 @@ describe('Übung Wärmeausdehnung', () => {
       expect(checkTask(t, String(t.answer * 1.3 + 1))).toBe(false);
       expect(t.text.de).not.toMatch(/\d\.\d/);
       expect(t.text.en).not.toMatch(/\d,\d/);
+    }
+  });
+});
+
+describe('Heißluftballon und Eis', () => {
+  it('warme Luft ist leichter, der Ballon trägt mehr bei größerem Unterschied', () => {
+    expect(airDensity(0)).toBeCloseTo(1.293, 3);
+    expect(airDensity(100)).toBeLessThan(airDensity(15));
+    expect(balloonLift(2500, 15, 100)).toBeGreaterThan(600);
+    expect(balloonLift(2500, 35, 80)).toBeLessThan(600);
+    expect(balloonLift(2500, 20, 20)).toBeCloseTo(0, 9);
+  });
+  it('Eis braucht etwa 9 % mehr Platz und schwimmt', () => {
+    expect(ICE_EXPANSION).toBeCloseTo(1.091, 3);
+    expect(submergedFraction(1000)).toBeCloseTo(0.917, 3);
+    expect(1 - submergedFraction(SEA_DENSITY)).toBeGreaterThan(0.1);
+  });
+  it('neue Übungsarten haben eine gültige Antwort', () => {
+    for (let n = 1; n <= 100; n++) {
+      const t = makeTask(n);
+      if (t.kind === 'balloon' || t.kind === 'ice') expect(checkTask(t, String(Math.round(t.answer * 100) / 100).replace('.', ','))).toBe(true);
     }
   });
 });
