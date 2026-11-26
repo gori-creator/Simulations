@@ -184,6 +184,22 @@ export const physik: Subject = {
           grades: [7, 11],
           simulations: [
             {
+              id: 'druck',
+              status: 'ready',
+              slug: L('druck-hydraulik-luftdruck', 'pressure-hydraulics-air-pressure'),
+              title: L('Druck: Kraft pro Fläche, Hydraulik, Wasser- und Luftdruck', 'Pressure: force per area, hydraulics, water and air pressure'),
+              summary: L(
+                'Mit Schneeschuhen sinkt man nicht ein, mit ein paar Pumpstößen hebt man ein Auto, und beim Tauchen drückt das Wasser von allen Seiten. Verbundene Gefäße, Wasserturm, Barometer und Magdeburger Halbkugeln zeigen, was Druck im Alltag bewirkt – bis zum Wind an der Küste.',
+                'With snowshoes you don’t sink in, a few pump strokes lift a car, and when diving the water presses from all sides. Connected vessels, a water tower, a barometer and the Magdeburg hemispheres show what pressure does in everyday life – right up to the wind at the coast.',
+              ),
+              grades: [7, 10],
+              kmk: ['P-S', 'P-E', 'P-BK-Wechselwirkung', 'P-BK-Mathematisieren'],
+              keywords: L(
+                ['Druck', 'Auflagedruck', 'Pascal', 'Bar', 'Hektopascal', 'hydraulische Presse', 'Hydraulik', 'Kraftwandler', 'Schweredruck', 'Wasserdruck', 'Tauchen', 'Luftdruck', 'Barometer', 'barometrische Höhenformel', 'Hochdruckgebiet', 'Tiefdruckgebiet', 'Wind', 'Seewind', 'Landwind', 'Wetter', 'verbundene Gefäße', 'hydrostatisches Paradoxon', 'Wasserturm', 'Quecksilber', 'Torricelli', 'Magdeburger Halbkugeln', 'Otto von Guericke', 'Vakuum'],
+                ['pressure', 'contact pressure', 'pascal', 'bar', 'hectopascal', 'hydraulic press', 'hydraulics', 'force multiplier', 'hydrostatic pressure', 'water pressure', 'diving', 'air pressure', 'barometer', 'barometric formula', 'high-pressure area', 'low-pressure area', 'wind', 'sea breeze', 'land breeze', 'weather', 'connected vessels', 'hydrostatic paradox', 'water tower', 'mercury', 'Torricelli', 'Magdeburg hemispheres', 'vacuum'],
+              ),
+            },
+            {
               id: 'energieerhaltung',
               status: 'ready',
               slug: L('energieerhaltung-achterbahn', 'energy-roller-coaster'),
