@@ -2492,6 +2492,7 @@ export const hessenGymnasiumPhysik: StateCurriculum = {
               code: 'Q4.3.3',
               title: L('Bindungsenergie', 'Binding energy'),
               summary: L('Massendefekt, Bindungsenergie pro Nukleon, Kernreaktionen.', 'Mass defect, binding energy per nucleon, nuclear reactions.'),
+              simulations: ['kernspaltung'],
             },
             {
               code: 'Q4.3.4',

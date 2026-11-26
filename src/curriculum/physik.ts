@@ -804,6 +804,22 @@ export const physik: Subject = {
                 ['radioactivity', 'radioactive decay', 'half-life', 'decay law', 'decay constant', 'activity', 'becquerel', 'Geiger counter', 'count rate', 'alpha decay', 'beta decay', 'gamma radiation', 'parent nucleus', 'daughter nucleus', 'decay equation', 'nuclide', 'radiocarbon dating', 'chance', 'exponential function'],
               ),
             },
+            {
+              id: 'kernspaltung',
+              status: 'ready',
+              slug: L('kernspaltung-kernfusion', 'nuclear-fission-fusion'),
+              title: L('Kernspaltung, Kernfusion und Kettenreaktion', 'Nuclear fission, fusion and chain reaction'),
+              summary: L(
+                'Warum liefert ein gespaltener Urankern so viel Energie, und warum auch das Verschmelzen von Wasserstoff? Die Kurve der Bindungsenergie gibt die Antwort. Eine Kettenreaktion zeigt, was Steuerstäbe im Reaktor tun. Außerdem: eine Spaltung in Zeitlupe, der Massendefekt mit E = m·c², Uran und Kohle im Kraftwerk und ein Übungsmodus.',
+                'Why does splitting a uranium nucleus release so much energy – and so does fusing hydrogen? The binding-energy curve answers both. A chain reaction shows what control rods do in a reactor. Also: one fission in slow motion, the mass defect with E = m·c², uranium and coal in a power plant and a practice mode.',
+              ),
+              grades: [9, 13],
+              kmk: ['P-S', 'P-E', 'P-BK-Energie', 'P-BK-Mathematisieren', 'P-B'],
+              keywords: L(
+                ['Kernspaltung', 'Kernfusion', 'Bindungsenergie', 'Bindungsenergie pro Nukleon', 'Massendefekt', 'Tröpfchenmodell', 'Uran-235', 'Kettenreaktion', 'Vermehrungsfaktor', 'kritisch', 'Steuerstäbe', 'Moderator', 'Kernkraftwerk', 'Sonne', 'Wasserstoff', 'Helium', 'Energie', 'Spaltprodukte', 'E = mc²', 'Kohle', 'Turbine'],
+                ['nuclear fission', 'nuclear fusion', 'binding energy', 'binding energy per nucleon', 'mass defect', 'liquid-drop model', 'uranium-235', 'chain reaction', 'multiplication factor', 'critical', 'control rods', 'moderator', 'nuclear power plant', 'Sun', 'hydrogen', 'helium', 'energy', 'fission products', 'E = mc²', 'coal', 'turbine'],
+              ),
+            },
           ],
         },
         {

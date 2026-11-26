@@ -72,7 +72,7 @@ const KS_7_9_UNITS: CurriculumUnit[] = [
       'Elektromagnetisches Spektrum, Atomkern, radioaktiver Zerfall und Strahlungsarten, Nachweis, Halbwertszeit und Aktivität, Kernspaltung und Kernfusion, Strahlenschutz und Kernenergie.',
       'The electromagnetic spectrum, the nucleus, radioactive decay and types of radiation, detection, half-life and activity, fission and fusion, radiation protection and nuclear energy.',
     ),
-    simulations: ['radioaktiver-zerfall', 'em-spektrum'],
+    simulations: ['radioaktiver-zerfall', 'em-spektrum', 'kernspaltung'],
   },
 ];
 

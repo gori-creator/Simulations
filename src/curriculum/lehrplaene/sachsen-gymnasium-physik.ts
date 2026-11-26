@@ -521,7 +521,7 @@ const J12: CurriculumUnit[] = [
     code: 'LK-W1',
     title: L('Eigenschaften der Atomkerne (Wahlbereich Leistungskurs)', 'Properties of atomic nuclei (optional, advanced course)'),
     summary: L('Strahlungsarten, Kernumwandlungen, Zerfallsgesetz und Wechselwirkung mit Materie.', 'Types of radiation, nuclear transformations, the decay law and interaction with matter.'),
-    simulations: ['radioaktiver-zerfall'],
+    simulations: ['radioaktiver-zerfall', 'kernspaltung'],
   },
   {
     code: 'LK-W2',
