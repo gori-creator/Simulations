@@ -184,6 +184,7 @@ describe('Länder-Lehrpläne', () => {
       hubble: 'Kosmologie, Rotverschiebung und Hubble-Beziehung kommen im Lehrplan nicht vor.',
     },
     'rheinland-pfalz-gymnasium-physik': {
+      stromwirkungen: 'Wirkungen und Gefahren des Stroms sind in den erfassten Lernbereichen nicht ausdrücklich genannt (ggf. im Fach Naturwissenschaften 5/6).',
       magnete: 'In den erfassten Lernbereichen kommen Dauermagnete nicht vor (bitte am Lehrplan prüfen).',
       schall: 'Akustik erst als Wahlthema in 12/13; die Simulation ist für Klasse 5 bis 11 gedacht.',
     },
@@ -262,6 +263,7 @@ describe('Länder-Lehrpläne', () => {
       'fourier-reihen': 'nicht im Bildungsplan (Hochschule)',
     },
     'bremen-gymnasium-physik': {
+      stromwirkungen: 'Wirkungen und Gefahren des Stroms sind in den erfassten Lernbereichen nicht ausdrücklich genannt (ggf. im Fach Naturwissenschaften 5/6).',
       hubble: 'Kosmologie, Rotverschiebung und Hubble-Beziehung kommen im Lehrplan nicht vor.',
       'hr-diagramm': 'Astrophysik und Sterne kommen in den erfassten Lernbereichen nicht vor (bitte am Lehrplan prüfen).',
       'diode-transistor': 'Halbleiter, Diode und Transistor nicht im Bildungsplan (siehe docs/lehrplaene/bremen-gymnasium-physik.md)',
@@ -278,6 +280,7 @@ describe('Länder-Lehrpläne', () => {
       'fourier-reihen': 'nicht im Bildungsplan (Hochschule)',
     },
     'hamburg-gymnasium-physik': {
+      stromwirkungen: 'Wirkungen und Gefahren des Stroms sind in den erfassten Lernbereichen nicht ausdrücklich genannt (ggf. im Fach Naturwissenschaften 5/6).',
       magnete: 'Dauermagnete erst im Zusammenhang mit Elektromagnetismus (Jahrgang 9/10); die Simulation ist für Klasse 5–7 gedacht.',
       'diode-transistor': 'Halbleiter, Diode und Transistor nicht im Bildungsplan (siehe docs/lehrplaene/hamburg-gymnasium-physik.md)',
       'licht-schatten': 'Optik vollständig im Fach Naturwissenschaften und Technik 5/6 (siehe docs/lehrplaene/hamburg-gymnasium-physik.md)',
@@ -398,6 +401,7 @@ describe('Länder-Lehrpläne', () => {
       'fourier-reihen': 'nicht in den Fachanforderungen (Hochschule)',
     },
     'schleswig-holstein-gymnasium-physik': {
+      stromwirkungen: 'Wirkungen und Gefahren des Stroms sind in den erfassten Lernbereichen nicht ausdrücklich genannt (ggf. im Fach Naturwissenschaften 5/6).',
       'diode-transistor': 'Halbleiter, Diode und Transistor nicht in den Fachanforderungen (siehe docs/lehrplaene/schleswig-holstein-gymnasium-physik.md)',
       hebelgesetz: 'Hebel und Drehmoment nicht in den Fachanforderungen (siehe docs/lehrplaene/schleswig-holstein-gymnasium-physik.md)',
     },

@@ -58,7 +58,7 @@ const K6: CurriculumUnit[] = [
       'Wirkungen und Gefahren des Stroms, Leiter und Isolatoren, Stromkreise nach Schaltplan aufbauen, verzweigt und unverzweigt.',
       'Effects and dangers of electric current, conductors and insulators, building circuits from diagrams, branched and unbranched.',
     ),
-    simulations: ['einfacher-stromkreis'],
+    simulations: ['einfacher-stromkreis', 'stromwirkungen'],
   },
   {
     code: 'W1',

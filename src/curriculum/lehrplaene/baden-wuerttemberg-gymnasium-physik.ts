@@ -244,7 +244,7 @@ export const badenWuerttembergGymnasiumPhysik: StateCurriculum = {
             "Bauteile und Schaltpläne, Leiter und Nichtleiter, Stromstärke und Spannung messen, Regeln in Reihen- und Parallelschaltung sowie elektrische Leistung, Wirkungen und Gefahren des Stroms.",
             "Components and circuit diagrams, conductors and insulators, measuring current and voltage, rules in series and parallel circuits, and electrical power, effects and dangers of current.",
           ),
-          simulations: ["reihe-parallel", "einfacher-stromkreis"],
+          simulations: ["reihe-parallel", "einfacher-stromkreis", 'stromwirkungen'],
         },
         {
           code: "3.2.4",
@@ -326,6 +326,7 @@ export const badenWuerttembergGymnasiumPhysik: StateCurriculum = {
             "Bauteile und Schaltpläne, Leiter und Nichtleiter, Stromstärke und Spannung messen, Regeln in Reihen- und Parallelschaltung sowie elektrische Leistung, Wirkungen und Gefahren des Stroms.",
             "Components and circuit diagrams, conductors and insulators, measuring current and voltage, rules in series and parallel circuits, and electrical power, effects and dangers of current.",
           ),
+          simulations: ['stromwirkungen'],
         },
         {
           code: "3.2.4",

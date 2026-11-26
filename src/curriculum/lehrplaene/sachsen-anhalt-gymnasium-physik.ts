@@ -106,7 +106,7 @@ const SJ_7_8_UNITS: CurriculumUnit[] = [
       'Ladung und elektrisches Feld, einfache Stromkreise aufbauen, Stromstärke und Spannung messen, Wärme-, Licht- und magnetische Wirkung des Stroms.',
       'Charge and electric field, building simple circuits, measuring current and voltage, heating, lighting and magnetic effects of current.',
     ),
-    simulations: ['einfacher-stromkreis'],
+    simulations: ['einfacher-stromkreis', 'stromwirkungen'],
   },
   {
     code: '3',

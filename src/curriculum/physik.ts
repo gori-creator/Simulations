@@ -322,6 +322,22 @@ export const physik: Subject = {
           grades: [6, 9],
           simulations: [
             {
+              id: 'stromwirkungen',
+              status: 'ready',
+              slug: L('wirkungen-und-gefahren-des-stroms', 'effects-and-dangers-of-current'),
+              title: L('Wirkungen und Gefahren des Stroms', 'Effects and dangers of electric current'),
+              summary: L(
+                'Strom bringt eine Lampe zum Leuchten, macht einen Draht heiß, einen Nagel magnetisch und lässt Gasbläschen aufsteigen. Sicherung, Schutzleiter und FI-Schalter schützen – im Haushalt, wo sich die Ströme an der Mehrfachsteckdose addieren. Und warum sitzt ein Vogel gefahrlos auf der Hochspannungsleitung?',
+                'Current makes a lamp glow, heats a wire, turns a nail into a magnet and makes gas bubbles rise. Fuse, protective earth and RCD keep us safe – at home, where currents add up at the power strip. And why can a bird sit safely on a high-voltage line?',
+              ),
+              grades: [5, 9],
+              kmk: ['P-S', 'P-B', 'P-BK-Energie', 'P-BK-Wechselwirkung'],
+              keywords: L(
+                ['Wirkungen des Stroms', 'Wärmewirkung', 'Lichtwirkung', 'magnetische Wirkung', 'chemische Wirkung', 'Elektrolyse', 'Glühlampe', 'Heizdraht', 'Elektromagnet', 'Sicherung', 'Schmelzsicherung', 'Kurzschluss', 'Gefahren', 'Stromunfall', 'Körperwiderstand', 'FI-Schutzschalter', 'Steckdose', 'Sicherheit', 'Schutzleiter'],
+                ['effects of current', 'heating effect', 'lighting effect', 'magnetic effect', 'chemical effect', 'electrolysis', 'light bulb', 'heating wire', 'electromagnet', 'fuse', 'short circuit', 'dangers', 'electric shock', 'body resistance', 'residual-current device', 'RCD', 'socket', 'safety', 'earth wire'],
+              ),
+            },
+            {
               id: 'einfacher-stromkreis',
               status: 'ready',
               slug: L('einfacher-stromkreis', 'simple-circuit'),
