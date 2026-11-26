@@ -582,7 +582,7 @@ const Q_UNITS: CurriculumUnit[] = [
           'Spektrum elektromagnetischer Strahlung, ionisierende Strahlung, Geiger-Müller-Zählrohr und biologische Wirkungen.',
           'Spectrum of electromagnetic radiation, ionising radiation, the Geiger–Müller counter and biological effects.',
         ),
-        simulations: ['radioaktiver-zerfall'],
+        simulations: ['radioaktiver-zerfall', 'em-spektrum'],
       },
       {
         code: 'GK-4.2',
