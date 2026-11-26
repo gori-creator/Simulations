@@ -2,7 +2,7 @@
 
 <!-- Automatisch erzeugt mit `npm run lehrplan:luecken` aus src/curriculum/lehrplaene/ – nicht von Hand bearbeiten. -->
 
-Lernbereiche der Länder-Lehrpläne, zu denen es noch **keine** Simulation gibt – Vorrat für neue Simulationen (Anleitung: `docs/NEUE-SIMULATION.md`). Insgesamt **94 von 1773** Lernbereichen ohne Simulation.
+Lernbereiche der Länder-Lehrpläne, zu denen es noch **keine** Simulation gibt – Vorrat für neue Simulationen (Anleitung: `docs/NEUE-SIMULATION.md`). Insgesamt **90 von 1773** Lernbereichen ohne Simulation.
 
 Nicht jeder Lernbereich eignet sich für eine Simulation. Reine Methoden-, Praktikums- und Projektthemen sind im Lehrplan mit `method: true` gekennzeichnet und zählen nicht als Lücke. Kommt ein Thema in mehreren Ländern vor, lohnt es sich besonders.
 
@@ -92,7 +92,7 @@ Alle Lernbereiche haben eine Simulation.
 | --- | --- | --- | --- |
 | 12 | S.3 | Stochastik › Hypergeometrische Verteilung | Ziehen ohne Zurücklegen mit der hypergeometrischen Verteilung beschreiben. |
 
-## Physik (71)
+## Physik (67)
 
 ### Baden-Württemberg · Gymnasium (0)
 
@@ -131,7 +131,7 @@ Alle Lernbereiche haben eine Simulation.
 
 Alle Lernbereiche haben eine Simulation.
 
-### Hessen · Gymnasium (31)
+### Hessen · Gymnasium (27)
 
 | Stufe | Nr. | Lernbereich | Kurz |
 | --- | --- | --- | --- |
@@ -142,10 +142,6 @@ Alle Lernbereiche haben eine Simulation.
 | 11 | E.6.4 | Grundlagen der Thermodynamik › Entropieerzeugung und Wirkungsgrad | Entropie als Maß für die Richtung natürlicher Abläufe; Grenzen des Wirkungsgrads. |
 | 11 | E.7.2 | Drehbewegungen › Drehimpuls | Drehimpuls als Erhaltungsgröße; Präzession. |
 | 11 | E.7.3 | Drehbewegungen › Trägheitsmoment | Anwendungsbeispiele wie die Pirouette. |
-| 12 | Q1.1.5 | Elektrisches Feld › Kräfte auf Körper in homogenen elektrischen Feldern, Bahnformen (qualitativ), Energiebetrachtung | Millikan-Versuch, Beschleunigung geladener Teilchen und Ablenkung quer zum Feld. |
-| 12 | Q1.1.9 | Elektrisches Feld › Kräfte auf Körper in homogenen elektrischen Feldern, Bahnformen, Energiebetrachtung (nur LK) | Quantitative Ablenkung (Vergleich mit waagerechtem Wurf), Linearbeschleuniger. |
-| 12 | Q1.2.5 | Magnetisches Feld › Hall-Effekt (nur LK) | Spannung quer zum Strom im Magnetfeld erklären. |
-| 12 | Q1.2.6 | Magnetisches Feld › Teilchenbeschleuniger (nur LK) | Funktionsprinzip z. B. von Zyklotron und Synchrotron. |
 | 12 | Q2.2.3 | Induktion und elektromagnetische Schwingungen › Selbstinduktion und Induktivität einer langen Spule (phänomenologisch) | Selbstinduktion an Spulen beobachten und beschreiben. |
 | 12 | Q2.2.5 | Induktion und elektromagnetische Schwingungen › Elektromagnetische harmonische Schwingungen | Schwingkreis: Kenngrößen, Energieumwandlung, Thomson’sche Gleichung. |
 | 12 | Q2.2.7 | Induktion und elektromagnetische Schwingungen › Selbstinduktion und Induktivität (nur LK) | Ein- und Ausschaltvorgänge, Definition der Induktivität. |
