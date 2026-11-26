@@ -208,6 +208,7 @@ describe('Länder-Lehrpläne', () => {
       'doppler-effekt': 'nur in der Lehrplanalternative Astrophysik (Jgst. 13), die nicht abgebildet ist',
     },
     'berlin-gymnasium-mathematik': {
+      ungleichungen: 'Ungleichungen werden im Lehrplan nicht eigens genannt (nur Gleichungen).',
       uebergangsmatrizen: 'Übergangsmatrizen und Markov-Ketten nicht im Lehrplan',
       'komplexe-zahlen': 'Komplexe Zahlen nicht im Lehrplan',
       kegelschnitte: 'Kegelschnitte und Ortslinien von Ellipse/Parabel/Hyperbel nicht im Lehrplan',
@@ -229,6 +230,7 @@ describe('Länder-Lehrpläne', () => {
       zeitdilatation: 'Spezielle Relativitätstheorie nicht im Rahmenlehrplan der Oberstufe',
     },
     'brandenburg-gymnasium-mathematik': {
+      ungleichungen: 'Ungleichungen werden im Lehrplan nicht eigens genannt (nur Gleichungen).',
       uebergangsmatrizen: 'Übergangsmatrizen und Markov-Ketten nicht im Lehrplan',
       'komplexe-zahlen': 'Komplexe Zahlen nicht im Lehrplan',
       kegelschnitte: 'Kegelschnitte und Ortslinien von Ellipse/Parabel/Hyperbel nicht im Lehrplan',
@@ -250,6 +252,7 @@ describe('Länder-Lehrpläne', () => {
       zeitdilatation: 'Spezielle Relativitätstheorie nicht im Rahmenlehrplan der Oberstufe',
     },
     'bremen-gymnasium-mathematik': {
+      ungleichungen: 'Ungleichungen werden im Lehrplan nicht eigens genannt (nur Gleichungen).',
       richtungsfeld: 'Differenzialgleichungen und Richtungsfelder nicht im Lehrplan',
       'komplexe-zahlen': 'Komplexe Zahlen nicht im Lehrplan',
       kegelschnitte: 'Kegelschnitte und Ortslinien von Ellipse/Parabel/Hyperbel nicht im Lehrplan',
@@ -299,6 +302,7 @@ describe('Länder-Lehrpläne', () => {
       'doppler-effekt': 'kein passender Schwerpunkt (siehe docs/lehrplaene/hessen-gymnasium-physik.md)',
     },
     'niedersachsen-gymnasium-mathematik': {
+      ungleichungen: 'Ungleichungen werden im Lehrplan nicht eigens genannt (nur Gleichungen).',
       uebergangsmatrizen: 'Übergangsmatrizen und Markov-Ketten nicht im Lehrplan',
       'komplexe-zahlen': 'Komplexe Zahlen nicht im Lehrplan',
       'polstellen-asymptoten': 'gebrochenrationale Funktionen mit Polstellen nicht im Kerncurriculum (siehe docs/lehrplaene/niedersachsen-gymnasium-mathematik.md)',
@@ -319,6 +323,7 @@ describe('Länder-Lehrpläne', () => {
       zeitdilatation: 'Spezielle Relativitätstheorie nicht im Kerncurriculum',
     },
     'nordrhein-westfalen-gymnasium-mathematik': {
+      ungleichungen: 'Ungleichungen werden im Lehrplan nicht eigens genannt (nur Gleichungen).',
       uebergangsmatrizen: 'Übergangsmatrizen und Markov-Ketten nicht im Lehrplan',
       richtungsfeld: 'Differenzialgleichungen und Richtungsfelder nicht im Lehrplan',
       'komplexe-zahlen': 'Komplexe Zahlen nicht im Lehrplan',

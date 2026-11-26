@@ -340,7 +340,7 @@ const KS_7_9_UNITS: CurriculumUnit[] = [
         code: '3.6',
         title: L('lineare Gleichungen', 'linear equations'),
         summary: L('Gleichungen durch Probieren, Umkehren und Äquivalenzumformungen lösen, auch als Schnittpunkt von Graphen; einfache Ungleichungen.', 'Solving equations by trial, inverse operations and equivalent transformations, also as intersections of graphs; simple inequalities.'),
-        simulations: ['waagemodell', 'gleichungen-grafisch'],
+        simulations: ['waagemodell', 'gleichungen-grafisch', 'ungleichungen'],
       },
       {
         code: '3.7',

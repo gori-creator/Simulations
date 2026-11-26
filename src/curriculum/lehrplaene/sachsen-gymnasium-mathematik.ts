@@ -215,7 +215,7 @@ const K8: CurriculumUnit[] = [
       'Struktur von Termen erkennen, Terme und lineare Gleichungen ohne Hilfsmittel umformen, binomische Formeln und ein Einblick in Ungleichungen.',
       'Recognising the structure of terms, transforming terms and linear equations by hand, binomial formulas and an introduction to inequalities.',
     ),
-    simulations: ['binomische-formeln'],
+    simulations: ['binomische-formeln', 'ungleichungen'],
   },
   {
     code: '2',

@@ -380,7 +380,7 @@ const KS_7_8_UNITS: CurriculumUnit[] = [
           'Terme zu Sachproblemen aufstellen und ausrechnen, einfache lineare Gleichungen lösen, auch an Waage und Zahlengerade; Ungleichungen und funktionale Deutung von Termen (E).',
           'Setting up and evaluating terms for real problems, solving simple linear equations, also with a balance and the number line; inequalities and the functional view of terms (E).',
         ),
-        simulations: ['termbaum', 'waagemodell', 'gleichungen-grafisch'],
+        simulations: ['termbaum', 'waagemodell', 'gleichungen-grafisch', 'ungleichungen'],
       },
       {
         code: '6.2',

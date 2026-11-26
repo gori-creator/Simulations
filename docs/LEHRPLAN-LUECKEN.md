@@ -2,11 +2,11 @@
 
 <!-- Automatisch erzeugt mit `npm run lehrplan:luecken` aus src/curriculum/lehrplaene/ – nicht von Hand bearbeiten. -->
 
-Lernbereiche der Länder-Lehrpläne, zu denen es noch **keine** Simulation gibt – Vorrat für neue Simulationen (Anleitung: `docs/NEUE-SIMULATION.md`). Insgesamt **127 von 1773** Lernbereichen ohne Simulation.
+Lernbereiche der Länder-Lehrpläne, zu denen es noch **keine** Simulation gibt – Vorrat für neue Simulationen (Anleitung: `docs/NEUE-SIMULATION.md`). Insgesamt **125 von 1773** Lernbereichen ohne Simulation.
 
 Nicht jeder Lernbereich eignet sich für eine Simulation. Reine Methoden-, Praktikums- und Projektthemen sind im Lehrplan mit `method: true` gekennzeichnet und zählen nicht als Lücke. Kommt ein Thema in mehreren Ländern vor, lohnt es sich besonders.
 
-## Mathematik (27)
+## Mathematik (25)
 
 ### Baden-Württemberg · Gymnasium (0)
 
@@ -32,12 +32,11 @@ Alle Lernbereiche haben eine Simulation.
 
 Alle Lernbereiche haben eine Simulation.
 
-### Hessen · Gymnasium (9)
+### Hessen · Gymnasium (8)
 
 | Stufe | Nr. | Lernbereich | Kurz |
 | --- | --- | --- | --- |
 | 7/8 | 1.2.1 | Operationen und ihre Eigenschaften › Rechenverfahren, Rechengesetze und deren Verknüpfungen im Bereich der rationalen und reellen Zahlen | Vorzeichenregeln und Rechengesetze sicher anwenden. |
-| 7/8 | 4.2.4 | Funktionen und Gleichungen › Lösen von Ungleichungen | Lineare Ungleichungen lösen und Lösungsmengen angeben. |
 | 11 | E.7.1 | Folgen und Reihen › Folgen | Konvergenz und Divergenz begründen und Grenzwerte mit Grenzwertsätzen bestimmen. |
 | 11 | E.7.2 | Folgen und Reihen › Reihen | Arithmetische und geometrische Reihen und ihre Grenzwerte untersuchen. |
 | 12 | Q1.2.5 | Anwendungen der Integralrechnung › Uneigentliche Integrale (nur LK) | Unendlich ausgedehnte Flächen auf endlichen Inhalt untersuchen. |
@@ -83,11 +82,10 @@ Alle Lernbereiche haben eine Simulation.
 | 11/12 | LK-W3 | Dynamische Systeme und fraktale Strukturen (Wahlbereich Leistungskurs) | Räuber-Beute-System, Fraktale, Feigenbaum-Diagramm und Chaos. |
 | 11/12 | LK-W4 | Funktionen mit zwei Veränderlichen (Wahlbereich Leistungskurs) | Graphen im Raum, Schnittfiguren und partielle Ableitungen. |
 
-### Sachsen-Anhalt · Gymnasium (3)
+### Sachsen-Anhalt · Gymnasium (2)
 
 | Stufe | Nr. | Lernbereich | Kurz |
 | --- | --- | --- | --- |
-| 5/6 | 1.2 | Zahlen und Größen › Gleichungen und Ungleichungen | Begriffe Variable, Gleichung und Lösung; einfache Gleichungen und Ungleichungen durch Überlegen oder mit Umkehroperationen lösen und die Probe machen. |
 | 11/12 | gA-2.2 | Analytische Geometrie (grundlegendes Anforderungsniveau) › Kreise | Kreise in der Ebene durch Gleichungen beschreiben und die Lage von Punkt oder Gerade zum Kreis untersuchen. |
 | 11/12 | eA-2.2 | Analytische Geometrie (erhöhtes Anforderungsniveau) › Kreise | Wie im grundlegenden Niveau, zusätzlich die Lage zweier Kreise und Tangenten an einen Kreis, auch von einem Punkt außerhalb. |
 

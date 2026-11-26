@@ -275,7 +275,7 @@ const KS_7_8_UNITS: CurriculumUnit[] = [
       'Lineare Gleichungen aufstellen und mit Äquivalenzumformungen lösen, nichtlineare Gleichungen und Ungleichungen, Terme umformen, binomische Formeln.',
       'Setting up linear equations and solving them by equivalent transformations, non-linear equations and inequalities, rearranging terms, binomial formulas.',
     ),
-    simulations: ['waagemodell', 'binomische-formeln', 'gleichungen-grafisch'],
+    simulations: ['waagemodell', 'binomische-formeln', 'gleichungen-grafisch', 'ungleichungen'],
   },
   {
     code: '11',
