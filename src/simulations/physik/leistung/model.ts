@@ -113,7 +113,7 @@ export function hydroPower(Q: number, h: number, eta = ETA_HYDRO): number {
 /* ------------------------------------------------------------------ */
 
 export type Loc = { de: string; en: string };
-export type TaskKind = 'work' | 'power' | 'time' | 'ps' | 'cost' | 'compare';
+export type TaskKind = 'work' | 'power' | 'time' | 'ps' | 'cost' | 'compare' | 'eta' | 'fv';
 
 export interface PowerTask {
   kind: TaskKind;
@@ -146,7 +146,7 @@ export function numText(x: number, lang: 'de' | 'en', d = 2): string {
 export function makeTask(n: number): PowerTask {
   const r = rng(n * 89 + 7);
   const pick = <T>(xs: readonly T[]) => xs[Math.floor(r() * xs.length)]!;
-  const kinds: TaskKind[] = ['work', 'power', 'time', 'ps', 'cost', 'compare'];
+  const kinds: TaskKind[] = ['work', 'power', 'time', 'ps', 'cost', 'compare', 'eta', 'fv'];
   const kind = kinds[(n - 1) % kinds.length]!;
   const nt = numText;
   if (kind === 'work') {
@@ -233,6 +233,44 @@ export function makeTask(n: number): PowerTask {
       },
     };
   }
+  if (kind === 'eta') {
+    const d = pick(['gluehlampe', 'led', 'motor', 'auto'] as EffId[]);
+    const Pin = pick([40, 60, 100, 1000, 2000].filter((x) => (d === 'gluehlampe' || d === 'led' ? x <= 100 : x >= 1000)));
+    const use = EFFICIENCY[d].eta * Pin;
+    return {
+      kind,
+      text: {
+        de: `${EFFICIENCY[d].de} nimmt ${Pin} W auf und hat einen Wirkungsgrad von ${nt(EFFICIENCY[d].eta * 100, 'de', 0)} %. Wie viel Watt werden genutzt?`,
+        en: `${EFFICIENCY[d].en[0]!.toUpperCase()}${EFFICIENCY[d].en.slice(1)} takes in ${Pin} W and has an efficiency of ${nt(EFFICIENCY[d].eta * 100, 'en', 0)} %. How many watts are put to use?`,
+      },
+      answer: use,
+      tol: 0.02,
+      choices: null,
+      solution: {
+        de: `P_nutz = η · P_auf = ${nt(EFFICIENCY[d].eta, 'de')} · ${Pin} W = ${nt(use, 'de', 1)} W; der Rest wird zu Wärme.`,
+        en: `P_useful = η · P_in = ${nt(EFFICIENCY[d].eta, 'en')} · ${Pin} W = ${nt(use, 'en', 1)} W; the rest becomes heat.`,
+      },
+    };
+  }
+  if (kind === 'fv') {
+    const F = pick([20, 30, 40, 50]);
+    const vk = pick([18, 27, 36]);
+    const P = F * (vk / 3.6);
+    return {
+      kind,
+      text: {
+        de: `Eine Radfahrerin muss gegen eine Kraft von ${F} N antreten und fährt ${vk} km/h. Welche Leistung in W bringt sie auf? (P = F · v)`,
+        en: `A cyclist has to push against a force of ${F} N and rides at ${vk} km/h. What power in W does she deliver? (P = F · v)`,
+      },
+      answer: P,
+      tol: 0.02,
+      choices: null,
+      solution: {
+        de: `v = ${vk} km/h : 3,6 = ${nt(vk / 3.6, 'de', 1)} m/s; P = ${F} N · ${nt(vk / 3.6, 'de', 1)} m/s = ${nt(P, 'de', 0)} W`,
+        en: `v = ${vk} km/h / 3.6 = ${nt(vk / 3.6, 'en', 1)} m/s; P = ${F} N · ${nt(vk / 3.6, 'en', 1)} m/s = ${nt(P, 'en', 0)} W`,
+      },
+    };
+  }
   // compare: Wer ist leistungsstärker?
   const mA = pick([45, 50, 60]);
   const tA = pick([6, 8, 10]);
@@ -271,4 +309,60 @@ export function checkTask(task: PowerTask, input: string): boolean | null {
   // Geldbeträge werden auf Cent gerundet eingegeben
   if (task.kind === 'cost' && Math.abs(x - task.answer) <= 0.0051) return true;
   return Math.abs(x - task.answer) <= task.tol * Math.abs(task.answer) + 1e-9;
+}
+
+/* ------------------------------------------------------------------ */
+/* Fahrrad: P = F · v                                                  */
+/* ------------------------------------------------------------------ */
+
+/** Rollwiderstandsbeiwert, Luftdichte und Stirnfläche · c_w (Richtwerte für ein Stadtrad). */
+export const BIKE = { cr: 0.006, rho: 1.2, cda: 0.5 } as const;
+
+/** Kräfte (N) beim Radfahren mit Masse m (kg), Steigung s (in %) und Tempo v (m/s). */
+export function bikeForces(m: number, slopePct: number, v: number): { hang: number; roll: number; air: number; total: number } {
+  const th = Math.atan(slopePct / 100);
+  const hang = m * G * Math.sin(th);
+  const roll = BIKE.cr * m * G * Math.cos(th);
+  const air = 0.5 * BIKE.rho * BIKE.cda * v * v;
+  return { hang, roll, air, total: hang + roll + air };
+}
+
+/** Benötigte Leistung (W) am Pedal: P = F · v. */
+export function bikePower(m: number, slopePct: number, v: number): number {
+  return bikeForces(m, slopePct, v).total * v;
+}
+
+/** Höchsttempo (m/s) bei gegebener Leistung (Bisektion). */
+export function bikeSpeedFor(P: number, m: number, slopePct: number): number {
+  let lo = 0;
+  let hi = 30;
+  for (let i = 0; i < 60; i++) {
+    const mid = (lo + hi) / 2;
+    if (bikePower(m, slopePct, mid) > P) hi = mid;
+    else lo = mid;
+  }
+  return lo;
+}
+
+/* ------------------------------------------------------------------ */
+/* Wirkungsgrad                                                        */
+/* ------------------------------------------------------------------ */
+
+export type EffId = 'gluehlampe' | 'led' | 'motor' | 'auto' | 'kohle' | 'solar' | 'mensch';
+
+/** Typische Wirkungsgrade (Richtwerte) mit Art der Nutzenergie. */
+export const EFFICIENCY: Record<EffId, { eta: number; de: string; en: string; useDe: string; useEn: string }> = {
+  gluehlampe: { eta: 0.05, de: 'Eine Glühlampe', en: 'an incandescent bulb', useDe: 'Licht', useEn: 'light' },
+  led: { eta: 0.4, de: 'Eine LED-Lampe', en: 'an LED lamp', useDe: 'Licht', useEn: 'light' },
+  motor: { eta: 0.9, de: 'Ein Elektromotor', en: 'an electric motor', useDe: 'Bewegung', useEn: 'motion' },
+  auto: { eta: 0.3, de: 'Ein Benzinmotor', en: 'a petrol engine', useDe: 'Bewegung', useEn: 'motion' },
+  kohle: { eta: 0.4, de: 'Ein Kohlekraftwerk', en: 'a coal power plant', useDe: 'Strom', useEn: 'electricity' },
+  solar: { eta: 0.2, de: 'Eine Solarzelle', en: 'a solar cell', useDe: 'Strom', useEn: 'electricity' },
+  mensch: { eta: 0.25, de: 'Der Mensch (Muskeln)', en: 'the human body (muscles)', useDe: 'Bewegung', useEn: 'motion' },
+};
+
+/** Nutzleistung und Verlust (W) bei Eingangsleistung P_in. */
+export function efficiencySplit(id: EffId, Pin: number): { use: number; loss: number } {
+  const use = EFFICIENCY[id].eta * Pin;
+  return { use, loss: Pin - use };
 }

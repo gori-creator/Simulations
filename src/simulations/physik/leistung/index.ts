@@ -1,5 +1,11 @@
 import { defineSimulation, Plot, prefersReducedMotion, roundRect, Surface, subText, text, withAlpha, type Rect } from '../../../sim-core';
 import {
+  bikeForces,
+  bikePower,
+  bikeSpeedFor,
+  EFFICIENCY,
+  efficiencySplit,
+  type EffId,
   checkTask,
   DEVICES,
   ETA_HYDRO,
@@ -53,6 +59,8 @@ export default defineSimulation({
         { value: 'diagramm', label: L('Arbeit-Zeit-Diagramm: zwei Läufer', 'Work–time graph: two runners') },
         { value: 'energie', label: L('Energie im Haushalt', 'Energy at home') },
         { value: 'wasser', label: L('Wasserkraftwerk', 'Hydroelectric plant') },
+        { value: 'fahrrad', label: L('Fahrrad: P = F · v', 'Bicycle: P = F · v') },
+        { value: 'wirkung', label: L('Wirkungsgrad: Nutzen und Verlust', 'Efficiency: useful and wasted') },
         { value: 'ueben', label: L('Üben: Aufgaben', 'Practice: tasks') },
       ],
       default: 'treppe',
@@ -102,6 +110,27 @@ export default defineSimulation({
     { key: 'q', type: 'number', label: L('Wassermenge pro Sekunde', 'Water flow per second'), min: 0.5, max: 100, step: 0.5, default: 10, unit: 'm³/s', visibleIf: (v) => v.mode === 'wasser' },
     { key: 'wh', type: 'number', label: L('Fallhöhe', 'Head (drop height)'), min: 2, max: 300, step: 1, default: 20, unit: 'm', visibleIf: (v) => v.mode === 'wasser' },
     /* Übung */
+    { key: 'bm', type: 'number', label: L('Masse Fahrer + Rad', 'Mass rider + bike'), min: 50, max: 120, step: 1, default: 85, unit: 'kg', visibleIf: (v) => v.mode === 'fahrrad' },
+    { key: 'bs', type: 'number', label: L('Steigung', 'Gradient'), min: 0, max: 15, step: 0.5, default: 5, unit: '%', visibleIf: (v) => v.mode === 'fahrrad' },
+    { key: 'bv', type: 'number', label: L('Tempo', 'Speed'), min: 5, max: 40, step: 1, default: 15, unit: 'km/h', visibleIf: (v) => v.mode === 'fahrrad' },
+    {
+      key: 'eff',
+      type: 'choice',
+      label: L('Gerät', 'Device'),
+      options: [
+        { value: 'gluehlampe', label: L('Glühlampe', 'incandescent bulb') },
+        { value: 'led', label: L('LED-Lampe', 'LED lamp') },
+        { value: 'motor', label: L('Elektromotor', 'electric motor') },
+        { value: 'auto', label: L('Benzinmotor', 'petrol engine') },
+        { value: 'kohle', label: L('Kohlekraftwerk', 'coal power plant') },
+        { value: 'solar', label: L('Solarzelle', 'solar cell') },
+        { value: 'mensch', label: L('Mensch (Muskeln)', 'human (muscles)') },
+      ],
+      default: 'gluehlampe',
+      display: 'menu',
+      visibleIf: (v) => v.mode === 'wirkung',
+    },
+    { key: 'pin', type: 'number', label: L('Aufgenommene Leistung', 'Power taken in'), min: 10, max: 2000, step: 10, default: 60, unit: 'W', visibleIf: (v) => v.mode === 'wirkung' },
     { key: 'qn', type: 'number', label: L('Aufgabe Nr.', 'Task no.'), min: 1, max: 999, step: 1, default: 1, visibleIf: (v) => v.mode === 'ueben' },
     { key: 'qa', type: 'text', label: L('Deine Antwort', 'Your answer'), default: '', maxLength: 10, placeholder: L('Nummer oder Zahl', 'number'), visibleIf: (v) => v.mode === 'ueben' },
   ],
@@ -154,10 +183,32 @@ export default defineSimulation({
     { id: 'bach', label: L('Kleines Wasserrad am Bach', 'Small water wheel on a stream'), values: { mode: 'wasser', q: 0.5, wh: 3 } },
     { id: 'fluss', label: L('Flusskraftwerk', 'River power plant'), values: { mode: 'wasser', q: 100, wh: 10 } },
     { id: 'stausee', label: L('Stausee in den Alpen', 'Alpine reservoir'), values: { mode: 'wasser', q: 20, wh: 300 } },
+    { id: 'flach', label: L('Fahrrad in der Ebene, 20 km/h', 'Bicycle on the flat, 20 km/h'), values: { mode: 'fahrrad', bm: 85, bs: 0, bv: 20 } },
+    { id: 'berg', label: L('Fahrrad bergauf, 8 %', 'Bicycle uphill, 8 %'), values: { mode: 'fahrrad', bm: 85, bs: 8, bv: 12 } },
+    { id: 'schnell', label: L('Schnell in der Ebene: Luftwiderstand', 'Fast on the flat: air resistance'), values: { mode: 'fahrrad', bm: 85, bs: 0, bv: 35 } },
+    { id: 'gluehlampe', label: L('Glühlampe: 95 % Wärme', 'Incandescent bulb: 95 % heat'), values: { mode: 'wirkung', eff: 'gluehlampe', pin: 60 } },
+    { id: 'led', label: L('LED-Lampe', 'LED lamp'), values: { mode: 'wirkung', eff: 'led', pin: 10 } },
+    { id: 'emotor', label: L('Elektromotor gegen Benzinmotor', 'Electric motor versus petrol engine'), values: { mode: 'wirkung', eff: 'motor', pin: 1000 } },
     { id: 'quiz', label: L('Üben: sechs Aufgabenarten', 'Practice: six kinds of tasks'), values: { mode: 'ueben', qn: 1, qa: '' } },
   ],
   strings: {
     de: {
+      canvasF: 'Ein Fahrrad fährt einen Hang hinauf; Pfeile zeigen Hangabtrieb, Rollreibung und Luftwiderstand, dazu die nötige Leistung und ein Diagramm über dem Tempo',
+      canvasW: 'Energieflussdiagramm: Die aufgenommene Leistung teilt sich in Nutzen und Wärmeverlust',
+      fForce: 'Kraft gegen die Fahrt: {F} N (Hang {h} N, Rollen {r} N, Luft {a} N)',
+      fPower: 'Leistung P = F · v ≈ {P} W',
+      fCompare: 'Mit 150 W Dauerleistung schaffst du hier etwa {v} km/h',
+      fInfo: 'Bergauf kostet vor allem der Hangabtrieb, in der Ebene bei hohem Tempo der Luftwiderstand (wächst mit v²). Ein E-Bike hilft mit bis zu 250 W.',
+      fHang: 'Hang',
+      fRoll: 'Rollen',
+      fAir: 'Luft',
+      fAxisV: 'v in km/h',
+      fAxisP: 'P in W',
+      wUse: 'Nutzen ({kind}): {u} W',
+      wLoss: 'Verlust (Wärme): {l} W',
+      wEta: 'Wirkungsgrad η = {e} %',
+      effInfo: 'Der Wirkungsgrad ist der Anteil der aufgenommenen Energie, der genutzt wird: η = P_nutz : P_auf. Der Rest wird zu Wärme – Energie geht nie verloren, sie wird nur entwertet.',
+      wIn: 'aufgenommen',
       canvas: 'Eine Person läuft eine Treppe hinauf, Höhe und Zeit sind angegeben; daneben ein Balkendiagramm, das die Leistung mit Geräten und Maschinen vergleicht',
       WVal: 'W = m·g·h ≈ {W} J',
       PVal: 'P = W/t ≈ {P} W ({ps} PS)',
@@ -203,6 +254,22 @@ export default defineSimulation({
       qScore: '{k} von {n} richtig, {s} in Folge',
     },
     en: {
+      canvasF: 'A bicycle rides up a slope; arrows show the downhill force, rolling resistance and air resistance, with the power needed and a graph against speed',
+      canvasW: 'Energy flow diagram: the power taken in splits into useful output and heat loss',
+      fForce: 'force against the ride: {F} N (slope {h} N, rolling {r} N, air {a} N)',
+      fPower: 'power P = F · v ≈ {P} W',
+      fCompare: 'with 150 W of sustained power you manage about {v} km/h here',
+      fInfo: 'Uphill most of the effort goes into the downhill force, on the flat at high speed into air resistance (grows with v²). An e-bike helps with up to 250 W.',
+      fHang: 'slope',
+      fRoll: 'rolling',
+      fAir: 'air',
+      fAxisV: 'v in km/h',
+      fAxisP: 'P in W',
+      wUse: 'useful ({kind}): {u} W',
+      wLoss: 'loss (heat): {l} W',
+      wEta: 'efficiency η = {e} %',
+      effInfo: 'Efficiency is the share of the energy taken in that is put to use: η = P_useful / P_in. The rest becomes heat – energy is never lost, it just becomes less useful.',
+      wIn: 'taken in',
       canvas: 'A person runs up a staircase, height and time are given; next to it a bar chart comparing the power with devices and machines',
       WVal: 'W = m·g·h ≈ {W} J',
       PVal: 'P = W/t ≈ {P} W ({ps} hp)',
@@ -302,6 +369,24 @@ export default defineSimulation({
         ctx.readout('P', tr('wP', { P: watts(P) }));
         ctx.readout('cmp', tr('wHH', { n: fmt.num(P / HOUSEHOLD_W, 0) }));
         ctx.readout('info', ctx.t('wInfo'));
+        return;
+      }
+      if (p.mode === 'fahrrad') {
+        const v = p.bv / 3.6;
+        const f = bikeForces(p.bm, p.bs, v);
+        ctx.readout('W', tr('fForce', { F: fmt.num(f.total, 0), h: fmt.num(f.hang, 0), r: fmt.num(f.roll, 0), a: fmt.num(f.air, 0) }));
+        ctx.readout('P', tr('fPower', { P: fmt.num(bikePower(p.bm, p.bs, v), 0) }));
+        ctx.readout('cmp', tr('fCompare', { v: fmt.num(bikeSpeedFor(150, p.bm, p.bs) * 3.6, 0) }));
+        ctx.readout('info', ctx.t('fInfo'));
+        return;
+      }
+      if (p.mode === 'wirkung') {
+        const e = EFFICIENCY[p.eff as EffId];
+        const sp = efficiencySplit(p.eff as EffId, p.pin);
+        ctx.readout('W', tr('wEta', { e: fmt.num(e.eta * 100, 0) }));
+        ctx.readout('P', tr('wUse', { kind: ctx.lang === 'de' ? e.useDe : e.useEn, u: fmt.num(sp.use, 0) }));
+        ctx.readout('cmp', tr('wLoss', { l: fmt.num(sp.loss, 0) }));
+        ctx.readout('info', ctx.t('effInfo'));
         return;
       }
       if (p.mode === 'ueben') {
@@ -847,7 +932,194 @@ export default defineSimulation({
 
     /** Dauer der Animation je Ansicht in s. */
     const duration = () => (p.mode === 'heben' ? liftTime(p.lm, p.lh, p.lp) : p.mode === 'diagramm' ? Math.max(p.ta, p.tb) * 1.15 : p.t);
-    const canvasKey = () => ({ heben: 'canvasH', diagramm: 'canvasD', energie: 'canvasE', wasser: 'canvasWa', ueben: 'canvasQ' })[p.mode as string] ?? 'canvas';
+    /* ---------- Fahrrad ---------- */
+    let ride = 0;
+    function drawBike(): void {
+      const g = surface.g;
+      const th = ctx.theme;
+      const W = surface.width;
+      const H = surface.height;
+      const narrow = W < 700;
+      const scene: Rect = narrow ? { x: 0, y: 0, w: W, h: H * 0.55 } : { x: 0, y: 0, w: W * 0.58, h: H };
+      const v = p.bv / 3.6;
+      const f = bikeForces(p.bm, p.bs, v);
+      // Hang (Steigung zur Deutlichkeit dreifach überhöht)
+      const ang = Math.atan((3 * p.bs) / 100);
+      const x0 = scene.x + 20;
+      const y0 = scene.y + scene.h - 40;
+      const len = scene.w - 40;
+      const x1 = x0 + len * Math.cos(ang);
+      const y1 = y0 - len * Math.sin(ang);
+      g.fillStyle = withAlpha(th.series[2]!, 0.2);
+      g.beginPath();
+      g.moveTo(x0, y0);
+      g.lineTo(x1, y1);
+      g.lineTo(x1, y0);
+      g.closePath();
+      g.fill();
+      g.strokeStyle = th.text;
+      g.lineWidth = 2;
+      g.beginPath();
+      g.moveTo(x0, y0);
+      g.lineTo(x1, y1);
+      g.stroke();
+      // Rad fährt (Wiederholung entlang des Hangs)
+      const u = (ride * 0.08) % 1;
+      const bx = x0 + 40 + (len - 120) * u * Math.cos(ang);
+      const by = y0 - (40 + (len - 120) * u) * Math.sin(ang);
+      const wr = 16;
+      g.save();
+      g.translate(bx, by);
+      g.rotate(-ang);
+      g.strokeStyle = th.series[0]!;
+      g.lineWidth = 2.5;
+      for (const wx of [-24, 24]) {
+        g.beginPath();
+        g.arc(wx, -wr, wr, 0, Math.PI * 2);
+        g.stroke();
+        const sp = ride * v * 2;
+        g.beginPath();
+        g.moveTo(wx + Math.cos(sp) * wr, -wr + Math.sin(sp) * wr);
+        g.lineTo(wx - Math.cos(sp) * wr, -wr - Math.sin(sp) * wr);
+        g.stroke();
+      }
+      g.beginPath();
+      g.moveTo(-24, -wr);
+      g.lineTo(-4, -wr - 18);
+      g.lineTo(24, -wr);
+      g.moveTo(-4, -wr - 18);
+      g.lineTo(16, -wr - 22);
+      g.stroke();
+      // Fahrer
+      g.beginPath();
+      g.arc(4, -wr - 52, 7, 0, Math.PI * 2);
+      g.moveTo(2, -wr - 45);
+      g.lineTo(-4, -wr - 20);
+      g.moveTo(1, -wr - 38);
+      g.lineTo(16, -wr - 24);
+      g.stroke();
+      g.restore();
+      text(g, `${fmt.num(p.bs, 1)} %`, x1 - 10, y1 + 20, { font: `700 13px ${th.font}`, color: th.text, align: 'right' });
+      const P = bikePower(p.bm, p.bs, v);
+      text(g, tr('fPower', { P: fmt.num(P, 0) }), scene.x + 16, scene.y + 22, { font: `800 ${narrow ? 15 : 18}px ${th.font}`, color: th.series[0]!, align: 'left' });
+      // Kräfte gegen die Fahrt als Balken
+      const bars: [number, string, string][] = [
+        [f.hang, th.series[3]!, ctx.t('fHang')],
+        [f.roll, th.muted, ctx.t('fRoll')],
+        [f.air, th.series[1]!, ctx.t('fAir')],
+      ];
+      const maxF = Math.max(60, f.total);
+      const bw = Math.min(scene.w * 0.45, 200);
+      bars.forEach(([F, col, lab], k) => {
+        const yy = scene.y + 46 + k * 20;
+        text(g, lab, scene.x + 16, yy, { font: `600 11px ${th.font}`, color: col, align: 'left' });
+        g.fillStyle = col;
+        g.fillRect(scene.x + 70, yy - 5, Math.max(2, (bw * F) / maxF), 10);
+        text(g, `${fmt.num(F, 0)} N`, scene.x + 76 + (bw * F) / maxF, yy, { font: `600 11px ${th.font}`, color: col, align: 'left' });
+      });
+      // Diagramm P über v
+      const ch: Rect = narrow ? { x: 50, y: H * 0.58, w: W - 70, h: H * 0.34 } : { x: scene.w + 50, y: 40, w: W - scene.w - 70, h: H - 90 };
+      const vmax = 40;
+      const pmax = Math.max(300, bikePower(p.bm, p.bs, vmax / 3.6) * 1.05);
+      const X = (vk: number) => ch.x + (vk / vmax) * ch.w;
+      const Y = (pp: number) => ch.y + ch.h - (Math.min(pp, pmax) / pmax) * ch.h;
+      g.strokeStyle = th.axis;
+      g.lineWidth = 1;
+      g.beginPath();
+      g.moveTo(ch.x, ch.y);
+      g.lineTo(ch.x, ch.y + ch.h);
+      g.lineTo(ch.x + ch.w, ch.y + ch.h);
+      g.stroke();
+      text(g, ctx.t('fAxisP'), ch.x, ch.y - 10, { font: `600 11px ${th.font}`, color: th.muted, align: 'left' });
+      text(g, ctx.t('fAxisV'), ch.x + ch.w, ch.y + ch.h + 28, { font: `600 11px ${th.font}`, color: th.muted, align: 'right' });
+      for (const lv of [100, 250]) {
+        if (lv > pmax) continue;
+        g.setLineDash([4, 4]);
+        g.strokeStyle = withAlpha(th.muted, 0.6);
+        g.beginPath();
+        g.moveTo(ch.x, Y(lv));
+        g.lineTo(ch.x + ch.w, Y(lv));
+        g.stroke();
+        g.setLineDash([]);
+        text(g, `${lv} W`, ch.x - 6, Y(lv), { font: `500 10px ${th.font}`, color: th.muted, align: 'right' });
+      }
+      for (let vk = 0; vk <= vmax; vk += 10) text(g, String(vk), X(vk), ch.y + ch.h + 12, { font: `500 10px ${th.font}`, color: th.muted });
+      g.strokeStyle = th.series[0]!;
+      g.lineWidth = 2.5;
+      g.beginPath();
+      for (let vk = 0; vk <= vmax; vk += 0.5) {
+        const pp = bikePower(p.bm, p.bs, vk / 3.6);
+        if (vk === 0) g.moveTo(X(vk), Y(pp));
+        else g.lineTo(X(vk), Y(pp));
+      }
+      g.stroke();
+      g.beginPath();
+      g.arc(X(p.bv), Y(P), 5, 0, Math.PI * 2);
+      g.fillStyle = th.series[0]!;
+      g.fill();
+    }
+
+    /* ---------- Wirkungsgrad ---------- */
+    function drawEff(): void {
+      const g = surface.g;
+      const th = ctx.theme;
+      const W = surface.width;
+      const H = surface.height;
+      const narrow = W < 700;
+      const e = EFFICIENCY[p.eff as EffId];
+      const sp = efficiencySplit(p.eff as EffId, p.pin);
+      const x0 = 30;
+      const xm = W * (narrow ? 0.4 : 0.38);
+      const x1 = W - 30;
+      const cy = H * 0.42;
+      const full = Math.min(H * 0.42, 180);
+      const wu = full * e.eta;
+      const wl = full - wu;
+      const flow = (ph: number) => withAlpha(th.series[0]!, 0.45 + 0.15 * Math.sin(ph));
+      // Eingang
+      g.fillStyle = flow(ride * 2);
+      g.fillRect(x0, cy - full / 2, xm - x0, full);
+      text(g, `${ctx.t('wIn')}: ${fmt.num(p.pin, 0)} W`, x0 + 6, cy - full / 2 - 12, { font: `700 13px ${th.font}`, color: th.text, align: 'left' });
+      // Nutzen geradeaus
+      g.fillStyle = withAlpha(th.series[2]!, 0.75);
+      g.beginPath();
+      g.moveTo(xm, cy - full / 2);
+      g.lineTo(x1 - 20, cy - full / 2);
+      g.lineTo(x1, cy - full / 2 + wu / 2);
+      g.lineTo(x1 - 20, cy - full / 2 + wu);
+      g.lineTo(xm, cy - full / 2 + wu);
+      g.closePath();
+      g.fill();
+      text(g, tr('wUse', { kind: ctx.lang === 'de' ? e.useDe : e.useEn, u: fmt.num(sp.use, 0) }), x1, cy - full / 2 - 12, { font: `700 13px ${th.font}`, color: th.series[2]!, align: 'right' });
+      // Verlust nach unten gebogen
+      const lx0 = xm;
+      const ly0 = cy - full / 2 + wu;
+      g.fillStyle = withAlpha(th.series[3]!, 0.7);
+      g.beginPath();
+      g.moveTo(lx0, ly0);
+      const xd = lx0 + (x1 - xm) * 0.45;
+      g.quadraticCurveTo(xd + wl, ly0, xd + wl, H - 70);
+      g.lineTo(xd, H - 70);
+      g.quadraticCurveTo(xd, ly0 + wl, lx0, ly0 + wl);
+      g.closePath();
+      g.fill();
+      text(g, tr('wLoss', { l: fmt.num(sp.loss, 0) }), Math.min(W - 10, xd + wl / 2 + 60), H - 52, { font: `700 13px ${th.font}`, color: th.series[3]!, align: 'right' });
+      // Wärmewellen
+      for (let k = 0; k < 3; k++) {
+        const xx = xd + wl * (0.2 + 0.3 * k);
+        g.strokeStyle = withAlpha(th.series[3]!, 0.6);
+        g.lineWidth = 2;
+        g.beginPath();
+        for (let yy = 0; yy < 24; yy += 2) g.lineTo(xx + Math.sin(yy * 0.5 + ride * 4) * 3, H - 74 - yy - ((ride * 20) % 10));
+        g.stroke();
+      }
+      text(g, `${ctx.lang === 'de' ? e.de : e.en[0]!.toUpperCase() + e.en.slice(1)}: ${tr('wEta', { e: fmt.num(e.eta * 100, 0) })}`, W / 2, 22, {
+        font: `800 ${narrow ? 14 : 17}px ${th.font}`,
+        color: th.text,
+      });
+    }
+
+    const canvasKey = () => ({ fahrrad: 'canvasF', wirkung: 'canvasW', heben: 'canvasH', diagramm: 'canvasD', energie: 'canvasE', wasser: 'canvasWa', ueben: 'canvasQ' })[p.mode as string] ?? 'canvas';
 
     return {
       update(changed, source) {
@@ -876,6 +1148,10 @@ export default defineSimulation({
       },
       tick(dt) {
         const h = Math.min(dt, 0.05);
+        if (p.mode === 'fahrrad' || p.mode === 'wirkung') {
+          ride += h * (p.mode === 'fahrrad' ? Math.max(0.3, p.bv / 15) : 1);
+          return;
+        }
         if (p.mode === 'wasser') {
           phase += h * (0.4 + Math.log10(1 + hydroPower(p.q, p.wh) / 1000) * 0.5);
           return;
@@ -905,6 +1181,8 @@ export default defineSimulation({
         if (p.mode === 'diagramm') return drawGraph();
         if (p.mode === 'energie') return drawEnergy();
         if (p.mode === 'wasser') return drawHydro();
+        if (p.mode === 'fahrrad') return drawBike();
+        if (p.mode === 'wirkung') return drawEff();
         if (p.mode === 'ueben') return drawQuiz();
         const sp = split(surface.width, surface.height);
         drawStairs(sp.scene);
