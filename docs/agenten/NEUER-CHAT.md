@@ -1,5 +1,7 @@
 # Startnachricht für einen neuen Chat
 
+**Neu (26.11.2026):** Aktueller Stand und Startnachricht stehen in `docs/agenten/UEBERGABE-NOVEMBER-2026.md`. Der Text unten ist vom Oktober.
+
 Vor dem Einfügen: in der neuen Sitzung `/model` auf Opus stellen und den Aufwand auf „Mittel“. Auf dem Branch `claude/sleepy-goodall-ddchwy` arbeiten.
 
 ---
