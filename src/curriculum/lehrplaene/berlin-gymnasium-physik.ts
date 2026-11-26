@@ -38,7 +38,7 @@ const TF_3_5: CurriculumUnit = {
     'Einfache Stromkreise mit Energiequelle, Schalter und Energiewandler, Wirkungen des Stroms, Ladung und Elektroskop, Modell der elektrischen Feldlinie, Strom als bewegte Ladung.',
     'Simple circuits with source, switch and converter, effects of current, charge and the electroscope, the model of electric field lines, current as moving charge.',
   ),
-  simulations: ['einfacher-stromkreis'],
+  simulations: ['einfacher-stromkreis', 'ladungen-coulomb'],
 };
 
 const TF_3_6: CurriculumUnit = {
@@ -60,7 +60,7 @@ const KS_7_8_UNITS: CurriculumUnit[] = [
       'Ausdehnung fester, flüssiger und gasförmiger Körper bei Temperaturänderung, Dichte, Druck und Temperatur eines Gases, Aggregatzustände im Teilchenmodell.',
       'Expansion of solids, liquids and gases with temperature, density, pressure and temperature of a gas, states of matter in the particle model.',
     ),
-    simulations: ['teilchenmodell', 'gasgesetze', 'dichte-auftrieb'],
+    simulations: ["teilchenmodell", "gasgesetze", "dichte-auftrieb", "waermeausdehnung", "druck"],
   },
   {
     code: '3.2',
@@ -87,7 +87,7 @@ const KS_7_8_UNITS: CurriculumUnit[] = [
       'Thermische Energie und Wärme, Temperaturausgleich, Schmelz- und Verdampfungswärme, Wärmeleitung, -strömung und -strahlung im Teilchenmodell.',
       'Thermal energy and heat, temperature equalisation, latent heat of melting and vaporisation, conduction, convection and radiation in the particle model.',
     ),
-    simulations: ['teilchenmodell'],
+    simulations: ['teilchenmodell', 'waermetransport'],
   },
   TF_3_5,
   TF_3_6,

@@ -54,7 +54,7 @@ const SEK_I_UNITS: CurriculumUnit[] = [
       'Temperatur im Basiskonzept Materie: Volumen- und Längenänderung bei Erwärmung im Experiment, Deutung mit dem Teilchenmodell und seine Grenzen; Gase und absoluter Nullpunkt als Vertiefung.',
       'Temperature and matter: changes in volume and length on heating in experiments, explanation with the particle model and its limits; gases and absolute zero as an extension.',
     ),
-    simulations: ['teilchenmodell', 'gasgesetze'],
+    simulations: ['teilchenmodell', 'gasgesetze', 'waermeausdehnung'],
   },
   {
     code: '4',
@@ -63,7 +63,7 @@ const SEK_I_UNITS: CurriculumUnit[] = [
       'Bewegungsänderungen im Basiskonzept Wechselwirkung: Geschwindigkeit mit Betrag und Richtung, Trägheit, Kraft als Maß der Wechselwirkung, Kraftpfeilpaare und Kräftegleichgewicht; Impuls als Vertiefung.',
       'Changes of motion and interaction: velocity with magnitude and direction, inertia, force as a measure of interaction, pairs of force arrows and equilibrium; momentum as an extension.',
     ),
-    simulations: ['bewegungsdiagramme', 'kraefteaddition', 'hookesches-gesetz', 'stoesse', 'dichte-auftrieb', 'newtonsche-gesetze'],
+    simulations: ['bewegungsdiagramme', 'kraefteaddition', 'hookesches-gesetz', 'stoesse', 'dichte-auftrieb', 'newtonsche-gesetze', 'druck'],
   },
   {
     code: '5',
@@ -99,6 +99,7 @@ const SEK_I_UNITS: CurriculumUnit[] = [
       'Thermische Energieströme im Basiskonzept System: Temperaturdifferenz als Antrieb, thermischer Widerstand, Kühlung und Wärmedämmung, Wärmepumpe und Wärmekraftmaschine.',
       'Thermal energy flows and systems: temperature difference as the drive, thermal resistance, cooling and insulation, heat pumps and heat engines.',
     ),
+    simulations: ['waermetransport'],
   },
   {
     code: '9',
@@ -520,7 +521,7 @@ const QP_UNITS: CurriculumUnit[] = [
           'Wie im Grundfach, zusätzlich Influenz und Polarisation, Magnetisierung und Coulomb-Gesetz.',
           'As in the basic course, plus induction of charge and polarisation, magnetisation and Coulomb’s law.',
         ),
-        simulations: ['feldlinien', 'magnetfeld-spule'],
+        simulations: ['feldlinien', 'magnetfeld-spule', 'ladungen-coulomb'],
       },
       {
         code: 'LF-P.2',

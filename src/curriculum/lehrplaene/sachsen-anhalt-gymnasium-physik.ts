@@ -75,7 +75,7 @@ const SJ_6_UNITS: CurriculumUnit[] = [
       'Temperatur messen, Ausdehnung beim Erwärmen mit dem Teilchenmodell erklären, Wärmeleitung, -strömung und -strahlung, Anomalie des Wassers.',
       'Measuring temperature, explaining thermal expansion with the particle model, conduction, convection and radiation, the anomaly of water.',
     ),
-    simulations: ['teilchenmodell'],
+    simulations: ["teilchenmodell", "waermeausdehnung", "waermetransport"],
   },
   {
     code: '5',
@@ -106,7 +106,7 @@ const SJ_7_8_UNITS: CurriculumUnit[] = [
       'Ladung und elektrisches Feld, einfache Stromkreise aufbauen, Stromstärke und Spannung messen, Wärme-, Licht- und magnetische Wirkung des Stroms.',
       'Charge and electric field, building simple circuits, measuring current and voltage, heating, lighting and magnetic effects of current.',
     ),
-    simulations: ['einfacher-stromkreis'],
+    simulations: ['einfacher-stromkreis', 'ladungen-coulomb'],
   },
   {
     code: '3',
@@ -124,7 +124,7 @@ const SJ_7_8_UNITS: CurriculumUnit[] = [
       'Druck bei festen Körpern, in Flüssigkeiten und Gasen, Auftrieb nach Archimedes, Schwimmen, Schweben und Sinken, dynamischer Auftrieb.',
       'Pressure in solids, liquids and gases, Archimedes’ principle, floating, hovering and sinking, dynamic lift.',
     ),
-    simulations: ['dichte-auftrieb'],
+    simulations: ['dichte-auftrieb', 'druck'],
   },
   {
     code: '5',
@@ -409,7 +409,7 @@ const QPHASE_UNITS: CurriculumUnit[] = [
           'Wie im grundlegenden Niveau, zusätzlich Coulomb’sches Gesetz, Potenzial, radiales Feld, Auf- und Entladen quantitativ und Millikan-Versuch.',
           'As at the basic level, plus Coulomb’s law, potential, the radial field, charging and discharging quantitatively and Millikan’s experiment.',
         ),
-        simulations: ['feldlinien', 'kondensator'],
+        simulations: ['feldlinien', 'kondensator', 'ladungen-coulomb'],
       },
       {
         code: 'eA-2.2',

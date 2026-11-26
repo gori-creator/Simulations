@@ -73,6 +73,7 @@ export const badenWuerttembergGymnasiumPhysik: StateCurriculum = {
             "Grundeigenschaften der Energie und Energieketten; Wärmeleitung, Konvektion und Wärmestrahlung untersuchen, Dämmstoffe prüfen und Regeln zum Energiesparen ableiten.",
             "Basic properties of energy and energy chains; investigating conduction, convection and thermal radiation, testing insulating materials and deriving rules for saving energy.",
           ),
+          simulations: ['waermetransport'],
         },
         {
           code: "3.1.5",
@@ -90,7 +91,7 @@ export const badenWuerttembergGymnasiumPhysik: StateCurriculum = {
             "Kräfte ändern Bewegungen und verformen Körper: Trägheit, Hooke’sches Gesetz, Masse und Gewichtskraft sowie Kräftegleichgewicht und resultierende Kraft in einer Richtung.",
             "Forces change motion and deform bodies: inertia, Hooke’s law, mass and weight, and balanced forces and resultant force along one line.",
           ),
-          simulations: ["hookesches-gesetz", "hebelgesetz", "dichte-auftrieb", 'newtonsche-gesetze'],
+          simulations: ["hookesches-gesetz", "hebelgesetz", "dichte-auftrieb", 'newtonsche-gesetze', 'druck'],
         },
         {
           code: "3.1.7",
@@ -166,6 +167,7 @@ export const badenWuerttembergGymnasiumPhysik: StateCurriculum = {
             "Grundeigenschaften der Energie und Energieketten; Wärmeleitung, Konvektion und Wärmestrahlung untersuchen, Dämmstoffe prüfen und Regeln zum Energiesparen ableiten.",
             "Basic properties of energy and energy chains; investigating conduction, convection and thermal radiation, testing insulating materials and deriving rules for saving energy.",
           ),
+          simulations: ['waermetransport'],
         },
         {
           code: "3.1.5",
@@ -183,7 +185,7 @@ export const badenWuerttembergGymnasiumPhysik: StateCurriculum = {
             "Kräfte ändern Bewegungen und verformen Körper: Trägheit, Hooke’sches Gesetz, Masse und Gewichtskraft sowie Kräftegleichgewicht und resultierende Kraft in einer Richtung.",
             "Forces change motion and deform bodies: inertia, Hooke’s law, mass and weight, and balanced forces and resultant force along one line.",
           ),
-          simulations: ["hookesches-gesetz", "hebelgesetz", "dichte-auftrieb", 'newtonsche-gesetze'],
+          simulations: ["hookesches-gesetz", "hebelgesetz", "dichte-auftrieb", 'newtonsche-gesetze', 'druck'],
         },
         {
           code: "3.1.7",
@@ -253,7 +255,7 @@ export const badenWuerttembergGymnasiumPhysik: StateCurriculum = {
             "Wärmeausdehnung und Dichte, Celsius- und Kelvinskala mit absolutem Nullpunkt und die drei Arten des Wärmetransports mit technischen Anwendungen.",
             "Thermal expansion and density, Celsius and Kelvin scales with absolute zero, and the three types of heat transfer with technical applications.",
           ),
-          simulations: ["gasgesetze", "teilchenmodell", "dichte-auftrieb"],
+          simulations: ["gasgesetze", "teilchenmodell", "dichte-auftrieb", "waermeausdehnung", "waermetransport", "druck"],
         },
         {
           code: "3.2.5",
@@ -334,7 +336,7 @@ export const badenWuerttembergGymnasiumPhysik: StateCurriculum = {
             "Wärmeausdehnung und Dichte, Celsius- und Kelvinskala mit absolutem Nullpunkt und die drei Arten des Wärmetransports mit technischen Anwendungen.",
             "Thermal expansion and density, Celsius and Kelvin scales with absolute zero, and the three types of heat transfer with technical applications.",
           ),
-          simulations: ["gasgesetze", "dichte-auftrieb"],
+          simulations: ["gasgesetze", "dichte-auftrieb", "waermeausdehnung", "waermetransport"],
         },
         {
           code: "3.2.5",
@@ -671,7 +673,7 @@ export const badenWuerttembergGymnasiumPhysik: StateCurriculum = {
                 "Coulomb’sches Gesetz, Feldlinien und Superposition, Influenz, Feldstärke, Kapazität und Energie des Plattenkondensators, Lade- und Entladekurven, Potenzial und die quantitative Bewegung geladener Teilchen im Feld.",
                 "Coulomb’s law, field lines and superposition, electrostatic induction, field strength, capacitance and energy of the parallel-plate capacitor, charging and discharging curves, potential, and quantitative motion of charged particles in the field.",
               ),
-              simulations: ["feldlinien", "kondensator"],
+              simulations: ["feldlinien", "kondensator", 'ladungen-coulomb'],
             },
             {
               code: "3.6.2.2",
