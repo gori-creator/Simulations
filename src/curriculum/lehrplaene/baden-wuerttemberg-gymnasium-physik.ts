@@ -1004,7 +1004,7 @@ export const badenWuerttembergGymnasiumPhysik: StateCurriculum = {
                 "Magnetfelder von Leiter und Spule, Kraft auf Leiter und Lorentzkraft, Hall-Effekt, Kreisbahnen geladener Teilchen quantitativ sowie gekreuzte Felder in Wien-Filter und Massenspektrograph.",
                 "Magnetic fields of wire and coil, force on a conductor and Lorentz force, Hall effect, quantitative circular paths of charged particles, and crossed fields in the Wien filter and mass spectrometer.",
               ),
-              simulations: ["lorentzkraft", "magnetfeld-spule"],
+              simulations: ["lorentzkraft", "magnetfeld-spule", "teilchen-felder"],
             },
             {
               code: "3.6.2.3",
