@@ -358,7 +358,7 @@ const J11: CurriculumUnit[] = [
     code: 'LK-1',
     title: L('Erhaltungssätze und ihre Anwendungen (Leistungskurs)', 'Conservation laws and their applications (advanced course)'),
     summary: L('Mechanische Energie und Arbeit, Energieerhaltung, Impulserhaltung bei elastischen und unelastischen Stößen.', 'Mechanical energy and work, conservation of energy, conservation of momentum in elastic and inelastic collisions.'),
-    simulations: ['energieerhaltung', 'stoesse'],
+    simulations: ['energieerhaltung', 'stoesse', 'leistung'],
   },
   {
     code: 'LK-2',

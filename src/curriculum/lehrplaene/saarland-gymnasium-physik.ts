@@ -74,7 +74,7 @@ const KS_8_UNITS: CurriculumUnit[] = [
     code: '2',
     title: L('Mechanische Energie', 'Mechanical energy'),
     summary: L('Arbeit, Energie und Leistung.', 'Work, energy and power.'),
-    simulations: ['energieerhaltung'],
+    simulations: ['energieerhaltung', 'leistung'],
   },
   {
     code: '3',

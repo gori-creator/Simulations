@@ -97,7 +97,7 @@ const SJ_7_8_UNITS: CurriculumUnit[] = [
       'Gewichtskraft und Masse, Kräfte als Pfeile addieren und zerlegen, Hooke’sches Gesetz, Hebelgesetz und Goldene Regel, mechanische Arbeit, Energieerhaltung und Wirkungsgrad.',
       'Weight and mass, adding and resolving forces as arrows, Hooke’s law, the law of the lever and the golden rule of mechanics, mechanical work, conservation of energy and efficiency.',
     ),
-    simulations: ['hookesches-gesetz', 'hebelgesetz', 'kraefteaddition', 'energieerhaltung'],
+    simulations: ['hookesches-gesetz', 'hebelgesetz', 'kraefteaddition', 'energieerhaltung', 'leistung'],
   },
   {
     code: '2',
