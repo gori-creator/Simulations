@@ -56,6 +56,18 @@ The times table from −6 to 6 splits into **four quarters**: top left and botto
 
 The temperature falls by 3 °C per hour. How warm was it 4 hours **ago**? Change per hour $-3$, time $-4$: $(-3) \cdot (-4) = +12$ – it was 12 °C warmer.
 
+### Order of operations with negative numbers
+
+With signs too: multiply and divide first, then add and subtract. Then combine **operation sign and number sign**: $+\,(-3)$ becomes $-\,3$, and $-\,(-3)$ becomes $+\,3$. Example:
+
+$6 + (-2) \cdot 3 - (-8) : 2 = 6 + (-6) - (-4) = 6 - 6 + 4 = 4$
+
+### Removing brackets
+
+If there is a factor in front of a bracket, every number inside is multiplied by it. A **minus in front of the bracket** is the factor $-1$: every sign inside flips.
+
+$-(3 - 5 + 1) = -3 + 5 - 1 \qquad -3 \cdot (2 + 4 - 6) = -6 - 12 + 18$
+
 ## Try it
 
 - [(−3) · (−4)](?mode=strahl&a=-3&b=-4): Follow the jumps and the reflection.
@@ -63,6 +75,8 @@ The temperature falls by 3 °C per hour. How warm was it 4 hours **ago**? Change
 - [Cancel debts](?mode=schulden&st=-20&k=-3&w=-5): How does the balance change?
 - [−12 : (−3)](?mode=teilen&dd=-12&dv=-3): Check the result by multiplying back.
 - [Times table](?mode=tafel&a=-3&b=-4), [(−2)⁵](?mode=viele&nf=5&nn=5&fv=2), [cold snap](?mode=alltag&ts=2&rt=-3&hh=-4), [mental arithmetic](?mode=ueben&dq=1)
+- [Order of operations](?mode=punkt&ex=1): press “Next step” and follow each step.
+- [−(3 − 5 + 1)](?mode=klammer&kf=-1&k1=3&k2=-5&k3=1) and [−3 · (2 + 4 − 6)](?mode=klammer&kf=-3&k1=2&k2=4&k3=-6): press play – which cards flip?
 
 ## Exercises
 
@@ -111,6 +125,14 @@ There are four minus signs, which is an even number. The result is positive: $16
 <details><summary>Show solution</summary>
 
 Change: $2 \cdot (-5) = -10$. Five hours ago it was $8 - 10 = -2$ °C.
+
+</details>
+
+**Removing a bracket.** Remove the bracket and work it out: $-2 \cdot (4 - 7 + 1)$. [Load task](?mode=klammer&kf=-2&k1=4&k2=-7&k3=1&_hide=1)
+
+<details><summary>Show solution</summary>
+
+$-8 + 14 - 2 = 4$. Check: $-2 \cdot (-2) = 4$.
 
 </details>
 

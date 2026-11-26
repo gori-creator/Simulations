@@ -1,9 +1,12 @@
 import { describe, expect, it } from 'vitest';
 import {
   balanceAfter,
+  bracketText,
   checkDrill,
+  expandBracket,
   jumps,
   makeDrill,
+  makeExpr,
   parseInt2,
   partialProducts,
   patternRows,
@@ -12,6 +15,7 @@ import {
   quotient,
   sign,
   signRule,
+  sumText,
   tempAfter,
 } from '../src/simulations/mathematik/vorzeichenregeln/model';
 
@@ -100,6 +104,39 @@ describe('Kopfrechnen', () => {
     for (let n = 1; n <= 200; n++) {
       const d = makeDrill(n);
       if (d.kind === 'div') expect(Number.isInteger(d.answer)).toBe(true);
+    }
+  });
+});
+
+describe('Punkt vor Strich und Klammern', () => {
+  it('die Schritte enden beim richtigen Ergebnis', () => {
+    for (let i = 1; i <= 99; i++) {
+      const e = makeExpr(i);
+      expect(e.steps.length).toBe(e.notes.length);
+      expect(e.notes[0]).toBe('start');
+      expect(e.notes[e.notes.length - 1]).toBe('sum');
+      // letzter Schritt ist die Zahl, vorletzter lässt sich direkt ausrechnen
+      const last = e.steps[e.steps.length - 1]!.replace('−', '-');
+      expect(Number(last)).toBe(e.value);
+      const sum = e.steps[e.steps.length - 2]!.replace(/−/g, '-').replace(/\s/g, '');
+      expect(Function(`return ${sum}`)()).toBe(e.value);
+      expect(Number.isInteger(e.value)).toBe(true);
+    }
+  });
+  it('Klammer auflösen: Minus dreht alle Vorzeichen', () => {
+    expect(expandBracket(-1, [3, -5, 1])).toEqual([-3, 5, -1]);
+    expect(sumText(expandBracket(-1, [3, -5, 1]))).toBe('−3 + 5 − 1');
+    expect(bracketText(-1, [3, -5, 1])).toBe('−(3 − 5 + 1)');
+    expect(bracketText(-3, [2, 4, -6])).toBe('−3 · (2 + 4 − 6)');
+    expect(expandBracket(-3, [2, 4, -6])).toEqual([-6, -12, 18]);
+  });
+  it('neue Kopfrechenarten sind lösbar', () => {
+    for (let n = 1; n <= 200; n++) {
+      const d = makeDrill(n);
+      if (d.kind === 'order' || d.kind === 'bracket') {
+        expect(Number.isInteger(d.answer)).toBe(true);
+        expect(checkDrill(d, String(d.answer).replace('-', '−'))).toBe(true);
+      }
     }
   });
 });
