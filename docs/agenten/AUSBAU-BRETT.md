@@ -19,7 +19,7 @@ Stand: 26.11.2026 · 49 Aufgaben
 | `vorzeichenregeln` | Vorzeichenregeln (Mathe) | Mathe | 5–8 | fertig (PR #313) | `ausbau/vorzeichenregeln` |
 | `farben` | Farben: Prisma und Farbmischung | Physik | 6–10 | fertig (PR #314) | `ausbau/farben` |
 | `stromwirkungen` | Wirkungen und Gefahren des Stroms | Physik | 5–9 | fertig (PR #315) | `ausbau/stromwirkungen` |
-| `ungleichungen` | Lineare Ungleichungen (Mathe) | Mathe | 6–9 | PR #316 | `ausbau/ungleichungen` |
+| `ungleichungen` | Lineare Ungleichungen (Mathe) | Mathe | 6–9 | fertig (PR #316) | `ausbau/ungleichungen` |
 | `leistung` | Arbeit und Leistung | Physik | 7–11 | offen |  |
 | `polarisation` | Polarisation und Brechung | Physik | 10–13 | offen |  |
 | `em-spektrum` | Elektromagnetisches Spektrum | Physik | 10–13 | offen |  |
