@@ -23,9 +23,9 @@ Stand: 26.11.2026 · 49 Aufgaben
 | `leistung` | Arbeit und Leistung | Physik | 7–11 | fertig (PR #319) | `ausbau/leistung` |
 | `polarisation` | Polarisation und Brechung | Physik | 10–13 | fertig (PR #321) | `ausbau/polarisation` |
 | `em-spektrum` | Elektromagnetisches Spektrum | Physik | 10–13 | fertig (PR #322) | `ausbau/em-spektrum` |
-| `schwingkreis` | Schwingkreis und Selbstinduktion | Physik | 11–13 | offen |  |
-| `teilchen-felder` | Geladene Teilchen in Feldern | Physik | 10–13 | offen |  |
-| `kernspaltung` | Kernspaltung und Kernfusion | Physik | 9–13 | offen |  |
+| `schwingkreis` | Schwingkreis und Selbstinduktion | Physik | 11–13 | fertig (PR #324) | `ausbau/schwingkreis` |
+| `teilchen-felder` | Geladene Teilchen in Feldern | Physik | 10–13 | fertig (PR #325) | `ausbau/teilchen-felder` |
+| `kernspaltung` | Kernspaltung und Kernfusion | Physik | 9–13 | fertig (PR #326) | `ausbau/kernspaltung` |
 
 ## Zweite Wahl
 
