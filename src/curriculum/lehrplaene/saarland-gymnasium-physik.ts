@@ -179,7 +179,7 @@ const EP_UNITS: CurriculumUnit[] = [
     code: '2',
     title: L('Kernenergie und Radioaktivität', 'Nuclear energy and radioactivity'),
     summary: L('Kern-Hülle-Modell, Kernbindungsenergie, Kernkraftwerke, Radioaktivität.', 'The nucleus–shell model, nuclear binding energy, nuclear power stations, radioactivity.'),
-    simulations: ['radioaktiver-zerfall'],
+    simulations: ['radioaktiver-zerfall', 'kernspaltung'],
   },
 ];
 

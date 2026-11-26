@@ -186,7 +186,7 @@ const SJ_10_UNITS: CurriculumUnit[] = [
       'Aufbau des Atomkerns, Strahlungsarten, Aktivität, Halbwertszeit und Zerfallsgesetz, Zerfall als Zufallsprozess, Strahlenschutz, Kernspaltung oder Kernfusion.',
       'Structure of the nucleus, types of radiation, activity, half-life and the decay law, decay as a random process, radiation protection, nuclear fission or fusion.',
     ),
-    simulations: ['radioaktiver-zerfall'],
+    simulations: ['radioaktiver-zerfall', 'kernspaltung'],
   },
   {
     code: '3',

@@ -74,7 +74,7 @@ const T_3_1: CurriculumUnit = {
     'Aufbau des Atomkerns, Isotope und Kernkräfte, Strahlungsarten, Spontanzerfall, Aktivität und Halbwertszeit, Absorption, biologische Wirkung und Strahlenschutz, Nutzen und Gefahren.',
     'Structure of the nucleus, isotopes and nuclear forces, types of radiation, spontaneous decay, activity and half-life, absorption, biological effects and radiation protection, benefits and dangers.',
   ),
-  simulations: ['radioaktiver-zerfall'],
+  simulations: ['radioaktiver-zerfall', 'kernspaltung'],
 };
 
 const T_3_2: CurriculumUnit = {

@@ -687,6 +687,7 @@ export const bayernGymnasiumPhysik: StateCurriculum = {
                 "Bindungsenergie je Nukleon, Potentialtopfmodell des Kerns, Entstehung der Strahlungsarten und Energiebilanzen bei Zerfällen und Kernreaktionen.",
                 "Binding energy per nucleon, the potential-well model of the nucleus, the origin of the types of radiation, and energy balances in decays and nuclear reactions.",
               ),
+              simulations: ['kernspaltung'],
             },
             {
               code: "4.2",
@@ -698,7 +699,7 @@ export const bayernGymnasiumPhysik: StateCurriculum = {
                 "Geiger-Müller-Zähler, Zerfallsgesetz und Halbwertszeit, C14-Datierung, Strahlenschutz sowie Kernspaltung und Reaktor.",
                 "Geiger–Müller counter, decay law and half-life, carbon-14 dating, radiation protection, and nuclear fission and reactors.",
               ),
-              simulations: ["radioaktiver-zerfall"],
+              simulations: ["radioaktiver-zerfall", "kernspaltung"],
             },
           ],
         },
