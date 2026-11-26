@@ -33,6 +33,14 @@ Every charge is surrounded by an **electric field**. Field lines show the direct
 
 Electron and proton attract electrically and by gravity. Both fall off as $\frac{1}{r^2}$, but the electric force is about $2.3 \cdot 10^{39}$ times larger – so it governs atoms and materials.
 
+### Everyday: balloon and paper scraps
+
+A rubbed balloon attracts paper scraps and sticks to the wall, although paper and wall are uncharged. In an insulator the electrons cannot move around, but they shift slightly within each molecule (**polarisation**). The side facing the balloon gets the opposite charge and is closer – attraction wins. Because it decreases very quickly with distance, the scraps only jump once the balloon is close enough.
+
+### Thunderstorms and lightning rods
+
+In a thundercloud charges separate; negative charge usually collects at the bottom. On the ground below, positive charge appears by induction. At **points** (trees, church towers, lightning rods) the field lines crowd together and the field becomes much stronger. When it reaches about 3000 kV/m the air becomes conducting: lightning strikes. A lightning rod offers the highest point and conducts the current safely to earth through thick wires. In a car you are safe because the current flows around the outside through the metal body (**Faraday cage**).
+
 ## Try it
 
 - [Plastic on wool](?mode=reiben&ma=pvc&mb=wool), [glass on silk](?mode=reiben&ma=glass&mb=silk)
@@ -41,6 +49,8 @@ Electron and proton attract electrically and by gravity. Both fall off as $\frac
 - [Induction](?mode=influenz&sgn=minus&d=8): earth the sphere, then remove the rod.
 - [Dipole field](?mode=feld&q1=2&q2=-2), [two equal charges](?mode=feld&q1=2&q2=2), [unequal](?mode=feld&q1=4&q2=-1)
 - [Hydrogen atom](?mode=atom&rp=53), [practice](?mode=ueben&qn=1)
+- [Balloon close](?mode=ballon&qb=15&db=2) and [too far away](?mode=ballon&qb=15&db=6): from which distance do the scraps jump?
+- [Storm with lightning rod](?mode=gewitter&qw=20&hw=2&stab=1) and [without](?mode=gewitter&qw=20&hw=2&stab=0): where does the lightning strike?
 
 ## Exercises
 

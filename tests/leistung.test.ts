@@ -1,5 +1,26 @@
 import { describe, expect, it } from 'vitest';
-import { checkTask, DEVICES, energyJ, FLOOR_H, floorsFor, G, hydroPower, liftSpeed, liftTime, makeTask, power, PS, REFERENCES, toKWh, work } from '../src/simulations/physik/leistung/model';
+import {
+  bikeForces,
+  bikePower,
+  bikeSpeedFor,
+  checkTask,
+  DEVICES,
+  EFFICIENCY,
+  efficiencySplit,
+  energyJ,
+  FLOOR_H,
+  floorsFor,
+  G,
+  hydroPower,
+  liftSpeed,
+  liftTime,
+  makeTask,
+  power,
+  PS,
+  REFERENCES,
+  toKWh,
+  work,
+} from '../src/simulations/physik/leistung/model';
 
 describe('Arbeit und Leistung', () => {
   it('Hubarbeit 50 kg auf 6 m', () => {
@@ -40,7 +61,7 @@ describe('Heben, Energie, Wasserkraft', () => {
 describe('Übung', () => {
   it('ist reproduzierbar und wechselt die Aufgabenarten', () => {
     expect(makeTask(3)).toEqual(makeTask(3));
-    expect(new Set(Array.from({ length: 12 }, (_, i) => makeTask(i + 1).kind)).size).toBe(6);
+    expect(new Set(Array.from({ length: 16 }, (_, i) => makeTask(i + 1).kind)).size).toBe(8);
   });
   it('erkennt die hinterlegte Antwort, auch mit Komma und Einheit', () => {
     for (let i = 1; i <= 120; i++) {
@@ -54,7 +75,7 @@ describe('Übung', () => {
     expect(checkTask(makeTask(2), `${makeTask(2).answer} W`)).toBe(true);
   });
   it('Vergleichsaufgaben sind eindeutig', () => {
-    for (let i = 6; i <= 600; i += 6) {
+    for (let i = 6; i <= 800; i += 8) {
       const t = makeTask(i);
       expect(t.kind).toBe('compare');
       expect([1, 2]).toContain(t.answer);
@@ -65,6 +86,31 @@ describe('Übung', () => {
       const t = makeTask(i);
       expect(t.text.en + t.solution.en).not.toMatch(/\d,\d/);
       expect(t.text.de + t.solution.de).not.toMatch(/\d\.\d/);
+    }
+  });
+});
+
+describe('Fahrrad und Wirkungsgrad', () => {
+  it('bergauf überwiegt der Hangabtrieb, schnell in der Ebene der Luftwiderstand', () => {
+    const up = bikeForces(85, 8, 12 / 3.6);
+    expect(up.hang).toBeGreaterThan(up.air + up.roll);
+    const fast = bikeForces(85, 0, 35 / 3.6);
+    expect(fast.hang).toBe(0);
+    expect(fast.air).toBeGreaterThan(fast.roll);
+  });
+  it('P = F · v und Höchsttempo passen zusammen', () => {
+    const v = 5;
+    expect(bikePower(80, 3, v)).toBeCloseTo(bikeForces(80, 3, v).total * v, 9);
+    const vmax = bikeSpeedFor(150, 80, 3);
+    expect(bikePower(80, 3, vmax)).toBeCloseTo(150, 1);
+  });
+  it('Wirkungsgrad teilt die Leistung in Nutzen und Verlust', () => {
+    const s = efficiencySplit('gluehlampe', 60);
+    expect(s.use).toBeCloseTo(3, 9);
+    expect(s.use + s.loss).toBeCloseTo(60, 9);
+    for (const e of Object.values(EFFICIENCY)) {
+      expect(e.eta).toBeGreaterThan(0);
+      expect(e.eta).toBeLessThan(1);
     }
   });
 });

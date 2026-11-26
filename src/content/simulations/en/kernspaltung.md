@@ -27,12 +27,22 @@ If you weigh all particles before and after the reaction, the mass afterwards is
 
 Completely splitting one gram of uranium-235 gives about 23 MWh of heat – as much as almost 3 tonnes of hard coal. In the power plant this heat boils water, and the steam drives a turbine with a generator. A large unit splits only a few kilograms of uranium per day. In return it produces radioactive fission products that must be stored safely for a very long time.
 
+### The moderator
+
+Fission neutrons are very fast (about 2 MeV). U-235, however, splits much more easily with **slow** (thermal) neutrons, so a **moderator** slows them down. As in billiards, the neutron loses most energy when it hits a partner of the same mass: in water (hydrogen nuclei) about 18 collisions are enough, in graphite it takes around 115, and it bounces off heavy lead nuclei with hardly any loss.
+
+### Radioactive waste
+
+The fission products are radioactive. Whether a substance disappears quickly depends on its **half-life**: iodine-131 (8 days) is almost gone after a few months, caesium-137 and strontium-90 (about 30 years) stay radioactive for centuries, plutonium-239 (24 100 years) for tens of thousands of years. That is why a safe final repository is needed.
+
 ## Try it
 
 - [Uranium-235](?mode=bindung&A=235), [iron-56](?mode=bindung&A=56), [helium-4](?mode=bindung&A=4)
 - [Critical](?mode=kette&stab=40&leck=30), [subcritical](?mode=kette&stab=70&leck=30), [supercritical](?mode=kette&stab=10&leck=30)
 - [One fission](?mode=spaltung&ch=baKr): press play and check the nucleon balance.
 - [Mass defect in fusion](?mode=masse&re=dt) and [in the Sun](?mode=masse&re=sonne): what percentage of the mass becomes energy?
+- [Water moderator](?mode=moderator&mod=wasser), [graphite](?mode=moderator&mod=graphit) and [lead](?mode=moderator&mod=blei): press play and count the collisions.
+- [Waste after one month](?mode=abfall&lt=-1.1) and [after 100 years](?mode=abfall&lt=2): what is left?
 - [1 g of uranium](?mode=kraftwerk&g=1) and [one day of a power plant](?mode=kraftwerk&g=400): how many wagons of coal is that?
 - [Practice](?mode=ueben&qn=1): six kinds of tasks with a score.
 

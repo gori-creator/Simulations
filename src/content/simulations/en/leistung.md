@@ -44,6 +44,14 @@ The energy a device uses is $E = P \cdot t$. Electricity is billed in **kilowatt
 
 In a hydroelectric plant the water flow $Q$ falls down the head $h$ every second. The power is $P = \eta \cdot \rho \cdot Q \cdot g \cdot h$ with efficiency $\eta \approx 0.85$. River plants have a lot of water and little height, mountain reservoirs little water and a great height.
 
+### Cycling: P = F · v
+
+When cycling you push against three forces: the **downhill force** on a slope, **rolling resistance** and **air resistance**, which grows with the square of the speed. The power needed is $P = F \cdot v$. A fit person can sustain about 150 to 250 W, an e-bike motor helps with up to 250 W.
+
+### Efficiency
+
+No device turns all the energy it takes in into the desired form. The **efficiency** $\eta = \frac{P_\text{useful}}{P_\text{in}}$ is the share put to use. An incandescent bulb turns only about 5 % of its power into light, an LED around 40 %, an electric motor as much as 90 %. The rest becomes heat.
+
 ## Try it
 
 - [Walking calmly](?m=55&h=6&t=15): How many LED lamps could you power with that?
@@ -53,7 +61,9 @@ In a hydroelectric plant the water flow $Q$ falls down the head $h$ every second
 - [Anna versus Ben](?mode=diagramm&h=6&ma=50&ta=6&mb=80&tb=10): Whose line is steeper?
 - [Evening of TV](?mode=energie&dv=tv&dur=180&m=55) and [kettle](?mode=energie&dv=kocher&dur=3&m=55): How many floors would you have to climb for it?
 - [River plant](?mode=wasser&q=100&wh=10) and [reservoir](?mode=wasser&q=20&wh=300): How many households can be supplied?
-- [Practice](?mode=ueben&qn=1): Six kinds of tasks with a score.
+- [Bicycle uphill](?mode=fahrrad&bm=85&bs=8&bv=12) and [fast on the flat](?mode=fahrrad&bm=85&bs=0&bv=35): which force dominates?
+- [Incandescent bulb](?mode=wirkung&eff=gluehlampe&pin=60), [LED](?mode=wirkung&eff=led&pin=10) and [electric motor](?mode=wirkung&eff=motor&pin=1000): how much becomes heat?
+- [Practice](?mode=ueben&qn=1): Eight kinds of tasks with a score.
 
 ## Exercises
 

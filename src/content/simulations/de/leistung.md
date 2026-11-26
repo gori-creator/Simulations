@@ -44,6 +44,14 @@ Die Energie, die ein Gerät umsetzt, ist $E = P \cdot t$. Strom wird in **Kilowa
 
 In einem Wasserkraftwerk fällt jede Sekunde die Wassermenge $Q$ die Fallhöhe $h$ hinunter. Die Leistung ist $P = \eta \cdot \rho \cdot Q \cdot g \cdot h$ mit dem Wirkungsgrad $\eta \approx 0{,}85$. Flusskraftwerke haben viel Wasser und wenig Höhe, Speicherkraftwerke in den Bergen wenig Wasser und große Höhe.
 
+### Radfahren: P = F · v
+
+Beim Radfahren muss man gegen drei Kräfte antreten: den **Hangabtrieb** bergauf, die **Rollreibung** und den **Luftwiderstand**, der mit dem Quadrat des Tempos wächst. Die nötige Leistung ist $P = F \cdot v$. Ein trainierter Mensch schafft auf Dauer etwa 150 bis 250 W, ein E-Bike-Motor hilft mit bis zu 250 W.
+
+### Wirkungsgrad
+
+Kein Gerät wandelt die aufgenommene Energie vollständig in die gewünschte Form um. Der **Wirkungsgrad** $\eta = \frac{P_\text{nutz}}{P_\text{auf}}$ gibt den genutzten Anteil an. Eine Glühlampe macht nur etwa 5 % ihrer Leistung zu Licht, eine LED rund 40 %, ein Elektromotor sogar 90 %. Der Rest wird zu Wärme.
+
 ## Ausprobieren
 
 - [Gemütlich gehen](?m=55&h=6&t=15): Wie viele LED-Lampen könntest du damit betreiben?
@@ -53,7 +61,9 @@ In einem Wasserkraftwerk fällt jede Sekunde die Wassermenge $Q$ die Fallhöhe $
 - [Anna gegen Ben](?mode=diagramm&h=6&ma=50&ta=6&mb=80&tb=10): Wer hat die steilere Gerade?
 - [Fernsehabend](?mode=energie&dv=tv&dur=180&m=55) und [Wasserkocher](?mode=energie&dv=kocher&dur=3&m=55): Wie oft müsstest du dafür ein Stockwerk hochsteigen?
 - [Flusskraftwerk](?mode=wasser&q=100&wh=10) und [Stausee](?mode=wasser&q=20&wh=300): Wie viele Haushalte lassen sich versorgen?
-- [Üben](?mode=ueben&qn=1): Sechs Aufgabenarten mit Punktestand.
+- [Fahrrad bergauf](?mode=fahrrad&bm=85&bs=8&bv=12) und [schnell in der Ebene](?mode=fahrrad&bm=85&bs=0&bv=35): Welche Kraft überwiegt?
+- [Glühlampe](?mode=wirkung&eff=gluehlampe&pin=60), [LED](?mode=wirkung&eff=led&pin=10) und [Elektromotor](?mode=wirkung&eff=motor&pin=1000): Wie viel wird zu Wärme?
+- [Üben](?mode=ueben&qn=1): Acht Aufgabenarten mit Punktestand.
 
 ## Aufgaben
 
