@@ -2,6 +2,7 @@ import { defineSimulation, Plot, prefersReducedMotion, roundRect, Surface, text,
 import {
   airPressure,
   barometerHeight,
+  bloodPressureAt,
   bottomPressure,
   breeze,
   checkTask,
@@ -14,13 +15,16 @@ import {
   P0,
   pressure,
   pumpLift,
+  strawHeight,
   tapPressure,
   type PressureTask,
 } from './model';
 
 const L = (de: string, en: string) => ({ de, en });
 
-type Mode = 'auflage' | 'hydraulik' | 'wasser' | 'gefaesse' | 'luft' | 'messen' | 'wind' | 'ueben';
+type Mode = 'auflage' | 'hydraulik' | 'wasser' | 'gefaesse' | 'luft' | 'messen' | 'wind' | 'halm' | 'blut' | 'ueben';
+
+const LIQUID: Record<string, number> = { wasser: 1000, saft: 1050, quecksilber: 13546 };
 
 /** Auflageflächen in cm² (beide Füße zusammen). */
 const AREAS: Record<string, number> = { absatz: 4, schuh: 300, schneeschuh: 2000, ski: 3200 };
@@ -63,6 +67,8 @@ export default defineSimulation({
         { value: 'luft', label: L('Luftdruck in der Höhe', 'Air pressure at altitude') },
         { value: 'messen', label: L('Druck messen: Barometer, Halbkugeln', 'Measuring pressure: barometer, hemispheres') },
         { value: 'wind', label: L('Wind durch Druckunterschiede', 'Wind from pressure differences') },
+        { value: 'halm', label: L('Alltag: Trinken mit dem Strohhalm', 'Everyday: drinking through a straw') },
+        { value: 'blut', label: L('Alltag: Blutdruck im Körper', 'Everyday: blood pressure in the body') },
         { value: 'ueben', label: L('Üben: Aufgaben zum Druck', 'Practice: pressure tasks') },
       ],
       default: 'auflage',
@@ -100,7 +106,17 @@ export default defineSimulation({
       visibleIf: (v) => v.mode === 'gefaesse',
     },
     { key: 'fh', type: 'number', label: L('Füllhöhe', 'Filling height'), min: 5, max: 50, step: 1, default: 30, unit: 'cm', visibleIf: (v) => v.mode === 'gefaesse' && v.gv === 'form' },
-    { key: 'th', type: 'number', label: L('Wasserspiegel im Turm', 'Water level in the tower'), min: 10, max: 60, step: 1, default: 40, unit: 'm', visibleIf: (v) => v.mode === 'gefaesse' && v.gv === 'turm' },
+    {
+      key: 'th',
+      type: 'number',
+      label: L('Wasserspiegel im Turm', 'Water level in the tower'),
+      min: 10,
+      max: 60,
+      step: 1,
+      default: 40,
+      unit: 'm',
+      visibleIf: (v) => v.mode === 'gefaesse' && v.gv === 'turm',
+    },
     { key: 'hoehe', type: 'number', label: L('Höhe über dem Meer', 'Height above sea level'), min: 0, max: 9000, step: 1, default: 2000, unit: 'm', visibleIf: (v) => v.mode === 'luft' },
     {
       key: 'mv',
@@ -115,9 +131,57 @@ export default defineSimulation({
       visibleIf: (v) => v.mode === 'messen',
     },
     { key: 'pa', type: 'number', label: L('Luftdruck', 'Air pressure'), min: 900, max: 1060, step: 1, default: 1013, unit: 'hPa', visibleIf: (v) => v.mode === 'messen' && v.mv === 'baro' },
-    { key: 'r', type: 'number', label: L('Radius der Halbkugeln', 'Radius of the hemispheres'), min: 5, max: 40, step: 1, default: 25, unit: 'cm', visibleIf: (v) => v.mode === 'messen' && v.mv === 'magde' },
-    { key: 'pin', type: 'number', label: L('Druck innen (abgepumpt)', 'Pressure inside (pumped out)'), min: 0, max: 1013, step: 1, default: 50, unit: 'hPa', visibleIf: (v) => v.mode === 'messen' && v.mv === 'magde' },
+    {
+      key: 'r',
+      type: 'number',
+      label: L('Radius der Halbkugeln', 'Radius of the hemispheres'),
+      min: 5,
+      max: 40,
+      step: 1,
+      default: 25,
+      unit: 'cm',
+      visibleIf: (v) => v.mode === 'messen' && v.mv === 'magde',
+    },
+    {
+      key: 'pin',
+      type: 'number',
+      label: L('Druck innen (abgepumpt)', 'Pressure inside (pumped out)'),
+      min: 0,
+      max: 1013,
+      step: 1,
+      default: 50,
+      unit: 'hPa',
+      visibleIf: (v) => v.mode === 'messen' && v.mv === 'magde',
+    },
     { key: 'tag', type: 'boolean', label: L('Tag (Sonne scheint)', 'Day (sun shining)'), default: true, visibleIf: (v) => v.mode === 'wind' },
+    { key: 'hdp', type: 'number', label: L('Unterdruck im Mund', 'Underpressure in the mouth'), min: 0, max: 150, step: 5, default: 40, unit: 'hPa', visibleIf: (v) => v.mode === 'halm' },
+    { key: 'hl', type: 'number', label: L('Länge des Strohhalms', 'Length of the straw'), min: 10, max: 200, step: 5, default: 25, unit: 'cm', visibleIf: (v) => v.mode === 'halm' },
+    {
+      key: 'hfl',
+      type: 'choice',
+      label: L('Flüssigkeit', 'Liquid'),
+      options: [
+        { value: 'wasser', label: L('Wasser', 'water') },
+        { value: 'saft', label: L('Saft', 'juice') },
+        { value: 'quecksilber', label: L('Quecksilber (nur gedacht!)', 'mercury (imagined only!)') },
+      ],
+      default: 'wasser',
+      display: 'buttons',
+      visibleIf: (v) => v.mode === 'halm',
+    },
+    { key: 'bsys', type: 'number', label: L('Blutdruck am Herzen', 'Blood pressure at the heart'), min: 90, max: 180, step: 5, default: 120, unit: 'mmHg', visibleIf: (v) => v.mode === 'blut' },
+    {
+      key: 'bmh',
+      type: 'number',
+      label: L('Messstelle über dem Herzen', 'Measuring point above the heart'),
+      min: -130,
+      max: 60,
+      step: 5,
+      default: 0,
+      unit: 'cm',
+      visibleIf: (v) => v.mode === 'blut' && v.bliegt !== true,
+    },
+    { key: 'bliegt', type: 'boolean', label: L('liegen statt stehen', 'lying instead of standing'), default: false, visibleIf: (v) => v.mode === 'blut' },
     { key: 'qn', type: 'number', label: L('Aufgabe Nr.', 'Task no.'), min: 1, max: 999, step: 1, default: 1, visibleIf: (v) => v.mode === 'ueben' },
     { key: 'qa', type: 'text', label: L('Deine Antwort', 'Your answer'), default: '', maxLength: 16, placeholder: L('eine Zahl', 'a number'), visibleIf: (v) => v.mode === 'ueben' },
   ],
@@ -125,18 +189,40 @@ export default defineSimulation({
     v.mode === 'auflage'
       ? L('Dieselbe Kraft, verschiedene Flächen: Wie tief sinkt man im Schnee ein?', 'Same force, different areas: how deep do you sink into the snow?')
       : v.mode === 'hydraulik'
-        ? L('Der Druck ist in der ganzen Flüssigkeit gleich – am großen Kolben wirkt eine viel größere Kraft. Pumpe und beobachte, wie weit sich die Kolben bewegen.', 'Pressure is the same throughout the liquid – the large piston feels a much larger force. Pump and watch how far the pistons move.')
+        ? L(
+            'Der Druck ist in der ganzen Flüssigkeit gleich – am großen Kolben wirkt eine viel größere Kraft. Pumpe und beobachte, wie weit sich die Kolben bewegen.',
+            'Pressure is the same throughout the liquid – the large piston feels a much larger force. Pump and watch how far the pistons move.',
+          )
         : v.mode === 'wasser'
           ? L('Alle 10 m Wassertiefe kommt etwa 1 bar dazu.', 'Every 10 m of water adds about 1 bar.')
           : v.mode === 'gefaesse'
-            ? L('Der Druck am Boden hängt nur von der Höhe des Wassers ab – nicht davon, wie viel Wasser im Gefäß ist.', 'The pressure at the bottom depends only on the height of the water – not on how much water is in the vessel.')
+            ? L(
+                'Der Druck am Boden hängt nur von der Höhe des Wassers ab – nicht davon, wie viel Wasser im Gefäß ist.',
+                'The pressure at the bottom depends only on the height of the water – not on how much water is in the vessel.',
+              )
             : v.mode === 'luft'
               ? L('Je höher, desto weniger Luft liegt über uns.', 'The higher up, the less air lies above us.')
               : v.mode === 'messen'
-                ? L('Der Luftdruck hält einer Flüssigkeitssäule das Gleichgewicht – und drückt luftleere Halbkugeln mit großer Kraft zusammen.', 'Air pressure balances a column of liquid – and presses evacuated hemispheres together with a large force.')
-                : v.mode === 'wind'
-                  ? L('Wo die Luft warm wird, steigt sie auf; am Boden entsteht tiefer Druck, und Wind strömt nach.', 'Where air gets warm it rises; low pressure forms at the ground and wind flows in.')
-                  : L('Rechne und gib die Zahl ein. Komma oder Punkt sind beide in Ordnung.', 'Work it out and enter the number. A comma or a point are both fine.'),
+                ? L(
+                    'Der Luftdruck hält einer Flüssigkeitssäule das Gleichgewicht – und drückt luftleere Halbkugeln mit großer Kraft zusammen.',
+                    'Air pressure balances a column of liquid – and presses evacuated hemispheres together with a large force.',
+                  )
+                : v.mode === 'halm'
+                  ? L(
+                      'Du saugst nicht das Getränk an – du senkst den Druck im Mund. Der äußere Luftdruck drückt die Flüssigkeit hoch. Wie lang darf der Halm sein?',
+                      'You do not suck up the drink – you lower the pressure in your mouth. The outside air pressure pushes the liquid up. How long can the straw be?',
+                    )
+                  : v.mode === 'blut'
+                    ? L(
+                        'Das Blut in den Adern ist eine Flüssigkeitssäule: Unterhalb des Herzens ist der Druck größer, oberhalb kleiner. Darum misst man am Oberarm auf Herzhöhe.',
+                        'The blood in the vessels is a column of liquid: below the heart the pressure is higher, above it lower. That is why it is measured at the upper arm at heart level.',
+                      )
+                    : v.mode === 'wind'
+                      ? L(
+                          'Wo die Luft warm wird, steigt sie auf; am Boden entsteht tiefer Druck, und Wind strömt nach.',
+                          'Where air gets warm it rises; low pressure forms at the ground and wind flows in.',
+                        )
+                      : L('Rechne und gib die Zahl ein. Komma oder Punkt sind beide in Ordnung.', 'Work it out and enter the number. A comma or a point are both fine.'),
   actions: [
     { id: 'pump', label: L('Pumpen (ein Hub)', 'Pump (one stroke)'), primary: true, visibleIf: (v) => v.mode === 'hydraulik' },
     { id: 'pump10', label: L('10 Hübe', '10 strokes'), visibleIf: (v) => v.mode === 'hydraulik' },
@@ -166,10 +252,32 @@ export default defineSimulation({
     { id: 'magde', label: L('Magdeburger Halbkugeln (1656)', 'Magdeburg hemispheres (1656)'), values: { mode: 'messen', mv: 'magde', r: 25, pin: 50 } },
     { id: 'day', label: L('Seewind am Tag', 'Sea breeze by day'), values: { mode: 'wind', tag: true } },
     { id: 'night', label: L('Landwind in der Nacht', 'Land breeze at night'), values: { mode: 'wind', tag: false } },
-    { id: 'quiz', label: L('Üben: neun Aufgaben', 'Practice: nine tasks'), values: { mode: 'ueben', qn: 1, qa: '' } },
+    { id: 'halm', label: L('Strohhalm 25 cm', 'Straw 25 cm'), values: { mode: 'halm', hdp: 40, hl: 25, hfl: 'wasser' } },
+    { id: 'halm2', label: L('Strohhalm 2 m – zu lang?', 'Straw 2 m – too long?'), values: { mode: 'halm', hdp: 100, hl: 200, hfl: 'wasser' } },
+    { id: 'fuss', label: L('Blutdruck an den Füßen', 'Blood pressure at the feet'), values: { mode: 'blut', bsys: 120, bmh: -120, bliegt: false } },
+    { id: 'arm', label: L('Arm hochgestreckt', 'Arm raised'), values: { mode: 'blut', bsys: 120, bmh: 50, bliegt: false } },
+    { id: 'quiz', label: L('Üben: elf Aufgabenarten', 'Practice: eleven kinds of tasks'), values: { mode: 'ueben', qn: 1, qa: '' } },
   ],
   strings: {
     de: {
+      canvasH: 'Ein Glas mit Getränk und ein Strohhalm bis zum Mund; die Flüssigkeit steigt im Halm so hoch, wie der Luftdruck sie drücken kann',
+      canvasB: 'Ein stehender Mensch mit Herz und Messstelle; daneben Balken für den Blutdruck an Kopf, Herz und Füßen',
+      hRise: 'Der Luftdruck drückt die Flüssigkeit bis zu {h} cm hoch.',
+      hDrink: 'Die Flüssigkeit erreicht den Mund – du trinkst.',
+      hShort: 'Zu lang: Die Flüssigkeit bleibt nach {h} cm stehen.',
+      hIn: 'außen {a} hPa, im Mund {i} hPa',
+      hInfo: 'Mit dem Mund schafft man etwa 100 hPa Unterdruck – genug für rund einen Meter Wasser. Auch die beste Saugpumpe hebt Wasser höchstens etwa 10 m, weil der Luftdruck nicht mehr hergibt.',
+      hAir: 'Luftdruck',
+      hMouth: 'Mund',
+      bHere: 'An der Messstelle: {p} mmHg',
+      bInfo:
+        'Unter dem Herzen kommt der Druck der Blutsäule hinzu, darüber fehlt er. Beim Liegen sind alle Stellen etwa auf Herzhöhe. Eine Giraffe braucht am Herzen etwa doppelt so viel Druck wie wir, damit das Blut den Kopf erreicht.',
+      bLying: 'Im Liegen: überall etwa {p} mmHg',
+      bHead: 'Kopf',
+      bHeart: 'Herz',
+      bFeet: 'Füße',
+      bPoint: 'Messstelle',
+      hgShort: 'mmHg',
       canvas: 'Druck: Person im Schnee, hydraulische Presse, Taucher, Gefäße und Wasserturm, Berg, Barometer und Halbkugeln oder Küste mit Wind; daneben Diagramme',
       canvasQuiz: 'Übungsaufgabe zum Druck mit Rückmeldung',
       pAuflage: 'p = F / A = {F} N / {A} cm² ≈ {p}',
@@ -219,6 +327,25 @@ export default defineSimulation({
       qBad: 'Bitte eine Zahl eingeben.',
     },
     en: {
+      canvasH: 'A glass with a drink and a straw up to the mouth; the liquid rises in the straw as high as the air pressure can push it',
+      canvasB: 'A standing person with the heart and a measuring point; next to it bars for the blood pressure at head, heart and feet',
+      hRise: 'The air pressure pushes the liquid up to {h} cm.',
+      hDrink: 'The liquid reaches your mouth – you are drinking.',
+      hShort: 'Too long: the liquid stops after {h} cm.',
+      hIn: 'outside {a} hPa, in the mouth {i} hPa',
+      hInfo:
+        'With your mouth you can manage about 100 hPa of underpressure – enough for roughly one metre of water. Even the best suction pump lifts water by at most about 10 m because air pressure cannot give more.',
+      hAir: 'air pressure',
+      hMouth: 'mouth',
+      bHere: 'At the measuring point: {p} mmHg',
+      bInfo:
+        'Below the heart the pressure of the blood column is added, above it it is missing. When lying down all points are roughly at heart level. A giraffe needs about twice our pressure at the heart so that the blood reaches its head.',
+      bLying: 'Lying down: about {p} mmHg everywhere',
+      bHead: 'head',
+      bHeart: 'heart',
+      bFeet: 'feet',
+      bPoint: 'measuring point',
+      hgShort: 'mmHg',
       canvas: 'Pressure: person in snow, hydraulic press, diver, vessels and water tower, mountain, barometer and hemispheres or coast with wind; next to it graphs',
       canvasQuiz: 'Practice task on pressure with feedback',
       pAuflage: 'p = F / A = {F} N / {A} cm² ≈ {p}',
@@ -346,6 +473,18 @@ export default defineSimulation({
 
     function updateReadouts(): void {
       for (const k of ['p', 'F2', 'info']) ctx.readout(k, null);
+      if (mode() === 'halm') {
+        const hmax = strawHeight(p.hdp, LIQUID[p.hfl as string]!) * 100;
+        ctx.readout('p', tr('hIn', { a: fmt.num(P0, 0), i: fmt.num(P0 - p.hdp, 0) }));
+        ctx.readout('F2', hmax >= p.hl ? ctx.t('hDrink') : tr('hShort', { h: fmt.num(hmax, hmax < 10 ? 1 : 0) }));
+        ctx.readout('info', ctx.t('hInfo'));
+        return;
+      }
+      if (mode() === 'blut') {
+        ctx.readout('p', p.bliegt ? tr('bLying', { p: fmt.num(p.bsys, 0) }) : tr('bHere', { p: fmt.num(bloodPressureAt(p.bsys, -p.bmh / 100), 0) }));
+        ctx.readout('info', ctx.t('bInfo'));
+        return;
+      }
       const m = mode();
       if (m === 'auflage') {
         const A = AREAS[p.flaeche]!;
@@ -1029,7 +1168,7 @@ export default defineSimulation({
       if (m === 'auflage') return drawAuflageChart();
       if (m === 'hydraulik') return drawHydraulikChart();
       if (m === 'messen') return drawMessenChart();
-      if (m === 'wind' || m === 'ueben') return;
+      if (m === 'wind' || m === 'ueben' || m === 'halm' || m === 'blut') return;
       plot.begin();
       plot.grid({ minor: false });
       plot.axes();
@@ -1049,6 +1188,161 @@ export default defineSimulation({
         plot.point(p.hoehe, airPressure(p.hoehe), { color: th.series[1]!, radius: 6 });
       }
       plot.end();
+    }
+
+    /* ---------- Strohhalm ---------- */
+    let strawLevel = 0;
+    const strawTarget = () => Math.min(p.hl, strawHeight(p.hdp, LIQUID[p.hfl as string]!) * 100);
+    function drawHalm(r: Rect): void {
+      const g = surface.g;
+      const th = ctx.theme;
+      const liq = p.hfl === 'quecksilber' ? th.muted : p.hfl === 'saft' ? th.series[3]! : th.series[0]!;
+      // Maßstab: ganzer Halm passt in die Szene
+      const gw = Math.min(r.w * 0.32, 130);
+      const gh = Math.min(r.h * 0.32, 130);
+      const gx = r.x + r.w * 0.5 - gw / 2;
+      const gy = r.y + r.h - 20 - gh;
+      const surfaceY = gy + gh * 0.3;
+      const ok = strawHeight(p.hdp, LIQUID[p.hfl as string]!) * 100 >= p.hl;
+      const msg = ok ? ctx.t('hDrink') : tr('hShort', { h: fmt.num(strawTarget(), strawTarget() < 10 ? 1 : 0) });
+      g.font = `800 14px ${th.font}`;
+      const lines = wrap(g, msg, r.w - 28);
+      const top = r.y + 54 + lines.length * 17;
+      const cmPx = (surfaceY - top) / Math.max(p.hl, 1);
+      // Glas
+      g.fillStyle = withAlpha(liq, 0.4);
+      g.fillRect(gx, surfaceY, gw, gy + gh - surfaceY);
+      g.strokeStyle = th.text;
+      g.lineWidth = 2;
+      g.beginPath();
+      g.moveTo(gx, gy);
+      g.lineTo(gx + 6, gy + gh);
+      g.lineTo(gx + gw - 6, gy + gh);
+      g.lineTo(gx + gw, gy);
+      g.stroke();
+      // Halm: unten im Glas, oben im Mund
+      const sx = gx + gw * 0.6;
+      const sw = 10;
+      const bottom = gy + gh - 8;
+      const level = surfaceY - strawLevel * cmPx;
+      g.fillStyle = withAlpha(liq, 0.85);
+      g.fillRect(sx - sw / 2 + 2, level, sw - 4, bottom - level);
+      g.strokeStyle = th.muted;
+      g.lineWidth = 1.5;
+      g.strokeRect(sx - sw / 2, top, sw, bottom - top);
+      // Mund (Gesicht im Profil)
+      g.fillStyle = withAlpha(th.series[1]!, 0.35);
+      g.beginPath();
+      g.ellipse(sx + 30, top - 14, 34, 26, 0, 0, Math.PI * 2);
+      g.fill();
+      text(g, `${ctx.t('hMouth')}: ${fmt.num(P0 - p.hdp, 0)} hPa`, sx + 70, top - 14, { font: `700 12px ${th.font}`, color: th.text, align: 'left' });
+      // Luftdruck-Pfeile auf die Oberfläche
+      for (const f of [0.15, 0.35, 0.85]) {
+        arrow(g, gx + gw * f, surfaceY - 36, gx + gw * f, surfaceY - 4, th.series[2]!, 2);
+      }
+      text(g, ctx.t('hAir'), gx + gw * 0.25, surfaceY - 62, { font: `700 12px ${th.font}`, color: th.series[2]! });
+      text(g, `${fmt.num(P0, 0)} hPa`, gx + gw * 0.25, surfaceY - 47, { font: `700 12px ${th.font}`, color: th.series[2]! });
+      // Höhenangabe
+      const hNow = strawLevel;
+      g.strokeStyle = th.muted;
+      g.lineWidth = 1;
+      g.setLineDash([3, 3]);
+      g.beginPath();
+      g.moveTo(sx + 12, level);
+      g.lineTo(sx + 50, level);
+      g.stroke();
+      g.setLineDash([]);
+      text(g, `${fmt.num(hNow, hNow < 10 ? 1 : 0)} cm`, sx + 54, Math.max(level, top + 22), { font: `700 12px ${th.font}`, color: th.text, align: 'left' });
+      lines.forEach((ln, i) => text(g, ln, r.x + 14, r.y + 16 + i * 17, { font: `800 14px ${th.font}`, color: ok ? th.series[2]! : th.series[1]!, align: 'left' }));
+    }
+
+    /* ---------- Blutdruck ---------- */
+    function drawBlut(r: Rect): void {
+      const g = surface.g;
+      const th = ctx.theme;
+      // Körper 1,75 m: Kopf 45 cm über, Füße 130 cm unter dem Herzen
+      const cx = r.x + r.w * 0.4;
+      const pxPerM = (r.h - 50) / 1.9;
+      const heartY = r.y + 30 + 0.55 * pxPerM;
+      const yAt = (dhM: number) => heartY - dhM * pxPerM;
+      g.save();
+      if (p.bliegt) {
+        g.translate(cx, heartY);
+        g.rotate(-Math.PI / 2);
+        g.translate(-cx, -heartY);
+      }
+      const body = withAlpha(th.series[0]!, 0.35);
+      g.fillStyle = body;
+      g.beginPath();
+      g.arc(cx, yAt(0.45), 0.11 * pxPerM, 0, Math.PI * 2);
+      g.fill();
+      roundRect(g, cx - 0.17 * pxPerM, yAt(0.3), 0.34 * pxPerM, 0.75 * pxPerM, 0.08 * pxPerM);
+      g.fill();
+      g.strokeStyle = body;
+      g.lineCap = 'round';
+      g.lineWidth = 0.1 * pxPerM;
+      g.beginPath();
+      g.moveTo(cx - 0.08 * pxPerM, yAt(-0.45));
+      g.lineTo(cx - 0.09 * pxPerM, yAt(-1.28));
+      g.moveTo(cx + 0.08 * pxPerM, yAt(-0.45));
+      g.lineTo(cx + 0.09 * pxPerM, yAt(-1.28));
+      // Arm: hochgestreckt, wenn die Messstelle über dem Herzen liegt
+      g.moveTo(cx + 0.17 * pxPerM, yAt(0.25));
+      g.lineTo(cx + 0.24 * pxPerM, p.bmh > 20 && !p.bliegt ? yAt(0.75) : yAt(-0.35));
+      g.stroke();
+      g.lineCap = 'butt';
+      // Herz
+      g.fillStyle = th.series[1]!;
+      g.beginPath();
+      g.arc(cx + 0.04 * pxPerM, heartY, 7 + Math.sin(anim * 7) * 1.5, 0, Math.PI * 2);
+      g.fill();
+      g.restore();
+      // Messstelle
+      if (!p.bliegt) {
+        const my = yAt(p.bmh / 100);
+        g.strokeStyle = th.series[3]!;
+        g.lineWidth = 2;
+        g.setLineDash([4, 4]);
+        g.beginPath();
+        g.moveTo(cx - 0.35 * pxPerM, my);
+        g.lineTo(cx + 0.45 * pxPerM, my);
+        g.stroke();
+        g.setLineDash([]);
+        g.fillStyle = th.series[3]!;
+        g.beginPath();
+        g.arc(cx + 0.45 * pxPerM, my, 5, 0, Math.PI * 2);
+        g.fill();
+        text(g, `${fmt.num(bloodPressureAt(p.bsys, -p.bmh / 100), 0)} mmHg`, cx + 0.45 * pxPerM + 10, my, { font: `800 13px ${th.font}`, color: th.series[3]!, align: 'left' });
+      }
+      text(g, ctx.t('bHeart'), cx - 0.3 * pxPerM, heartY, { font: `600 11px ${th.font}`, color: th.series[1]!, align: 'right' });
+    }
+
+    function drawBlutChart(c: Rect): void {
+      const g = surface.g;
+      const th = ctx.theme;
+      const rows: [string, number][] = p.bliegt
+        ? [
+            [ctx.t('bHead'), 0],
+            [ctx.t('bHeart'), 0],
+            [ctx.t('bFeet'), 0],
+          ]
+        : [
+            [ctx.t('bHead'), 0.45],
+            [ctx.t('bHeart'), 0],
+            [ctx.t('bFeet'), -1.28],
+            [ctx.t('bPoint'), p.bmh / 100],
+          ];
+      const max = 260;
+      const x0 = c.x + 16;
+      const w = c.w - 40;
+      const rowH = Math.min(46, (c.h - 30) / rows.length);
+      rows.forEach(([lab, dh], i) => {
+        const v = bloodPressureAt(p.bsys, -dh);
+        const y = c.y + 24 + i * rowH;
+        text(g, `${lab}: ${fmt.num(v, 0)} ${ctx.t('hgShort')}`, x0, y, { font: `600 12px ${th.font}`, color: th.text, align: 'left' });
+        g.fillStyle = withAlpha(i === 3 ? th.series[3]! : i === 1 ? th.series[1]! : th.series[0]!, 0.75);
+        g.fillRect(x0, y + 10, (w * Math.max(0, v)) / max, Math.min(14, rowH - 26));
+      });
     }
 
     /* ---------- Ablauf ---------- */
@@ -1094,7 +1388,12 @@ export default defineSimulation({
           if (verdict === false) verdict = null;
           badInput = false;
         }
-        surface.canvas.setAttribute('aria-label', ctx.t(mode() === 'ueben' ? 'canvasQuiz' : 'canvas'));
+        surface.canvas.setAttribute('aria-label', ctx.t(mode() === 'ueben' ? 'canvasQuiz' : mode() === 'halm' ? 'canvasH' : mode() === 'blut' ? 'canvasB' : 'canvas'));
+        if (source === 'init' || source === 'replace' || changed.has('mode') || changed.has('hfl')) strawLevel = 0;
+        if (mode() === 'halm' || mode() === 'blut') {
+          if (prefersReducedMotion()) strawLevel = strawTarget();
+          else ctx.clock.play();
+        }
         setupPlot();
         updateReadouts();
       },
@@ -1115,6 +1414,7 @@ export default defineSimulation({
       },
       tick(dt) {
         anim += dt;
+        if (mode() === 'halm') strawLevel += (strawTarget() - strawLevel) * Math.min(1, dt * 2.5);
         if (mode() === 'hydraulik' && (queued > 0 || strokePhase > 0)) {
           strokePhase += dt / STROKE_T;
           if (strokePhase >= 1) {
@@ -1143,7 +1443,11 @@ export default defineSimulation({
         else if (m === 'gefaesse') (p.gv === 'turm' ? drawTurm : drawGefaesse)(s.scene);
         else if (m === 'luft') drawLuft(s.scene);
         else if (m === 'messen') (p.mv === 'magde' ? drawMagde : drawBaro)(s.scene);
-        else drawWind();
+        else if (m === 'halm') drawHalm({ x: 0, y: 0, w: surface.width, h: surface.height });
+        else if (m === 'blut') {
+          drawBlut(s.scene);
+          drawBlutChart(s.chart);
+        } else drawWind();
         drawChart();
       },
       destroy: () => surface.destroy(),

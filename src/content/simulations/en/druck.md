@@ -34,8 +34,18 @@ In 1656 Otto von Guericke pumped the air out of two hemispheres placed together.
 
 Over warmer ground air rises and a **low** forms at the surface; air flows in from the **high**. That is why the coast has a sea breeze by day and a land breeze at night.
 
+### Everyday: drinking through a straw
+
+When you “suck” on a straw you do not pull the drink up. You enlarge your mouth and so lower the pressure inside. The outside air pressure then pushes the liquid up the straw – until the weight pressure of the column balances the underpressure: h = Δp / (ρ · g). With about 100 hPa of underpressure you manage roughly one metre of water. Even a perfect pump can lift water by suction by at most about 10 m.
+
+### Everyday: blood pressure in the body
+
+The blood in the vessels also forms a column of liquid. When standing, the blood pressure at the feet is about 100 mmHg higher than at the heart, and a little lower in the head. That is why blood pressure is measured at the upper arm, roughly at heart level. The unit mmHg comes from the mercury barometer: 1 mmHg ≈ 133 Pa.
+
 ## Try it
 
+- [Straw 25 cm](?mode=halm&hdp=40&hl=25&hfl=wasser) and [straw 2 m](?mode=halm&hdp=100&hl=200&hfl=wasser): how long can a straw be at most?
+- [Blood pressure at the feet](?mode=blut&bsys=120&bmh=-120&bliegt=0) and [arm raised](?mode=blut&bsys=120&bmh=50&bliegt=0): where is the pressure greatest?
 - [High heel](?mode=auflage&flaeche=absatz), [snowshoe](?mode=auflage&flaeche=schneeschuh)
 - [Lift a car](?mode=hydraulik&F1=100&d1=2&d2=20), [diving](?mode=wasser&h=10)
 - [Zugspitze](?mode=luft&hoehe=2962), [Mount Everest](?mode=luft&hoehe=8849)

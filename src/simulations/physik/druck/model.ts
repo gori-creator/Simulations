@@ -104,7 +104,28 @@ export function pumpLift(n: number, s1: number, A1: number, A2: number): number 
 /* ------------------------------------------------------------------ */
 
 export type Loc = { de: string; en: string };
-export type TaskKind = 'pFA' | 'Fpa' | 'hyd' | 'depth' | 'depthInv' | 'unit' | 'baro' | 'paradox' | 'hemi';
+/**
+ * Strohhalm: Wie hoch drückt der äußere Luftdruck eine Flüssigkeit, wenn im
+ * Mund ein Unterdruck von dpHpa (hPa) herrscht? h = Δp / (ρ · g) in m.
+ */
+export function strawHeight(dpHpa: number, rho: number, g = G): number {
+  return (dpHpa * 100) / (rho * g);
+}
+
+/** 1 mmHg in Pa */
+export const MMHG = 133.322;
+/** Dichte von Blut in kg/m³ */
+export const BLOOD_RHO = 1060;
+
+/**
+ * Blutdruck an einer Stelle, die dh (m) unter dem Herzen liegt (negativ: über dem
+ * Herzen), in mmHg: p = p_Herz + ρ · g · dh.
+ */
+export function bloodPressureAt(pHeartMmHg: number, dh: number, g = G): number {
+  return pHeartMmHg + (BLOOD_RHO * g * dh) / MMHG;
+}
+
+export type TaskKind = 'pFA' | 'Fpa' | 'hyd' | 'depth' | 'depthInv' | 'unit' | 'baro' | 'paradox' | 'hemi' | 'straw' | 'blood';
 
 export interface PressureTask {
   kind: TaskKind;
@@ -133,7 +154,7 @@ const en = (x: number, d = 2) => round(x, d).toString();
 export function makeTask(n: number, g = G): PressureTask {
   const r = rng(n * 131 + 7);
   const pick = <T>(xs: readonly T[]) => xs[Math.floor(r() * xs.length)]!;
-  const kinds: TaskKind[] = ['pFA', 'depth', 'hyd', 'unit', 'Fpa', 'depthInv', 'paradox', 'baro', 'hemi'];
+  const kinds: TaskKind[] = ['pFA', 'depth', 'hyd', 'unit', 'Fpa', 'depthInv', 'paradox', 'baro', 'hemi', 'straw', 'blood'];
   const kind = kinds[(n - 1) % kinds.length]!;
   if (kind === 'pFA') {
     const F = pick([600, 700, 800, 900]);
@@ -141,7 +162,10 @@ export function makeTask(n: number, g = G): PressureTask {
     const p = F / A;
     return {
       kind,
-      text: { de: `Eine Person (Gewichtskraft ${de(F)} N) steht auf einer Fläche von ${de(A)} m². Wie groß ist der Druck in Pa?`, en: `A person (weight ${en(F)} N) stands on an area of ${en(A)} m². What is the pressure in Pa?` },
+      text: {
+        de: `Eine Person (Gewichtskraft ${de(F)} N) steht auf einer Fläche von ${de(A)} m². Wie groß ist der Druck in Pa?`,
+        en: `A person (weight ${en(F)} N) stands on an area of ${en(A)} m². What is the pressure in Pa?`,
+      },
       answer: p,
       unit: 'Pa',
       tol: 0.02,
@@ -154,7 +178,10 @@ export function makeTask(n: number, g = G): PressureTask {
     const F = p * 1e5 * A;
     return {
       kind,
-      text: { de: `In einem Zylinder herrscht ein Überdruck von ${de(p)} bar. Welche Kraft (in N) wirkt auf einen Kolben mit ${de(A)} m²? (1 bar = 100 000 Pa)`, en: `A cylinder has an overpressure of ${en(p)} bar. What force (in N) acts on a piston of ${en(A)} m²? (1 bar = 100 000 Pa)` },
+      text: {
+        de: `In einem Zylinder herrscht ein Überdruck von ${de(p)} bar. Welche Kraft (in N) wirkt auf einen Kolben mit ${de(A)} m²? (1 bar = 100 000 Pa)`,
+        en: `A cylinder has an overpressure of ${en(p)} bar. What force (in N) acts on a piston of ${en(A)} m²? (1 bar = 100 000 Pa)`,
+      },
       answer: F,
       unit: 'N',
       tol: 0.02,
@@ -169,7 +196,10 @@ export function makeTask(n: number, g = G): PressureTask {
     const F2 = F1 * k;
     return {
       kind,
-      text: { de: `Hydraulische Presse: kleiner Kolben ${de(A1)} cm², großer Kolben ${de(A2)} cm². Am kleinen Kolben drückt man mit ${de(F1)} N. Welche Kraft (in N) wirkt am großen Kolben?`, en: `Hydraulic press: small piston ${en(A1)} cm², large piston ${en(A2)} cm². You push the small piston with ${en(F1)} N. What force (in N) acts on the large piston?` },
+      text: {
+        de: `Hydraulische Presse: kleiner Kolben ${de(A1)} cm², großer Kolben ${de(A2)} cm². Am kleinen Kolben drückt man mit ${de(F1)} N. Welche Kraft (in N) wirkt am großen Kolben?`,
+        en: `Hydraulic press: small piston ${en(A1)} cm², large piston ${en(A2)} cm². You push the small piston with ${en(F1)} N. What force (in N) acts on the large piston?`,
+      },
       answer: F2,
       unit: 'N',
       tol: 0.02,
@@ -181,7 +211,10 @@ export function makeTask(n: number, g = G): PressureTask {
     const p = (1000 * g * h) / 1e5;
     return {
       kind,
-      text: { de: `Wie groß ist der Schweredruck des Wassers in ${de(h)} m Tiefe, in bar? (ρ = 1000 kg/m³, g = 9,81 m/s², ohne Luftdruck)`, en: `What is the water pressure at a depth of ${en(h)} m, in bar? (ρ = 1000 kg/m³, g = 9.81 m/s², without air pressure)` },
+      text: {
+        de: `Wie groß ist der Schweredruck des Wassers in ${de(h)} m Tiefe, in bar? (ρ = 1000 kg/m³, g = 9,81 m/s², ohne Luftdruck)`,
+        en: `What is the water pressure at a depth of ${en(h)} m, in bar? (ρ = 1000 kg/m³, g = 9.81 m/s², without air pressure)`,
+      },
       answer: p,
       unit: 'bar',
       tol: 0.02,
@@ -193,11 +226,17 @@ export function makeTask(n: number, g = G): PressureTask {
     const h = ((pTot - 1) * 1e5) / (1000 * g);
     return {
       kind,
-      text: { de: `Ein Taucher misst insgesamt ${de(pTot)} bar (Luftdruck 1 bar eingerechnet). In welcher Tiefe (in m) ist er ungefähr? (ρ = 1000 kg/m³, g = 9,81 m/s²)`, en: `A diver measures ${en(pTot)} bar in total (including 1 bar of air pressure). At about what depth (in m) is the diver? (ρ = 1000 kg/m³, g = 9.81 m/s²)` },
+      text: {
+        de: `Ein Taucher misst insgesamt ${de(pTot)} bar (Luftdruck 1 bar eingerechnet). In welcher Tiefe (in m) ist er ungefähr? (ρ = 1000 kg/m³, g = 9,81 m/s²)`,
+        en: `A diver measures ${en(pTot)} bar in total (including 1 bar of air pressure). At about what depth (in m) is the diver? (ρ = 1000 kg/m³, g = 9.81 m/s²)`,
+      },
       answer: h,
       unit: 'm',
       tol: 0.03,
-      solution: { de: `Wasserdruck ${de(pTot - 1)} bar = ${de((pTot - 1) * 1e5, 0)} Pa; h = p : (ρ · g) ≈ ${de(h, 1)} m`, en: `Water pressure ${en(pTot - 1)} bar = ${en((pTot - 1) * 1e5, 0)} Pa; h = p / (ρ · g) ≈ ${en(h, 1)} m` },
+      solution: {
+        de: `Wasserdruck ${de(pTot - 1)} bar = ${de((pTot - 1) * 1e5, 0)} Pa; h = p : (ρ · g) ≈ ${de(h, 1)} m`,
+        en: `Water pressure ${en(pTot - 1)} bar = ${en((pTot - 1) * 1e5, 0)} Pa; h = p / (ρ · g) ≈ ${en(h, 1)} m`,
+      },
     };
   }
   if (kind === 'unit') {
@@ -208,7 +247,10 @@ export function makeTask(n: number, g = G): PressureTask {
       answer: v / 1000,
       unit: 'bar',
       tol: 0.005,
-      solution: { de: `1 hPa = 100 Pa und 1 bar = 100 000 Pa = 1000 hPa, also ${de(v)} hPa = ${de(v / 1000, 3)} bar`, en: `1 hPa = 100 Pa and 1 bar = 100 000 Pa = 1000 hPa, so ${en(v)} hPa = ${en(v / 1000, 3)} bar` },
+      solution: {
+        de: `1 hPa = 100 Pa und 1 bar = 100 000 Pa = 1000 hPa, also ${de(v)} hPa = ${de(v / 1000, 3)} bar`,
+        en: `1 hPa = 100 Pa and 1 bar = 100 000 Pa = 1000 hPa, so ${en(v)} hPa = ${en(v / 1000, 3)} bar`,
+      },
     };
   }
   if (kind === 'paradox') {
@@ -234,11 +276,54 @@ export function makeTask(n: number, g = G): PressureTask {
     const h = barometerHeight(pa, 1000, g);
     return {
       kind,
-      text: { de: `Wie hoch (in m) wäre die Säule eines Wasserbarometers bei ${de(pa)} hPa Luftdruck? (ρ = 1000 kg/m³, g = 9,81 m/s²)`, en: `How tall (in m) would the column of a water barometer be at an air pressure of ${en(pa)} hPa? (ρ = 1000 kg/m³, g = 9.81 m/s²)` },
+      text: {
+        de: `Wie hoch (in m) wäre die Säule eines Wasserbarometers bei ${de(pa)} hPa Luftdruck? (ρ = 1000 kg/m³, g = 9,81 m/s²)`,
+        en: `How tall (in m) would the column of a water barometer be at an air pressure of ${en(pa)} hPa? (ρ = 1000 kg/m³, g = 9.81 m/s²)`,
+      },
       answer: h,
       unit: 'm',
       tol: 0.02,
-      solution: { de: `h = p : (ρ · g) = ${de(pa * 100, 0)} Pa : (1000 · 9,81) ≈ ${de(h, 2)} m – darum nimmt man Quecksilber.`, en: `h = p / (ρ · g) = ${en(pa * 100, 0)} Pa / (1000 · 9.81) ≈ ${en(h, 2)} m – that is why mercury is used.` },
+      solution: {
+        de: `h = p : (ρ · g) = ${de(pa * 100, 0)} Pa : (1000 · 9,81) ≈ ${de(h, 2)} m – darum nimmt man Quecksilber.`,
+        en: `h = p / (ρ · g) = ${en(pa * 100, 0)} Pa / (1000 · 9.81) ≈ ${en(h, 2)} m – that is why mercury is used.`,
+      },
+    };
+  }
+  if (kind === 'straw') {
+    const dp = pick([20, 40, 50, 80, 100]);
+    const h = strawHeight(dp, 1000, g) * 100;
+    return {
+      kind,
+      text: {
+        de: `Beim Saugen am Strohhalm sinkt der Druck im Mund um ${dp} hPa unter den Luftdruck. Wie hoch (in cm) drückt der Luftdruck das Wasser im Halm höchstens?`,
+        en: `When sucking on a straw the pressure in the mouth drops ${dp} hPa below air pressure. How high (in cm) can the air pressure push the water up the straw at most?`,
+      },
+      answer: h,
+      unit: 'cm',
+      tol: 0.02,
+      solution: {
+        de: `h = Δp : (ρ · g) = ${dp * 100} Pa : (1000 · 9,81) ≈ ${de(h / 100, 2)} m ≈ ${de(h, 0)} cm`,
+        en: `h = Δp / (ρ · g) = ${dp * 100} Pa / (1000 · 9.81) ≈ ${en(h / 100, 2)} m ≈ ${en(h, 0)} cm`,
+      },
+    };
+  }
+  if (kind === 'blood') {
+    const ph = pick([100, 110, 120, 130]);
+    const dh = pick([1, 1.2, 1.3]);
+    const pf = bloodPressureAt(ph, dh, g);
+    return {
+      kind,
+      text: {
+        de: `Am Herzen beträgt der Blutdruck ${ph} mmHg. Die Füße liegen beim Stehen ${de(dh, 1)} m tiefer. Wie groß ist der Blutdruck dort (in mmHg)? Blut: ρ = 1060 kg/m³, 1 mmHg ≈ 133 Pa.`,
+        en: `At the heart the blood pressure is ${ph} mmHg. When standing, the feet are ${en(dh, 1)} m lower. What is the blood pressure there (in mmHg)? Blood: ρ = 1060 kg/m³, 1 mmHg ≈ 133 Pa.`,
+      },
+      answer: pf,
+      unit: 'mmHg',
+      tol: 0.02,
+      solution: {
+        de: `Δp = ρ · g · h = 1060 · 9,81 · ${de(dh, 1)} Pa ≈ ${de(BLOOD_RHO * g * dh, 0)} Pa ≈ ${de(pf - ph, 0)} mmHg; p ≈ ${de(pf, 0)} mmHg`,
+        en: `Δp = ρ · g · h = 1060 · 9.81 · ${en(dh, 1)} Pa ≈ ${en(BLOOD_RHO * g * dh, 0)} Pa ≈ ${en(pf - ph, 0)} mmHg; p ≈ ${en(pf, 0)} mmHg`,
+      },
     };
   }
   const rr = pick([0.1, 0.2, 0.25]);
@@ -252,13 +337,21 @@ export function makeTask(n: number, g = G): PressureTask {
     answer: F,
     unit: 'N',
     tol: 0.02,
-    solution: { de: `A = π · (${de(rr)} m)² ≈ ${de(Math.PI * rr * rr, 4)} m²; F = p · A = 100 000 Pa · A ≈ ${de(F, 0)} N`, en: `A = π · (${en(rr)} m)² ≈ ${en(Math.PI * rr * rr, 4)} m²; F = p · A = 100 000 Pa · A ≈ ${en(F, 0)} N` },
+    solution: {
+      de: `A = π · (${de(rr)} m)² ≈ ${de(Math.PI * rr * rr, 4)} m²; F = p · A = 100 000 Pa · A ≈ ${de(F, 0)} N`,
+      en: `A = π · (${en(rr)} m)² ≈ ${en(Math.PI * rr * rr, 4)} m²; F = p · A = 100 000 Pa · A ≈ ${en(F, 0)} N`,
+    },
   };
 }
 
 /** Liest eine Zahl mit Komma oder Punkt (Tausenderpunkte im Deutschen werden nicht erkannt). */
 export function parseAnswer(input: string): number | null {
-  const s = input.trim().replace(/\s/g, '').replace('−', '-').replace(',', '.').replace(/[a-zA-Z/²³]+$/, '');
+  const s = input
+    .trim()
+    .replace(/\s/g, '')
+    .replace('−', '-')
+    .replace(',', '.')
+    .replace(/[a-zA-Z/²³]+$/, '');
   if (!s || !/^-?\d*\.?\d+(e-?\d+)?$/.test(s)) return null;
   return Number(s);
 }
