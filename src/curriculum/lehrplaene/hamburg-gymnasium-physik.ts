@@ -164,7 +164,7 @@ const S_UNITS: CurriculumUnit[] = [
       'Lineares Kraftgesetz und harmonische Schwingung, schwache Dämpfung, Resonanz bei erzwungenen Schwingungen, elektromagnetischer Schwingkreis im Vergleich.',
       'Linear force law and harmonic oscillation, weak damping, resonance in forced oscillation, the electromagnetic oscillating circuit by comparison.',
     ),
-    simulations: ['fadenpendel', 'federpendel', 'resonanz'],
+    simulations: ['fadenpendel', 'federpendel', 'resonanz', 'schwingkreis'],
   },
   {
     code: '2.2',

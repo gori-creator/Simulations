@@ -708,7 +708,7 @@ export const badenWuerttembergGymnasiumPhysik: StateCurriculum = {
             "Harmonische und gedämpfte Schwingungen mathematisch beschreiben, Periodendauer von Feder- und Fadenpendel und Schwingkreis, Vergleich mechanisch–elektromagnetisch und Resonanz.",
             "Describing harmonic and damped oscillations mathematically, periods of spring and simple pendulum and LC circuit, comparing mechanical and electromagnetic oscillations, and resonance.",
           ),
-          simulations: ["federpendel", "fadenpendel", "resonanz"],
+          simulations: ["federpendel", "fadenpendel", "resonanz", "schwingkreis"],
         },
         {
           code: "3.6.4",

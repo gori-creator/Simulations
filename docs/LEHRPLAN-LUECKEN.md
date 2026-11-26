@@ -2,7 +2,7 @@
 
 <!-- Automatisch erzeugt mit `npm run lehrplan:luecken` aus src/curriculum/lehrplaene/ – nicht von Hand bearbeiten. -->
 
-Lernbereiche der Länder-Lehrpläne, zu denen es noch **keine** Simulation gibt – Vorrat für neue Simulationen (Anleitung: `docs/NEUE-SIMULATION.md`). Insgesamt **90 von 1773** Lernbereichen ohne Simulation.
+Lernbereiche der Länder-Lehrpläne, zu denen es noch **keine** Simulation gibt – Vorrat für neue Simulationen (Anleitung: `docs/NEUE-SIMULATION.md`). Insgesamt **83 von 1773** Lernbereichen ohne Simulation.
 
 Nicht jeder Lernbereich eignet sich für eine Simulation. Reine Methoden-, Praktikums- und Projektthemen sind im Lehrplan mit `method: true` gekennzeichnet und zählen nicht als Lücke. Kommt ein Thema in mehreren Ländern vor, lohnt es sich besonders.
 
@@ -92,7 +92,7 @@ Alle Lernbereiche haben eine Simulation.
 | --- | --- | --- | --- |
 | 12 | S.3 | Stochastik › Hypergeometrische Verteilung | Ziehen ohne Zurücklegen mit der hypergeometrischen Verteilung beschreiben. |
 
-## Physik (67)
+## Physik (60)
 
 ### Baden-Württemberg · Gymnasium (0)
 
@@ -131,7 +131,7 @@ Alle Lernbereiche haben eine Simulation.
 
 Alle Lernbereiche haben eine Simulation.
 
-### Hessen · Gymnasium (27)
+### Hessen · Gymnasium (21)
 
 | Stufe | Nr. | Lernbereich | Kurz |
 | --- | --- | --- | --- |
@@ -142,12 +142,6 @@ Alle Lernbereiche haben eine Simulation.
 | 11 | E.6.4 | Grundlagen der Thermodynamik › Entropieerzeugung und Wirkungsgrad | Entropie als Maß für die Richtung natürlicher Abläufe; Grenzen des Wirkungsgrads. |
 | 11 | E.7.2 | Drehbewegungen › Drehimpuls | Drehimpuls als Erhaltungsgröße; Präzession. |
 | 11 | E.7.3 | Drehbewegungen › Trägheitsmoment | Anwendungsbeispiele wie die Pirouette. |
-| 12 | Q2.2.3 | Induktion und elektromagnetische Schwingungen › Selbstinduktion und Induktivität einer langen Spule (phänomenologisch) | Selbstinduktion an Spulen beobachten und beschreiben. |
-| 12 | Q2.2.5 | Induktion und elektromagnetische Schwingungen › Elektromagnetische harmonische Schwingungen | Schwingkreis: Kenngrößen, Energieumwandlung, Thomson’sche Gleichung. |
-| 12 | Q2.2.7 | Induktion und elektromagnetische Schwingungen › Selbstinduktion und Induktivität (nur LK) | Ein- und Ausschaltvorgänge, Definition der Induktivität. |
-| 12 | Q2.2.8 | Induktion und elektromagnetische Schwingungen › Energie des Feldes einer stromdurchflossenen Spule (nur LK) | Magnetische Feldenergie (ohne Herleitung). |
-| 12 | Q2.2.9 | Induktion und elektromagnetische Schwingungen › Vergleich von mechanischen und elektromagnetischen Schwingungen unter energetischen Aspekten (nur LK) | Analogien zwischen Pendel und Schwingkreis. |
-| 12 | Q2.2.10 | Induktion und elektromagnetische Schwingungen › Gedämpfte Schwingungen (nur LK) | Dämpfung im Schwingkreis. |
 | 13 | Q3.2.3 | Welle-Teilchen-Dualismus › Compton-Effekt (nur LK) | Streuung von Photonen an Elektronen. |
 | 13 | Q3.3.4 | Atomvorstellungen › Röntgenstrahlung (nur LK) | Kontinuierliches und charakteristisches Röntgenspektrum, Röntgenröhre, Moseley-Gesetz. |
 | 13 | Q4.1.1 | Quantenobjekte › Qualitative Betrachtung eines quantenmechanischen Atommodells | Orbitale als Aufenthaltswahrscheinlichkeit; Elektron als stehende Welle im Potenzialtopf. |
@@ -213,11 +207,9 @@ Alle Lernbereiche haben eine Simulation.
 | 11 | LK-4 | Modellbildung und Simulation (Leistungskurs) | Bewegungen numerisch modellieren, Parameter variieren und mit dem Experiment vergleichen. |
 | 12 | LK-W2 | Deterministisches Chaos (Wahlbereich Leistungskurs) | Nichtlineare Systeme, Attraktoren und begrenzte Vorhersagbarkeit. |
 
-### Sachsen-Anhalt · Gymnasium (1)
+### Sachsen-Anhalt · Gymnasium (0)
 
-| Stufe | Nr. | Lernbereich | Kurz |
-| --- | --- | --- | --- |
-| 11/12 | eA-2.4 | Elektrodynamik (erhöhtes Anforderungsniveau) › Wechselstromwiderstände und elektromagnetische Schwingungen | Effektivwerte, induktiver und kapazitiver Widerstand mit Zeigerdiagramm, Schwingkreis und Thomson’sche Gleichung. |
+Alle Lernbereiche haben eine Simulation.
 
 ### Schleswig-Holstein · Gymnasium (2)
 
