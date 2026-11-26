@@ -338,7 +338,7 @@ const QP_UNITS: CurriculumUnit[] = [
           'Stehende Wellen und Wellenlängenbestimmung, Interferenz am Doppelspalt, Spektrum weißen Lichts und Überblick über elektromagnetische Wellen.',
           'Standing waves and measuring wavelength, double-slit interference, the spectrum of white light and an overview of electromagnetic waves.',
         ),
-        simulations: ['stehende-wellen', 'interferenz', 'doppelspalt'],
+        simulations: ['stehende-wellen', 'interferenz', 'doppelspalt', 'em-spektrum'],
       },
       {
         code: 'GF-P.8',
@@ -396,6 +396,7 @@ const QP_UNITS: CurriculumUnit[] = [
         code: 'GF-W.5',
         title: L('Elektromagnetische Wellen', 'Electromagnetic waves'),
         summary: L('Rückkopplung, offener Schwingkreis, Ausbreitung und Modulation, Anwendungen und Spektrum.', 'Feedback, the open oscillating circuit, propagation and modulation, applications and the spectrum.'),
+        simulations: ['em-spektrum'],
       },
       {
         code: 'GF-W.6',

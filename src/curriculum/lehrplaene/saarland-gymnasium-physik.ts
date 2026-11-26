@@ -241,6 +241,7 @@ const HP_13_UNITS: CurriculumUnit[] = [
     code: '3.4',
     title: L('Elektromagnetische Wellen', 'Electromagnetic waves'),
     summary: L('Entstehung und Eigenschaften elektromagnetischer Wellen.', 'Generation and properties of electromagnetic waves.'),
+    simulations: ['em-spektrum'],
   },
   {
     code: '3.5',

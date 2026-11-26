@@ -507,7 +507,7 @@ export const bayernGymnasiumPhysik: StateCurriculum = {
             "Wellen eines Dipols, Polarisation, Interferenz am Doppelspalt und Gitter, stehende Wellen, Wellenlängen von LED-Licht, Röntgenbremsstrahlung und das elektromagnetische Spektrum.",
             "Waves from a dipole, polarisation, interference at double slits and gratings, standing waves, wavelengths of LED light, X-ray bremsstrahlung and the electromagnetic spectrum.",
           ),
-          simulations: ["doppelspalt", "interferenz", "stehende-wellen", "feldlinien", "lorentzkraft"],
+          simulations: ["doppelspalt", "interferenz", "stehende-wellen", "feldlinien", "lorentzkraft", "em-spektrum"],
         },
         {
           code: "B1",
@@ -585,7 +585,7 @@ export const bayernGymnasiumPhysik: StateCurriculum = {
             "Dipol und Maxwellgleichungen, Polarisation, Interferenz an Doppelspalt, Mehrfachspalt, Gitter und Einfachspalt, Bragg-Reflexion sowie Röntgenstrahlung.",
             "Dipoles and Maxwell’s equations, polarisation, interference at double slits, multiple slits, gratings and single slits, Bragg reflection and X-rays.",
           ),
-          simulations: ["doppelspalt", "interferenz", "stehende-wellen"],
+          simulations: ["doppelspalt", "interferenz", "stehende-wellen", "em-spektrum"],
         },
         {
           code: "E4",

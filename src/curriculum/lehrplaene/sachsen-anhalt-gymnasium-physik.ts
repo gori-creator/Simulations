@@ -204,6 +204,7 @@ const SJ_10_UNITS: CurriculumUnit[] = [
       'Elektromagnetisches Spektrum, Strahlungshaushalt der Erde, Albedo, Stefan-Boltzmann-Gesetz, natürlicher und menschengemachter Treibhauseffekt.',
       'The electromagnetic spectrum, Earth’s radiation budget, albedo, the Stefan–Boltzmann law, the natural and the man-made greenhouse effect.',
     ),
+    simulations: ['em-spektrum'],
   },
   {
     code: '5',
