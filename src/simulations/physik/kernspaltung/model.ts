@@ -184,7 +184,7 @@ export function householdYears(J: number): number {
 /* ------------------------------------------------------------------ */
 
 export type Loc = { de: string; en: string };
-export type TaskKind = 'neutrons' | 'k' | 'state' | 'energy' | 'side' | 'mass';
+export type TaskKind = 'neutrons' | 'k' | 'state' | 'energy' | 'side' | 'mass' | 'moderator' | 'halflife';
 
 export interface NuclearTask {
   kind: TaskKind;
@@ -216,7 +216,7 @@ export function numText(x: number, lang: 'de' | 'en', d = 2): string {
 export function makeTask(n: number): NuclearTask {
   const r = taskRng(n * 67 + 5);
   const pick = <T>(xs: readonly T[]) => xs[Math.floor(r() * xs.length)]!;
-  const kinds: TaskKind[] = ['neutrons', 'k', 'state', 'side', 'energy', 'mass'];
+  const kinds: TaskKind[] = ['neutrons', 'k', 'state', 'side', 'energy', 'mass', 'moderator', 'halflife'];
   const kind = kinds[(n - 1) % kinds.length]!;
   const nt = numText;
   if (kind === 'neutrons') {
@@ -312,6 +312,46 @@ export function makeTask(n: number): NuclearTask {
       },
     };
   }
+  if (kind === 'moderator') {
+    return {
+      kind,
+      text: {
+        de: 'Womit bremst man schnelle Neutronen am besten ab? (1) mit schweren Bleikernen (2) mit leichten Kernen wie Wasserstoff im Wasser (3) gar nicht, schnelle Neutronen spalten am besten',
+        en: 'What is best for slowing down fast neutrons? (1) heavy lead nuclei (2) light nuclei such as hydrogen in water (3) nothing, fast neutrons split best',
+      },
+      answer: 2,
+      tol: 0,
+      choices: [
+        { de: 'schwere Bleikerne', en: 'heavy lead nuclei' },
+        { de: 'leichte Kerne (Wasserstoff im Wasser)', en: 'light nuclei (hydrogen in water)' },
+        { de: 'gar nicht abbremsen', en: 'no slowing down at all' },
+      ],
+      solution: {
+        de: 'Wie beim Billard: Stößt ein Teilchen auf ein gleich schweres, gibt es viel Energie ab. U-235 spaltet am besten mit langsamen Neutronen.',
+        en: 'As in billiards: when a particle hits one of the same mass it loses a lot of energy. U-235 splits best with slow neutrons.',
+      },
+    };
+  }
+  if (kind === 'halflife') {
+    const [nuc, T] = pick([
+      ['Cäsium-137', 30],
+      ['Strontium-90', 29],
+    ] as [string, number][]);
+    const k = pick([2, 3, 4, 5]);
+    const left = 100 / 2 ** k;
+    const nucEn = nuc.replace('Cäsium', 'Caesium');
+    return {
+      kind,
+      text: {
+        de: `${nuc} hat eine Halbwertszeit von etwa ${T} Jahren. Wie viel Prozent sind nach ${k * T} Jahren noch übrig?`,
+        en: `${nucEn} has a half-life of about ${T} years. What percentage is left after ${k * T} years?`,
+      },
+      answer: left,
+      tol: 0.01,
+      choices: null,
+      solution: { de: `${k} Halbwertszeiten: 100 % · (½)^${k} = ${nt(left, 'de', 2)} %`, en: `${k} half-lives: 100 % · (½)^${k} = ${nt(left, 'en', 2)} %` },
+    };
+  }
   const id = pick(['dt', 'spaltung'] as ReactionId[]);
   const md = massDefect(id);
   return {
@@ -338,4 +378,59 @@ export function checkTask(task: NuclearTask, input: string): boolean | null {
   const x = Number(s);
   if (task.tol === 0) return x === task.answer;
   return Math.abs(x - task.answer) <= task.tol * Math.abs(task.answer) + 1e-9;
+}
+
+/* ------------------------------------------------------------------ */
+/* Moderator: Neutronen abbremsen                                      */
+/* ------------------------------------------------------------------ */
+
+export type ModId = 'wasser' | 'graphit' | 'blei';
+
+/** Massenzahl der Stoßpartner im Moderator (Wasser: Wasserstoff). */
+export const MOD_A: Record<ModId, number> = { wasser: 1, graphit: 12, blei: 207 };
+
+/** Startenergie eines Spaltneutrons und thermische Energie (eV). */
+export const E_FAST = 2e6;
+export const E_THERMAL = 0.025;
+
+/**
+ * Mittlerer logarithmischer Energieverlust je Stoß (ξ) bei Massenzahl A:
+ * ξ = 1 + (A − 1)² / (2A) · ln((A − 1)/(A + 1)), für A = 1 genau 1.
+ */
+export function xi(A: number): number {
+  if (A === 1) return 1;
+  return 1 + ((A - 1) ** 2 / (2 * A)) * Math.log((A - 1) / (A + 1));
+}
+
+/** Mittlere Zahl der Stöße von E_FAST bis E_THERMAL. */
+export function collisionsNeeded(A: number): number {
+  return Math.log(E_FAST / E_THERMAL) / xi(A);
+}
+
+/** Energie nach n Stößen (mittlere Abnahme e^(−ξ) je Stoß). */
+export function energyAfter(A: number, n: number): number {
+  return E_FAST * Math.exp(-xi(A) * n);
+}
+
+/* ------------------------------------------------------------------ */
+/* Abfall: radioaktive Spaltprodukte                                   */
+/* ------------------------------------------------------------------ */
+
+export interface WasteNuclide {
+  id: string;
+  name: { de: string; en: string };
+  /** Halbwertszeit in Jahren */
+  T: number;
+}
+
+export const WASTE: readonly WasteNuclide[] = [
+  { id: 'i131', name: { de: 'Iod-131', en: 'iodine-131' }, T: 8.02 / 365.25 },
+  { id: 'cs137', name: { de: 'Cäsium-137', en: 'caesium-137' }, T: 30.1 },
+  { id: 'sr90', name: { de: 'Strontium-90', en: 'strontium-90' }, T: 28.8 },
+  { id: 'pu239', name: { de: 'Plutonium-239', en: 'plutonium-239' }, T: 24100 },
+];
+
+/** Verbliebener Anteil nach t Jahren. */
+export function remaining(T: number, t: number): number {
+  return 0.5 ** (t / T);
 }
