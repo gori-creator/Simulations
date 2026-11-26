@@ -36,7 +36,7 @@ const KS_7_9_UNITS: CurriculumUnit[] = [
       'Modell Lichtstrahl, Sehvorgang, Mondphasen und Finsternisse, Reflexion und Brechung, Linsen und Linsengleichung, Auge, Farben, Wärmestrahlung und Wärmetransport im Teilchenmodell.',
       'The light-ray model, how we see, phases of the moon and eclipses, reflection and refraction, lenses and the lens equation, the eye, colours, thermal radiation and heat transfer in the particle model.',
     ),
-    simulations: ['licht-schatten', 'reflexion', 'brechung', 'linsen', 'teilchenmodell', 'farben'],
+    simulations: ["licht-schatten", "reflexion", "brechung", "linsen", "teilchenmodell", "farben", "waermeausdehnung", "waermetransport"],
   },
   {
     code: '2',
@@ -45,7 +45,7 @@ const KS_7_9_UNITS: CurriculumUnit[] = [
       'Geschwindigkeit und Zeit-Weg-Diagramme, Masse und Gewichtskraft, Kräfte als Pfeile, Kraft als Ursache von Bewegungsänderung und Verformung, Trägheit und Reibung, Energie, Arbeit und Leistung.',
       'Velocity and distance–time graphs, mass and weight, forces as arrows, force as the cause of change in motion and deformation, inertia and friction, energy, work and power.',
     ),
-    simulations: ['bewegungsdiagramme', 'hookesches-gesetz', 'kraefteaddition', 'energieerhaltung', 'dichte-auftrieb', 'newtonsche-gesetze'],
+    simulations: ['bewegungsdiagramme', 'hookesches-gesetz', 'kraefteaddition', 'energieerhaltung', 'dichte-auftrieb', 'newtonsche-gesetze', 'druck'],
   },
   {
     code: '3',
@@ -54,7 +54,7 @@ const KS_7_9_UNITS: CurriculumUnit[] = [
       'Elektrostatische Grundphänomene und Ladung, Spannung, Stromstärke und Widerstand, Kennlinien, Reihen- und Parallelschaltung, elektrische Leistung und Energie, Sicherheit.',
       'Basic electrostatic phenomena and charge, voltage, current and resistance, characteristic curves, series and parallel circuits, electrical power and energy, safety.',
     ),
-    simulations: ['einfacher-stromkreis', 'reihe-parallel', 'ohmsches-gesetz'],
+    simulations: ['einfacher-stromkreis', 'reihe-parallel', 'ohmsches-gesetz', 'ladungen-coulomb'],
   },
   {
     code: '4',

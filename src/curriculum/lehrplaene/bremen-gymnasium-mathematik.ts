@@ -62,7 +62,7 @@ const KS_5_6_UNITS: CurriculumUnit[] = [
     code: 'A5',
     title: L('Rationale Zahlen', 'Rational numbers'),
     summary: L('Negative Zahlen im Alltag, Zahlbereichserweiterung bis ℚ, ordnen, Vorzeichenregeln und Grundrechenarten.', 'Negative numbers in everyday life, extending the number system to ℚ, ordering, sign rules and the four operations.'),
-    simulations: ['zahlengerade'],
+    simulations: ['zahlengerade', 'vorzeichenregeln'],
   },
   {
     code: 'A6',

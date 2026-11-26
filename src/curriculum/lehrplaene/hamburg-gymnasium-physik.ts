@@ -44,7 +44,7 @@ const T_1_1: CurriculumUnit = {
     'Reibungselektrizität und zwei Ladungsarten, Elektron und einfaches Atommodell, Leiter und Nichtleiter, Spannung als elektrischer Druckunterschied, Strom im geschlossenen Stromkreis.',
     'Static electricity and two kinds of charge, the electron and a simple atomic model, conductors and insulators, voltage as an electrical pressure difference, current in a closed circuit.',
   ),
-  simulations: ['einfacher-stromkreis', 'reihe-parallel'],
+  simulations: ['einfacher-stromkreis', 'reihe-parallel', 'ladungen-coulomb'],
 };
 
 const T_2_1: CurriculumUnit = {
@@ -54,7 +54,7 @@ const T_2_1: CurriculumUnit = {
     'Geschwindigkeit aus Tempo und Richtung, gleichförmige Bewegung, t-s- und t-v-Diagramme, Zusatzgeschwindigkeit und Kraft, Verformung und Kraftmessung, Trägheit und Wechselwirkung, einfache Maschinen, Energiebilanzen.',
     'Velocity from speed and direction, uniform motion, distance-time and velocity-time graphs, change of velocity and force, deformation and measuring force, inertia and interaction, simple machines, energy balances.',
   ),
-  simulations: ['bewegungsdiagramme', 'hookesches-gesetz', 'hebelgesetz', 'energieerhaltung', 'kraefteaddition', 'schiefe-ebene', 'messunsicherheit', 'dichte-auftrieb', 'newtonsche-gesetze'],
+  simulations: ['bewegungsdiagramme', 'hookesches-gesetz', 'hebelgesetz', 'energieerhaltung', 'kraefteaddition', 'schiefe-ebene', 'messunsicherheit', 'dichte-auftrieb', 'newtonsche-gesetze', 'druck'],
 };
 
 const T_1_2: CurriculumUnit = {
@@ -84,7 +84,7 @@ const T_3_2: CurriculumUnit = {
     'Temperatur als Maß für die Bewegungsenergie der Teilchen, Wärmetransport, elektromagnetisches Spektrum, Strahlungsgleichgewicht der Erde, Atmosphäre und Treibhauseffekt.',
     'Temperature as a measure of the kinetic energy of particles, heat transfer, the electromagnetic spectrum, the Earth’s radiation balance, the atmosphere and the greenhouse effect.',
   ),
-  simulations: ['teilchenmodell'],
+  simulations: ["teilchenmodell", "waermeausdehnung", "waermetransport"],
 };
 
 const T_2_2: CurriculumUnit = {
@@ -137,7 +137,7 @@ const S_UNITS: CurriculumUnit[] = [
       'Elektrische Feldtypen und Feldlinienbilder, Feldstärke und Spannung, Coulombsches Gesetz, Plattenkondensator mit Kapazität und Energie, Auf- und Entladen, magnetische Flussdichte von Spulen.',
       'Types of electric field and field line patterns, field strength and voltage, Coulomb’s law, the parallel-plate capacitor with capacitance and energy, charging and discharging, magnetic flux density of coils.',
     ),
-    simulations: ['feldlinien', 'kondensator'],
+    simulations: ['feldlinien', 'kondensator', 'ladungen-coulomb'],
   },
   {
     code: '1.2',

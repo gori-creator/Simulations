@@ -184,6 +184,22 @@ export const physik: Subject = {
           grades: [7, 11],
           simulations: [
             {
+              id: 'druck',
+              status: 'ready',
+              slug: L('druck-hydraulik-luftdruck', 'pressure-hydraulics-air-pressure'),
+              title: L('Druck: Kraft pro Fläche, Hydraulik, Wasser- und Luftdruck', 'Pressure: force per area, hydraulics, water and air pressure'),
+              summary: L(
+                'Mit Schneeschuhen sinkt man nicht ein, mit ein paar Pumpstößen hebt man ein Auto, und beim Tauchen drückt das Wasser von allen Seiten. Verbundene Gefäße, Wasserturm, Barometer und Magdeburger Halbkugeln zeigen, was Druck im Alltag bewirkt – bis zum Wind an der Küste.',
+                'With snowshoes you don’t sink in, a few pump strokes lift a car, and when diving the water presses from all sides. Connected vessels, a water tower, a barometer and the Magdeburg hemispheres show what pressure does in everyday life – right up to the wind at the coast.',
+              ),
+              grades: [7, 10],
+              kmk: ['P-S', 'P-E', 'P-BK-Wechselwirkung', 'P-BK-Mathematisieren'],
+              keywords: L(
+                ['Druck', 'Auflagedruck', 'Pascal', 'Bar', 'Hektopascal', 'hydraulische Presse', 'Hydraulik', 'Kraftwandler', 'Schweredruck', 'Wasserdruck', 'Tauchen', 'Luftdruck', 'Barometer', 'barometrische Höhenformel', 'Hochdruckgebiet', 'Tiefdruckgebiet', 'Wind', 'Seewind', 'Landwind', 'Wetter', 'verbundene Gefäße', 'hydrostatisches Paradoxon', 'Wasserturm', 'Quecksilber', 'Torricelli', 'Magdeburger Halbkugeln', 'Otto von Guericke', 'Vakuum'],
+                ['pressure', 'contact pressure', 'pascal', 'bar', 'hectopascal', 'hydraulic press', 'hydraulics', 'force multiplier', 'hydrostatic pressure', 'water pressure', 'diving', 'air pressure', 'barometer', 'barometric formula', 'high-pressure area', 'low-pressure area', 'wind', 'sea breeze', 'land breeze', 'weather', 'connected vessels', 'hydrostatic paradox', 'water tower', 'mercury', 'Torricelli', 'Magdeburg hemispheres', 'vacuum'],
+              ),
+            },
+            {
               id: 'energieerhaltung',
               status: 'ready',
               slug: L('energieerhaltung-achterbahn', 'energy-roller-coaster'),
@@ -335,6 +351,22 @@ export const physik: Subject = {
               keywords: L(
                 ['Stromkreis', 'geschlossener Stromkreis', 'offener Stromkreis', 'Schalter', 'Glühlampe', 'Batterie', 'Elektronen', 'technische Stromrichtung', 'Schaltplan', 'Schaltzeichen', 'Kurzschluss', 'Sicherung', 'Leiter', 'Nichtleiter', 'Isolator'],
                 ['electric circuit', 'closed circuit', 'open circuit', 'switch', 'light bulb', 'battery', 'electrons', 'conventional current', 'circuit diagram', 'circuit symbols', 'short circuit', 'fuse', 'conductor', 'insulator'],
+              ),
+            },
+            {
+              id: 'ladungen-coulomb',
+              status: 'ready',
+              slug: L('elektrische-ladung-coulomb', 'electric-charge-coulomb'),
+              title: L('Elektrische Ladung und Coulomb’sches Gesetz', 'Electric charge and Coulomb’s law'),
+              summary: L(
+                'Reibt man einen Kunststoffstab an Wolle, wandern Elektronen – Stab und Tuch ziehen sich danach an. Ein Elektroskop zeigt die Ladung, Influenz lädt ohne Berührung, Feldlinien zeigen das Feld, und das Coulomb’sche Gesetz sagt, wie stark die Kraft ist – bis hinein ins Atom.',
+                'Rub a plastic rod with wool and electrons move – afterwards rod and cloth attract. An electroscope shows the charge, induction charges without touching, field lines show the field, and Coulomb’s law tells how strong the force is – right down to the atom.',
+              ),
+              grades: [6, 12],
+              kmk: ['P-S', 'P-E', 'P-BK-Wechselwirkung', 'P-BK-Mathematisieren'],
+              keywords: L(
+                ['elektrische Ladung', 'Elektrostatik', 'Reibungselektrizität', 'Elektron', 'positiv', 'negativ', 'Anziehung', 'Abstoßung', 'Elektroskop', 'Ladungstrennung', 'Coulomb', 'Coulombsches Gesetz', 'Coulombkraft', 'Elementarladung', 'Erdung'],
+                ['electric charge', 'electrostatics', 'charging by friction', 'electron', 'positive', 'negative', 'attraction', 'repulsion', 'electroscope', 'charge separation', 'coulomb', 'Coulomb’s law', 'Coulomb force', 'elementary charge', 'earthing'],
               ),
             },
             {
@@ -970,6 +1002,22 @@ export const physik: Subject = {
           grades: [6, 8],
           simulations: [
             {
+              id: 'waermetransport',
+              status: 'ready',
+              slug: L('waermeleitung-stroemung-strahlung', 'conduction-convection-radiation'),
+              title: L('Wärmeleitung, Wärmeströmung, Wärmestrahlung', 'Conduction, convection and radiation'),
+              summary: L(
+                'Warum wird der Löffel im Tee heiß, warum steigt warmes Wasser auf, und wie wärmt die Sonne durch das leere All? Im Alltag: Wie viel spart eine gedämmte Wand oder ein Dreifachfenster, und warum bleibt Tee in der Thermoskanne stundenlang heiß?',
+                'Why does the spoon in your tea get hot, why does warm water rise, and how does the Sun warm us through empty space? In everyday life: how much does an insulated wall or triple glazing save, and why does tea stay hot in a vacuum flask for hours?',
+              ),
+              grades: [5, 10],
+              kmk: ['P-S', 'P-E', 'P-BK-Energie', 'P-BK-Mathematisieren'],
+              keywords: L(
+                ['Wärmetransport', 'Wärmeleitung', 'Wärmeleitfähigkeit', 'Wärmeströmung', 'Konvektion', 'Wärmestrahlung', 'Stefan-Boltzmann-Gesetz', 'Emissionsgrad', 'Wärmedämmung', 'U-Wert', 'Wärmedurchgangskoeffizient', 'Temperaturgefälle', 'Isolator', 'Styropor', 'Kupfer', 'Energiesparen'],
+                ['heat transfer', 'conduction', 'thermal conductivity', 'convection', 'thermal radiation', 'Stefan–Boltzmann law', 'emissivity', 'insulation', 'U-value', 'thermal transmittance', 'temperature gradient', 'insulator', 'polystyrene', 'copper', 'saving energy'],
+              ),
+            },
+            {
               id: 'teilchenmodell',
               status: 'ready',
               slug: L('teilchenmodell-temperatur', 'particle-model-temperature'),
@@ -992,6 +1040,22 @@ export const physik: Subject = {
           title: L('Gase', 'Gases'),
           grades: [8, 13],
           simulations: [
+            {
+              id: 'waermeausdehnung',
+              status: 'ready',
+              slug: L('waermeausdehnung-anomalie-wasser', 'thermal-expansion-anomaly-of-water'),
+              title: L('Wärmeausdehnung und Anomalie des Wassers', 'Thermal expansion and the anomaly of water'),
+              summary: L(
+                'Brücken brauchen Dehnungsfugen, Schienen Stoßlücken, und im Sommer hängen Stromleitungen tiefer. Ein Bimetall schaltet das Bügeleisen ab, ein Thermometer macht die Ausdehnung sichtbar. Nur Wasser tanzt aus der Reihe: Bei 4 °C ist es am schwersten.',
+                'Bridges need expansion joints, rails need gaps, and power lines sag lower in summer. A bimetal switches off the iron, a thermometer makes expansion visible. Only water breaks the rule: it is heaviest at 4 °C.',
+              ),
+              grades: [6, 10],
+              kmk: ['P-S', 'P-E', 'P-BK-Wechselwirkung', 'P-BK-Mathematisieren'],
+              keywords: L(
+                ['Wärmeausdehnung', 'Längenausdehnung', 'Ausdehnungskoeffizient', 'Bimetall', 'Dehnungsfuge', 'Volumenausdehnung', 'Gas', 'Gay-Lussac', 'absoluter Nullpunkt', 'Kelvin', 'Anomalie des Wassers', 'Dichte', '4 °C', 'Eis', 'See im Winter', 'Teilchenmodell', 'Thermometer'],
+                ['thermal expansion', 'linear expansion', 'expansion coefficient', 'bimetal', 'expansion joint', 'volume expansion', 'gas', 'Gay-Lussac', 'absolute zero', 'kelvin', 'anomaly of water', 'density', '4 °C', 'ice', 'lake in winter', 'particle model', 'thermometer'],
+              ),
+            },
             {
               id: 'gasgesetze',
               status: 'ready',
