@@ -1,5 +1,13 @@
 import { defineSimulation, Plot, prefersReducedMotion, roundRect, Surface, text, withAlpha, type Rect } from '../../../sim-core';
 import {
+  collisionsNeeded,
+  E_FAST,
+  E_THERMAL,
+  MOD_A,
+  remaining,
+  WASTE,
+  xi,
+  type ModId,
   chain,
   CHANNELS,
   channelEnergy,
@@ -64,6 +72,8 @@ export default defineSimulation({
         { value: 'spaltung', label: L('Eine Spaltung in Zeitlupe', 'One fission in slow motion') },
         { value: 'masse', label: L('Massendefekt: E = m·c²', 'Mass defect: E = m·c²') },
         { value: 'kraftwerk', label: L('Kraftwerk: Uran oder Kohle?', 'Power plant: uranium or coal?') },
+        { value: 'moderator', label: L('Moderator: Neutronen abbremsen', 'Moderator: slowing neutrons') },
+        { value: 'abfall', label: L('Abfall: Wie lange strahlt es?', 'Waste: how long does it stay radioactive?') },
         { value: 'ueben', label: L('Üben: Aufgaben', 'Practice: tasks') },
       ],
       default: 'bindung',
@@ -97,6 +107,29 @@ export default defineSimulation({
       visibleIf: (v) => v.mode === 'masse',
     },
     { key: 'g', type: 'number', label: L('Gespaltenes Uran-235', 'Uranium-235 split'), min: 1, max: 1000, step: 1, default: 1, unit: 'g', visibleIf: (v) => v.mode === 'kraftwerk' },
+    {
+      key: 'mod',
+      type: 'choice',
+      label: L('Moderator', 'Moderator'),
+      options: [
+        { value: 'wasser', label: L('Wasser (Wasserstoff, A = 1)', 'water (hydrogen, A = 1)') },
+        { value: 'graphit', label: L('Graphit (Kohlenstoff, A = 12)', 'graphite (carbon, A = 12)') },
+        { value: 'blei', label: L('Blei (A = 207)', 'lead (A = 207)') },
+      ],
+      default: 'wasser',
+      display: 'buttons',
+      visibleIf: (v) => v.mode === 'moderator',
+    },
+    {
+      key: 'lt',
+      type: 'number',
+      label: L('Zeit seit dem Ende der Kettenreaktion (Zehnerpotenz in Jahren)', 'Time since the chain reaction stopped (power of ten in years)'),
+      min: -2,
+      max: 5,
+      step: 0.1,
+      default: 1.5,
+      visibleIf: (v) => v.mode === 'abfall',
+    },
     { key: 'qn', type: 'number', label: L('Aufgabe Nr.', 'Task no.'), min: 1, max: 999, step: 1, default: 1, visibleIf: (v) => v.mode === 'ueben' },
     { key: 'qa', type: 'text', label: L('Deine Antwort', 'Your answer'), default: '', maxLength: 10, placeholder: L('Nummer oder Zahl', 'number'), visibleIf: (v) => v.mode === 'ueben' },
     { key: 'A', type: 'number', label: L('Massenzahl A', 'Mass number A'), min: 2, max: 240, step: 1, default: 235, visibleIf: (v) => v.mode === 'bindung' },
@@ -129,17 +162,27 @@ export default defineSimulation({
               'Wie viel Kohle müsste man verbrennen, um die gleiche Wärme zu erhalten wie aus wenigen Gramm Uran?',
               'How much coal would you have to burn to get the same heat as from a few grams of uranium?',
             )
-          : v.mode === 'ueben'
-            ? L('Gib die Zahl oder die Nummer der Antwort ein und drücke „Prüfen“.', 'Enter the number or the number of the answer and press “Check”.')
-            : v.mode === 'bindung'
+          : v.mode === 'moderator'
+            ? L(
+                'Drücke Start: Das schnelle Neutron stößt mit den Kernen des Moderators zusammen und wird mit jedem Stoß langsamer.',
+                'Press play: the fast neutron collides with the moderator’s nuclei and gets slower with every collision.',
+              )
+            : v.mode === 'abfall'
               ? L(
-                  'Je höher die Kurve, desto fester sind die Nukleonen gebunden. Energie wird frei, wenn Kerne zur Mitte hin „aufsteigen“.',
-                  'The higher the curve, the more tightly the nucleons are bound. Energy is released when nuclei “climb” towards the middle.',
+                  'Verschiebe die Zeit: Kurzlebige Stoffe sind schnell weg, langlebige strahlen Jahrtausende.',
+                  'Move the time: short-lived substances vanish quickly, long-lived ones stay radioactive for thousands of years.',
                 )
-              : L(
-                  'Jede Spaltung setzt 2–3 Neutronen frei. Wie viele davon eine neue Spaltung auslösen, entscheidet, ob die Reaktion erlischt oder anwächst.',
-                  'Each fission releases 2–3 neutrons. How many of them cause a new fission decides whether the reaction dies out or grows.',
-                ),
+              : v.mode === 'ueben'
+                ? L('Gib die Zahl oder die Nummer der Antwort ein und drücke „Prüfen“.', 'Enter the number or the number of the answer and press “Check”.')
+                : v.mode === 'bindung'
+                  ? L(
+                      'Je höher die Kurve, desto fester sind die Nukleonen gebunden. Energie wird frei, wenn Kerne zur Mitte hin „aufsteigen“.',
+                      'The higher the curve, the more tightly the nucleons are bound. Energy is released when nuclei “climb” towards the middle.',
+                    )
+                  : L(
+                      'Jede Spaltung setzt 2–3 Neutronen frei. Wie viele davon eine neue Spaltung auslösen, entscheidet, ob die Reaktion erlischt oder anwächst.',
+                      'Each fission releases 2–3 neutrons. How many of them cause a new fission decides whether the reaction dies out or grows.',
+                    ),
   actions: [
     { id: 'gen', label: L('Nächste Generation', 'Next generation'), primary: true, visibleIf: (v) => v.mode === 'kette' },
     { id: 'check', label: L('Prüfen', 'Check'), primary: true, visibleIf: (v) => v.mode === 'ueben' },
@@ -167,10 +210,32 @@ export default defineSimulation({
     { id: 'mSonne', label: L('Energiequelle der Sonne', 'Energy source of the Sun'), values: { mode: 'masse', re: 'sonne' } },
     { id: 'gramm', label: L('1 g Uran gegen Kohle', '1 g of uranium versus coal'), values: { mode: 'kraftwerk', g: 1 } },
     { id: 'tag', label: L('Ein Kraftwerk an einem Tag', 'A power plant in one day'), values: { mode: 'kraftwerk', g: 400 } },
-    { id: 'quiz', label: L('Üben: sechs Aufgabenarten', 'Practice: six kinds of tasks'), values: { mode: 'ueben', qn: 1, qa: '' } },
+    { id: 'wasser', label: L('Moderator Wasser', 'Water moderator'), values: { mode: 'moderator', mod: 'wasser' } },
+    { id: 'graphit', label: L('Moderator Graphit', 'Graphite moderator'), values: { mode: 'moderator', mod: 'graphit' } },
+    { id: 'blei', label: L('Blei bremst kaum', 'Lead hardly slows'), values: { mode: 'moderator', mod: 'blei' } },
+    { id: 'monat', label: L('Abfall nach einem Monat', 'Waste after one month'), values: { mode: 'abfall', lt: -1.1 } },
+    { id: 'hundert', label: L('Abfall nach 100 Jahren', 'Waste after 100 years'), values: { mode: 'abfall', lt: 2 } },
+    { id: 'quiz', label: L('Üben: acht Aufgabenarten', 'Practice: eight kinds of tasks'), values: { mode: 'ueben', qn: 1, qa: '' } },
   ],
   strings: {
     de: {
+      canvasMod: 'Ein schnelles Neutron prallt in einem Moderator gegen Kerne und wird dabei langsamer; ein Balken zeigt seine Energie',
+      canvasAb: 'Diagramm: Anteil der radioaktiven Spaltprodukte über der Zeit in Zehnerpotenzen; Balken zeigen den Rest zum gewählten Zeitpunkt',
+      modN: 'nötig: etwa {n} Stöße bis zur thermischen Energie (0,025 eV)',
+      modXi: 'Energie je Stoß im Mittel auf {f} % gesunken',
+      modNow: 'Stoß {k}: {e}',
+      modDone: 'langsam genug – jetzt kann es U-235 spalten',
+      modInfo:
+        'Wie beim Billard: Trifft das Neutron einen gleich schweren Kern (Wasserstoff), verliert es viel Energie. An schweren Kernen prallt es fast ohne Verlust ab. U-235 lässt sich mit langsamen Neutronen viel leichter spalten.',
+      mod_wasser: 'Moderator Wasser',
+      mod_graphit: 'Moderator Graphit',
+      mod_blei: 'Blei',
+      abT: 'nach {t}',
+      abInfo: 'Iod-131 ist nach wenigen Monaten fast weg, Cäsium-137 und Strontium-90 strahlen Jahrhunderte, Plutonium-239 Zehntausende Jahre. Darum braucht es ein sicheres Endlager.',
+      abAxisT: 't in Jahren',
+      abAxisN: 'Rest',
+      tDays: '{n} Tagen',
+      tYears: '{n} Jahren',
       canvasS: 'Ein Neutron trifft einen Urankern, der Kern schwingt, verformt sich und zerfällt in zwei Spaltprodukte und mehrere Neutronen; dazu die Energiebilanz',
       canvasM: 'Balken der Masse vor und nach einer Kernreaktion; die fehlende Masse entspricht der freigesetzten Energie',
       canvasK: 'Schema eines Kernkraftwerks mit Kreislauf; darunter ein Vergleich der Wärme aus Uran mit der Menge Kohle für dieselbe Wärme',
@@ -221,6 +286,24 @@ export default defineSimulation({
       n: 'Neutronen',
     },
     en: {
+      canvasMod: 'A fast neutron bounces off nuclei in a moderator and slows down; a bar shows its energy',
+      canvasAb: 'Graph: share of the radioactive fission products against time in powers of ten; bars show what is left at the chosen time',
+      modN: 'needed: about {n} collisions to thermal energy (0.025 eV)',
+      modXi: 'energy per collision falls on average to {f} %',
+      modNow: 'collision {k}: {e}',
+      modDone: 'slow enough – now it can split U-235',
+      modInfo:
+        'As in billiards: if the neutron hits a nucleus of the same mass (hydrogen), it loses a lot of energy. It bounces off heavy nuclei with hardly any loss. U-235 splits much more easily with slow neutrons.',
+      mod_wasser: 'water moderator',
+      mod_graphit: 'graphite moderator',
+      mod_blei: 'lead',
+      abT: 'after {t}',
+      abInfo:
+        'Iodine-131 is almost gone after a few months, caesium-137 and strontium-90 stay radioactive for centuries, plutonium-239 for tens of thousands of years. That is why a safe final repository is needed.',
+      abAxisT: 't in years',
+      abAxisN: 'left',
+      tDays: '{n} days',
+      tYears: '{n} years',
       canvasS: 'A neutron hits a uranium nucleus, the nucleus oscillates, deforms and splits into two fission products and several neutrons; with the energy balance',
       canvasM: 'Bars of the mass before and after a nuclear reaction; the missing mass corresponds to the released energy',
       canvasK: 'Diagram of a nuclear power plant with its loop; below a comparison of the heat from uranium with the amount of coal for the same heat',
@@ -363,8 +446,43 @@ export default defineSimulation({
       return kg >= 1000 ? `${fmt.num(kg / 1000, kg >= 1e5 ? 0 : 1)} t` : `${fmt.num(kg, 0)} kg`;
     }
 
+    /* Moderator und Abfall */
+    let nColl = 0;
+    let collT = 0;
+    let nx = 0.1;
+    let ny = 0.5;
+    let ndir = 0.4;
+    const modA = () => MOD_A[p.mod as ModId];
+    const evText = (e: number) => (e >= 1e6 ? `${fmt.num(e / 1e6, 2)} MeV` : e >= 1e3 ? `${fmt.num(e / 1e3, 1)} keV` : e >= 1 ? `${fmt.num(e, 1)} eV` : `${fmt.num(e, 3)} eV`);
+    const curE = () => Math.max(E_THERMAL, E_FAST * Math.exp(-xi(modA()) * nColl));
+    const timeText = (lt: number) => {
+      const y = 10 ** lt;
+      return y < 1 ? tr('tDays', { n: fmt.num(y * 365.25, 0) }) : tr('tYears', { n: fmt.num(y, y < 10 ? 1 : 0) });
+    };
+    const plot2 = new Plot(surface, {
+      x: [0, 7],
+      y: [0, 1],
+      equalAspect: false,
+      pan: false,
+      zoom: false,
+      controls: false,
+      region: (w, h) => (w >= 700 ? { x: 6, y: 6, w: w * 0.62 - 12, h: h - 12 } : { x: 6, y: 6, w: w - 12, h: h * 0.6 }),
+    });
+
     function updateReadouts(): void {
       for (const key of ['B', 'E', 'k', 'gen', 'info']) ctx.readout(key, null);
+      if (p.mode === 'moderator') {
+        ctx.readout('B', tr('modN', { n: fmt.num(collisionsNeeded(modA()), 0) }));
+        ctx.readout('E', tr('modXi', { f: fmt.num(Math.exp(-xi(modA())) * 100, 1) }));
+        ctx.readout('info', ctx.t('modInfo'));
+        return;
+      }
+      if (p.mode === 'abfall') {
+        const t = 10 ** p.lt;
+        ctx.readout('B', `${tr('abT', { t: timeText(p.lt) })}: ${WASTE.map((w) => `${w.name[ctx.lang]} ${fmt.num(remaining(w.T, t) * 100, remaining(w.T, t) < 0.01 ? 3 : 1)} %`).join(', ')}`);
+        ctx.readout('info', ctx.t('abInfo'));
+        return;
+      }
       if (p.mode === 'spaltung') {
         const c = channel();
         ctx.readout('B', `${tr('sBal', { a: c.a.A, b: c.b.A, n: c.n })}; ${tr('sZ', { a: c.a.Z, b: c.b.Z })}`);
@@ -786,7 +904,127 @@ export default defineSimulation({
       if (tries === 1) score = { right: score.right + (res ? 1 : 0), all: score.all + 1, streak: res ? score.streak + 1 : 0 };
     }
 
-    const canvasKey = () => ({ spaltung: 'canvasS', masse: 'canvasM', kraftwerk: 'canvasK', ueben: 'canvasQ' })[p.mode as string] ?? 'canvas';
+    /* ---------- Moderator ---------- */
+    function drawModerator(): void {
+      const g = surface.g;
+      const th = ctx.theme;
+      const W = surface.width;
+      const H = surface.height;
+      const narrow = W < 700;
+      const box: Rect = narrow ? { x: 14, y: 40, w: W - 28, h: H * 0.5 } : { x: 20, y: 40, w: W * 0.6, h: H - 80 };
+      roundRect(g, box.x, box.y, box.w, box.h, 10);
+      g.fillStyle = withAlpha(th.series[0]!, 0.06);
+      g.fill();
+      g.strokeStyle = th.muted;
+      g.lineWidth = 1;
+      g.stroke();
+      // Kerne des Moderators: Größe nach Massenzahl
+      const A = modA();
+      const rN = A === 1 ? 4 : A === 12 ? 8 : 13;
+      for (let i = 0; i < 9; i++) {
+        for (let j = 0; j < 5; j++) {
+          const x = box.x + ((i + 0.5) * box.w) / 9 + (j % 2) * 12;
+          const y = box.y + ((j + 0.5) * box.h) / 5;
+          g.beginPath();
+          g.arc(x, y, rN, 0, Math.PI * 2);
+          g.fillStyle = withAlpha(th.series[1]!, 0.45);
+          g.fill();
+        }
+      }
+      const e = curE();
+      const done = e <= E_THERMAL * 1.0001;
+      const x = box.x + nx * box.w;
+      const y = box.y + ny * box.h;
+      g.beginPath();
+      g.arc(x, y, 7, 0, Math.PI * 2);
+      g.fillStyle = done ? th.series[2]! : th.series[3]!;
+      g.fill();
+      text(g, 'n', x, y, { font: `700 9px ${th.font}`, color: th.bg });
+      text(g, ctx.t(`mod_${p.mod}`), box.x + 8, box.y - 14, { font: `700 14px ${th.font}`, color: th.text, align: 'left' });
+      // Energiebalken (logarithmisch von 2 MeV bis 0,025 eV)
+      const panel: Rect = narrow ? { x: 14, y: box.y + box.h + 24, w: W - 28, h: H - box.y - box.h - 30 } : { x: box.x + box.w + 30, y: 50, w: W - box.w - 70, h: H - 100 };
+      const frac = Math.log(e / E_THERMAL) / Math.log(E_FAST / E_THERMAL);
+      const bw = panel.w;
+      roundRect(g, panel.x, panel.y + 10, bw, 16, 8);
+      g.fillStyle = withAlpha(th.muted, 0.2);
+      g.fill();
+      roundRect(g, panel.x, panel.y + 10, Math.max(16, bw * frac), 16, 8);
+      g.fillStyle = done ? th.series[2]! : th.series[3]!;
+      g.fill();
+      text(g, '2 MeV', panel.x + bw, panel.y, { font: `500 11px ${th.font}`, color: th.muted, align: 'right' });
+      text(g, evText(E_THERMAL), panel.x, panel.y, { font: `500 11px ${th.font}`, color: th.muted, align: 'left' });
+      let ty = panel.y + 48;
+      const line = (str: string, col: string, weight = 700) => {
+        g.font = `${weight} 13px ${th.font}`;
+        for (const part of wrapG(g, str, panel.w)) {
+          text(g, part, panel.x, ty, { font: `${weight} 13px ${th.font}`, color: col, align: 'left' });
+          ty += 18;
+        }
+        ty += 4;
+      };
+      line(tr('modNow', { k: nColl, e: evText(e) }), th.text);
+      line(tr('modN', { n: fmt.num(collisionsNeeded(A), 0) }), th.muted, 500);
+      if (done) line(ctx.t('modDone'), th.series[2]!);
+    }
+
+    /* ---------- Abfall ---------- */
+    function drawWaste(): void {
+      const th = ctx.theme;
+      const cols = [th.series[3]!, th.series[1]!, th.series[2]!, th.series[0]!];
+      const sup = (v: number) =>
+        String(Math.round(v))
+          .replace('-', '⁻')
+          .replace(/\d/g, (d) => '⁰¹²³⁴⁵⁶⁷⁸⁹'[Number(d)]!);
+      // x = log₁₀(t) + 2, damit die y-Achse links liegt
+      plot2.setRangePadded([0, 7], [0, 1.05], { left: 52, right: 14, top: 18, bottom: 26 });
+      plot2.setAxes({ x: { label: ctx.t('abAxisT'), minStep: 1, format: (v) => `10${sup(v - 2)}` }, y: { label: ctx.t('abAxisN'), format: (v) => `${Math.round(v * 100)} %` } });
+      plot2.begin();
+      plot2.grid({ minor: false });
+      plot2.axes();
+      WASTE.forEach((w, k) => plot2.fn((x) => remaining(w.T, 10 ** (x - 2)), { color: cols[k]!, width: 2.5, from: 0, to: 7 }));
+      plot2.vline(p.lt + 2, { color: th.text, width: 1.5, dash: [5, 4] });
+      WASTE.forEach((w, k) => plot2.point(p.lt + 2, remaining(w.T, 10 ** p.lt), { color: cols[k]!, radius: 4.5 }));
+      plot2.end();
+      const g = surface.g;
+      const W = surface.width;
+      const H = surface.height;
+      const narrow = W < 700;
+      const panel: Rect = narrow ? { x: 14, y: H * 0.6 + 24, w: W - 28, h: H * 0.4 - 30 } : { x: W * 0.62 + 16, y: 40, w: W * 0.38 - 32, h: H - 80 };
+      text(g, tr('abT', { t: timeText(p.lt) }), panel.x, panel.y, { font: `800 15px ${th.font}`, color: th.text, align: 'left' });
+      WASTE.forEach((w, k) => {
+        const rem = remaining(w.T, 10 ** p.lt);
+        const y = panel.y + 24 + k * (narrow ? 26 : 40);
+        text(g, w.name[ctx.lang], panel.x, y, { font: `600 12px ${th.font}`, color: cols[k]!, align: 'left' });
+        const bx = panel.x + (narrow ? 110 : 0);
+        const by = y + (narrow ? -6 : 10);
+        const bw = panel.w - (narrow ? 170 : 60);
+        roundRect(g, bx, by, bw, 12, 6);
+        g.fillStyle = withAlpha(th.muted, 0.2);
+        g.fill();
+        if (rem > 0.002) {
+          roundRect(g, bx, by, Math.max(4, bw * rem), 12, 6);
+          g.fillStyle = cols[k]!;
+          g.fill();
+        }
+        text(g, `${fmt.num(rem * 100, rem < 0.01 ? 2 : 0)} %`, bx + bw + 6, by + 6, { font: `600 12px ${th.font}`, color: th.text, align: 'left' });
+      });
+    }
+
+    function wrapG(g: CanvasRenderingContext2D, str: string, maxW: number): string[] {
+      const out: string[] = [];
+      let cur = '';
+      for (const w of str.split(' ')) {
+        const next = cur ? `${cur} ${w}` : w;
+        if (g.measureText(next).width > maxW && cur) {
+          out.push(cur);
+          cur = w;
+        } else cur = next;
+      }
+      if (cur) out.push(cur);
+      return out;
+    }
+
+    const canvasKey = () => ({ moderator: 'canvasMod', abfall: 'canvasAb', spaltung: 'canvasS', masse: 'canvasM', kraftwerk: 'canvasK', ueben: 'canvasQ' })[p.mode as string] ?? 'canvas';
 
     resetChain();
 
@@ -803,6 +1041,7 @@ export default defineSimulation({
           badInput = false;
         }
         if (changed.has('mode') || changed.has('ch')) ta = p.mode === 'spaltung' ? 0 : ta;
+        if (changed.has('mode') || changed.has('mod')) nColl = 0;
         surface.canvas.setAttribute('aria-label', ctx.t(canvasKey()));
         if (source === 'init' || changed.has('mode') || changed.has('stab') || changed.has('leck')) resetChain();
         setupPlot();
@@ -826,6 +1065,28 @@ export default defineSimulation({
         ctx.requestRender();
       },
       tick(dt) {
+        if (p.mode === 'moderator') {
+          const h = Math.min(dt, 0.05);
+          const need = collisionsNeeded(modA());
+          // ganze Abbremsung in etwa 6 s; bei sehr vielen Stößen mehrere je Schritt (Zeitraffer)
+          const interval = Math.max(0.05, 6 / Math.min(need, 60));
+          const per = need > 60 ? Math.ceil(need / 60) : 1;
+          nx += Math.cos(ndir) * h * 0.5;
+          ny += Math.sin(ndir) * h * 0.5;
+          if (nx < 0.03 || nx > 0.97) ndir = Math.PI - ndir;
+          if (ny < 0.05 || ny > 0.95) ndir = -ndir;
+          nx = Math.min(0.97, Math.max(0.03, nx));
+          ny = Math.min(0.95, Math.max(0.05, ny));
+          collT += h;
+          if (collT >= interval && curE() > E_THERMAL) {
+            collT = 0;
+            nColl += per;
+            ndir += 1 + Math.sin(nColl * 7.3) * 1.5;
+            updateReadouts();
+          }
+          if (curE() <= E_THERMAL) ctx.clock.pause();
+          return;
+        }
         ta += Math.min(dt, 0.05);
         if (p.mode === 'spaltung' && ta > 4.2) {
           ta = 4.2;
@@ -834,12 +1095,20 @@ export default defineSimulation({
       },
       resetTime() {
         ta = 0;
+        nColl = 0;
+        nx = 0.1;
+        ny = 0.5;
       },
       render() {
         surface.begin();
         if (p.mode === 'spaltung') return drawFission();
         if (p.mode === 'masse') return drawMass();
         if (p.mode === 'kraftwerk') return drawPlant();
+        if (p.mode === 'moderator') return drawModerator();
+        if (p.mode === 'abfall') {
+          plot2.resize();
+          return drawWaste();
+        }
         if (p.mode === 'ueben') return drawQuiz();
         plot.resize();
         if (p.mode === 'kette') {

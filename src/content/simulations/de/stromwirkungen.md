@@ -44,8 +44,18 @@ Geräte mit Metallgehäuse (Waschmaschine, Toaster) haben einen **Schutzleiter**
 
 Ein Vogel auf **einem** Seil überbrückt nur wenige Zentimeter Leitung. Zwischen seinen Füßen liegt praktisch keine Spannung, also fließt kein Strom durch ihn. Gefährlich wird es erst, wenn der Körper zwei Stellen mit großem Spannungsunterschied verbindet: zwei Seile oder ein Seil und die Erde, etwa über eine nasse Drachenschnur.
 
+### Verkupfern: die chemische Wirkung nutzen
+
+Fließt Strom durch eine Kupfersalz-Lösung, wandern die Kupfer-Ionen zum Minuspol und werden dort zu Kupfer. So bekommt ein Schlüssel eine Kupferschicht. Die Masse wächst mit Stromstärke mal Zeit: Pro Amperestunde sind es etwa 1,19 g Kupfer, bei Silber sogar gut 4 g. Genauso werden Schmuck vergoldet, Stahlteile vernickelt und sehr reines Kupfer für Kabel gewonnen.
+
+### Schrottkran: die magnetische Wirkung nutzen
+
+Ein Lasthebemagnet ist eine große Spule mit Eisenkern. Mehr Windungen und mehr Strom machen ihn stärker – doppelt so viele Windungen wirken wie doppelt so viel Strom. Irgendwann ist das Eisen „gesättigt“ und wird kaum noch stärker. Schaltet man den Strom ab, fällt der Schrott herunter. Die Simulation rechnet mit einem vereinfachten Modell.
+
 ## Ausprobieren
 
+- [Schlüssel verkupfern](?mode=galvanik&gmet=cu&gi=1&gt=30) und [Löffel versilbern](?mode=galvanik&gmet=ag&gi=0.5&gt=60): Wie viel Metall scheidet sich ab?
+- [Schrottkran](?mode=kran&kn=500&ki=3&kl=600) und [zu wenig Strom](?mode=kran&kn=300&ki=2&kl=1000): Wie viele Windungen oder wie viel Strom braucht der Kran für 1000 kg?
 - [Glühlampe](?mode=wirkungen&geraet=lampe&U=6&sich=2&kurz=0): Erhöhe die Spannung. Wie ändern sich Strom und Helligkeit?
 - [Heizdraht](?mode=wirkungen&geraet=heiz&U=12&sich=5&kurz=0): Was passiert mit einer 2-A-Sicherung?
 - [Kurzschluss](?mode=wirkungen&geraet=lampe&U=6&sich=2&kurz=1): Warum brennt die Sicherung durch?

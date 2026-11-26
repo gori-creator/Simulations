@@ -1,5 +1,24 @@
 import { defineSimulation, prefersReducedMotion, roundRect, Surface, text, withAlpha, type Rect } from '../../../sim-core';
-import { checkTask, cyclotron, deflection, E, floatVoltage, hallVoltage, helix, makeTask, MP, SAMPLES, spectrometerRadius, speedAfter, type FieldTask, type SampleId } from './model';
+import {
+  fadenRadius,
+  HELMHOLTZ_K,
+  screenSpot,
+  specificCharge,
+  checkTask,
+  cyclotron,
+  deflection,
+  E,
+  floatVoltage,
+  hallVoltage,
+  helix,
+  makeTask,
+  MP,
+  SAMPLES,
+  spectrometerRadius,
+  speedAfter,
+  type FieldTask,
+  type SampleId,
+} from './model';
 
 const L = (de: string, en: string) => ({ de, en });
 /** Plattenkondensator der Ablenkung: Länge 5 cm, Abstand 2 cm; Schirm 15 cm hinter dem Ende. */
@@ -32,6 +51,8 @@ export default defineSimulation({
         { value: 'hall', label: L('Hall-Effekt', 'Hall effect') },
         { value: 'spektro', label: L('Massenspektrometer', 'Mass spectrometer') },
         { value: 'spirale', label: L('Schraubenbahn und Polarlicht', 'Helical path and aurora') },
+        { value: 'faden', label: L('Fadenstrahlrohr: e/m bestimmen', 'Fine-beam tube: measuring e/m') },
+        { value: 'oszi', label: L('Oszilloskop: Bilder aus Spannungen', 'Oscilloscope: pictures from voltages') },
         { value: 'ueben', label: L('Üben: Aufgaben', 'Practice: tasks') },
       ],
       default: 'quer',
@@ -120,38 +141,54 @@ export default defineSimulation({
       unit: '°',
       visibleIf: (v) => v.mode === 'spirale',
     },
+    { key: 'uf', type: 'number', label: L('Beschleunigungsspannung', 'Accelerating voltage'), min: 100, max: 300, step: 10, default: 200, unit: 'V', visibleIf: (v) => v.mode === 'faden' },
+    { key: 'ih', type: 'number', label: L('Spulenstrom', 'Coil current'), min: 0.5, max: 3, step: 0.1, default: 1.5, unit: 'A', visibleIf: (v) => v.mode === 'faden' },
+    { key: 'osaw', type: 'boolean', label: L('Zeitablenkung (Sägezahn) in x-Richtung', 'time base (sawtooth) in x direction'), default: true, visibleIf: (v) => v.mode === 'oszi' },
+    { key: 'fr', type: 'number', label: L('Frequenzverhältnis y : x', 'Frequency ratio y : x'), min: 1, max: 4, step: 1, default: 2, visibleIf: (v) => v.mode === 'oszi' },
+    { key: 'ph', type: 'number', label: L('Phasenverschiebung', 'Phase shift'), min: 0, max: 180, step: 15, default: 90, unit: '°', visibleIf: (v) => v.mode === 'oszi' && v.osaw === false },
+    { key: 'ay', type: 'number', label: L('Amplitude in y', 'Amplitude in y'), min: 0.2, max: 1, step: 0.1, default: 0.8, visibleIf: (v) => v.mode === 'oszi' },
     { key: 'qn', type: 'number', label: L('Aufgabe Nr.', 'Task no.'), min: 1, max: 999, step: 1, default: 1, visibleIf: (v) => v.mode === 'ueben' },
     { key: 'qa', type: 'text', label: L('Deine Antwort', 'Your answer'), default: '', maxLength: 10, placeholder: L('Nummer oder Zahl', 'number'), visibleIf: (v) => v.mode === 'ueben' },
   ],
   hint: (v) =>
-    v.mode === 'spektro'
+    v.mode === 'faden'
       ? L(
-          'Schwere Isotope fliegen im Magnetfeld einen größeren Halbkreis – so trennt das Spektrometer Atome nach ihrer Masse.',
-          'Heavier isotopes fly a larger semicircle in the magnetic field – that is how the spectrometer separates atoms by mass.',
+          'Das Magnetfeld der Spulen zwingt die Elektronen auf einen Kreis. Aus Spannung, Feld und Radius folgt e/m.',
+          'The magnetic field of the coils forces the electrons onto a circle. Voltage, field and radius give e/m.',
         )
-      : v.mode === 'spirale'
+      : v.mode === 'oszi'
         ? L(
-            'Fliegt ein Elektron schräg zum Magnetfeld, kreist es und läuft gleichzeitig weiter: eine Schraube. So gelangen Teilchen der Sonne zu den Polen.',
-            'If an electron flies at an angle to the magnetic field, it circles and moves along at the same time: a helix. That is how particles from the Sun reach the poles.',
+            'Zwei Spannungen lenken den Elektronenstrahl in x und y ab. Mit Zeitablenkung siehst du den Verlauf, mit zwei Sinusspannungen Lissajous-Figuren.',
+            'Two voltages deflect the electron beam in x and y. With a time base you see the waveform, with two sine voltages Lissajous figures.',
           )
-        : v.mode === 'ueben'
-          ? L('Gib die Zahl oder die Nummer der Antwort ein und drücke „Prüfen“.', 'Enter the number or the number of the answer and press “Check”.')
-          : v.mode === 'millikan'
+        : v.mode === 'spektro'
+          ? L(
+              'Schwere Isotope fliegen im Magnetfeld einen größeren Halbkreis – so trennt das Spektrometer Atome nach ihrer Masse.',
+              'Heavier isotopes fly a larger semicircle in the magnetic field – that is how the spectrometer separates atoms by mass.',
+            )
+          : v.mode === 'spirale'
             ? L(
-                'Stell die Spannung so ein, dass das Tröpfchen schwebt. Dann ist die elektrische Kraft so groß wie die Gewichtskraft.',
-                'Set the voltage so that the droplet hovers. Then the electric force equals the weight.',
+                'Fliegt ein Elektron schräg zum Magnetfeld, kreist es und läuft gleichzeitig weiter: eine Schraube. So gelangen Teilchen der Sonne zu den Polen.',
+                'If an electron flies at an angle to the magnetic field, it circles and moves along at the same time: a helix. That is how particles from the Sun reach the poles.',
               )
-            : v.mode === 'zyklotron'
-              ? L(
-                  'Bei jedem Spaltdurchgang wird das Proton schneller, die Bahn größer – die Umlaufzeit bleibt gleich.',
-                  'At every gap crossing the proton gets faster and the orbit larger – the period stays the same.',
-                )
-              : v.mode === 'hall'
+            : v.mode === 'ueben'
+              ? L('Gib die Zahl oder die Nummer der Antwort ein und drücke „Prüfen“.', 'Enter the number or the number of the answer and press “Check”.')
+              : v.mode === 'millikan'
                 ? L(
-                    'Das Magnetfeld drückt die Ladungsträger zur Seite. Dort sammeln sie sich und erzeugen die Hall-Spannung.',
-                    'The magnetic field pushes the charge carriers sideways, where they pile up and create the Hall voltage.',
+                    'Stell die Spannung so ein, dass das Tröpfchen schwebt. Dann ist die elektrische Kraft so groß wie die Gewichtskraft.',
+                    'Set the voltage so that the droplet hovers. Then the electric force equals the weight.',
                   )
-                : L('Elektronen werden von der Glühkathode zur Anode beschleunigt.', 'Electrons are accelerated from the hot cathode to the anode.'),
+                : v.mode === 'zyklotron'
+                  ? L(
+                      'Bei jedem Spaltdurchgang wird das Proton schneller, die Bahn größer – die Umlaufzeit bleibt gleich.',
+                      'At every gap crossing the proton gets faster and the orbit larger – the period stays the same.',
+                    )
+                  : v.mode === 'hall'
+                    ? L(
+                        'Das Magnetfeld drückt die Ladungsträger zur Seite. Dort sammeln sie sich und erzeugen die Hall-Spannung.',
+                        'The magnetic field pushes the charge carriers sideways, where they pile up and create the Hall voltage.',
+                      )
+                    : L('Elektronen werden von der Glühkathode zur Anode beschleunigt.', 'Electrons are accelerated from the hot cathode to the anode.'),
   actions: [
     { id: 'check', label: L('Prüfen', 'Check'), primary: true, visibleIf: (v) => v.mode === 'ueben' },
     { id: 'next', label: L('Nächste Aufgabe', 'Next task'), visibleIf: (v) => v.mode === 'ueben' },
@@ -181,10 +218,27 @@ export default defineSimulation({
     { id: 'uran', label: L('Uran anreichern: 235 und 238', 'Enriching uranium: 235 and 238'), values: { mode: 'spektro', probe: 'uran', B2: 1.5 } },
     { id: 'polar', label: L('Polarlicht: Schraubenbahn', 'Aurora: helical path'), values: { mode: 'spirale', al: 60, B: 1 } },
     { id: 'kreis', label: L('Senkrecht zum Feld: Kreis', 'Perpendicular to the field: circle'), values: { mode: 'spirale', al: 90, B: 1 } },
-    { id: 'quiz', label: L('Üben: sechs Aufgabenarten', 'Practice: six kinds of tasks'), values: { mode: 'ueben', qn: 1, qa: '' } },
+    { id: 'faden', label: L('Fadenstrahlrohr: 200 V, 1,5 A', 'Fine-beam tube: 200 V, 1.5 A'), values: { mode: 'faden', uf: 200, ih: 1.5 } },
+    { id: 'fadenGross', label: L('Zu schwaches Feld: Strahl trifft das Glas', 'Field too weak: beam hits the glass'), values: { mode: 'faden', uf: 300, ih: 0.8 } },
+    { id: 'saege', label: L('Oszilloskop: zwei Schwingungen sichtbar', 'Oscilloscope: two oscillations visible'), values: { mode: 'oszi', osaw: true, fr: 2, ay: 0.8 } },
+    { id: 'kreis', label: L('Lissajous: Kreis (1 : 1, 90°)', 'Lissajous: circle (1 : 1, 90°)'), values: { mode: 'oszi', osaw: false, fr: 1, ph: 90, ay: 1 } },
+    { id: 'acht', label: L('Lissajous: Acht (2 : 1)', 'Lissajous: figure of eight (2 : 1)'), values: { mode: 'oszi', osaw: false, fr: 2, ph: 0, ay: 1 } },
+    { id: 'quiz', label: L('Üben: acht Aufgabenarten', 'Practice: eight kinds of tasks'), values: { mode: 'ueben', qn: 1, qa: '' } },
   ],
   strings: {
     de: {
+      canvasF: 'Fadenstrahlrohr: Elektronen fliegen im Feld zweier Spulen auf einem leuchtenden Kreis; daneben Spannung, Feld, Radius und e/m',
+      canvasO: 'Schirm eines Oszilloskops mit dem Bild des Elektronenstrahls',
+      fR: 'Bahnradius r ≈ {r} cm',
+      fEm: 'e/m = 2U / (B²r²) ≈ {em} · 10¹¹ C/kg',
+      fGlass: 'Der Kreis ist größer als der Glaskolben – Strahl trifft das Glas.',
+      fInfo:
+        'Die Lorentzkraft wirkt als Zentripetalkraft: e·v·B = m·v²/r. Mit e·U = ½·m·v² folgt e/m = 2U / (B² r²) ≈ 1,76 · 10¹¹ C/kg. Daraus und aus der Elementarladung erhält man die Masse des Elektrons.',
+      oSaw: 'Zeitablenkung: x wächst gleichmäßig, dann springt der Strahl zurück',
+      oSawInfo: 'So zeigt das Oszilloskop, wie sich die y-Spannung mit der Zeit ändert: Hier sind {n} Schwingungen zu sehen.',
+      oLiss: 'Lissajous-Figur: x und y sind beide Sinusspannungen',
+      oLissInfo: 'Bei einem Frequenzverhältnis von {n} : 1 hat die Figur oben {n} Bögen. So vergleicht man Frequenzen.',
+      oInfo: 'In der Braun’schen Röhre lenken zwei Plattenpaare den Elektronenstrahl ab: das eine waagerecht, das andere senkrecht. Wo der Strahl auf den Schirm trifft, leuchtet er.',
       canvasS: 'Massenspektrometer: Ionen fliegen durch einen Geschwindigkeitsfilter und im Magnetfeld auf Halbkreisen zu einem Detektor; daneben die Häufigkeit der Isotope',
       canvasH: 'Ein Elektron fliegt schräg zu einem Magnetfeld und beschreibt eine Schraubenbahn; daneben die Erde mit Polarlicht',
       canvasQ: 'Übungsaufgabe zu geladenen Teilchen in Feldern mit Rückmeldung und Punktestand',
@@ -224,6 +278,18 @@ export default defineSimulation({
       Bin: 'B zeigt in die Bildebene hinein',
     },
     en: {
+      canvasF: 'Fine-beam tube: electrons fly on a glowing circle in the field of two coils; next to it voltage, field, radius and e/m',
+      canvasO: 'Screen of an oscilloscope showing the picture of the electron beam',
+      fR: 'radius of the path r ≈ {r} cm',
+      fEm: 'e/m = 2U / (B²r²) ≈ {em} · 10¹¹ C/kg',
+      fGlass: 'The circle is larger than the glass bulb – the beam hits the glass.',
+      fInfo:
+        'The Lorentz force acts as the centripetal force: e·v·B = m·v²/r. With e·U = ½·m·v² this gives e/m = 2U / (B² r²) ≈ 1.76 · 10¹¹ C/kg. Together with the elementary charge this gives the mass of the electron.',
+      oSaw: 'time base: x grows steadily, then the beam jumps back',
+      oSawInfo: 'This is how the oscilloscope shows how the y voltage changes with time: here you see {n} oscillations.',
+      oLiss: 'Lissajous figure: x and y are both sine voltages',
+      oLissInfo: 'With a frequency ratio of {n} : 1 the figure has {n} arcs at the top. This is how frequencies are compared.',
+      oInfo: 'In a cathode-ray tube two pairs of plates deflect the electron beam: one horizontally, the other vertically. Where the beam hits the screen, it glows.',
       canvasS: 'Mass spectrometer: ions pass a velocity filter and fly on semicircles in a magnetic field to a detector; next to it the abundance of the isotopes',
       canvasH: 'An electron flies at an angle to a magnetic field and follows a helical path; next to it the Earth with an aurora',
       canvasQ: 'Practice task on charged particles in fields with feedback and score',
@@ -313,6 +379,18 @@ export default defineSimulation({
         const hx = helix(V_EL, p.al, p.B);
         ctx.readout('hx', tr('hVal', { r: len(hx.r), h: len(hx.pitch) }));
         ctx.readout('info', ctx.t('hInfo'));
+        return;
+      }
+      if (p.mode === 'faden') {
+        const B = HELMHOLTZ_K * p.ih;
+        const rad = fadenRadius(p.uf, B);
+        ctx.readout('cyc', tr('fR', { r: fmt.num(rad * 100, 1) }));
+        ctx.readout('hx', tr('fEm', { em: fmt.num(specificCharge(p.uf, B, rad) / 1e11, 2) }));
+        ctx.readout('info', ctx.t('fInfo'));
+        return;
+      }
+      if (p.mode === 'oszi') {
+        ctx.readout('info', ctx.t('oInfo'));
         return;
       }
       if (p.mode === 'ueben') {
@@ -880,7 +958,150 @@ export default defineSimulation({
       if (tries === 1) score = { right: score.right + (res ? 1 : 0), all: score.all + 1, streak: res ? score.streak + 1 : 0 };
     }
 
-    const canvasKey = () => ({ spektro: 'canvasS', spirale: 'canvasH', ueben: 'canvasQ' })[p.mode as string] ?? 'canvas';
+    /* ---------- Fadenstrahlrohr ---------- */
+    function drawFaden(r: Rect): void {
+      const g = surface.g;
+      const th = ctx.theme;
+      const wide = r.w >= 700;
+      const scene: Rect = wide ? { x: r.x, y: r.y, w: r.w * 0.58, h: r.h } : { x: r.x, y: r.y, w: r.w, h: r.h * 0.62 };
+      const B = HELMHOLTZ_K * p.ih;
+      const rad = fadenRadius(p.uf, B);
+      const TUBE = 0.075;
+      const cx = scene.x + scene.w / 2;
+      const cy = scene.y + scene.h / 2;
+      const R = Math.min(scene.w, scene.h) * 0.42;
+      const pxPerM = R / TUBE;
+      // Spulen
+      g.strokeStyle = withAlpha(th.series[3]!, 0.3);
+      g.lineWidth = 5;
+      for (const dx of [-0.18, 0.18]) {
+        g.beginPath();
+        g.ellipse(cx + dx * R, cy, R * 0.12, R * 1.08, 0, 0, Math.PI * 2);
+        g.stroke();
+      }
+      // Glaskolben
+      g.beginPath();
+      g.arc(cx, cy, R, 0, Math.PI * 2);
+      g.fillStyle = withAlpha(th.series[0]!, 0.06);
+      g.fill();
+      g.strokeStyle = th.muted;
+      g.lineWidth = 1.5;
+      g.stroke();
+      // Elektronenkanone unten, Strahl startet nach rechts, Kreis darüber
+      const gx = cx;
+      const gy = cy + R * 0.85;
+      g.fillStyle = th.muted;
+      g.fillRect(gx - 22, gy - 4, 22, 8);
+      const rp = rad * pxPerM;
+      const ccy = gy - rp;
+      g.save();
+      g.beginPath();
+      g.arc(cx, cy, R - 2, 0, Math.PI * 2);
+      g.clip();
+      g.strokeStyle = withAlpha(th.series[2]!, 0.85);
+      g.lineWidth = 3;
+      g.shadowColor = th.series[2]!;
+      g.shadowBlur = 8;
+      g.beginPath();
+      g.arc(gx, ccy, rp, Math.PI / 2, Math.PI / 2 - 2 * Math.PI, true);
+      g.stroke();
+      g.shadowBlur = 0;
+      // Elektron, das umläuft
+      const a = Math.PI / 2 - ((anim * 1.2) % 1) * 2 * Math.PI;
+      g.beginPath();
+      g.arc(gx + rp * Math.cos(a), ccy + rp * Math.sin(a), 4, 0, Math.PI * 2);
+      g.fillStyle = th.series[2]!;
+      g.fill();
+      g.restore();
+      // Maßstab: Durchmesser
+      g.strokeStyle = th.text;
+      g.lineWidth = 1;
+      g.setLineDash([4, 3]);
+      g.beginPath();
+      g.moveTo(gx, gy);
+      g.lineTo(gx, gy - 2 * rp);
+      g.stroke();
+      g.setLineDash([]);
+      text(g, `2r = ${fmt.num(rad * 200, 1)} cm`, gx + 8, gy - rp, { font: `700 12px ${th.font}`, color: th.text, align: 'left' });
+      const hitsGlass = 2 * rad > 2 * TUBE * 0.92;
+      // Werte
+      const panel: Rect = wide ? { x: scene.w + 20, y: 40, w: r.w - scene.w - 40, h: r.h - 80 } : { x: 16, y: scene.h + 14, w: r.w - 32, h: r.h - scene.h - 20 };
+      let y = panel.y;
+      const line = (str: string, col: string, weight = 600) => {
+        g.font = `${weight} 13px ${th.font}`;
+        for (const part of wrap(g, str, panel.w)) {
+          text(g, part, panel.x, y, { font: `${weight} 13px ${th.font}`, color: col, align: 'left' });
+          y += 18;
+        }
+        y += 2;
+      };
+      line(`U = ${fmt.num(p.uf, 0)} V, I = ${fmt.num(p.ih, 1)} A → B = ${fmt.num(B * 1000, 2)} mT`, th.text, 700);
+      line(tr('fR', { r: fmt.num(rad * 100, 1) }), th.series[2]!, 700);
+      if (hitsGlass) line(ctx.t('fGlass'), th.series[3]!, 700);
+      else if (!ctx.hidden) line(tr('fEm', { em: fmt.num(specificCharge(p.uf, B, rad) / 1e11, 2) }), th.series[0]!, 700);
+    }
+
+    /* ---------- Oszilloskop ---------- */
+    let tOsc = 0;
+    function drawOszi(r: Rect): void {
+      const g = surface.g;
+      const th = ctx.theme;
+      const wide = r.w >= 700;
+      const size = Math.min(wide ? r.w * 0.55 : r.w - 32, r.h - (wide ? 60 : 160));
+      const sx = wide ? r.x + 30 : r.x + (r.w - size) / 2;
+      const sy = r.y + 30;
+      roundRect(g, sx - 8, sy - 8, size + 16, size + 16, 12);
+      g.fillStyle = th.dark ? withAlpha(th.muted, 0.2) : withAlpha(th.text, 0.9);
+      g.fill();
+      g.strokeStyle = withAlpha(th.series[2]!, 0.25);
+      g.lineWidth = 1;
+      for (let k = 1; k < 8; k++) {
+        g.beginPath();
+        g.moveTo(sx + (k * size) / 8, sy);
+        g.lineTo(sx + (k * size) / 8, sy + size);
+        g.moveTo(sx, sy + (k * size) / 8);
+        g.lineTo(sx + size, sy + (k * size) / 8);
+        g.stroke();
+      }
+      const P = (t: number): [number, number] => {
+        const [x, y] = screenSpot(t, p.osaw, p.fr, p.ph, p.ay);
+        return [sx + ((x + 1) / 2) * size * 0.94 + size * 0.03, sy + ((1 - y) / 2) * size * 0.94 + size * 0.03];
+      };
+      // Nachleuchten: die letzte Periode der x-Ablenkung
+      const N = 240;
+      for (let k = 0; k < N; k++) {
+        const t0 = tOsc - (k / N) * (p.osaw ? 1 : Math.max(1, p.fr));
+        const t1 = tOsc - ((k + 1) / N) * (p.osaw ? 1 : Math.max(1, p.fr));
+        const [x0, y0] = P(t0);
+        const [x1, y1] = P(t1);
+        if (p.osaw && Math.abs(x1 - x0) > size * 0.5) continue;
+        g.strokeStyle = withAlpha(th.series[2]!, 0.9 * (1 - k / N));
+        g.lineWidth = 2.2;
+        g.beginPath();
+        g.moveTo(x0, y0);
+        g.lineTo(x1, y1);
+        g.stroke();
+      }
+      const [cx, cy] = P(tOsc);
+      g.beginPath();
+      g.arc(cx, cy, 4, 0, Math.PI * 2);
+      g.fillStyle = th.series[2]!;
+      g.fill();
+      const panel: Rect = wide ? { x: sx + size + 40, y: 40, w: r.w - size - 90, h: r.h - 80 } : { x: 16, y: sy + size + 24, w: r.w - 32, h: r.h - size - 60 };
+      let y = panel.y;
+      const line = (str: string, col: string, weight = 600) => {
+        g.font = `${weight} 13px ${th.font}`;
+        for (const part of wrap(g, str, panel.w)) {
+          text(g, part, panel.x, y, { font: `${weight} 13px ${th.font}`, color: col, align: 'left' });
+          y += 18;
+        }
+        y += 4;
+      };
+      line(ctx.t(p.osaw ? 'oSaw' : 'oLiss'), th.text, 700);
+      line(p.osaw ? tr('oSawInfo', { n: p.fr }) : tr('oLissInfo', { n: p.fr }), th.muted, 500);
+    }
+
+    const canvasKey = () => ({ faden: 'canvasF', oszi: 'canvasO', spektro: 'canvasS', spirale: 'canvasH', ueben: 'canvasQ' })[p.mode as string] ?? 'canvas';
 
     return {
       update(changed, source) {
@@ -907,6 +1128,7 @@ export default defineSimulation({
         ctx.requestRender();
       },
       tick(dt) {
+        if (p.mode === 'oszi') tOsc += Math.min(dt, 0.05) * 0.5;
         anim += dt;
         if (p.mode === 'millikan') {
           const Uf = floatU();
@@ -929,6 +1151,8 @@ export default defineSimulation({
         else if (p.mode === 'spektro') drawSpectro(full);
         else if (p.mode === 'spirale') drawHelix(full);
         else if (p.mode === 'ueben') drawQuiz();
+        else if (p.mode === 'faden') drawFaden(full);
+        else if (p.mode === 'oszi') drawOszi(full);
         else drawHall(full);
       },
       destroy: () => surface.destroy(),
