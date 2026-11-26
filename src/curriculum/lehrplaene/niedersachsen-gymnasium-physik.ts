@@ -99,7 +99,7 @@ const DJ_9_10: CurriculumUnit[] = [
       'Temperatur und innere Energie, Phasenübergänge energetisch, Energieentwertung, Leistung, Arbeit und Wärme sowie Lage- und Bewegungsenergie mit dem Energieerhaltungssatz berechnen.',
       'Temperature and internal energy, phase changes in terms of energy, energy dissipation, power, work and heat, and calculating potential and kinetic energy with the law of conservation of energy.',
     ),
-    simulations: ['energieerhaltung', 'teilchenmodell', 'energieversorgung'],
+    simulations: ['energieerhaltung', 'teilchenmodell', 'energieversorgung', 'waermetransport'],
   },
   {
     code: '8',
@@ -126,7 +126,7 @@ const DJ_9_10: CurriculumUnit[] = [
       'Gasdruck im Teilchenmodell, Gesetze von Boyle-Mariotte und Gay-Lussac, Kelvin-Skala, Stirlingmotor und der höchstmögliche Wirkungsgrad.',
       'Gas pressure in the particle model, the laws of Boyle–Mariotte and Gay-Lussac, the Kelvin scale, the Stirling engine and the maximum possible efficiency.',
     ),
-    simulations: ['gasgesetze'],
+    simulations: ['gasgesetze', 'druck'],
   },
 ];
 

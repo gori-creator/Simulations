@@ -54,7 +54,7 @@ const T_2_1: CurriculumUnit = {
     'Geschwindigkeit aus Tempo und Richtung, gleichförmige Bewegung, t-s- und t-v-Diagramme, Zusatzgeschwindigkeit und Kraft, Verformung und Kraftmessung, Trägheit und Wechselwirkung, einfache Maschinen, Energiebilanzen.',
     'Velocity from speed and direction, uniform motion, distance-time and velocity-time graphs, change of velocity and force, deformation and measuring force, inertia and interaction, simple machines, energy balances.',
   ),
-  simulations: ['bewegungsdiagramme', 'hookesches-gesetz', 'hebelgesetz', 'energieerhaltung', 'kraefteaddition', 'schiefe-ebene', 'messunsicherheit', 'dichte-auftrieb', 'newtonsche-gesetze'],
+  simulations: ['bewegungsdiagramme', 'hookesches-gesetz', 'hebelgesetz', 'energieerhaltung', 'kraefteaddition', 'schiefe-ebene', 'messunsicherheit', 'dichte-auftrieb', 'newtonsche-gesetze', 'druck'],
 };
 
 const T_1_2: CurriculumUnit = {
@@ -84,7 +84,7 @@ const T_3_2: CurriculumUnit = {
     'Temperatur als Maß für die Bewegungsenergie der Teilchen, Wärmetransport, elektromagnetisches Spektrum, Strahlungsgleichgewicht der Erde, Atmosphäre und Treibhauseffekt.',
     'Temperature as a measure of the kinetic energy of particles, heat transfer, the electromagnetic spectrum, the Earth’s radiation balance, the atmosphere and the greenhouse effect.',
   ),
-  simulations: ['teilchenmodell'],
+  simulations: ['teilchenmodell', 'waermetransport'],
 };
 
 const T_2_2: CurriculumUnit = {
