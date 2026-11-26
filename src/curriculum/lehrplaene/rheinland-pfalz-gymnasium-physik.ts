@@ -329,7 +329,7 @@ const QP_UNITS: CurriculumUnit[] = [
           'Erzeugung, Ausbreitung und Energietransport, Wellenlänge, Geschwindigkeit und Frequenz, transversal und longitudinal, Polarisation, Brechung, Reflexion und Beugung.',
           'Generation, propagation and energy transport, wavelength, speed and frequency, transverse and longitudinal, polarisation, refraction, reflection and diffraction.',
         ),
-        simulations: ['wellen-ausbreitung'],
+        simulations: ['wellen-ausbreitung', 'polarisation'],
       },
       {
         code: 'GF-P.7',
@@ -390,7 +390,7 @@ const QP_UNITS: CurriculumUnit[] = [
         code: 'GF-W.4',
         title: L('Licht als Wellenphänomen', 'Light as a wave phenomenon'),
         summary: L('Interferenz und Polarisation in Natur und Technik.', 'Interference and polarisation in nature and technology.'),
-        simulations: ['interferenz', 'doppelspalt'],
+        simulations: ['interferenz', 'doppelspalt', 'polarisation'],
       },
       {
         code: 'GF-W.5',
@@ -644,7 +644,7 @@ const QP_UNITS: CurriculumUnit[] = [
         code: 'LF-W.4',
         title: L('Licht als Wellenphänomen', 'Light as a wave phenomenon'),
         summary: L('Interferenz und Polarisation in Natur und Technik.', 'Interference and polarisation in nature and technology.'),
-        simulations: ['interferenz', 'doppelspalt'],
+        simulations: ['interferenz', 'doppelspalt', 'polarisation'],
       },
       {
         code: 'LF-W.5',

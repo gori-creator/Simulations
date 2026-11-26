@@ -2,7 +2,7 @@
 
 <!-- Automatisch erzeugt mit `npm run lehrplan:luecken` aus src/curriculum/lehrplaene/ – nicht von Hand bearbeiten. -->
 
-Lernbereiche der Länder-Lehrpläne, zu denen es noch **keine** Simulation gibt – Vorrat für neue Simulationen (Anleitung: `docs/NEUE-SIMULATION.md`). Insgesamt **102 von 1773** Lernbereichen ohne Simulation.
+Lernbereiche der Länder-Lehrpläne, zu denen es noch **keine** Simulation gibt – Vorrat für neue Simulationen (Anleitung: `docs/NEUE-SIMULATION.md`). Insgesamt **92 von 1773** Lernbereichen ohne Simulation.
 
 Nicht jeder Lernbereich eignet sich für eine Simulation. Reine Methoden-, Praktikums- und Projektthemen sind im Lehrplan mit `method: true` gekennzeichnet und zählen nicht als Lücke. Kommt ein Thema in mehreren Ländern vor, lohnt es sich besonders.
 
@@ -92,7 +92,7 @@ Alle Lernbereiche haben eine Simulation.
 | --- | --- | --- | --- |
 | 12 | S.3 | Stochastik › Hypergeometrische Verteilung | Ziehen ohne Zurücklegen mit der hypergeometrischen Verteilung beschreiben. |
 
-## Physik (79)
+## Physik (69)
 
 ### Baden-Württemberg · Gymnasium (0)
 
@@ -121,18 +121,17 @@ Alle Lernbereiche haben eine Simulation.
 
 Alle Lernbereiche haben eine Simulation.
 
-### Bremen · Gymnasium (2)
+### Bremen · Gymnasium (1)
 
 | Stufe | Nr. | Lernbereich | Kurz |
 | --- | --- | --- | --- |
-| 11/12 | 4 | Elektromagnetische Schwingungen | Harmonische elektromagnetische Schwingungen, Schwingkreis, Ausbreitung und Spektrum elektromagnetischer Wellen. |
 | 11/12 | 8 | Struktur der Materie (LK) | LK: Bausteine der Materie, Kernmasse und Kernradius, Paarbildung, Quarks und Teilchenzoo. |
 
 ### Hamburg · Gymnasium (0)
 
 Alle Lernbereiche haben eine Simulation.
 
-### Hessen · Gymnasium (34)
+### Hessen · Gymnasium (26)
 
 | Stufe | Nr. | Lernbereich | Kurz |
 | --- | --- | --- | --- |
@@ -147,15 +146,7 @@ Alle Lernbereiche haben eine Simulation.
 | 12 | Q1.1.9 | Elektrisches Feld › Kräfte auf Körper in homogenen elektrischen Feldern, Bahnformen, Energiebetrachtung (nur LK) | Quantitative Ablenkung (Vergleich mit waagerechtem Wurf), Linearbeschleuniger. |
 | 12 | Q1.2.5 | Magnetisches Feld › Hall-Effekt (nur LK) | Spannung quer zum Strom im Magnetfeld erklären. |
 | 12 | Q1.2.6 | Magnetisches Feld › Teilchenbeschleuniger (nur LK) | Funktionsprinzip z. B. von Zyklotron und Synchrotron. |
-| 12 | Q2.2.3 | Induktion und elektromagnetische Schwingungen › Selbstinduktion und Induktivität einer langen Spule (phänomenologisch) | Selbstinduktion an Spulen beobachten und beschreiben. |
-| 12 | Q2.2.5 | Induktion und elektromagnetische Schwingungen › Elektromagnetische harmonische Schwingungen | Schwingkreis: Kenngrößen, Energieumwandlung, Thomson’sche Gleichung. |
-| 12 | Q2.2.7 | Induktion und elektromagnetische Schwingungen › Selbstinduktion und Induktivität (nur LK) | Ein- und Ausschaltvorgänge, Definition der Induktivität. |
-| 12 | Q2.2.8 | Induktion und elektromagnetische Schwingungen › Energie des Feldes einer stromdurchflossenen Spule (nur LK) | Magnetische Feldenergie (ohne Herleitung). |
-| 12 | Q2.2.9 | Induktion und elektromagnetische Schwingungen › Vergleich von mechanischen und elektromagnetischen Schwingungen unter energetischen Aspekten (nur LK) | Analogien zwischen Pendel und Schwingkreis. |
-| 12 | Q2.2.10 | Induktion und elektromagnetische Schwingungen › Gedämpfte Schwingungen (nur LK) | Dämpfung im Schwingkreis. |
 | 13 | Q3.1.1 | Elektromagnetische Wellen › Spektrum elektromagnetischer Wellen | Frequenzbereiche und technische Anwendungen im Überblick. |
-| 13 | Q3.1.2 | Elektromagnetische Wellen › Charakteristische Wellenphänomene | Lineare Polarisation von Licht und Totalreflexion (Glasfaser). |
-| 13 | Q3.1.4 | Elektromagnetische Wellen › Brechung, Reflexion, Beugung bei elektromagnetischen Wellen (nur LK) | Brechungsgesetz mit Wellenmodell. |
 | 13 | Q3.2.3 | Welle-Teilchen-Dualismus › Compton-Effekt (nur LK) | Streuung von Photonen an Elektronen. |
 | 13 | Q3.3.4 | Atomvorstellungen › Röntgenstrahlung (nur LK) | Kontinuierliches und charakteristisches Röntgenspektrum, Röntgenröhre, Moseley-Gesetz. |
 | 13 | Q4.1.1 | Quantenobjekte › Qualitative Betrachtung eines quantenmechanischen Atommodells | Orbitale als Aufenthaltswahrscheinlichkeit; Elektron als stehende Welle im Potenzialtopf. |
@@ -225,12 +216,11 @@ Alle Lernbereiche haben eine Simulation.
 | 11 | LK-4 | Modellbildung und Simulation (Leistungskurs) | Bewegungen numerisch modellieren, Parameter variieren und mit dem Experiment vergleichen. |
 | 12 | LK-W2 | Deterministisches Chaos (Wahlbereich Leistungskurs) | Nichtlineare Systeme, Attraktoren und begrenzte Vorhersagbarkeit. |
 
-### Sachsen-Anhalt · Gymnasium (2)
+### Sachsen-Anhalt · Gymnasium (1)
 
 | Stufe | Nr. | Lernbereich | Kurz |
 | --- | --- | --- | --- |
 | 10 | 4 | Klimaphysik | Elektromagnetisches Spektrum, Strahlungshaushalt der Erde, Albedo, Stefan-Boltzmann-Gesetz, natürlicher und menschengemachter Treibhauseffekt. |
-| 11/12 | eA-2.4 | Elektrodynamik (erhöhtes Anforderungsniveau) › Wechselstromwiderstände und elektromagnetische Schwingungen | Effektivwerte, induktiver und kapazitiver Widerstand mit Zeigerdiagramm, Schwingkreis und Thomson’sche Gleichung. |
 
 ### Schleswig-Holstein · Gymnasium (2)
 

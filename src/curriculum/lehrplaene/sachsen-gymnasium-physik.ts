@@ -272,7 +272,7 @@ const K10: CurriculumUnit[] = [
       'Brechungsgesetz und Totalreflexion, Farbzerlegung, Interferenz am Doppelspalt und Gitter zur Bestimmung der Wellenlänge und das elektromagnetische Spektrum.',
       'The law of refraction and total internal reflection, dispersion, interference at double slits and gratings to measure wavelength, and the electromagnetic spectrum.',
     ),
-    simulations: ['brechung', 'doppelspalt', 'farben'],
+    simulations: ['brechung', 'doppelspalt', 'farben', 'polarisation'],
   },
   {
     code: '5',
@@ -430,7 +430,7 @@ const J12: CurriculumUnit[] = [
       'Harmonische Schwingungen am Federpendel, Schwingkreis, Wellen mit Reflexion, Brechung, Beugung und Interferenz, stehende Wellen und Licht als Welle am Doppelspalt und Gitter.',
       'Harmonic oscillation of a spring pendulum, the LC circuit, waves with reflection, refraction, diffraction and interference, standing waves, and light as a wave at double slits and gratings.',
     ),
-    simulations: ['federpendel', 'wellen-ausbreitung', 'interferenz', 'stehende-wellen', 'doppelspalt', 'schwingkreis'],
+    simulations: ['federpendel', 'wellen-ausbreitung', 'interferenz', 'stehende-wellen', 'doppelspalt', 'schwingkreis', 'polarisation'],
   },
   {
     code: 'GK-2',
@@ -481,7 +481,7 @@ const J12: CurriculumUnit[] = [
       'Fortschreitende und stehende Wellen, Reflexion, Brechung, Beugung und Interferenz, Hertz’sche Wellen und Licht am Doppelspalt, Gitter und Einzelspalt.',
       'Travelling and standing waves, reflection, refraction, diffraction and interference, radio waves, and light at double slits, gratings and single slits.',
     ),
-    simulations: ['wellen-ausbreitung', 'interferenz', 'stehende-wellen', 'doppelspalt'],
+    simulations: ['wellen-ausbreitung', 'interferenz', 'stehende-wellen', 'doppelspalt', 'polarisation'],
   },
   {
     code: 'LK-3',
