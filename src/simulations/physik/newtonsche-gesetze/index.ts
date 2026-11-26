@@ -997,8 +997,11 @@ export default defineSimulation({
       if (verdict !== null) {
         g.font = `800 ${narrow ? 20 : 26}px ${th.font}`;
         g.fillStyle = verdict ? th.series[2]! : th.series[3]!;
-        g.fillText(ctx.t(verdict ? 'qOk' : 'qNo'), pad, y);
-        y += narrow ? 32 : 40;
+        for (const line of wrap(g, ctx.t(verdict ? 'qOk' : 'qNo'), maxW)) {
+          g.fillText(line, pad, y);
+          y += narrow ? 26 : 34;
+        }
+        y += 6;
         if (verdict || tries >= 2) {
           g.font = `700 ${narrow ? 13 : 15}px ${th.font}`;
           g.fillStyle = th.text;

@@ -36,7 +36,7 @@ const KS_7_9_UNITS: CurriculumUnit[] = [
       'Modell Lichtstrahl, Sehvorgang, Mondphasen und Finsternisse, Reflexion und Brechung, Linsen und Linsengleichung, Auge, Farben, Wärmestrahlung und Wärmetransport im Teilchenmodell.',
       'The light-ray model, how we see, phases of the moon and eclipses, reflection and refraction, lenses and the lens equation, the eye, colours, thermal radiation and heat transfer in the particle model.',
     ),
-    simulations: ['licht-schatten', 'reflexion', 'brechung', 'linsen', 'teilchenmodell'],
+    simulations: ["licht-schatten", "reflexion", "brechung", "linsen", "teilchenmodell", "waermeausdehnung", "waermetransport"],
   },
   {
     code: '2',
@@ -45,7 +45,7 @@ const KS_7_9_UNITS: CurriculumUnit[] = [
       'Geschwindigkeit und Zeit-Weg-Diagramme, Masse und Gewichtskraft, Kräfte als Pfeile, Kraft als Ursache von Bewegungsänderung und Verformung, Trägheit und Reibung, Energie, Arbeit und Leistung.',
       'Velocity and distance–time graphs, mass and weight, forces as arrows, force as the cause of change in motion and deformation, inertia and friction, energy, work and power.',
     ),
-    simulations: ['bewegungsdiagramme', 'hookesches-gesetz', 'kraefteaddition', 'energieerhaltung', 'dichte-auftrieb', 'newtonsche-gesetze'],
+    simulations: ['bewegungsdiagramme', 'hookesches-gesetz', 'kraefteaddition', 'energieerhaltung', 'dichte-auftrieb', 'newtonsche-gesetze', 'druck'],
   },
   {
     code: '3',
