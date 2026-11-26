@@ -54,7 +54,7 @@ const KS_7_9_UNITS: CurriculumUnit[] = [
       'Elektrostatische Grundphänomene und Ladung, Spannung, Stromstärke und Widerstand, Kennlinien, Reihen- und Parallelschaltung, elektrische Leistung und Energie, Sicherheit.',
       'Basic electrostatic phenomena and charge, voltage, current and resistance, characteristic curves, series and parallel circuits, electrical power and energy, safety.',
     ),
-    simulations: ['einfacher-stromkreis', 'reihe-parallel', 'ohmsches-gesetz'],
+    simulations: ['einfacher-stromkreis', 'reihe-parallel', 'ohmsches-gesetz', 'ladungen-coulomb'],
   },
   {
     code: '4',

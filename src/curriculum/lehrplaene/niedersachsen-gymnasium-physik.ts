@@ -239,7 +239,7 @@ const Q_UNITS: CurriculumUnit[] = [
           'Feldlinienbilder, Feldstärke, faradayscher Käfig, Spannung als Energie pro Ladung; nur eA: coulombsches Gesetz und Potenzial.',
           'Field-line patterns, field strength, the Faraday cage, voltage as energy per charge; higher level only: Coulomb’s law and potential.',
         ),
-        simulations: ['feldlinien'],
+        simulations: ['feldlinien', 'ladungen-coulomb'],
       },
       {
         code: 'Q-1.2',

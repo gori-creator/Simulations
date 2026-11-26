@@ -521,7 +521,7 @@ const QP_UNITS: CurriculumUnit[] = [
           'Wie im Grundfach, zusätzlich Influenz und Polarisation, Magnetisierung und Coulomb-Gesetz.',
           'As in the basic course, plus induction of charge and polarisation, magnetisation and Coulomb’s law.',
         ),
-        simulations: ['feldlinien', 'magnetfeld-spule'],
+        simulations: ['feldlinien', 'magnetfeld-spule', 'ladungen-coulomb'],
       },
       {
         code: 'LF-P.2',

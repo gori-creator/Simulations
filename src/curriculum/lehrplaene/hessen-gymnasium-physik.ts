@@ -1056,6 +1056,7 @@ export const hessenGymnasiumPhysik: StateCurriculum = {
               code: '4.3',
               title: L('Elektrostatische Phänomene', 'Electrostatic phenomena'),
               summary: L('Aufladung, Anziehung und Abstoßung mit Ladungen erklären.', 'Explaining charging, attraction and repulsion with charges.'),
+              simulations: ['ladungen-coulomb'],
             },
           ],
         },
@@ -1373,6 +1374,7 @@ export const hessenGymnasiumPhysik: StateCurriculum = {
               code: '4.3',
               title: L('Elektrostatische Phänomene', 'Electrostatic phenomena'),
               summary: L('Aufladung, Anziehung und Abstoßung mit Ladungen erklären.', 'Explaining charging, attraction and repulsion with charges.'),
+              simulations: ['ladungen-coulomb'],
             },
           ],
         },
@@ -1863,6 +1865,7 @@ export const hessenGymnasiumPhysik: StateCurriculum = {
               code: 'Q1.1.4',
               title: L('Coulomb’sches Gesetz', 'Coulomb\'s law'),
               summary: L('Kraft zwischen Punktladungen.', 'Force between point charges.'),
+              simulations: ['ladungen-coulomb'],
             },
             {
               code: 'Q1.1.5',
