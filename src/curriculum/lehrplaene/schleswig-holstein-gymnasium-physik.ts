@@ -44,7 +44,7 @@ const SEK_I_UNITS: CurriculumUnit[] = [
           'Energieformen im Alltag, Umwandlung, Erhaltung und Entwertung, Wärmeleitung, Konvektion und Wärmestrahlung, Wärmedämmung.',
           'Forms of energy in everyday life, conversion, conservation and degradation, conduction, convection and radiation, insulation.',
         ),
-        simulations: ['energieerhaltung'],
+        simulations: ['energieerhaltung', 'waermetransport'],
       },
       {
         code: '1.2',
@@ -121,7 +121,7 @@ const SEK_I_UNITS: CurriculumUnit[] = [
         code: '3.1',
         title: L('Ausbreitung von Licht- und Wärmestrahlung, Strahlenmodell (Block I)', 'Propagation of light and thermal radiation, ray model (block I)'),
         summary: L('Licht- und Wärmeausbreitung im Strahlenmodell, selbstleuchtende und beleuchtete Körper, Sender-Empfänger-Modell des Sehens.', 'Propagation of light and heat in the ray model, luminous and illuminated bodies, the sender–receiver model of vision.'),
-        simulations: ['licht-schatten'],
+        simulations: ['licht-schatten', 'waermetransport'],
       },
       {
         code: '3.2',
@@ -130,7 +130,7 @@ const SEK_I_UNITS: CurriculumUnit[] = [
           'Schatten, Finsternisse und Mondphasen, Lochblende, Reflexionsgesetz, Temperatur, Ausdehnung und Aggregatzustände im einfachen Teilchenmodell.',
           'Shadows, eclipses and phases of the moon, the pinhole camera, the law of reflection, temperature, expansion and states of matter in the simple particle model.',
         ),
-        simulations: ['licht-schatten', 'reflexion', 'teilchenmodell'],
+        simulations: ['licht-schatten', 'reflexion', 'teilchenmodell', 'waermeausdehnung'],
       },
       {
         code: '3.3',
@@ -142,6 +142,7 @@ const SEK_I_UNITS: CurriculumUnit[] = [
         code: '3.4',
         title: L('Spektrum und Wellenlänge (Block II)', 'Spectrum and wavelength (block II)'),
         summary: L('Spektralfarben, Farbaddition und -subtraktion, Absorption und Transmission, nicht sichtbare Bereiche und Sensoren.', 'Spectral colours, additive and subtractive mixing, absorption and transmission, invisible ranges and sensors.'),
+        simulations: ['farben'],
       },
       {
         code: '3.5',
@@ -159,7 +160,7 @@ const SEK_I_UNITS: CurriculumUnit[] = [
         code: '4.1',
         title: L('Dichte (Block I)', 'Density (block I)'),
         summary: L('Masse, Volumen und Dichte, Schwimmen, Schweben und Sinken.', 'Mass, volume and density, floating, hovering and sinking.'),
-        simulations: ['dichte-auftrieb'],
+        simulations: ['dichte-auftrieb', 'druck'],
       },
       {
         code: '4.2',
@@ -223,7 +224,7 @@ const FELDER: CurriculumUnit = {
         'Elektrisches, Magnet- und Gravitationsfeld, Ladung und Influenz, Feldstärke, Feld- und Äquipotenziallinien, Coulomb- und Gravitationsgesetz, Potenzial, Plattenkondensator mit Kapazität, Energie und Auf- und Entladung, magnetische Flussdichte.',
         'Electric, magnetic and gravitational fields, charge and induced charge, field strength, field lines and equipotentials, Coulomb’s law and the law of gravitation, potential, the parallel-plate capacitor with capacitance, energy and charging and discharging, magnetic flux density.',
       ),
-      simulations: ['feldlinien', 'kondensator'],
+      simulations: ['feldlinien', 'kondensator', 'ladungen-coulomb'],
     },
     {
       code: 'F.2',

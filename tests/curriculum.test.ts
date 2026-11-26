@@ -287,6 +287,7 @@ describe('Länder-Lehrpläne', () => {
       reflexion: 'Strahlenoptik vollständig im Fach Naturwissenschaften und Technik 5/6',
       brechung: 'Strahlenoptik vollständig im Fach Naturwissenschaften und Technik 5/6',
       linsen: 'Strahlenoptik in NWT 5/6; Linsen in der Studienstufe nur im Wahlthema Astrophysik',
+      farben: 'Licht und Farben vollständig im Fach Naturwissenschaften und Technik 5/6',
       'doppler-effekt': 'Doppler-Effekt nicht im Bildungsplan',
       gasgesetze: 'Gasgesetze nicht im Bildungsplan (Sek. I nur Temperatur im Teilchenmodell)',
     },
