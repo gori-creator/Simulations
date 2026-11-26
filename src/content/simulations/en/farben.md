@@ -22,6 +22,14 @@ An object does not glow itself; it reflects part of the light and absorbs the re
 
 The retina has **L**, **M** and **S** cones, most sensitive to long (reddish), medium (green) and short (blue) wavelengths. The brain compares the three stimuli. Yellow light at 580 nm stimulates them just like a mixture of red and green light – which is why a screen can show yellow with only red, green and blue dots.
 
+### The rainbow
+
+Every raindrop acts like a small prism with a mirror: sunlight is refracted as it enters, reflected at the back and refracted again as it leaves. Red light is refracted slightly less than blue. Particularly many rays return towards the Sun at about 42° (red) and 40.5° (blue). That is why you always see the bow with the Sun behind you, as a circle around the point opposite the Sun – red outside, blue inside.
+
+### Blue sky and red sunset
+
+Air molecules scatter short-wavelength light much more strongly than long-wavelength light (roughly $1/\lambda^4$). The scattered blue comes from all over the sky, so the sky is blue. When the Sun is low, its light travels a much longer path through the air: the blue is scattered out on the way, leaving yellow, orange and red – the red sunset.
+
 ## Try it
 
 - [Prism](?mode=prisma), [yellow filter](?mode=prisma&filter=yellow)
@@ -29,6 +37,8 @@ The retina has **L**, **M** and **S** cones, most sensitive to long (reddish), m
 - [Screen](?mode=pixel&r=100&g=50&b=0): how is orange made?
 - [Fruit in red light](?mode=koerper&light=red), [in green light](?mode=koerper&light=green), [sodium lamp](?mode=koerper&light=sodium)
 - [Eye: yellow 580 nm](?mode=auge&lam=580&mixe=1), [practice](?mode=ueben&qn=1)
+- [Rainbow](?mode=regen&rb=86): move the entry point. When does the light return at the largest angle?
+- [Midday](?mode=himmel&el=60) and [evening](?mode=himmel&el=2): press “Sunset” and watch the bars.
 
 ## Exercises
 
@@ -69,6 +79,14 @@ White: all three. Yellow: red and green. Black: none.
 <details><summary>Show solution</summary>
 
 Apple red, leaf black (it reflects hardly any red), paper red (it reflects whatever arrives – here only red).
+
+</details>
+
+**Rainbow.** In the afternoon the Sun is in the west. In which direction do you have to look to see a rainbow, and is red on the inside or the outside? [Load task](?mode=regen&rb=86&_hide=1)
+
+<details><summary>Show solution</summary>
+
+To the east, with the Sun behind you. Red is on the outside (about 42°), blue on the inside (about 40.5°).
 
 </details>
 

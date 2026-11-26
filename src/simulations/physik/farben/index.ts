@@ -1,5 +1,32 @@
-import { defineSimulation, Plot, roundRect, Surface, text, withAlpha, type Rect } from '../../../sim-core';
-import { additiveMix, checkTask, colorName, coneFromMix, coneResponse, filterPasses, LIGHTS, makeTask, objectColor, PRIMARY_NM, prismDeviation, REFLECT, refractiveIndex, spectralName, subtractiveMix, wavelengthToRgb, type ColorTask, type FilterId, type LightId, type ObjectId, type Rgb } from './model';
+import { defineSimulation, Plot, prefersReducedMotion, roundRect, Surface, text, withAlpha, type Rect } from '../../../sim-core';
+import {
+  airMass,
+  rainbowAngle,
+  sunAndSky,
+  transmission,
+  waterIndex,
+  additiveMix,
+  checkTask,
+  colorName,
+  coneFromMix,
+  coneResponse,
+  filterPasses,
+  LIGHTS,
+  makeTask,
+  objectColor,
+  PRIMARY_NM,
+  prismDeviation,
+  REFLECT,
+  refractiveIndex,
+  spectralName,
+  subtractiveMix,
+  wavelengthToRgb,
+  type ColorTask,
+  type FilterId,
+  type LightId,
+  type ObjectId,
+  type Rgb,
+} from './model';
 
 const L = (de: string, en: string) => ({ de, en });
 const DEG = Math.PI / 180;
@@ -13,6 +40,7 @@ const rgbCss = ([r, g, b]: Rgb, a = 1) => `rgba(${Math.round(255 * r)},${Math.ro
  */
 export default defineSimulation({
   id: 'farben',
+  animated: true,
   layout: { aspect: 1.7, aspectNarrow: 0.9 },
   params: [
     {
@@ -26,6 +54,8 @@ export default defineSimulation({
         { value: 'pixel', label: L('Bildschirm: Bildpunkte', 'Screen: pixels') },
         { value: 'koerper', label: L('Körperfarben: Gegenstände unter farbigem Licht', 'Object colours under coloured light') },
         { value: 'auge', label: L('Farbensehen: drei Zapfen im Auge', 'Colour vision: three cones in the eye') },
+        { value: 'regen', label: L('Regenbogen: Licht im Regentropfen', 'Rainbow: light in a raindrop') },
+        { value: 'himmel', label: L('Himmelsblau und Abendrot', 'Blue sky and red sunset') },
         { value: 'ueben', label: L('Üben: Aufgaben zu Farben', 'Practice: colour tasks') },
       ],
       default: 'prisma',
@@ -69,25 +99,69 @@ export default defineSimulation({
       visibleIf: (v) => v.mode === 'koerper',
     },
     { key: 'lam', type: 'number', label: L('Wellenlänge des Lichts', 'Wavelength of the light'), min: 380, max: 720, step: 5, default: 580, unit: 'nm', visibleIf: (v) => v.mode === 'auge' },
-    { key: 'mixe', type: 'boolean', label: L('Zum Vergleich: Bildschirm-Mischung aus Rot und Grün', 'For comparison: screen mix of red and green'), default: true, visibleIf: (v) => v.mode === 'auge' },
+    {
+      key: 'mixe',
+      type: 'boolean',
+      label: L('Zum Vergleich: Bildschirm-Mischung aus Rot und Grün', 'For comparison: screen mix of red and green'),
+      default: true,
+      visibleIf: (v) => v.mode === 'auge',
+    },
+    {
+      key: 'rb',
+      type: 'number',
+      label: L('Einfall: Abstand vom Tropfenmittelpunkt', 'Entry: distance from the centre of the drop'),
+      min: 10,
+      max: 95,
+      step: 1,
+      default: 86,
+      unit: '%',
+      visibleIf: (v) => v.mode === 'regen',
+    },
+    { key: 'el', type: 'number', label: L('Sonnenhöhe über dem Horizont', 'Sun’s height above the horizon'), min: 0, max: 70, step: 1, default: 40, unit: '°', visibleIf: (v) => v.mode === 'himmel' },
     { key: 'qn', type: 'number', label: L('Aufgabe Nr.', 'Task no.'), min: 1, max: 999, step: 1, default: 1, visibleIf: (v) => v.mode === 'ueben' },
     { key: 'qa', type: 'text', label: L('Deine Antwort', 'Your answer'), default: '', maxLength: 8, placeholder: L('Nummer oder Zahl', 'number'), visibleIf: (v) => v.mode === 'ueben' },
   ],
   hint: (v) =>
-    v.mode === 'prisma'
-      ? L('Der Farbfächer ist zur Verdeutlichung aufgeweitet. Wähle einen Filter und sieh, welche Farben durchkommen.', 'The colour fan is widened for clarity. Pick a filter and see which colours get through.')
-      : v.mode === 'add'
-        ? L('Drei farbige Scheinwerfer auf einer dunklen Wand. Wo sie sich überlappen, addiert sich das Licht.', 'Three coloured spotlights on a dark wall. Where they overlap, the light adds up.')
-        : v.mode === 'sub'
-          ? L('Drei Farbfilter vor weißem Licht. Jeder Filter schluckt einen Teil – übrig bleibt die Mischfarbe.', 'Three colour filters in front of white light. Each filter absorbs a part – what is left is the mixed colour.')
-          : v.mode === 'pixel'
-            ? L('Von Weitem siehst du eine Farbe, aus der Nähe nur rote, grüne und blaue Leuchtpunkte.', 'From afar you see one colour; close up only red, green and blue dots.')
-            : v.mode === 'koerper'
-              ? L('Ein Gegenstand kann nur das Licht zurückwerfen, das ihn auch trifft. Wähle eine farbige Lampe.', 'An object can only reflect the light that falls on it. Choose a coloured lamp.')
-              : v.mode === 'auge'
-                ? L('Jede Lichtfarbe reizt die drei Zapfenarten verschieden stark. Gleicher Reiz – gleiche gesehene Farbe.', 'Each colour of light stimulates the three kinds of cone differently. Same stimulus – same colour seen.')
-                : L('Gib die Nummer der richtigen Antwort ein (bei Prozent die Zahl) und drücke „Prüfen“.', 'Enter the number of the correct answer (for percentages, the number) and press “Check”.'),
+    v.mode === 'regen'
+      ? L(
+          'Jeder Tropfen wirkt wie ein kleines Prisma mit Spiegel. Verschiebe den Einfallspunkt: Beim Regenbogenwinkel drängen sich die Strahlen.',
+          'Each drop acts like a small prism with a mirror. Move the entry point: at the rainbow angle the rays crowd together.',
+        )
+      : v.mode === 'himmel'
+        ? L(
+            'Drücke Start und lass die Sonne untergehen. Je länger der Weg durchs Licht der Luft, desto mehr Blau wird herausgestreut.',
+            'Press play and let the Sun set. The longer the path through the air, the more blue is scattered out.',
+          )
+        : v.mode === 'prisma'
+          ? L(
+              'Der Farbfächer ist zur Verdeutlichung aufgeweitet. Wähle einen Filter und sieh, welche Farben durchkommen.',
+              'The colour fan is widened for clarity. Pick a filter and see which colours get through.',
+            )
+          : v.mode === 'add'
+            ? L('Drei farbige Scheinwerfer auf einer dunklen Wand. Wo sie sich überlappen, addiert sich das Licht.', 'Three coloured spotlights on a dark wall. Where they overlap, the light adds up.')
+            : v.mode === 'sub'
+              ? L(
+                  'Drei Farbfilter vor weißem Licht. Jeder Filter schluckt einen Teil – übrig bleibt die Mischfarbe.',
+                  'Three colour filters in front of white light. Each filter absorbs a part – what is left is the mixed colour.',
+                )
+              : v.mode === 'pixel'
+                ? L('Von Weitem siehst du eine Farbe, aus der Nähe nur rote, grüne und blaue Leuchtpunkte.', 'From afar you see one colour; close up only red, green and blue dots.')
+                : v.mode === 'koerper'
+                  ? L(
+                      'Ein Gegenstand kann nur das Licht zurückwerfen, das ihn auch trifft. Wähle eine farbige Lampe.',
+                      'An object can only reflect the light that falls on it. Choose a coloured lamp.',
+                    )
+                  : v.mode === 'auge'
+                    ? L(
+                        'Jede Lichtfarbe reizt die drei Zapfenarten verschieden stark. Gleicher Reiz – gleiche gesehene Farbe.',
+                        'Each colour of light stimulates the three kinds of cone differently. Same stimulus – same colour seen.',
+                      )
+                    : L(
+                        'Gib die Nummer der richtigen Antwort ein (bei Prozent die Zahl) und drücke „Prüfen“.',
+                        'Enter the number of the correct answer (for percentages, the number) and press “Check”.',
+                      ),
   actions: [
+    { id: 'sunset', label: L('Sonnenuntergang', 'Sunset'), primary: true, visibleIf: (v) => v.mode === 'himmel' },
     { id: 'check', label: L('Prüfen', 'Check'), primary: true, visibleIf: (v) => v.mode === 'ueben' },
     { id: 'next', label: L('Nächste Aufgabe', 'Next task'), visibleIf: (v) => v.mode === 'ueben' },
   ],
@@ -108,6 +182,10 @@ export default defineSimulation({
     { id: 'redf', label: L('Rotfilter', 'Red filter'), values: { mode: 'prisma', filter: 'red' } },
     { id: 'kwhite', label: L('Obstteller im weißen Licht', 'Fruit plate in white light'), values: { mode: 'koerper', light: 'white' } },
     { id: 'kred', label: L('Obstteller im roten Licht', 'Fruit plate in red light'), values: { mode: 'koerper', light: 'red' } },
+    { id: 'regen', label: L('Regenbogen: Strahl beim Regenbogenwinkel', 'Rainbow: ray at the rainbow angle'), values: { mode: 'regen', rb: 86 } },
+    { id: 'regenMitte', label: L('Strahl nahe der Mitte', 'Ray near the centre'), values: { mode: 'regen', rb: 30 } },
+    { id: 'mittag', label: L('Mittags: blauer Himmel', 'Midday: blue sky'), values: { mode: 'himmel', el: 60 } },
+    { id: 'abend', label: L('Abendrot', 'Red sunset'), values: { mode: 'himmel', el: 2 } },
     { id: 'kgreen', label: L('Obstteller im grünen Licht', 'Fruit plate in green light'), values: { mode: 'koerper', light: 'green' } },
     { id: 'ksod', label: L('Natriumlampe: alles gelb oder grau', 'Sodium lamp: everything yellow or grey'), values: { mode: 'koerper', light: 'sodium' } },
     { id: 'eye580', label: L('Auge: Gelb 580 nm = Rot + Grün?', 'Eye: yellow 580 nm = red + green?'), values: { mode: 'auge', lam: 580, mixe: true } },
@@ -116,6 +194,20 @@ export default defineSimulation({
   ],
   strings: {
     de: {
+      canvasR: 'Querschnitt eines Regentropfens mit rotem, grünem und blauem Strahl, die gebrochen, gespiegelt und wieder gebrochen werden; daneben eine Landschaft mit Beobachter und Regenbogen',
+      canvasH: 'Landschaft mit Sonne und Himmel, deren Farben von der Sonnenhöhe abhängen; darunter, wie viel jeder Farbe durch die Luft kommt',
+      rAngle: 'Rot kommt unter {r}°, Blau unter {b}° zurück',
+      rNow: 'dieser Strahl: Rot {r}°, Blau {b}°',
+      rInfo: 'Unter etwa 42° (Rot) bzw. 40° (Blau) kommen besonders viele Strahlen zurück. Darum sieht man den Bogen immer im selben Winkel um den Punkt gegenüber der Sonne – Rot außen, Blau innen.',
+      rDrop: 'Regentropfen (stark vergrößert)',
+      rSun: 'Sonnenlicht',
+      rEye: 'Beobachter',
+      rShadow: 'Gegenpunkt der Sonne',
+      hPath: 'Weg durch die Luft: {m}-mal so lang wie bei senkrechter Sonne',
+      hBlue: 'Vom blauen Sonnenlicht kommen {b} % unten an',
+      hInfo:
+        'Die Luft streut kurzwelliges (blaues) Licht viel stärker als langwelliges (rotes). Das gestreute Blau kommt von überall am Himmel. Bei tiefer Sonne ist das Blau schon unterwegs herausgestreut – die Sonne wird gelb, orange und rot.',
+      hThrough: 'kommt durch',
       canvas: 'Farben: Prisma mit Farbfächer und Schirm, drei farbige Lichtkreise, drei Farbfilter oder vergrößerte Bildpunkte eines Bildschirms',
       black: 'Schwarz',
       white: 'Weiß',
@@ -178,6 +270,20 @@ export default defineSimulation({
       qBad: 'Bitte eine Nummer oder Zahl eingeben.',
     },
     en: {
+      canvasR: 'Cross-section of a raindrop with a red, a green and a blue ray that are refracted, reflected and refracted again; next to it a landscape with an observer and a rainbow',
+      canvasH: 'Landscape with the Sun and the sky, whose colours depend on the Sun’s height; below, how much of each colour gets through the air',
+      rAngle: 'red returns at {r}°, blue at {b}°',
+      rNow: 'this ray: red {r}°, blue {b}°',
+      rInfo: 'At about 42° (red) and 40° (blue) particularly many rays return. That is why the bow is always seen at the same angle around the point opposite the Sun – red outside, blue inside.',
+      rDrop: 'raindrop (greatly enlarged)',
+      rSun: 'sunlight',
+      rEye: 'observer',
+      rShadow: 'point opposite the Sun',
+      hPath: 'path through the air: {m} times as long as with the Sun overhead',
+      hBlue: '{b} % of the Sun’s blue light reaches the ground',
+      hInfo:
+        'Air scatters short-wavelength (blue) light much more strongly than long-wavelength (red) light. The scattered blue comes from all over the sky. When the Sun is low, the blue has already been scattered out on the way – the Sun turns yellow, orange and red.',
+      hThrough: 'gets through',
       canvas: 'Colours: prism with a colour fan and a screen, three coloured light circles, three colour filters or magnified screen pixels',
       black: 'black',
       white: 'white',
@@ -271,10 +377,28 @@ export default defineSimulation({
       return [pass(650), pass(540), pass(450)];
     }
 
+    /* Regenbogen und Himmel */
+    let phase = 0;
+    let elAnim: number | null = null;
+    const elev = () => (elAnim === null ? p.el : elAnim);
+
     function updateReadouts(): void {
       ctx.readout('mix', null);
       ctx.readout('pass', null);
       ctx.readout('info', null);
+      if (p.mode === 'regen') {
+        ctx.readout('mix', tr('rAngle', { r: fmt.num(rainbowAngle(680), 1), b: fmt.num(rainbowAngle(440), 1) }));
+        const b = p.rb / 100;
+        ctx.readout('pass', tr('rNow', { r: fmt.num(dropAngleDeg(b, 680), 1), b: fmt.num(dropAngleDeg(b, 440), 1) }));
+        ctx.readout('info', ctx.t('rInfo'));
+        return;
+      }
+      if (p.mode === 'himmel') {
+        ctx.readout('mix', tr('hPath', { m: fmt.num(airMass(elev()), 1) }));
+        ctx.readout('pass', tr('hBlue', { b: fmt.num(transmission(450, airMass(elev())) * 100, 0) }));
+        ctx.readout('info', ctx.t('hInfo'));
+        return;
+      }
       if (p.mode === 'koerper') {
         const L0 = LIGHTS[p.light as LightId];
         const nm = (o: ObjectId) => ctx.t(colorName(objectColor(L0, REFLECT[o]))).toLowerCase();
@@ -679,7 +803,15 @@ export default defineSimulation({
       plot.axes();
       for (let l = 380; l < 720; l += 4) {
         const col = wavelengthToRgb(l + 2);
-        plot.polygon([[l, 0], [l + 4, 0], [l + 4, 0.05], [l, 0.05]], { fill: `rgb(${col[0]},${col[1]},${col[2]})` });
+        plot.polygon(
+          [
+            [l, 0],
+            [l + 4, 0],
+            [l + 4, 0.05],
+            [l, 0.05],
+          ],
+          { fill: `rgb(${col[0]},${col[1]},${col[2]})` },
+        );
       }
       [0, 1, 2].forEach((i) => plot.fn((l) => coneResponse(l)[i]!, { color: cols[i]!, width: 2.5, from: 380, to: 720 }));
       plot.vline(p.lam, { color: th.text, width: 1.5, dash: [5, 4] });
@@ -783,6 +915,203 @@ export default defineSimulation({
       if (tries === 1) score = { right: score.right + (r ? 1 : 0), all: score.all + 1, streak: r ? score.streak + 1 : 0 };
     }
 
+    /* ---------- Regenbogen ---------- */
+    function dropAngleDeg(b: number, lam: number): number {
+      const n = waterIndex(lam);
+      return ((4 * Math.asin(b / n) - 2 * Math.asin(b)) * 180) / Math.PI;
+    }
+
+    /** Strahlweg im Tropfen (Einheitskreis): Eintritt, Reflexion hinten, Austritt, Richtung danach. */
+    function rayPath(b: number, lam: number): { pts: [number, number][]; out: [number, number] } {
+      // Farbaufspaltung zur Verdeutlichung achtfach vergrößert
+      const n = waterIndex(550) + (waterIndex(lam) - waterIndex(550)) * 8;
+      const a = Math.asin(b);
+      const be = Math.asin(b / n);
+      // Licht kommt von links (+x), trifft oben bei Winkel (π − a)
+      const P1: [number, number] = [-Math.cos(a), b];
+      // im Tropfen: jede Sehne überstreicht den Mittelpunktswinkel π − 2β
+      const step = Math.PI - 2 * be;
+      const ang1 = Math.PI - a;
+      const ang2 = ang1 - step;
+      const ang3 = ang2 - step;
+      const P2: [number, number] = [Math.cos(ang2), Math.sin(ang2)];
+      const P3: [number, number] = [Math.cos(ang3), Math.sin(ang3)];
+      // Austrittsrichtung: zurück nach links, um θ = 4β − 2α nach unten geneigt
+      const theta = 4 * be - 2 * a;
+      return { pts: [P1, P2, P3], out: [-Math.cos(theta), -Math.sin(theta)] };
+    }
+
+    function drawRain(): void {
+      const g = surface.g;
+      const th = ctx.theme;
+      const W = surface.width;
+      const H = surface.height;
+      const wide = W >= 700;
+      const dropR: Rect = wide ? { x: 0, y: 0, w: W * 0.5, h: H } : { x: 0, y: 0, w: W, h: H * 0.55 };
+      const R = Math.min(dropR.w, dropR.h) * 0.32;
+      const cx = dropR.x + dropR.w * 0.55;
+      const cy = dropR.y + dropR.h * 0.5;
+      // Tropfen
+      g.beginPath();
+      g.arc(cx, cy, R, 0, Math.PI * 2);
+      g.fillStyle = withAlpha(th.series[0]!, 0.12);
+      g.fill();
+      g.strokeStyle = withAlpha(th.series[0]!, 0.6);
+      g.lineWidth = 2;
+      g.stroke();
+      text(g, ctx.t('rDrop'), cx + R * 0.9, cy - R - 12, { font: `600 12px ${th.font}`, color: th.muted });
+      const b = p.rb / 100;
+      const lams = [680, 540, 440];
+      const P = (q: [number, number]): [number, number] => [cx + q[0] * R, cy - q[1] * R];
+      // einfallender weißer Strahl
+      const [ex, ey] = P([-Math.sqrt(1 - b * b), b]);
+      g.strokeStyle = th.text;
+      g.lineWidth = 2.5;
+      g.beginPath();
+      g.moveTo(dropR.x + 10, ey);
+      g.lineTo(ex, ey);
+      g.stroke();
+      text(g, ctx.t('rSun'), dropR.x + 12, ey - 12, { font: `600 12px ${th.font}`, color: th.text, align: 'left' });
+      lams.forEach((lam) => {
+        const { pts, out } = rayPath(b, lam);
+        const [r0, g0, b0] = wavelengthToRgb(lam);
+        const col = `rgb(${r0},${g0},${b0})`;
+        g.strokeStyle = col;
+        g.lineWidth = 2;
+        g.beginPath();
+        const p0 = P(pts[0]!);
+        g.moveTo(p0[0], p0[1]);
+        for (const q of pts.slice(1)) {
+          const pp = P(q);
+          g.lineTo(pp[0], pp[1]);
+        }
+        const last = P(pts[2]!);
+        const len = R * 1.6;
+        g.lineTo(last[0] + out[0] * len, last[1] - out[1] * len);
+        g.stroke();
+        // Lichtpuls entlang des Weges
+        const u = (phase * 0.4) % 1;
+        const seg = [p0, P(pts[1]!), last, [last[0] + out[0] * len, last[1] - out[1] * len] as [number, number]];
+        const k = Math.min(2, Math.floor(u * 3));
+        const f = u * 3 - k;
+        const a0 = seg[k]!;
+        const a1 = seg[k + 1]!;
+        g.beginPath();
+        g.arc(a0[0] + (a1[0] - a0[0]) * f, a0[1] + (a1[1] - a0[1]) * f, 3.5, 0, Math.PI * 2);
+        g.fillStyle = col;
+        g.fill();
+      });
+      text(g, `${fmt.num(dropAngleDeg(b, 680), 1)}° / ${fmt.num(dropAngleDeg(b, 440), 1)}°`, dropR.x + 12, dropR.y + dropR.h - 14, { font: `700 13px ${th.font}`, color: th.text, align: 'left' });
+
+      // Landschaft mit Beobachter und Bogen
+      const sc: Rect = wide ? { x: W * 0.5, y: 0, w: W * 0.5, h: H } : { x: 0, y: H * 0.55, w: W, h: H * 0.45 };
+      const ground = sc.y + sc.h * 0.78;
+      g.fillStyle = withAlpha(th.series[2]!, 0.25);
+      g.fillRect(sc.x, ground, sc.w, sc.y + sc.h - ground);
+      const ox = sc.x + sc.w * 0.2;
+      const oy = ground;
+      // Beobachter
+      g.strokeStyle = th.text;
+      g.lineWidth = 2;
+      g.beginPath();
+      g.arc(ox, oy - 26, 5, 0, Math.PI * 2);
+      g.moveTo(ox, oy - 21);
+      g.lineTo(ox, oy - 8);
+      g.lineTo(ox - 5, oy);
+      g.moveTo(ox, oy - 8);
+      g.lineTo(ox + 5, oy);
+      g.stroke();
+      text(g, ctx.t('rEye'), ox, oy + 14, { font: `600 11px ${th.font}`, color: th.muted });
+      // Bogen um den Gegenpunkt der Sonne (Sonne tief hinter dem Beobachter → Gegenpunkt knapp unter dem Horizont)
+      const ax = sc.x + sc.w * 0.62;
+      const ay = ground + sc.h * 0.06;
+      const Rb = Math.min(sc.w * 0.34, sc.h * 0.62);
+      g.save();
+      g.beginPath();
+      g.rect(sc.x, sc.y, sc.w, ground - sc.y);
+      g.clip();
+      for (let l = 440; l <= 680; l += 6) {
+        const ang = rainbowAngle(l);
+        const rr = Rb * (ang / 42.5);
+        const [r0, g0, b0] = wavelengthToRgb(l);
+        g.strokeStyle = `rgba(${r0},${g0},${b0},0.85)`;
+        g.lineWidth = Math.max(1.5, Rb * 0.012);
+        g.beginPath();
+        g.arc(ax, ay, rr, Math.PI, 2 * Math.PI);
+        g.stroke();
+      }
+      g.restore();
+      g.setLineDash([4, 4]);
+      g.strokeStyle = th.muted;
+      g.lineWidth = 1;
+      g.beginPath();
+      g.moveTo(ox, oy - 26);
+      g.lineTo(ax, ay);
+      g.moveTo(ox, oy - 26);
+      g.lineTo(ax, ay - Rb);
+      g.stroke();
+      g.setLineDash([]);
+      text(g, '42°', ox + (ax - ox) * 0.35, oy - 26 + (ay - Rb - oy + 26) * 0.18 - 6, { font: `700 12px ${th.font}`, color: th.text });
+    }
+
+    /* ---------- Himmel ---------- */
+    function drawSky(): void {
+      const g = surface.g;
+      const th = ctx.theme;
+      const W = surface.width;
+      const H = surface.height;
+      const narrow = W < 700;
+      const e = elev();
+      const sk = sunAndSky(e);
+      const top = 0;
+      const horizon = H * (narrow ? 0.5 : 0.58);
+      const bright = Math.min(1, 0.25 + e / 25);
+      // Himmel: oben Streulicht, am Horizont heller und bei tiefer Sonne rötlich
+      const grad = g.createLinearGradient(0, top, 0, horizon);
+      const mix = (a: Rgb, b: Rgb, f: number): Rgb => [a[0] + (b[0] - a[0]) * f, a[1] + (b[1] - a[1]) * f, a[2] + (b[2] - a[2]) * f];
+      const dim = (c: Rgb, f: number): Rgb => [c[0] * f, c[1] * f, c[2] * f];
+      grad.addColorStop(0, rgbCss(dim(sk.sky, bright * 0.75)));
+      grad.addColorStop(1, rgbCss(dim(mix(sk.sky, sk.sun, e < 15 ? 0.8 : 0.35), bright)));
+      g.fillStyle = grad;
+      g.fillRect(0, top, W, horizon - top);
+      // Sonne auf einer Bahn
+      const sx = W * 0.15 + (W * 0.6 * (70 - e)) / 70;
+      const sy = horizon - ((horizon - top - 30) * Math.sin((Math.max(0, e) * Math.PI) / 180)) / Math.sin((70 * Math.PI) / 180);
+      g.beginPath();
+      g.arc(sx, Math.min(horizon - 4, sy), 18, 0, Math.PI * 2);
+      g.fillStyle = rgbCss(sk.sun);
+      g.fill();
+      // Boden
+      const groundCol = rgbCss(dim(sk.sky, 0.18));
+      const onGround = rgbCss([0.95, 0.95, 0.95]);
+      g.fillStyle = groundCol;
+      g.beginPath();
+      g.moveTo(0, horizon);
+      for (let x = 0; x <= W; x += 20) g.lineTo(x, horizon - 6 - 6 * Math.sin(x * 0.03));
+      g.lineTo(W, H);
+      g.lineTo(0, H);
+      g.closePath();
+      g.fill();
+      text(g, `${fmt.num(e, 0)}°`, sx, Math.min(horizon - 4, sy) - 28, { font: `700 13px ${th.font}`, color: onGround });
+      // Durchlass je Farbe
+      const bx = 20;
+      const bw = Math.min(W - 40, 460);
+      const by = horizon + 30;
+      const bh = H - by - 46;
+      text(g, ctx.t('hThrough'), bx, by - 10, { font: `600 12px ${th.font}`, color: onGround, align: 'left' });
+      const m = airMass(e);
+      const n = 16;
+      for (let i = 0; i < n; i++) {
+        const l = 400 + (300 * (i + 0.5)) / n;
+        const t = transmission(l, m);
+        const [r0, g0, b0] = wavelengthToRgb(l);
+        const x = bx + (i * bw) / n;
+        g.fillStyle = `rgba(${r0},${g0},${b0},0.9)`;
+        g.fillRect(x + 1, by + bh * (1 - t), bw / n - 2, bh * t);
+      }
+      text(g, tr('hBlue', { b: fmt.num(transmission(450, m) * 100, 0) }), bx, H - 16, { font: `700 ${narrow ? 12 : 14}px ${th.font}`, color: onGround, align: 'left' });
+    }
+
     return {
       update(changed, source) {
         if (source === 'init' || source === 'replace' || changed.has('qn')) {
@@ -795,11 +1124,15 @@ export default defineSimulation({
           if (verdict === false) verdict = null;
           badInput = false;
         }
-        surface.canvas.setAttribute('aria-label', ctx.t(p.mode === 'ueben' ? 'canvasQuiz' : 'canvas'));
+        if (changed.has('el') || changed.has('mode')) elAnim = null;
+        surface.canvas.setAttribute('aria-label', ctx.t(p.mode === 'ueben' ? 'canvasQuiz' : p.mode === 'regen' ? 'canvasR' : p.mode === 'himmel' ? 'canvasH' : 'canvas'));
         updateReadouts();
       },
       action(id) {
-        if (id === 'check') runCheck();
+        if (id === 'sunset') {
+          elAnim = prefersReducedMotion() ? 0 : p.el;
+          ctx.clock.play();
+        } else if (id === 'check') runCheck();
         else if (id === 'next') {
           ctx.set({ qn: p.qn >= 999 ? 1 : p.qn + 1, qa: '' });
           return;
@@ -807,8 +1140,17 @@ export default defineSimulation({
         updateReadouts();
         ctx.requestRender();
       },
+      tick(dt) {
+        phase += dt;
+        if (elAnim !== null) {
+          elAnim = Math.max(0, elAnim - dt * 6);
+          updateReadouts();
+        }
+      },
       render() {
         surface.begin();
+        if (p.mode === 'regen') return drawRain();
+        if (p.mode === 'himmel') return drawSky();
         if (p.mode === 'koerper') return drawObjects();
         if (p.mode === 'auge') return drawEye();
         if (p.mode === 'ueben') return drawQuiz();
