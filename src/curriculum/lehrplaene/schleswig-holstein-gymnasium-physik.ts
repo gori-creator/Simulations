@@ -265,7 +265,7 @@ const WELLEN: CurriculumUnit = {
       code: 'W.2',
       title: L('Eigenschaften und Ausbreitung von Wellen', 'Properties and propagation of waves'),
       summary: L('Wellenlänge, Frequenz und Geschwindigkeit, Huygens’sches Prinzip, Beugung und Brechung, Transversal- und Longitudinalwellen, Dopplereffekt (qualitativ) und Polarisation.', 'Wavelength, frequency and speed, Huygens’ principle, diffraction and refraction, transverse and longitudinal waves, the Doppler effect (qualitative) and polarisation.'),
-      simulations: ['wellen-ausbreitung', 'doppler-effekt', 'schall'],
+      simulations: ['wellen-ausbreitung', 'doppler-effekt', 'schall', 'polarisation'],
     },
     {
       code: 'W.3',

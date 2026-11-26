@@ -173,7 +173,7 @@ const S_UNITS: CurriculumUnit[] = [
       'Erzeugung und Ausbreitung harmonischer Wellen, Transversal- und Longitudinalwellen, Ausbreitungsgeschwindigkeit und Wellenlänge, Beugung, Reflexion und Brechung, Polarisation, elektromagnetisches Spektrum.',
       'Generation and propagation of harmonic waves, transverse and longitudinal waves, speed and wavelength, diffraction, reflection and refraction, polarisation, the electromagnetic spectrum.',
     ),
-    simulations: ['wellen-ausbreitung', 'schall', 'em-spektrum'],
+    simulations: ["wellen-ausbreitung", "schall", "em-spektrum", "polarisation"],
   },
   {
     code: '2.3',

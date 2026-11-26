@@ -252,7 +252,7 @@ const QPHASE_UNITS: CurriculumUnit[] = [
           'Licht als elektromagnetische Welle, Interferenz an Doppelspalt und Gitter, Wellenlänge bestimmen, Farben, Dispersion und Polarisation.',
           'Light as an electromagnetic wave, interference at a double slit and a grating, determining wavelength, colours, dispersion and polarisation.',
         ),
-        simulations: ['doppelspalt'],
+        simulations: ['doppelspalt', 'polarisation'],
       },
     ],
   },
@@ -373,7 +373,7 @@ const QPHASE_UNITS: CurriculumUnit[] = [
           'Harmonische Wellen mathematisch beschreiben, Huygens’sches Prinzip, Interferenz, Polarisation, stehende Wellen und Schall.',
           'Describing harmonic waves mathematically, Huygens’ principle, interference, polarisation, standing waves and sound.',
         ),
-        simulations: ['wellen-ausbreitung', 'interferenz', 'stehende-wellen', 'schall'],
+        simulations: ['wellen-ausbreitung', 'interferenz', 'stehende-wellen', 'schall', 'polarisation'],
       },
       {
         code: 'eA-1.3',

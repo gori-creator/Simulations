@@ -495,7 +495,7 @@ const Q_UNITS: CurriculumUnit[] = [
           'Federpendel, harmonische Schwingungen und Wellen, Huygens’sches Prinzip, Reflexion, Brechung, Beugung, Superposition, stehende Wellen, Polarisation sowie Doppelspalt und Gitter mit Licht.',
           'Spring pendulum, harmonic oscillations and waves, Huygens’ principle, reflection, refraction, diffraction, superposition, standing waves, polarisation, and double slit and grating with light.',
         ),
-        simulations: ['federpendel', 'wellen-ausbreitung', 'interferenz', 'stehende-wellen', 'doppelspalt'],
+        simulations: ['federpendel', 'wellen-ausbreitung', 'interferenz', 'stehende-wellen', 'doppelspalt', 'polarisation'],
       },
       {
         code: 'GK-1.2',
@@ -656,7 +656,7 @@ const Q_UNITS: CurriculumUnit[] = [
           'Harmonische Schwingungen und ihre Kenngrößen, Wellengleichung, Huygens’sches Prinzip, Reflexion, Brechung, Beugung, Polarisation, Superposition und Michelson-Interferometer.',
           'Harmonic oscillations and their parameters, the wave equation, Huygens’ principle, reflection, refraction, diffraction, polarisation, superposition and the Michelson interferometer.',
         ),
-        simulations: ['wellen-ausbreitung', 'interferenz', 'stehende-wellen', 'doppelspalt'],
+        simulations: ['wellen-ausbreitung', 'interferenz', 'stehende-wellen', 'doppelspalt', 'polarisation'],
       },
       {
         code: 'LK-2.2',
