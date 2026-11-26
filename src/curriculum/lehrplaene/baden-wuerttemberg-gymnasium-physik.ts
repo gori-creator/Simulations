@@ -671,7 +671,7 @@ export const badenWuerttembergGymnasiumPhysik: StateCurriculum = {
                 "Coulomb’sches Gesetz, Feldlinien und Superposition, Influenz, Feldstärke, Kapazität und Energie des Plattenkondensators, Lade- und Entladekurven, Potenzial und die quantitative Bewegung geladener Teilchen im Feld.",
                 "Coulomb’s law, field lines and superposition, electrostatic induction, field strength, capacitance and energy of the parallel-plate capacitor, charging and discharging curves, potential, and quantitative motion of charged particles in the field.",
               ),
-              simulations: ["feldlinien", "kondensator"],
+              simulations: ["feldlinien", "kondensator", 'ladungen-coulomb'],
             },
             {
               code: "3.6.2.2",

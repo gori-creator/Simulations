@@ -120,7 +120,7 @@ const KS_9_UNITS: CurriculumUnit[] = [
       'Ladung und elektrisches Feld, Strom und Spannung, elektrische Arbeit und Leistung, Reihen- und Parallelschaltung von Widerständen, Halbleiter und Dioden.',
       'Charge and the electric field, current and voltage, electrical work and power, series and parallel resistors, semiconductors and diodes.',
     ),
-    simulations: ['einfacher-stromkreis', 'reihe-parallel', 'ohmsches-gesetz', 'diode-transistor'],
+    simulations: ['einfacher-stromkreis', 'reihe-parallel', 'ohmsches-gesetz', 'diode-transistor', 'ladungen-coulomb'],
   },
   {
     code: '3',

@@ -381,7 +381,7 @@ const J11: CurriculumUnit[] = [
       'Coulomb’sches Gesetz, Feldlinien und Feldstärke, Kondensator mit Dielektrikum, Auf- und Entladekurven sowie Potential und Spannung.',
       'Coulomb’s law, field lines and field strength, capacitors with dielectrics, charging and discharging curves, and potential and voltage.',
     ),
-    simulations: ['feldlinien', 'kondensator'],
+    simulations: ['feldlinien', 'kondensator', 'ladungen-coulomb'],
   },
   {
     code: 'LK-6',

@@ -64,7 +64,7 @@ export const bayernGymnasiumPhysik: StateCurriculum = {
                 "Elektrische Ladungen und Reibungselektrizität, Strom als bewegte Ladung, Wärme-, Licht- und Magnetwirkung; einfache Schaltungen wie die Wechselschaltung werden geplant und aufgebaut.",
                 "Electric charges and static electricity, current as moving charge, heating, lighting and magnetic effects; simple circuits such as a two-way switch are planned and built.",
               ),
-              simulations: ["einfacher-stromkreis"],
+              simulations: ["einfacher-stromkreis", 'ladungen-coulomb'],
             },
           ],
         },
@@ -560,7 +560,7 @@ export const bayernGymnasiumPhysik: StateCurriculum = {
             "Wie im grundlegenden Niveau, zusätzlich Coulombkraft, radialsymmetrisches Feld, Dielektrikum und Differentialgleichungen für Lade- und Entladevorgänge.",
             "As at the basic level, plus the Coulomb force, radial fields, dielectrics and differential equations for charging and discharging.",
           ),
-          simulations: ["feldlinien", "kondensator", "lorentzkraft"],
+          simulations: ["feldlinien", "kondensator", "lorentzkraft", 'ladungen-coulomb'],
         },
         {
           code: "E2",
