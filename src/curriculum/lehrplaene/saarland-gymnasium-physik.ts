@@ -235,7 +235,7 @@ const HP_13_UNITS: CurriculumUnit[] = [
     code: '3.3',
     title: L('Elektromagnetische Schwingungen', 'Electromagnetic oscillations'),
     summary: L('Elektromagnetischer Schwingkreis mit Thomsonscher Schwingungsgleichung; LK: Dämpfung, erzwungene Schwingung und Resonanz.', 'The electromagnetic oscillating circuit with Thomson’s formula; LK: damping, forced oscillation and resonance.'),
-    simulations: ['resonanz'],
+    simulations: ['resonanz', 'schwingkreis'],
   },
   {
     code: '3.4',

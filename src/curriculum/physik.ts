@@ -658,6 +658,22 @@ export const physik: Subject = {
                 ['resonance', 'driven oscillation', 'forced oscillation', 'Pohl’s wheel', 'torsion pendulum', 'driver', 'driving frequency', 'natural frequency', 'resonance frequency', 'resonance curve', 'phase shift', 'transient', 'damping', 'eddy-current brake', 'resonance disaster', 'phasor diagram'],
               ),
             },
+            {
+              id: 'schwingkreis',
+              status: 'ready',
+              slug: L('elektromagnetischer-schwingkreis', 'lc-circuit'),
+              title: L('Elektromagnetischer Schwingkreis und Selbstinduktion', 'LC circuit and self-induction'),
+              summary: L(
+                'Die Energie pendelt zwischen Kondensator und Spule hin und her, genau wie bei einem Federpendel. Beim Ein- und Ausschalten zeigt die Spule, dass sie Strom nicht sofort ändern lässt. Außerdem: Radio abstimmen mit Resonanz, Rückkopplung für ungedämpfte Schwingungen und ein Übungsmodus.',
+                'The energy swings back and forth between capacitor and coil, just like a spring pendulum. When switching on and off, the coil shows that it does not let the current change instantly. Also: tuning a radio with resonance, feedback for undamped oscillations and a practice mode.',
+              ),
+              grades: [11, 13],
+              kmk: ['P-S', 'P-E', 'P-BK-Energie', 'P-BK-Erhaltung', 'P-BK-Mathematisieren'],
+              keywords: L(
+                ['Schwingkreis', 'Thomson-Gleichung', 'Thomsonsche Schwingungsgleichung', 'Kondensator', 'Spule', 'Induktivität', 'Kapazität', 'elektromagnetische Schwingung', 'gedämpfte Schwingung', 'aperiodischer Grenzfall', 'Kriechfall', 'Selbstinduktion', 'Einschaltvorgang', 'Ausschaltvorgang', 'Energie des Magnetfelds', 'Federpendel', 'Analogie', 'Resonanz', 'Drehkondensator', 'Radio', 'Rückkopplung', 'Meißner-Schaltung', 'Trennschärfe'],
+                ['LC circuit', 'Thomson formula', 'capacitor', 'coil', 'inductance', 'capacitance', 'electromagnetic oscillation', 'damped oscillation', 'critical damping', 'overdamping', 'self-induction', 'switching on', 'switching off', 'magnetic field energy', 'spring pendulum', 'analogy', 'resonance', 'variable capacitor', 'radio', 'feedback', 'Meissner circuit', 'selectivity'],
+              ),
+            },
           ],
         },
         {
