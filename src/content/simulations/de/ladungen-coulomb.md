@@ -39,6 +39,14 @@ Um jede Ladung herum herrscht ein **elektrisches Feld**. Feldlinien zeigen, in w
 
 Elektron und Proton ziehen sich elektrisch und durch Gravitation an. Beide Kräfte fallen mit $\frac{1}{r^2}$, aber die elektrische ist etwa $2{,}3 \cdot 10^{39}$-mal so groß. Im Atom und in allen Stoffen bestimmt deshalb die elektrische Kraft, was geschieht. Die Gravitation spielt erst bei riesigen Massen eine Rolle, weil sich dort positive und negative Ladungen ausgleichen.
 
+### Alltag: Luftballon und Papierschnipsel
+
+Ein geriebener Luftballon zieht Papierschnipsel an und klebt an der Wand, obwohl Papier und Wand ungeladen sind. Im Isolator können die Elektronen nicht wandern, aber sie verschieben sich in jedem Molekül ein wenig (**Polarisation**). Die dem Ballon zugewandte Seite wird entgegengesetzt geladen und liegt näher – die Anziehung überwiegt. Weil sie mit dem Abstand sehr schnell abnimmt, springen die Schnipsel erst, wenn der Ballon nah genug ist.
+
+### Gewitter und Blitzableiter
+
+In einer Gewitterwolke trennen sich Ladungen, unten sammelt sich meist negative Ladung. Am Boden darunter entsteht durch Influenz positive Ladung. An **Spitzen** (Baum, Kirchturm, Blitzableiter) drängen sich die Feldlinien, das Feld wird dort viel stärker. Erreicht es etwa 3000 kV/m, wird die Luft leitend: Der Blitz schlägt ein. Ein Blitzableiter bietet die höchste Spitze und leitet den Strom über dicke Drähte sicher in die Erde. Im Auto ist man geschützt, weil der Strom außen über die Metallhülle fließt (**Faraday’scher Käfig**).
+
 ## Ausprobieren
 
 - [Kunststoff an Wolle](?mode=reiben&ma=pvc&mb=wool): Drücke mehrmals „Reiben“.
@@ -48,7 +56,9 @@ Elektron und Proton ziehen sich elektrisch und durch Gravitation an. Beide Kräf
 - [Influenz](?mode=influenz&sgn=minus&d=8): Drücke „Kugel kurz erden“ und dann „Stab wegnehmen“. Welche Ladung bleibt auf der Kugel? Was passiert ohne Erden?
 - [Feld eines Dipols](?mode=feld&q1=2&q2=-2), [zwei gleiche Ladungen](?mode=feld&q1=2&q2=2) und [ungleich stark](?mode=feld&q1=4&q2=-1): Wo ist das Feld am stärksten?
 - [Wasserstoffatom](?mode=atom&rp=53): Verändere den Abstand. Ändert sich das Verhältnis der beiden Kräfte?
-- [Üben](?mode=ueben&qn=1): Acht Aufgaben.
+- [Luftballon nah](?mode=ballon&qb=15&db=2) und [zu weit weg](?mode=ballon&qb=15&db=6): Ab welchem Abstand springen die Schnipsel?
+- [Gewitter mit Blitzableiter](?mode=gewitter&qw=20&hw=2&stab=1) und [ohne](?mode=gewitter&qw=20&hw=2&stab=0): Wo schlägt der Blitz ein?
+- [Üben](?mode=ueben&qn=1): Zehn Aufgabenarten.
 
 ## Aufgaben
 

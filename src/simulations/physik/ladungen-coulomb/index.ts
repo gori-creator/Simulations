@@ -1,5 +1,28 @@
 import { defineSimulation, Plot, roundRect, Surface, text, withAlpha, type Rect } from '../../../sim-core';
-import { checkTask, coulomb, E_CHARGE, electricToGravity, electroscopeAngle, fieldLine, gravity, inducedCharge, K, M_E, M_P, makeTask, rubCharge, TRIBO, type ChargeTask, type Material, type PointCharge } from './model';
+import {
+  BREAKDOWN,
+  groundField,
+  polarization,
+  scrapLiftRatio,
+  strike,
+  checkTask,
+  coulomb,
+  E_CHARGE,
+  electricToGravity,
+  electroscopeAngle,
+  fieldLine,
+  gravity,
+  inducedCharge,
+  K,
+  M_E,
+  M_P,
+  makeTask,
+  rubCharge,
+  TRIBO,
+  type ChargeTask,
+  type Material,
+  type PointCharge,
+} from './model';
 
 const L = (de: string, en: string) => ({ de, en });
 const PER_RUB = 3;
@@ -48,6 +71,8 @@ export default defineSimulation({
         { value: 'coulomb', label: L('Coulomb’sches Gesetz', 'Coulomb’s law') },
         { value: 'feld', label: L('Feldlinien zweier Ladungen', 'Field lines of two charges') },
         { value: 'atom', label: L('Im Atom: elektrische Kraft und Gravitation', 'In the atom: electric force and gravity') },
+        { value: 'ballon', label: L('Alltag: Luftballon und Papierschnipsel', 'Everyday: balloon and paper scraps') },
+        { value: 'gewitter', label: L('Gewitter und Blitzableiter', 'Thunderstorm and lightning rod') },
         { value: 'ueben', label: L('Üben: Aufgaben zu Ladungen', 'Practice: tasks on charges') },
       ],
       default: 'reiben',
@@ -72,6 +97,11 @@ export default defineSimulation({
     },
     { key: 'd', type: 'number', label: L('Abstand Stab – Kugel', 'Distance rod – sphere'), min: 5, max: 40, step: 1, default: 12, unit: 'cm', visibleIf: (v) => v.mode === 'influenz' },
     { key: 'rp', type: 'number', label: L('Abstand Elektron – Proton', 'Distance electron – proton'), min: 20, max: 200, step: 1, default: 53, unit: 'pm', visibleIf: (v) => v.mode === 'atom' },
+    { key: 'qb', type: 'number', label: L('Ladung des Ballons', 'Charge of the balloon'), min: 0, max: 30, step: 1, default: 15, unit: 'nC', visibleIf: (v) => v.mode === 'ballon' },
+    { key: 'db', type: 'number', label: L('Abstand zu den Schnipseln', 'Distance to the scraps'), min: 1, max: 8, step: 0.5, default: 3, unit: 'cm', visibleIf: (v) => v.mode === 'ballon' },
+    { key: 'qw', type: 'number', label: L('Ladung der Gewitterwolke', 'Charge of the thundercloud'), min: 5, max: 40, step: 1, default: 20, unit: 'C', visibleIf: (v) => v.mode === 'gewitter' },
+    { key: 'hw', type: 'number', label: L('Höhe der Wolke', 'Height of the cloud'), min: 1, max: 4, step: 0.1, default: 2, unit: 'km', visibleIf: (v) => v.mode === 'gewitter' },
+    { key: 'stab', type: 'boolean', label: L('Blitzableiter auf dem Haus', 'Lightning rod on the house'), default: true, visibleIf: (v) => v.mode === 'gewitter' },
     { key: 'qn', type: 'number', label: L('Aufgabe Nr.', 'Task no.'), min: 1, max: 999, step: 1, default: 1, visibleIf: (v) => v.mode === 'ueben' },
     { key: 'qa', type: 'text', label: L('Deine Antwort', 'Your answer'), default: '', maxLength: 16, placeholder: L('eine Zahl', 'a number'), visibleIf: (v) => v.mode === 'ueben' },
   ],
@@ -83,14 +113,23 @@ export default defineSimulation({
         : v.mode === 'coulomb'
           ? L('Gleiche Ladungen stoßen sich ab, ungleiche ziehen sich an. Wie hängt die Kraft vom Abstand ab?', 'Like charges repel, unlike charges attract. How does the force depend on distance?')
           : v.mode === 'influenz'
-            ? L('Nähere den Stab der Metallkugel. Erde die Kugel kurz und nimm dann den Stab weg – sie bleibt geladen.', 'Bring the rod close to the metal sphere. Earth the sphere briefly, then remove the rod – it stays charged.')
+            ? L(
+                'Nähere den Stab der Metallkugel. Erde die Kugel kurz und nimm dann den Stab weg – sie bleibt geladen.',
+                'Bring the rod close to the metal sphere. Earth the sphere briefly, then remove the rod – it stays charged.',
+              )
             : v.mode === 'feld'
-              ? L('Feldlinien zeigen, in welche Richtung eine kleine positive Probeladung gezogen würde. Je dichter, desto stärker das Feld.', 'Field lines show the direction a small positive test charge would be pulled. The denser they are, the stronger the field.')
+              ? L(
+                  'Feldlinien zeigen, in welche Richtung eine kleine positive Probeladung gezogen würde. Je dichter, desto stärker das Feld.',
+                  'Field lines show the direction a small positive test charge would be pulled. The denser they are, the stronger the field.',
+                )
               : v.mode === 'atom'
-                ? L('Elektron und Proton ziehen sich elektrisch und durch Gravitation an. Vergleiche die beiden Kräfte.', 'Electron and proton attract each other electrically and by gravity. Compare the two forces.')
+                ? L(
+                    'Elektron und Proton ziehen sich elektrisch und durch Gravitation an. Vergleiche die beiden Kräfte.',
+                    'Electron and proton attract each other electrically and by gravity. Compare the two forces.',
+                  )
                 : L('Rechne oder entscheide und gib die Zahl ein. Komma oder Punkt sind beide in Ordnung.', 'Work it out or decide and enter the number. A comma or a point are both fine.'),
   actions: [
-    { id: 'rub', label: L('Reiben', 'Rub'), primary: true, visibleIf: (v) => v.mode !== 'coulomb' },
+    { id: 'rub', label: L('Reiben', 'Rub'), primary: true, visibleIf: (v) => v.mode === 'reiben' || v.mode === 'skop' },
     { id: 'touch', label: L('Elektroskop berühren', 'Touch the electroscope'), visibleIf: (v) => v.mode === 'skop' },
     { id: 'ground', label: L('Entladen (erden)', 'Discharge (earth)'), visibleIf: (v) => v.mode === 'reiben' || v.mode === 'skop' },
     { id: 'earth', label: L('Kugel kurz erden', 'Earth the sphere briefly'), primary: true, visibleIf: (v) => v.mode === 'influenz' },
@@ -113,6 +152,11 @@ export default defineSimulation({
     { id: 'double', label: L('Doppelter Abstand: ein Viertel', 'Double distance: a quarter'), values: { mode: 'coulomb', q1: 2, q2: 2, r: 40 } },
     { id: 'amber', label: L('Bernstein an Wolle', 'Amber on wool'), values: { mode: 'reiben', ma: 'amber', mb: 'wool' } },
     { id: 'ind', label: L('Influenz: Stab nähern', 'Induction: bring the rod close'), values: { mode: 'influenz', sgn: 'minus', d: 8 } },
+    { id: 'ballonNah', label: L('Ballon nah an den Schnipseln', 'Balloon close to the scraps'), values: { mode: 'ballon', qb: 15, db: 2 } },
+    { id: 'ballonFern', label: L('Ballon zu weit weg', 'Balloon too far away'), values: { mode: 'ballon', qb: 15, db: 6 } },
+    { id: 'mitStab', label: L('Gewitter mit Blitzableiter', 'Thunderstorm with lightning rod'), values: { mode: 'gewitter', qw: 20, hw: 2, stab: true } },
+    { id: 'ohneStab', label: L('Gewitter ohne Blitzableiter', 'Thunderstorm without lightning rod'), values: { mode: 'gewitter', qw: 20, hw: 2, stab: false } },
+    { id: 'starkes', label: L('Starkes Gewitter: Blitz in den Baum', 'Strong storm: lightning hits the tree'), values: { mode: 'gewitter', qw: 40, hw: 1.5, stab: false } },
     { id: 'indfar', label: L('Influenz: Stab weit weg', 'Induction: rod far away'), values: { mode: 'influenz', sgn: 'minus', d: 40 } },
     { id: 'dipole', label: L('Feld: Dipol (+ und −)', 'Field: dipole (+ and −)'), values: { mode: 'feld', q1: 2, q2: -2 } },
     { id: 'same', label: L('Feld: zwei gleiche Ladungen', 'Field: two equal charges'), values: { mode: 'feld', q1: 2, q2: 2 } },
@@ -122,6 +166,23 @@ export default defineSimulation({
   ],
   strings: {
     de: {
+      canvasB: 'Ein geladener Luftballon über Papierschnipseln; in einem vergrößerten Ausschnitt richten sich die Ladungen in den Molekülen aus',
+      canvasG: 'Eine Gewitterwolke über einem Haus mit Baum und Blitzableiter; das elektrische Feld am Boden und an den Spitzen wird verglichen',
+      bLift: 'Anziehung : Gewicht = {r}',
+      bJump: 'Die Schnipsel springen zum Ballon.',
+      bStay: 'Die Schnipsel bleiben liegen.',
+      bInfo:
+        'Papier ist ein Isolator. Der Ballon verschiebt die Ladungen in jedem Molekül ein wenig (Polarisation): Die zugewandte Seite wird entgegengesetzt geladen. Weil sie näher ist, überwiegt die Anziehung.',
+      bZoom: 'Moleküle im Papier (vergrößert)',
+      gGround: 'Feld am Boden: {e} kV/m',
+      gTip: 'an der höchsten Spitze ({t}): {e} kV/m – Durchschlag ab 3000 kV/m',
+      gStrike: 'Blitz schlägt ein: {t}',
+      gNone: 'noch kein Einschlag',
+      gInfo:
+        'An Spitzen drängen sich die Feldlinien, das Feld wird viel stärker. Dort beginnt der Blitz. Ein Blitzableiter bietet die höchste Spitze und leitet den Strom über dicke Drähte in die Erde – das Haus bleibt verschont.',
+      gTip_dach: 'Dach',
+      gTip_baum: 'Baum',
+      gTip_stab: 'Blitzableiter',
       canvas: 'Elektrische Ladungen: ein Stab und ein Tuch mit Plus- und Minuszeichen, ein Elektroskop mit Blättchen oder zwei Ladungen mit Kraftpfeilen und Diagramm',
       chargeVal: '{a}: {qa}, {b}: {qb} (je {n} Elektronen verschoben)',
       neutral: 'beide ungeladen',
@@ -168,6 +229,22 @@ export default defineSimulation({
       qBad: 'Bitte eine Zahl eingeben.',
     },
     en: {
+      canvasB: 'A charged balloon above paper scraps; in a magnified detail the charges in the molecules line up',
+      canvasG: 'A thundercloud above a house with a tree and a lightning rod; the electric field at the ground and at the points is compared',
+      bLift: 'attraction : weight = {r}',
+      bJump: 'The scraps jump up to the balloon.',
+      bStay: 'The scraps stay where they are.',
+      bInfo: 'Paper is an insulator. The balloon shifts the charges in every molecule slightly (polarisation): the near side gets the opposite charge. Because it is closer, attraction wins.',
+      bZoom: 'molecules in the paper (magnified)',
+      gGround: 'field at the ground: {e} kV/m',
+      gTip: 'at the highest point ({t}): {e} kV/m – breakdown from 3000 kV/m',
+      gStrike: 'lightning strikes: {t}',
+      gNone: 'no strike yet',
+      gInfo:
+        'Field lines crowd together at points, so the field becomes much stronger. That is where lightning starts. A lightning rod offers the highest point and conducts the current through thick wires to earth – the house is spared.',
+      gTip_dach: 'roof',
+      gTip_baum: 'tree',
+      gTip_stab: 'lightning rod',
       canvas: 'Electric charges: a rod and a cloth with plus and minus signs, an electroscope with leaves, or two charges with force arrows and a graph',
       chargeVal: '{a}: {qa}, {b}: {qb} ({n} electrons moved each)',
       neutral: 'both uncharged',
@@ -254,7 +331,16 @@ export default defineSimulation({
       if (p.mode === 'atom') {
         // y = log₁₀(F) + 50, damit die x-Achse unten liegt; beschriftet als Zehnerpotenz
         plot.setRangePadded([0, 200], [0, 46], { left: 62, right: 14, top: 22, bottom: 24 });
-        plot.setAxes({ x: { label: ctx.t('rpm') }, y: { label: ctx.t('logF'), format: (v) => `10${String(Math.round(v - 50)).replace('-', '⁻').replace(/\d/g, (d) => '⁰¹²³⁴⁵⁶⁷⁸⁹'[Number(d)]!)}` } });
+        plot.setAxes({
+          x: { label: ctx.t('rpm') },
+          y: {
+            label: ctx.t('logF'),
+            format: (v) =>
+              `10${String(Math.round(v - 50))
+                .replace('-', '⁻')
+                .replace(/\d/g, (d) => '⁰¹²³⁴⁵⁶⁷⁸⁹'[Number(d)]!)}`,
+          },
+        });
         return;
       }
       const F = Math.abs(coulomb(p.q1 * 1e-6, p.q2 * 1e-6, 0.05));
@@ -264,6 +350,20 @@ export default defineSimulation({
 
     function updateReadouts(): void {
       for (const k of ['charge', 'F', 'what']) ctx.readout(k, null);
+      if (p.mode === 'ballon') {
+        const ratio = scrapLiftRatio(p.qb, p.db);
+        ctx.readout('F', tr('bLift', { r: fmt.num(ratio, ratio < 10 ? 2 : 0) }));
+        ctx.readout('what', `${ctx.t(ratio >= 1 ? 'bJump' : 'bStay')} ${ctx.t('bInfo')}`);
+        return;
+      }
+      if (p.mode === 'gewitter') {
+        const st = strike(p.qw, p.hw * 1000, p.stab);
+        const best = p.stab ? 'stab' : 'baum';
+        ctx.readout('charge', tr('gGround', { e: fmt.num(groundField(p.qw, p.hw * 1000) / 1000, 0) }));
+        ctx.readout('F', tr('gTip', { t: ctx.t(`gTip_${best}`), e: fmt.num(st.field / 1000, 0) }));
+        ctx.readout('what', `${st.target ? tr('gStrike', { t: ctx.t(`gTip_${st.target}`) }) : ctx.t('gNone')}. ${ctx.t('gInfo')}`);
+        return;
+      }
       if (p.mode === 'influenz') {
         const f = inducedCharge(1, p.d / 100);
         ctx.readout('charge', tr('indVal', { p: fmt.num(f * 100, 0) }));
@@ -455,7 +555,9 @@ export default defineSimulation({
       if (x === 0) return '0';
       const e = Math.floor(Math.log10(Math.abs(x)));
       const m = x / 10 ** e;
-      const sup = String(e).replace('-', '⁻').replace(/\d/g, (d) => '⁰¹²³⁴⁵⁶⁷⁸⁹'[Number(d)]!);
+      const sup = String(e)
+        .replace('-', '⁻')
+        .replace(/\d/g, (d) => '⁰¹²³⁴⁵⁶⁷⁸⁹'[Number(d)]!);
       return `${fmt.num(m, 1)} · 10${sup}`;
     }
 
@@ -480,7 +582,7 @@ export default defineSimulation({
         g.strokeStyle = th.text;
         g.lineWidth = 1.5;
         g.stroke();
-        for (let k = 0; k < 6; k++) text(g, sgn > 0 ? '+' : '−', rodEnd - rw + 14 + k * (rw - 20) / 5, cy, { font: `800 15px ${th.font}`, color: sgn > 0 ? th.series[1]! : th.series[0]! });
+        for (let k = 0; k < 6; k++) text(g, sgn > 0 ? '+' : '−', rodEnd - rw + 14 + (k * (rw - 20)) / 5, cy, { font: `800 15px ${th.font}`, color: sgn > 0 ? th.series[1]! : th.series[0]! });
       }
       // Kugel
       g.beginPath();
@@ -495,7 +597,8 @@ export default defineSimulation({
       const f = rodThere ? inducedCharge(1, p.d / 100) : 0;
       const nSep = Math.round(10 * f);
       const jit = (k: number) => Math.sin(anim * 3 + k * 1.7) * 1.5;
-      const mark = (x: number, y: number, q: number, k: number) => text(g, q > 0 ? '+' : '−', x + jit(k), y + jit(k + 3), { font: `800 14px ${th.font}`, color: q > 0 ? th.series[1]! : th.series[0]! });
+      const mark = (x: number, y: number, q: number, k: number) =>
+        text(g, q > 0 ? '+' : '−', x + jit(k), y + jit(k + 3), { font: `800 14px ${th.font}`, color: q > 0 ? th.series[1]! : th.series[0]! });
       // Reihenfolge: bei negativem Stab wandern zuerst die Elektronen der nahen (linken) Seite weg,
       // bei positivem Stab zuerst die der fernen (rechten) Seite heran
       const order = Array.from({ length: 10 }, (_, k) => k).sort((i, j) => (sgn < 0 ? 1 : -1) * (Math.cos((i / 10) * Math.PI * 2) - Math.cos((j / 10) * Math.PI * 2)));
@@ -773,6 +876,190 @@ export default defineSimulation({
       plot.end();
     }
 
+    /* ---------- Luftballon ---------- */
+    function drawBalloon(r: Rect): void {
+      const g = surface.g;
+      const th = ctx.theme;
+      const wide = r.w >= 700;
+      const scene: Rect = wide ? { x: r.x, y: r.y, w: r.w * 0.55, h: r.h } : { x: r.x, y: r.y, w: r.w, h: r.h * 0.55 };
+      const table = scene.y + scene.h * 0.82;
+      const pxPerCm = (table - scene.y - 80) / 9;
+      const bx = scene.x + scene.w / 2;
+      const bR = Math.min(60, scene.w * 0.16);
+      const by = table - p.db * pxPerCm - bR;
+      const ratio = scrapLiftRatio(p.qb, p.db);
+      // Tisch
+      g.fillStyle = withAlpha(th.muted, 0.3);
+      g.fillRect(scene.x + 10, table, scene.w - 20, 8);
+      // Schnipsel: springen bei genügend Kraft hoch (Animation)
+      for (let k = 0; k < 9; k++) {
+        const x = bx + (k - 4) * (bR * 0.32);
+        const lift = ratio >= 1 ? Math.min(1, ((anim * 1.5 + k * 0.13) % 2) * 1.2) : 0.02 * Math.min(1, ratio) * Math.sin(anim * 8 + k);
+        const y = table - 3 - lift * (table - (by + bR) - 6);
+        g.save();
+        g.translate(x, y);
+        g.rotate(Math.sin(k * 1.7 + anim * (ratio >= 1 ? 3 : 0)) * 0.6);
+        g.fillStyle = withAlpha(th.text, 0.75);
+        g.fillRect(-5, -2, 10, 4);
+        g.restore();
+      }
+      // Ballon
+      g.beginPath();
+      g.ellipse(bx, by, bR * 0.85, bR, 0, 0, Math.PI * 2);
+      g.fillStyle = withAlpha(th.series[1]!, 0.7);
+      g.fill();
+      g.strokeStyle = th.muted;
+      g.lineWidth = 1;
+      g.beginPath();
+      g.moveTo(bx, by - bR);
+      g.lineTo(bx, scene.y + 6);
+      g.stroke();
+      const nMinus = Math.round(p.qb / 3);
+      for (let k = 0; k < nMinus; k++) {
+        const a = Math.PI * 0.15 + (k / Math.max(1, nMinus - 1)) * Math.PI * 0.7;
+        text(g, '−', bx + Math.cos(a) * bR * 0.6, by + Math.sin(a) * bR * 0.75, { font: `800 14px ${th.font}`, color: th.bg });
+      }
+      text(g, `${fmt.num(p.db, 1)} cm`, bx + bR + 12, (by + bR + table) / 2, { font: `600 12px ${th.font}`, color: th.muted, align: 'left' });
+      // Vergrößerung: Moleküle als Dipole
+      const zr: Rect = wide ? { x: r.x + r.w * 0.58, y: r.y + 30, w: r.w * 0.38, h: r.h * 0.5 } : { x: r.x + 20, y: r.y + r.h * 0.58, w: r.w - 40, h: r.h * 0.3 };
+      roundRect(g, zr.x, zr.y, zr.w, zr.h, 10);
+      g.strokeStyle = th.muted;
+      g.lineWidth = 1;
+      g.stroke();
+      text(g, ctx.t('bZoom'), zr.x + 10, zr.y + 14, { font: `600 11px ${th.font}`, color: th.muted, align: 'left' });
+      const pol = polarization(p.qb, p.db);
+      const cols = 6;
+      const rows = 3;
+      for (let i = 0; i < cols; i++) {
+        for (let j = 0; j < rows; j++) {
+          const cx = zr.x + ((i + 0.5) * zr.w) / cols;
+          const cy = zr.y + 26 + ((j + 0.5) * (zr.h - 30)) / rows;
+          // zufällige Ausrichtung, mit Ladung nach oben (zum Ballon) gedreht
+          const rnd = Math.sin(i * 12.9898 + j * 78.233) * Math.PI;
+          const ang = rnd * (1 - pol) - (Math.PI / 2) * pol;
+          const dx = Math.cos(ang) * 10;
+          const dy = Math.sin(ang) * 10;
+          g.beginPath();
+          g.ellipse(cx, cy, 15, 9, ang, 0, Math.PI * 2);
+          g.fillStyle = withAlpha(th.muted, 0.15);
+          g.fill();
+          text(g, '+', cx + dx, cy + dy, { font: `800 12px ${th.font}`, color: th.series[1]! });
+          text(g, '−', cx - dx, cy - dy, { font: `800 12px ${th.font}`, color: th.series[0]! });
+        }
+      }
+      // Ergebnis
+      const ry = wide ? zr.y + zr.h + 30 : r.y + r.h - 30;
+      const rx = wide ? zr.x : r.x + 20;
+      text(g, tr('bLift', { r: fmt.num(ratio, ratio < 10 ? 2 : 0) }), rx, ry, { font: `700 13px ${th.font}`, color: th.text, align: 'left' });
+      text(g, ctx.t(ratio >= 1 ? 'bJump' : 'bStay'), rx, ry + 18, { font: `700 13px ${th.font}`, color: ratio >= 1 ? th.series[2]! : th.muted, align: 'left' });
+    }
+
+    /* ---------- Gewitter ---------- */
+    function drawStorm(r: Rect): void {
+      const g = surface.g;
+      const th = ctx.theme;
+      const narrow = r.w < 700;
+      const ground = r.y + r.h * 0.78;
+      const cloudY = r.y + 20 + (r.h * 0.3 * (p.hw - 1)) / 3;
+      // Wolke
+      const cw = r.w * 0.7;
+      const cx = r.x + r.w / 2;
+      g.fillStyle = withAlpha(th.muted, 0.55);
+      for (let k = 0; k < 6; k++) {
+        g.beginPath();
+        g.ellipse(cx - cw / 2 + (k + 0.5) * (cw / 6), cloudY + 26 + Math.sin(k * 2) * 6, cw / 9, 26, 0, 0, Math.PI * 2);
+        g.fill();
+      }
+      const nM = Math.round(p.qw / 4);
+      for (let k = 0; k < nM; k++) text(g, '−', cx - cw / 2 + ((k + 0.5) * cw) / nM, cloudY + 44, { font: `800 14px ${th.font}`, color: th.series[0]! });
+      // Boden
+      g.fillStyle = withAlpha(th.series[2]!, 0.25);
+      g.fillRect(r.x, ground, r.w, r.y + r.h - ground);
+      // Influenz am Boden: Pluszeichen
+      for (let k = 0; k < 10; k++) text(g, '+', r.x + ((k + 0.5) * r.w) / 10, ground + 12, { font: `800 12px ${th.font}`, color: th.series[1]! });
+      // Haus
+      const hx = r.x + r.w * 0.58;
+      const hw = Math.min(110, r.w * 0.2);
+      const hh = 60;
+      g.fillStyle = withAlpha(th.text, 0.7);
+      g.fillRect(hx, ground - hh, hw, hh);
+      g.beginPath();
+      g.moveTo(hx - 8, ground - hh);
+      g.lineTo(hx + hw / 2, ground - hh - 34);
+      g.lineTo(hx + hw + 8, ground - hh);
+      g.closePath();
+      g.fill();
+      const roofTop: [number, number] = [hx + hw / 2, ground - hh - 34];
+      let rodTop: [number, number] = roofTop;
+      if (p.stab) {
+        rodTop = [roofTop[0], roofTop[1] - 40];
+        g.strokeStyle = th.series[3]!;
+        g.lineWidth = 3;
+        g.beginPath();
+        g.moveTo(rodTop[0], rodTop[1]);
+        g.lineTo(roofTop[0], roofTop[1]);
+        g.lineTo(hx + hw + 8, ground - hh);
+        g.lineTo(hx + hw + 8, ground);
+        g.stroke();
+      }
+      // Baum
+      const tx = r.x + r.w * 0.22;
+      g.fillStyle = withAlpha(th.series[2]!, 0.8);
+      g.beginPath();
+      g.moveTo(tx, ground - 110);
+      g.lineTo(tx - 30, ground - 30);
+      g.lineTo(tx + 30, ground - 30);
+      g.closePath();
+      g.fill();
+      g.fillStyle = withAlpha(th.text, 0.6);
+      g.fillRect(tx - 5, ground - 30, 10, 30);
+      const treeTop: [number, number] = [tx, ground - 110];
+      // Feldstärke-Balken
+      const st = strike(p.qw, p.hw * 1000, p.stab);
+      const bx = r.x + 16;
+      const bw = Math.min(r.w - 32, 380);
+      const by = ground + 26;
+      const frac = Math.min(1, st.field / (BREAKDOWN * 1.5));
+      roundRect(g, bx, by, bw, 12, 6);
+      g.fillStyle = withAlpha(th.muted, 0.25);
+      g.fill();
+      roundRect(g, bx, by, Math.max(12, bw * frac), 12, 6);
+      g.fillStyle = st.target ? th.series[3]! : th.series[0]!;
+      g.fill();
+      const thrX = bx + bw / 1.5;
+      g.strokeStyle = th.text;
+      g.lineWidth = 2;
+      g.beginPath();
+      g.moveTo(thrX, by - 4);
+      g.lineTo(thrX, by + 16);
+      g.stroke();
+      const tipText = tr('gTip', { t: ctx.t(`gTip_${p.stab ? 'stab' : 'baum'}`), e: fmt.num(st.field / 1000, 0) });
+      (narrow ? tipText.split(' – ') : [tipText]).forEach((pt, k) => text(g, pt, bx, by + 30 + k * 15, { font: `600 ${narrow ? 11 : 12}px ${th.font}`, color: th.text, align: 'left' }));
+      // Blitz (blinkt in regelmäßigen Abständen)
+      if (st.target) {
+        const flash = anim % 2.2 < 0.35;
+        if (flash) {
+          const target = st.target === 'stab' ? rodTop : st.target === 'baum' ? treeTop : roofTop;
+          g.strokeStyle = th.series[4] ?? th.series[3]!;
+          g.lineWidth = 4;
+          g.beginPath();
+          let x = target[0] + (cx - target[0]) * 0.3;
+          let y = cloudY + 50;
+          g.moveTo(x, y);
+          const steps = 7;
+          for (let k = 1; k <= steps; k++) {
+            const f = k / steps;
+            x = x + (target[0] - x) / (steps - k + 1) + (k < steps ? Math.sin(k * 3.1 + Math.floor(anim / 2.2)) * 18 : 0);
+            y = cloudY + 50 + (target[1] - cloudY - 50) * f;
+            g.lineTo(x, y);
+          }
+          g.stroke();
+        }
+        text(g, tr('gStrike', { t: ctx.t(`gTip_${st.target}`) }), r.x + r.w - 16, r.y + 18, { font: `800 14px ${th.font}`, color: th.series[3]!, align: 'right' });
+      } else text(g, ctx.t('gNone'), r.x + r.w - 16, r.y + 18, { font: `700 14px ${th.font}`, color: th.muted, align: 'right' });
+      text(g, `h = ${fmt.num(p.hw, 1)} km`, r.x + 16, cloudY + 70, { font: `600 12px ${th.font}`, color: th.muted, align: 'left' });
+    }
+
     return {
       update(changed, source) {
         if (changed.has('ma') || changed.has('mb') || changed.has('mode')) {
@@ -795,7 +1082,7 @@ export default defineSimulation({
           if (verdict === false) verdict = null;
           badInput = false;
         }
-        surface.canvas.setAttribute('aria-label', ctx.t(p.mode === 'ueben' ? 'canvasQuiz' : 'canvas'));
+        surface.canvas.setAttribute('aria-label', ctx.t(p.mode === 'ueben' ? 'canvasQuiz' : p.mode === 'ballon' ? 'canvasB' : p.mode === 'gewitter' ? 'canvasG' : 'canvas'));
         setupPlot();
         updateReadouts();
       },
@@ -833,7 +1120,7 @@ export default defineSimulation({
       },
       tick(dt) {
         anim += dt;
-        if (p.mode !== 'influenz') ctx.clock.pause();
+        if (p.mode !== 'influenz' && p.mode !== 'ballon' && p.mode !== 'gewitter') ctx.clock.pause();
       },
       render() {
         const s = split(surface.width, surface.height);
@@ -844,6 +1131,8 @@ export default defineSimulation({
           drawQuiz(surface.width, surface.height);
           return;
         }
+        if (p.mode === 'ballon') return drawBalloon(full);
+        if (p.mode === 'gewitter') return drawStorm(full);
         if (p.mode === 'influenz') {
           drawInfluenz(full);
           return;

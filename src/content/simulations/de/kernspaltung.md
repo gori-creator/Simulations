@@ -33,6 +33,14 @@ Wiegt man alle Teilchen vor und nach der Reaktion, ist die Masse danach etwas kl
 
 Ein Gramm Uran-235 liefert beim vollständigen Spalten rund 23 MWh Wärme – so viel wie fast 3 Tonnen Steinkohle. Im Kraftwerk erwärmt diese Wärme Wasser, der Dampf treibt eine Turbine mit Generator an. Ein großer Block spaltet am Tag nur einige Kilogramm Uran. Dafür entstehen radioaktive Spaltprodukte, die sehr lange sicher gelagert werden müssen.
 
+### Der Moderator
+
+Spaltneutronen sind sehr schnell (etwa 2 MeV). U-235 lässt sich aber viel leichter mit **langsamen** (thermischen) Neutronen spalten. Darum bremst ein **Moderator** sie ab. Wie beim Billard verliert das Neutron am meisten Energie, wenn es auf einen gleich schweren Partner trifft: In Wasser (Wasserstoffkerne) genügen etwa 18 Stöße, in Graphit braucht es rund 115, an schweren Bleikernen prallt es fast ohne Verlust ab.
+
+### Radioaktiver Abfall
+
+Die Spaltprodukte sind radioaktiv. Ob ein Stoff schnell verschwindet, hängt von seiner **Halbwertszeit** ab: Iod-131 (8 Tage) ist nach wenigen Monaten fast weg, Cäsium-137 und Strontium-90 (rund 30 Jahre) strahlen Jahrhunderte, Plutonium-239 (24 100 Jahre) Zehntausende Jahre. Darum braucht es ein sicheres Endlager.
+
 ## Ausprobieren
 
 - [Uran-235](?mode=bindung&A=235), [Eisen-56](?mode=bindung&A=56), [Helium-4](?mode=bindung&A=4): Vergleiche die Bindungsenergie pro Nukleon.
@@ -40,6 +48,8 @@ Ein Gramm Uran-235 liefert beim vollständigen Spalten rund 23 MWh Wärme – so
 - [Unterkritisch](?mode=kette&stab=70&leck=30) und [überkritisch](?mode=kette&stab=10&leck=30).
 - [Eine Spaltung](?mode=spaltung&ch=baKr): Drücke Start. Prüfe die Bilanz der Nukleonen.
 - [Massendefekt bei der Fusion](?mode=masse&re=dt) und [in der Sonne](?mode=masse&re=sonne): Wie viel Prozent der Masse werden zu Energie?
+- [Moderator Wasser](?mode=moderator&mod=wasser), [Graphit](?mode=moderator&mod=graphit) und [Blei](?mode=moderator&mod=blei): Drücke Start und zähle die Stöße.
+- [Abfall nach einem Monat](?mode=abfall&lt=-1.1) und [nach 100 Jahren](?mode=abfall&lt=2): Was ist dann noch übrig?
 - [1 g Uran](?mode=kraftwerk&g=1) und [ein Kraftwerkstag](?mode=kraftwerk&g=400): Wie viele Güterwagen Kohle entspricht das?
 - [Üben](?mode=ueben&qn=1): Sechs Aufgabenarten mit Punktestand.
 
