@@ -437,6 +437,7 @@ const QPHASE_UNITS: CurriculumUnit[] = [
           'Effektivwerte, induktiver und kapazitiver Widerstand mit Zeigerdiagramm, Schwingkreis und Thomson’sche Gleichung.',
           'RMS values, inductive and capacitive reactance with phasor diagrams, the LC circuit and Thomson’s equation.',
         ),
+        simulations: ['schwingkreis'],
       },
     ],
   },

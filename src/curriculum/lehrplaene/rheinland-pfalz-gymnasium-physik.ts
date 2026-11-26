@@ -558,7 +558,7 @@ const QP_UNITS: CurriculumUnit[] = [
           'Kenngrößen der Schwingung, Schwingkreis, lineares Kraftgesetz, Fadenpendel mit Kleinwinkelnäherung und Herleitung der Schwingungsdauer.',
           'Parameters of oscillation, the LC circuit, the linear force law, the simple pendulum with the small-angle approximation and deriving the period.',
         ),
-        simulations: ['fadenpendel', 'federpendel'],
+        simulations: ['fadenpendel', 'federpendel', 'schwingkreis'],
       },
       {
         code: 'LF-P.6',
