@@ -2168,7 +2168,7 @@ export const hessenGymnasiumPhysik: StateCurriculum = {
                 'Darstellung im t-y- und x-y-Diagramm, Longitudinal- und Transversalwellen, Polarisation.',
                 'Representation in t-y and x-y diagrams, longitudinal and transverse waves, polarisation.',
               ),
-              simulations: ['wellen-ausbreitung'],
+              simulations: ['wellen-ausbreitung', 'polarisation'],
             },
             {
               code: 'Q2.3.3',
@@ -2180,7 +2180,7 @@ export const hessenGymnasiumPhysik: StateCurriculum = {
                 'Wellenphänomene z. B. in der Wellenwanne; Huygens’sches Prinzip.',
                 'Wave phenomena e.g. in a ripple tank; Huygens\' principle.',
               ),
-              simulations: ['wellen-ausbreitung', 'interferenz'],
+              simulations: ['wellen-ausbreitung', 'interferenz', 'polarisation'],
             },
             {
               code: 'Q2.3.4',
@@ -2247,6 +2247,7 @@ export const hessenGymnasiumPhysik: StateCurriculum = {
                 'Lineare Polarisation von Licht und Totalreflexion (Glasfaser).',
                 'Linear polarisation of light and total internal reflection (optical fibre).',
               ),
+              simulations: ['polarisation'],
             },
             {
               code: 'Q3.1.3',
@@ -2264,6 +2265,7 @@ export const hessenGymnasiumPhysik: StateCurriculum = {
                 'Refraction, reflection, diffraction of electromagnetic waves (advanced course only)',
               ),
               summary: L('Brechungsgesetz mit Wellenmodell.', 'Law of refraction with the wave model.'),
+              simulations: ['polarisation'],
             },
             {
               code: 'Q3.1.5',

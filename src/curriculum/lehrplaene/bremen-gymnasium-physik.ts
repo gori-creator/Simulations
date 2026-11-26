@@ -136,7 +136,7 @@ const QP_UNITS: CurriculumUnit[] = [
     code: '5',
     title: L('Wellenoptik', 'Wave optics'),
     summary: L('Licht als Welle, Huygenssches Prinzip und Beugung, Interferenz an Doppelspalt und Gitter, Polarisation; LK: Einzelspalt und Interferometer.', 'Light as a wave, Huygens’ principle and diffraction, interference at a double slit and a grating, polarisation; LK: single slit and interferometer.'),
-    simulations: ['interferenz', 'doppelspalt'],
+    simulations: ['interferenz', 'doppelspalt', 'polarisation'],
   },
   {
     code: '6',

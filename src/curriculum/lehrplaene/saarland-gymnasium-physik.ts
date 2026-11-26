@@ -246,7 +246,7 @@ const HP_13_UNITS: CurriculumUnit[] = [
     code: '3.5',
     title: L('Wellenmodell des Lichts', 'Wave model of light'),
     summary: L('Beugung und Interferenz von Licht an Doppelspalt und Gitter.', 'Diffraction and interference of light at a double slit and a grating.'),
-    simulations: ['doppelspalt', 'interferenz'],
+    simulations: ['doppelspalt', 'interferenz', 'polarisation'],
   },
   {
     code: '4',
