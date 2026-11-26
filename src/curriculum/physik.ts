@@ -216,6 +216,22 @@ export const physik: Subject = {
               ),
             },
             {
+              id: 'leistung',
+              status: 'ready',
+              slug: L('arbeit-und-leistung-treppe', 'work-and-power-stairs'),
+              title: L('Arbeit und Leistung: Wie stark bist du?', 'Work and power: how powerful are you?'),
+              summary: L(
+                'Wer eine Treppe hinaufrennt, hebt sein ganzes Gewicht – und leistet kurzzeitig so viel wie ein Wasserkocher. Miss deine eigene Leistung, vergleiche im Arbeit-Zeit-Diagramm, lass einen Kran heben und rechne Stromkosten und Wasserkraft aus. Mit Übungsmodus.',
+                'Running up the stairs means lifting your whole weight – for a short time you deliver as much power as a kettle. Measure your own power, compare in a work–time graph, let a crane lift loads and work out electricity costs and hydropower. With a practice mode.',
+              ),
+              grades: [7, 11],
+              kmk: ['P-S', 'P-E', 'P-BK-Energie', 'P-BK-Mathematisieren'],
+              keywords: L(
+                ['Arbeit', 'Hubarbeit', 'Leistung', 'Watt', 'Joule', 'Pferdestärke', 'PS', 'Treppe', 'Körperleistung', 'Energie', 'Lageenergie', 'Zeit', 'Vergleich', 'Gerät', 'Maschine', 'Kran', 'Kilowattstunde', 'Stromkosten', 'Wasserkraft', 'Arbeit-Zeit-Diagramm'],
+                ['work', 'work done lifting', 'power', 'watt', 'joule', 'horsepower', 'stairs', 'human power', 'energy', 'potential energy', 'time', 'comparison', 'device', 'machine', 'crane', 'kilowatt hour', 'electricity cost', 'hydropower', 'work–time graph'],
+              ),
+            },
+            {
               id: 'stoesse',
               status: 'ready',
               slug: L('elastische-und-unelastische-stoesse', 'elastic-and-inelastic-collisions'),

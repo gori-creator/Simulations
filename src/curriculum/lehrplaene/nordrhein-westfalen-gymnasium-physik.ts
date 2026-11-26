@@ -278,7 +278,7 @@ const SEK_I_UNITS: CurriculumUnit[] = [
           'Energieumwandlungsketten, Energieerhaltung und Leistung, auch im Vergleich mit der eigenen Körperleistung.',
           'Chains of energy conversion, conservation of energy and power, also compared with one’s own physical power.',
         ),
-        simulations: ['energieerhaltung'],
+        simulations: ['energieerhaltung', 'leistung'],
       },
     ],
   },
