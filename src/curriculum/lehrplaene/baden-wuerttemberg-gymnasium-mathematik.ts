@@ -388,7 +388,7 @@ export const badenWuerttembergGymnasiumMathematik: StateCurriculum = {
                 "Terme mit rationalen Zahlen in verschiedenen Darstellungen vereinfachen und ihren Wert berechnen.",
                 "Simplifying expressions with rational numbers in different forms and calculating their value.",
               ),
-              simulations: ["termbaum"],
+              simulations: ["termbaum", 'vorzeichenregeln'],
             },
             {
               code: "3.2.1 (2)–(4)",
@@ -623,6 +623,7 @@ export const badenWuerttembergGymnasiumMathematik: StateCurriculum = {
                 "Terme mit rationalen Zahlen in verschiedenen Darstellungen vereinfachen und ihren Wert berechnen.",
                 "Simplifying expressions with rational numbers in different forms and calculating their value.",
               ),
+              simulations: ['vorzeichenregeln'],
             },
             {
               code: "3.2.1 (2)–(4)",

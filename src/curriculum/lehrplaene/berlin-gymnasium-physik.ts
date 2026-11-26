@@ -38,7 +38,7 @@ const TF_3_5: CurriculumUnit = {
     'Einfache Stromkreise mit Energiequelle, Schalter und Energiewandler, Wirkungen des Stroms, Ladung und Elektroskop, Modell der elektrischen Feldlinie, Strom als bewegte Ladung.',
     'Simple circuits with source, switch and converter, effects of current, charge and the electroscope, the model of electric field lines, current as moving charge.',
   ),
-  simulations: ['einfacher-stromkreis'],
+  simulations: ["einfacher-stromkreis", "stromwirkungen", "ladungen-coulomb"],
 };
 
 const TF_3_6: CurriculumUnit = {
@@ -158,7 +158,7 @@ const KS_9_10_UNITS: CurriculumUnit[] = [
       'Modell Lichtstrahl, Reflexions- und Brechungsgesetz, Totalreflexion, Bildentstehung an der Sammellinse mit Linsengleichung, Spektrum am Prisma und Farbaddition.',
       'The light-ray model, laws of reflection and refraction, total internal reflection, image formation by a converging lens with the lens equation, the spectrum from a prism and additive colour mixing.',
     ),
-    simulations: ['reflexion', 'brechung', 'linsen'],
+    simulations: ['reflexion', 'brechung', 'linsen', 'farben'],
   },
 ];
 

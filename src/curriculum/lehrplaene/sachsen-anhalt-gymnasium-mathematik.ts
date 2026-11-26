@@ -223,7 +223,7 @@ const SJ_7_8_UNITS: CurriculumUnit[] = [
           'Mit positiven und negativen Zahlen rechnen, Zahlenbereiche unterscheiden, Wurzeln ziehen und erkennen, dass √2 nicht rational ist.',
           'Calculating with positive and negative numbers, distinguishing number sets, taking roots and seeing that √2 is not rational.',
         ),
-        simulations: ['zahlengerade', 'quadratwurzel'],
+        simulations: ['zahlengerade', 'quadratwurzel', 'vorzeichenregeln'],
       },
       {
         code: '1.3',

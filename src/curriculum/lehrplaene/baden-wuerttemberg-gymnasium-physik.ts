@@ -100,7 +100,7 @@ export const badenWuerttembergGymnasiumPhysik: StateCurriculum = {
             "Sehen, Lichtausbreitung im Strahlenmodell, Schatten, Mondphasen und Finsternisse; Reflexion, Brechung, Sammellinse und die Zerlegung von weißem Licht im Spektrum.",
             "Vision, propagation of light in the ray model, shadows, moon phases and eclipses; reflection, refraction, the converging lens and splitting white light into a spectrum.",
           ),
-          simulations: ["licht-schatten", "reflexion"],
+          simulations: ["licht-schatten", "reflexion", 'farben'],
         },
         {
           code: "3.1.8",
@@ -194,7 +194,7 @@ export const badenWuerttembergGymnasiumPhysik: StateCurriculum = {
             "Sehen, Lichtausbreitung im Strahlenmodell, Schatten, Mondphasen und Finsternisse; Reflexion, Brechung, Sammellinse und die Zerlegung von weißem Licht im Spektrum.",
             "Vision, propagation of light in the ray model, shadows, moon phases and eclipses; reflection, refraction, the converging lens and splitting white light into a spectrum.",
           ),
-          simulations: ["reflexion", "brechung", "linsen"],
+          simulations: ["reflexion", "brechung", "linsen", 'farben'],
         },
         {
           code: "3.1.8",
@@ -246,7 +246,7 @@ export const badenWuerttembergGymnasiumPhysik: StateCurriculum = {
             "Bauteile und Schaltpläne, Leiter und Nichtleiter, Stromstärke und Spannung messen, Regeln in Reihen- und Parallelschaltung sowie elektrische Leistung, Wirkungen und Gefahren des Stroms.",
             "Components and circuit diagrams, conductors and insulators, measuring current and voltage, rules in series and parallel circuits, and electrical power, effects and dangers of current.",
           ),
-          simulations: ["reihe-parallel", "einfacher-stromkreis"],
+          simulations: ["reihe-parallel", "einfacher-stromkreis", 'stromwirkungen'],
         },
         {
           code: "3.2.4",
@@ -328,6 +328,7 @@ export const badenWuerttembergGymnasiumPhysik: StateCurriculum = {
             "Bauteile und Schaltpläne, Leiter und Nichtleiter, Stromstärke und Spannung messen, Regeln in Reihen- und Parallelschaltung sowie elektrische Leistung, Wirkungen und Gefahren des Stroms.",
             "Components and circuit diagrams, conductors and insulators, measuring current and voltage, rules in series and parallel circuits, and electrical power, effects and dangers of current.",
           ),
+          simulations: ['stromwirkungen'],
         },
         {
           code: "3.2.4",
@@ -673,7 +674,7 @@ export const badenWuerttembergGymnasiumPhysik: StateCurriculum = {
                 "Coulomb’sches Gesetz, Feldlinien und Superposition, Influenz, Feldstärke, Kapazität und Energie des Plattenkondensators, Lade- und Entladekurven, Potenzial und die quantitative Bewegung geladener Teilchen im Feld.",
                 "Coulomb’s law, field lines and superposition, electrostatic induction, field strength, capacitance and energy of the parallel-plate capacitor, charging and discharging curves, potential, and quantitative motion of charged particles in the field.",
               ),
-              simulations: ["feldlinien", "kondensator"],
+              simulations: ["feldlinien", "kondensator", 'ladungen-coulomb'],
             },
             {
               code: "3.6.2.2",

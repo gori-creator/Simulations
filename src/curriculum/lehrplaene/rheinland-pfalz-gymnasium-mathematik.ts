@@ -268,7 +268,7 @@ const KS_7_8_UNITS: CurriculumUnit[] = [
           'Zustandsänderungen berechnen; addieren und subtrahieren auch mit negativem zweitem Operanden, multiplizieren und dividieren, Terme auswerten, Rechengesetze nutzen (E).',
           'Calculating changes of state; adding and subtracting with a negative second operand, multiplying and dividing, evaluating terms, using the laws of arithmetic (E).',
         ),
-        simulations: ['zahlengerade', 'termbaum'],
+        simulations: ['zahlengerade', 'termbaum', 'vorzeichenregeln'],
       },
     ],
   },

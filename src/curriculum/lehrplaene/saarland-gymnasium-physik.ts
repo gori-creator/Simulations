@@ -46,7 +46,7 @@ const KS_7_UNITS: CurriculumUnit[] = [
       'Magnetismus, elektrischer Stromkreis, Spannung und Stromstärke, Wirkungen des Stroms, ohmsches Gesetz, sicherer Umgang mit Elektrizität.',
       'Magnetism, the electric circuit, voltage and current, effects of current, Ohm’s law, using electricity safely.',
     ),
-    simulations: ['einfacher-stromkreis', 'reihe-parallel', 'ohmsches-gesetz', 'magnete'],
+    simulations: ['einfacher-stromkreis', 'reihe-parallel', 'ohmsches-gesetz', 'magnete', 'stromwirkungen'],
   },
   {
     code: '2',
@@ -111,7 +111,7 @@ const KS_9_UNITS: CurriculumUnit[] = [
       'Brechung und Totalreflexion, Abbildungen durch Linsen, optische Geräte zur Vergrößerung des Sehwinkels, Spektralfarben und elektromagnetisches Spektrum.',
       'Refraction and total internal reflection, images formed by lenses, optical instruments that enlarge the visual angle, spectral colours and the electromagnetic spectrum.',
     ),
-    simulations: ['brechung', 'linsen'],
+    simulations: ['brechung', 'linsen', 'farben'],
   },
   {
     code: '2',
@@ -120,7 +120,7 @@ const KS_9_UNITS: CurriculumUnit[] = [
       'Ladung und elektrisches Feld, Strom und Spannung, elektrische Arbeit und Leistung, Reihen- und Parallelschaltung von Widerständen, Halbleiter und Dioden.',
       'Charge and the electric field, current and voltage, electrical work and power, series and parallel resistors, semiconductors and diodes.',
     ),
-    simulations: ['einfacher-stromkreis', 'reihe-parallel', 'ohmsches-gesetz', 'diode-transistor'],
+    simulations: ['einfacher-stromkreis', 'reihe-parallel', 'ohmsches-gesetz', 'diode-transistor', 'ladungen-coulomb'],
   },
   {
     code: '3',

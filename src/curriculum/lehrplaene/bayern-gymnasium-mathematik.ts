@@ -73,7 +73,7 @@ export const bayernGymnasiumMathematik: StateCurriculum = {
                 'Schriftliche Verfahren, Primfaktorzerlegung und Teilbarkeitsregeln, Zählprinzip mit Baumdiagrammen, Vorzeichenregeln sowie Potenzen und Zehnerpotenzen.',
                 'Written methods, prime factorisation and divisibility rules, the counting principle with tree diagrams, sign rules, powers and powers of ten.',
               ),
-              simulations: ['primfaktoren', 'zaehlprinzip', 'zehnerpotenzen'],
+              simulations: ['primfaktoren', 'zaehlprinzip', 'zehnerpotenzen', 'vorzeichenregeln'],
             },
             {
               code: '3.2',

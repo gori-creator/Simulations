@@ -126,7 +126,7 @@ const KS_5_6_UNITS: CurriculumUnit[] = [
     code: '11',
     title: L('Ganze Zahlen', 'Integers'),
     summary: L('Negative Zahlen im Alltag, Zahlengerade und Vorzeichen, Koordinatensystem mit vier Quadranten, Rechnen mit ganzen Zahlen.', 'Negative numbers in everyday life, the number line and signs, the coordinate system with four quadrants, calculating with integers.'),
-    simulations: ['zahlengerade', 'koordinaten-lage'],
+    simulations: ['zahlengerade', 'koordinaten-lage', 'vorzeichenregeln'],
   },
 ];
 

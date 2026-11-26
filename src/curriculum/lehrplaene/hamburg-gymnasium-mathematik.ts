@@ -194,7 +194,7 @@ const KS_7_8_UNITS: CurriculumUnit[] = [
       'Negative Zahlen im Alltag und am Zahlenstrahl, Vorzeichen und Betrag, ordnen, die vier Grundrechenarten mit Vorzeichenregeln.',
       'Negative numbers in everyday life and on the number line, sign and absolute value, ordering, the four operations with sign rules.',
     ),
-    simulations: ['zahlengerade'],
+    simulations: ['zahlengerade', 'vorzeichenregeln'],
   },
   {
     code: '2',
