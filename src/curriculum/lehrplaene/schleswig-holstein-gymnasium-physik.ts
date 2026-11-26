@@ -130,7 +130,7 @@ const SEK_I_UNITS: CurriculumUnit[] = [
           'Schatten, Finsternisse und Mondphasen, Lochblende, Reflexionsgesetz, Temperatur, Ausdehnung und Aggregatzustände im einfachen Teilchenmodell.',
           'Shadows, eclipses and phases of the moon, the pinhole camera, the law of reflection, temperature, expansion and states of matter in the simple particle model.',
         ),
-        simulations: ['licht-schatten', 'reflexion', 'teilchenmodell'],
+        simulations: ['licht-schatten', 'reflexion', 'teilchenmodell', 'waermeausdehnung'],
       },
       {
         code: '3.3',

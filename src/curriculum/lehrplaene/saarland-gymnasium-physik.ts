@@ -92,7 +92,7 @@ const KS_8_UNITS: CurriculumUnit[] = [
     code: '5',
     title: L('Thermische Energie und Wärme', 'Thermal energy and heat'),
     summary: L('Spezifische Wärmekapazität, Ausbreitung von Wärme.', 'Specific heat capacity, heat transfer.'),
-    simulations: ['teilchenmodell', 'waermetransport'],
+    simulations: ["teilchenmodell", "waermeausdehnung", "waermetransport"],
   },
   {
     code: '6',

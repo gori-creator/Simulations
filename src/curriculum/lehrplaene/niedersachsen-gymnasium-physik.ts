@@ -99,7 +99,7 @@ const DJ_9_10: CurriculumUnit[] = [
       'Temperatur und innere Energie, Phasenübergänge energetisch, Energieentwertung, Leistung, Arbeit und Wärme sowie Lage- und Bewegungsenergie mit dem Energieerhaltungssatz berechnen.',
       'Temperature and internal energy, phase changes in terms of energy, energy dissipation, power, work and heat, and calculating potential and kinetic energy with the law of conservation of energy.',
     ),
-    simulations: ['energieerhaltung', 'teilchenmodell', 'energieversorgung', 'waermetransport'],
+    simulations: ["energieerhaltung", "teilchenmodell", "energieversorgung", "waermeausdehnung", "waermetransport"],
   },
   {
     code: '8',

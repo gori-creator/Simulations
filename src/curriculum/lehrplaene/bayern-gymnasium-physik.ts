@@ -212,7 +212,7 @@ export const bayernGymnasiumPhysik: StateCurriculum = {
                 "Temperatur als mittlere Bewegungsenergie der Teilchen, innere Energie, Aggregatzustände sowie Druck, Volumen und Temperatur eines Gases.",
                 "Temperature as the mean kinetic energy of particles, internal energy, states of matter, and the pressure, volume and temperature of a gas.",
               ),
-              simulations: ["gasgesetze", "teilchenmodell", 'druck'],
+              simulations: ["gasgesetze", "teilchenmodell", "waermeausdehnung", "druck"],
             },
             {
               code: "3.2",

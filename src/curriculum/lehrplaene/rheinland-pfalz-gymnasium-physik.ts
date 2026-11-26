@@ -54,7 +54,7 @@ const SEK_I_UNITS: CurriculumUnit[] = [
       'Temperatur im Basiskonzept Materie: Volumen- und Längenänderung bei Erwärmung im Experiment, Deutung mit dem Teilchenmodell und seine Grenzen; Gase und absoluter Nullpunkt als Vertiefung.',
       'Temperature and matter: changes in volume and length on heating in experiments, explanation with the particle model and its limits; gases and absolute zero as an extension.',
     ),
-    simulations: ['teilchenmodell', 'gasgesetze'],
+    simulations: ['teilchenmodell', 'gasgesetze', 'waermeausdehnung'],
   },
   {
     code: '4',
